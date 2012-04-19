@@ -4,9 +4,6 @@ class User < ActiveRecord::Base
 
   extend ActiveSupport::Memoizable
   require 'paperclip'
-  include SimpleCaptcha::ModelValidation
-
-  #validates_captcha :on => :create, :message => tr("Please reenter human verification number","captcha")
 
   scope :active, :conditions => "users.status in ('pending','active')"
   scope :at_least_one_endorsement, :conditions => "users.endorsements_count > 0"

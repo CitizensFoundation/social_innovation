@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include FaceboxRender
 
+  include SimpleCaptcha::ControllerHelpers
+
   include Facebooker2::Rails::Controller
 
   require_dependency "activity.rb"
