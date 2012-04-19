@@ -15,7 +15,7 @@ namespace :pictures do
       u.save(:validate => false)
     end
 
-    for p in Partner.find(:all, :conditions => "picture_id is not null")
+    for p in SubInstance.find(:all, :conditions => "picture_id is not null")
       p.logo = nil
       p.save(:validate => false)
     end
@@ -57,7 +57,7 @@ namespace :pictures do
      end
    end
    
-   for p in Partner.find(:all, :conditions => "picture_id is not null")
+   for p in SubInstance.find(:all, :conditions => "picture_id is not null")
      if p.picture and not p.attribute_present?("logo_file_name")
        file_name = Rails.root.to_s + "/tmp/" + p.picture.name
        file = File.open(file_name, 'w') {|f| f.write(p.picture.data) }

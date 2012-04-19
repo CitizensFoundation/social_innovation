@@ -53,7 +53,7 @@ class PriorityRanker
 
     # ranks all the priorities in the database with any endorsements.
 
-    sub_instances_with_nil = Partner.all<<nil
+    sub_instances_with_nil = SubInstance.all<<nil
     sub_instances_with_nil.each do |sub_instance|
       update_positions_by_sub_instance(sub_instance)
     end
@@ -172,7 +172,7 @@ class PriorityRanker
   end
 
   def setup_ranged_endorsment_positions
-    sub_instances_with_nil = Partner.all<<nil
+    sub_instances_with_nil = SubInstance.all<<nil
     sub_instances_with_nil.each do |sub_instance|
       setup_ranged_endorsment_position(sub_instance,Time.now-24.hours,"position_endorsed_24hr")
       setup_ranged_endorsment_position(sub_instance,Time.now-7.days,"position_endorsed_7days")
@@ -185,7 +185,7 @@ class PriorityRanker
   def update_positions_by_sub_instance(sub_instance)
     puts "update positions by sub_instances #{sub_instance}"
     if sub_instance
-      Partner.current = sub_instance
+      SubInstance.current = sub_instance
       sub_instance_sql = "priorities.sub_instance_id = #{sub_instance.id}"
     else
       sub_instance_sql = "priorities.sub_instance_id IS NULL"
@@ -294,7 +294,7 @@ class PriorityRanker
     # check if there's a new fastest rising priority
     rising = Priority.filtered.published.rising.all[0]
     ActivityPriorityRising1.find_or_create_by_priority_id(rising.id) if rising    
-    Partner.current = nil
+    SubInstance.current = nil
   end
   
   def setup_endorsements_counts
@@ -350,7 +350,7 @@ class PriorityRanker
   def setup_ranged_endorsment_position(sub_instance,time_since,position_db_name)
     puts "Processing #{position_db_name}"
     if sub_instance
-      Partner.current = sub_instance
+      SubInstance.current = sub_instance
       sub_instance_sql = "priorities.sub_instance_id = #{sub_instance.id}"
     else
       sub_instance_sql = "priorities.sub_instance_id IS NULL"
@@ -391,6 +391,6 @@ class PriorityRanker
         priority.save
       end
     end
-    Partner.current = nil
+    SubInstance.current = nil
   end  
 end

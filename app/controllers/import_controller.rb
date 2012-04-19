@@ -10,14 +10,14 @@ class ImportController < ApplicationController
   
   def yahoo
     if not request.url.include?('token')
-      session[:import_sub_instance_id] = Partner.current.id if Partner.current
+      session[:import_sub_instance_id] = SubInstance.current.id if SubInstance.current
       consumer = Contacts::Yahoo.new
       url = consumer.authentication_url
       session[:yahoo_consumer] = consumer.serialize
       redirect_to url
       return
     end
-    Partner.current = Partner.find(session[:import_sub_instance_id]) if session[:import_sub_instance_id]
+    SubInstance.current = SubInstance.find(session[:import_sub_instance_id]) if session[:import_sub_instance_id]
     @user = User.find(current_user.id)
     @user.is_importing_contacts = true
     @user.imported_contacts_count = 0
@@ -35,14 +35,14 @@ class ImportController < ApplicationController
 
   def windows
     if not request.post?
-      session[:import_sub_instance_id] = Partner.current.id if Partner.current
+      session[:import_sub_instance_id] = SubInstance.current.id if SubInstance.current
       consumer = Contacts::WindowsLive.new
       url = consumer.authentication_url
       session[:windows_consumer] = consumer.serialize
       redirect_to url
       return
     end
-    Partner.current = Partner.find(session[:import_sub_instance_id]) if session[:import_sub_instance_id]
+    SubInstance.current = SubInstance.find(session[:import_sub_instance_id]) if session[:import_sub_instance_id]
     @user = User.find(current_user.id)
     @user.is_importing_contacts = true
     @user.imported_contacts_count = 0
@@ -69,12 +69,12 @@ class ImportController < ApplicationController
     session_param = "1"
     root_url = "https://www.google.com/accounts/AuthSubRequest"
     query_string = "?scope=#{scope_param}&session=#{session_param}&next=#{next_param}"
-    session[:import_sub_instance_id] = Partner.current.id if Partner.current
+    session[:import_sub_instance_id] = SubInstance.current.id if SubInstance.current
     redirect_to root_url + query_string
   end
    
   def authorise_google
-    Partner.current = Partner.find(session[:import_sub_instance_id]) if session[:import_sub_instance_id]
+    SubInstance.current = SubInstance.find(session[:import_sub_instance_id]) if session[:import_sub_instance_id]
     token = params[:token]
     Rails.logger.debug("Before https")
     uri = URI.parse("https://www.google.com")

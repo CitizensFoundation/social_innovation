@@ -19,9 +19,9 @@ module Delayed
     def perform
       Instance.current = Instance.first
       if custom_data
-        Partner.current = Partner.find(custom_data)
+        SubInstance.current = SubInstance.find(custom_data)
       else
-        Partner.current = nil
+        SubInstance.current = nil
       end
       object.send(method_name, *args) if object
     end
@@ -32,9 +32,9 @@ module Delayed
     def perform
       Instance.current = Instance.first
       if custom_data
-        Partner.current = Partner.find(custom_data)
+        SubInstance.current = SubInstance.find(custom_data)
       else
-        Partner.current = nil
+        SubInstance.current = nil
       end
       object.send(method_name, *args).deliver
     end
@@ -42,7 +42,7 @@ module Delayed
 
   module DelayMail
     def delay(options = {})
-      custom_value = Partner.current ? Partner.current.id : nil
+      custom_value = SubInstance.current ? SubInstance.current.id : nil
       DelayProxy.new(PerformableMailer, self, custom_value, options)
     end
   end
@@ -64,7 +64,7 @@ module Delayed
 
   module MessageSending
     def delay(options = {})           
-      custom_value = Partner.current ? Partner.current.id : nil
+      custom_value = SubInstance.current ? SubInstance.current.id : nil
       DelayProxy.new(PerformableMethod, self, custom_value, options)
     end
   end

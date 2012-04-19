@@ -15,8 +15,8 @@ class Category < ActiveRecord::Base
   end
   
   def self.for_sub_instance
-    if Partner.current and Category.where(:sub_instance_id=>Partner.current.id).count > 0
-      Category.where(:sub_instance_id=>Partner.current.id).order("name")
+    if SubInstance.current and Category.where(:sub_instance_id=>SubInstance.current.id).count > 0
+      Category.where(:sub_instance_id=>SubInstance.current.id).order("name")
     else
       Category.where(:sub_instance_id=>nil).order("name")
     end

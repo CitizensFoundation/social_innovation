@@ -157,17 +157,17 @@ class ApplicationController < ActionController::Base
         if params[:sub_instance_short_name]
           if params[:sub_instance_short_name].empty?
             session.delete(:set_sub_instance_id)
-            Partner.current = @current_sub_instance = nil
+            SubInstance.current = @current_sub_instance = nil
             return @current_sub_instance
           else
-            @current_sub_instance = Partner.find_by_short_name(params[:sub_instance_short_name])
-            Partner.current = @current_sub_instance
+            @current_sub_instance = SubInstance.find_by_short_name(params[:sub_instance_short_name])
+            SubInstance.current = @current_sub_instance
             session[:set_sub_instance_id] = @current_sub_instance.id
             return @current_sub_instance
           end
         elsif session[:set_sub_instance_id]
-          @current_sub_instance = Partner.find(session[:set_sub_instance_id])
-          Partner.current = @current_sub_instance
+          @current_sub_instance = SubInstance.find(session[:set_sub_instance_id])
+          SubInstance.current = @current_sub_instance
           return @current_sub_instance
         end
       end
@@ -180,16 +180,16 @@ class ApplicationController < ActionController::Base
            self.class.name.downcase.include?("tr8n") or
            ["endorse","oppose","authorise_google","windows","yahoo"].include?(action_name)
           @current_sub_instance = nil
-          Partner.current = @current_sub_instance
+          SubInstance.current = @current_sub_instance
           Rails.logger.info("No sub_instance")
           return nil
         else
           redirect_to "/welcome"
         end
       else
-        @current_sub_instance ||= Partner.find_by_short_name(request.subdomains.first)
-        Partner.current = @current_sub_instance
-        Rails.logger.info("Partner: #{@current_sub_instance.short_name}")
+        @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
+        SubInstance.current = @current_sub_instance
+        Rails.logger.info("SubInstance: #{@current_sub_instance.short_name}")
         return @current_sub_instance
       end
     elsif request.host.include?("betrireykjavik")
@@ -200,16 +200,16 @@ class ApplicationController < ActionController::Base
            self.class.name.downcase.include?("tr8n") or
            ["endorse","oppose","authorise_google","windows","yahoo"].include?(action_name)
           @current_sub_instance = nil
-          Partner.current = @current_sub_instance
+          SubInstance.current = @current_sub_instance
           Rails.logger.info("No sub_instance")
           return nil
         else
           redirect_to "/welcome"
         end
       else
-        @current_sub_instance ||= Partner.find_by_short_name(request.subdomains.first)
-        Partner.current = @current_sub_instance
-        Rails.logger.info("Partner: #{@current_sub_instance.short_name}")
+        @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
+        SubInstance.current = @current_sub_instance
+        Rails.logger.info("SubInstance: #{@current_sub_instance.short_name}")
         return @current_sub_instance
       end
     else
@@ -219,16 +219,16 @@ class ApplicationController < ActionController::Base
            self.class.name.downcase.include?("tr8n") or
            ["endorse","oppose","authorise_google","windows","yahoo"].include?(action_name)
           @current_sub_instance = nil
-          Partner.current = @current_sub_instance
+          SubInstance.current = @current_sub_instance
           Rails.logger.info("No sub_instance")
           return nil
         else
           redirect_to "/welcome"
         end
       else
-        @current_sub_instance ||= Partner.find_by_short_name(request.subdomains.first)
-        Partner.current = @current_sub_instance
-        Rails.logger.info("Partner: #{@current_sub_instance.short_name}")
+        @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
+        SubInstance.current = @current_sub_instance
+        Rails.logger.info("SubInstance: #{@current_sub_instance.short_name}")
         return @current_sub_instance
       end
     end
@@ -240,13 +240,13 @@ class ApplicationController < ActionController::Base
     @iso_country = Tr8n::IsoCountry.find_by_code(@country_code.upcase)
     Rails.logger.info("Geoip country: #{@country_code} - locale #{session[:locale]} - #{current_user ? (current_user.email ? current_user.email : current_user.login) : "Anonymous"}")
     Rails.logger.info(request.user_agent)
-    if Partner.current and Partner.current.geoblocking_enabled
+    if SubInstance.current and SubInstance.current.geoblocking_enabled
       logged_in_user = current_user
-      unless Partner.current.geoblocking_disabled_for?(@country_code)
+      unless SubInstance.current.geoblocking_disabled_for?(@country_code)
         Rails.logger.info("Geoblocking enabled")
         @geoblocked = true unless Rails.env.development? or (current_user and current_user.is_admin?)
       end
-      if logged_in_user and logged_in_user.geoblocking_disabled_for?(Partner.current)
+      if logged_in_user and logged_in_user.geoblocking_disabled_for?(SubInstance.current)
         Rails.logger.info("Geoblocking disabled for user #{logged_in_user.login}")
         @geoblocked = false
       end
@@ -277,8 +277,8 @@ class ApplicationController < ActionController::Base
       elsif @iso_country and not @iso_country.languages.empty?
         session[:locale] =  @iso_country.languages.first.locale
         Rails.logger.debug("Set language from geoip")
-      elsif Partner.current and Partner.current.default_locale
-        session[:locale] = Partner.current.default_locale
+      elsif SubInstance.current and SubInstance.current.default_locale
+        session[:locale] = SubInstance.current.default_locale
         Rails.logger.debug("Set language from sub_instance")
       else
         session[:locale] = tr8n_user_preffered_locale

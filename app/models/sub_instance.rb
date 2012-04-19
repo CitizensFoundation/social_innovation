@@ -1,4 +1,4 @@
-class Partner < ActiveRecord::Base
+class SubInstance < ActiveRecord::Base
 
   require 'paperclip'
   

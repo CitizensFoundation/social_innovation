@@ -89,8 +89,8 @@ class Instance < ActiveRecord::Base
   end
 
   def base_url_w_sub_instance
-    if Partner.current
-      Partner.current.short_name + '.' + self.domain_name
+    if SubInstance.current
+      SubInstance.current.short_name + '.' + self.domain_name
     else
       self.domain_name
     end
@@ -100,7 +100,7 @@ class Instance < ActiveRecord::Base
     if Thread.current[:localhost_override]
       'http://' + Thread.current[:localhost_override] + '/'
     else
-      if p = sub_instance or p = Partner.current
+      if p = sub_instance or p = SubInstance.current
         'http://' + p.short_name + '.' + base_url + '/'
       else
         'http://' + base_url + '/'
@@ -117,7 +117,7 @@ class Instance < ActiveRecord::Base
     self.users_count = User.count
     self.priorities_count = Priority.published.filtered.count
     self.endorsements_count = Endorsement.active_and_inactive.count
-    self.sub_instances_count = Partner.active.count
+    self.sub_instances_count = SubInstance.active.count
     self.points_count = Point.published.count
     self.documents_count = Document.published.count
     self.contributors_count = User.active.at_least_one_endorsement.contributed.count

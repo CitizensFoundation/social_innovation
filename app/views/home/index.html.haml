@@ -16,7 +16,7 @@
       %br/
   %tr
     %td{:align => "center"}
-      - sub_instance=Partner.find_by_iso_country_id(@iso_country.id)
+      - sub_instance=SubInstance.find_by_iso_country_id(@iso_country.id)
       = link_to sub_instance.show_url do
         = image_tag @iso_country.large_flag_image, :border=>0
         %br/
@@ -33,7 +33,7 @@
     %td{:align => "center"}
       %br/
       %br/
-      - sub_instance=Partner.find_by_short_name("world")
+      - sub_instance=SubInstance.find_by_short_name("world")
       = link_to sub_instance.show_url do
         = image_tag "tr8n/flags/64/_united-nations.png", :border=>0
         %br/
@@ -49,7 +49,7 @@
       %td{:align => "center"}
         %br/
         %br/
-        - sub_instance=Partner.find_by_short_name("eu")
+        - sub_instance=SubInstance.find_by_short_name("eu")
         = link_to sub_instance.show_url do
           = image_tag "tr8n/flags/64/_european-union.png", :border=>0
           %br/

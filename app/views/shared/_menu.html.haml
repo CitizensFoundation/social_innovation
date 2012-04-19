@@ -57,7 +57,7 @@
                   %br/
                   \&middot; #{link_to tr("What kind of priorities", "controller/about"), :controller => "about", :action => "sub_instance_what_kind"}
                   %br/
-                  \&middot; #{link_to tr("Partner rules", "controller/about"), :controller => "about", :action => "sub_instance_rules"}
+                  \&middot; #{link_to tr("SubInstance rules", "controller/about"), :controller => "about", :action => "sub_instance_rules"}
                   %br/
                   \&middot; #{link_to tr("From priorities to action", "controller/about"), :controller => "about", :action => "sub_instance_from_priorities_to_action"}
                   %br/
@@ -69,14 +69,14 @@
               - if logged_in? and current_user.is_admin?
                 .tab_subhead
                   = link_to tr("Setup a sub_instance", "view/shared/_menu"), sub_instances_url
-              - if logged_in? and current_user.is_admin? and Partner.current
+              - if logged_in? and current_user.is_admin? and SubInstance.current
                 .tab_subhead
-                  = link_to tr("Partner settings", "view/shared/_menu"), edit_sub_instance_url(Partner.current)
+                  = link_to tr("SubInstance settings", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
               .tab_sublinks
-                - if logged_in? and current_user.is_admin? and Partner.current
-                  = link_to tr("Partner account", "view/shared/_menu"), edit_sub_instance_url(Partner.current)
-                  \&middot; #{link_to tr("Logo", "view/shared/_menu"), picture_sub_instance_path(Partner.current)}
-                  \&middot; #{link_to tr("Email list", "view/shared/_menu"), email_sub_instance_path(Partner.current)}
+                - if logged_in? and current_user.is_admin? and SubInstance.current
+                  = link_to tr("SubInstance account", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+                  \&middot; #{link_to tr("Logo", "view/shared/_menu"), picture_sub_instance_path(SubInstance.current)}
+                  \&middot; #{link_to tr("Email list", "view/shared/_menu"), email_sub_instance_path(SubInstance.current)}
               - if current_user.is_admin?
                 .tab_subhead
                   = link_to tr("Nation settings", "view/shared/_menu"), edit_instance_url(current_instance)

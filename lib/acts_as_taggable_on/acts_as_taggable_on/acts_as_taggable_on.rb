@@ -66,12 +66,13 @@ module ActiveRecord
           end      
           
           if respond_to?(:tag_types)
-            write_inheritable_attribute( :tag_types, (tag_types + args).uniq )
+            class_attribute :tag_types
+            self.tag_types = (tag_types + args).uniq
           else
             self.class_eval do
-              write_inheritable_attribute(:tag_types, args.uniq)
-              class_inheritable_reader :tag_types
-            
+              class_attribute :tag_types
+              self.tag_types = args.uniq
+
               has_many :taggings, :as => :taggable, :dependent => :destroy, :include => :tag
               has_many :base_tags, :class_name => "Tag", :through => :taggings, :source => :tag
             

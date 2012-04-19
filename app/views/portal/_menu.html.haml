@@ -5,7 +5,7 @@
     #portlets.hidden
       %ul
         - PortletTemplateCategory.by_weight.all.each do |template_category|
-          - if not template_category.sub_instance_id or (Partner.current and Partner.current.id == template_category.sub_instance_id)
+          - if not template_category.sub_instance_id or (SubInstance.current and SubInstance.current.id == template_category.sub_instance_id)
             %li
               %a{:href => "#"}= tr(template_category.name, "view/portal/_menu").titleize
               %ul

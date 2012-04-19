@@ -144,7 +144,7 @@ class UsersController < ApplicationController
     redirect_to '/' and return if check_for_suspension
     @page_title = tr("Email notifications for {user_name}", "controller/users", :user_name => @user.name)
     @rss_url = url_for(:only_path => false, :controller => "rss", :action => "your_notifications", :format => "rss", :c => @user.rss_code)
-    @sub_instances = Partner.find(:all, :conditions => "is_optin = true and status = 'active' and id <> 3")
+    @sub_instances = SubInstance.find(:all, :conditions => "is_optin = true and status = 'active' and id <> 3")
   end
     
   # GET /users/1

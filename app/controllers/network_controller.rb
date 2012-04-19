@@ -130,9 +130,9 @@ class NetworkController < ApplicationController
   
   def sub_instances
     if User.adapter == 'postgresql'
-      @sub_instances = Partner.find(:all, :conditions => "logo_file_name is not null", :order => "RANDOM()")
+      @sub_instances = SubInstance.find(:all, :conditions => "logo_file_name is not null", :order => "RANDOM()")
     else
-      @sub_instances = Partner.find(:all, :conditions => "logo_file_name is not null", :order => "rand()")
+      @sub_instances = SubInstance.find(:all, :conditions => "logo_file_name is not null", :order => "rand()")
     end
     @page_title = tr("Meet our sub_instances", "controller/network", :instance_name => tr(current_instance.name,"Name from database"))
     respond_to do |format|

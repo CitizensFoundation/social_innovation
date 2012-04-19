@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   
   belongs_to :sub_instance
   belongs_to :referral, :class_name => "User", :foreign_key => "referral_id"
-  belongs_to :sub_instance_referral, :class_name => "Partner", :foreign_key => "sub_instance_referral_id"
+  belongs_to :sub_instance_referral, :class_name => "SubInstance", :foreign_key => "sub_instance_referral_id"
   belongs_to :top_endorsement, :class_name => "Endorsement", :foreign_key => "top_endorsement_id", :include => :priority  
 
   has_one :profile, :dependent => :destroy

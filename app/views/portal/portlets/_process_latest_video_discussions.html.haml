@@ -1,4 +1,4 @@
-- cache(["portlets_process_latest_video_discussions",locale,Partner.current_id,@inline_translations_enabled], :expires_in => 15.minutes) do
+- cache(["portlets_process_latest_video_discussions",locale,SubInstance.current_id,@inline_translations_enabled], :expires_in => 15.minutes) do
   - @latest_speech_discussions = ProcessSpeechMasterVideo.get_latest_twenty
   - if @latest_speech_discussions.length > 0
     = javascript_include_tag 'jquery.mousewheel.js'

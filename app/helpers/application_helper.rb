@@ -261,6 +261,6 @@ module ApplicationHelper
   end
 
   def sub_instance_link(short_name)
-    Partner.find_by_short_name(short_name).show_url
+    SubInstance.find_by_short_name(short_name).show_url
   end
 end

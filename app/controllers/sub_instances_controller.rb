@@ -4,11 +4,11 @@ class SubInstancesController < ApplicationController
   before_filter :admin_required, :only => [:destroy]
 
   def index
-    @page_title = tr("Partner with {instance_name}", "controller/sub_instances", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("SubInstance with {instance_name}", "controller/sub_instances", :instance_name => tr(current_instance.name,"Name from database"))
 #    if logged_in? and current_user.attribute_present?("sub_instance_id")
 #      redirect_to 'http://' + current_user.sub_instance.short_name + '.' + current_instance.base_url + edit_sub_instance_path(current_user.sub_instance)
 #    end
-    @sub_instance = Partner.new
+    @sub_instance = SubInstance.new
   end
   
   def signup
@@ -18,7 +18,7 @@ class SubInstancesController < ApplicationController
   # GET /sub_instances/1
   # GET /sub_instances/1.xml
   def show
-    @sub_instance = Partner.find(params[:id])
+    @sub_instance = SubInstance.find(params[:id])
     @page_title = @sub_instance.name
     respond_to do |format|
       format.html # show.html.erb
@@ -30,8 +30,8 @@ class SubInstancesController < ApplicationController
   # GET /sub_instances/new
   # GET /sub_instances/new.xml
   def new
-    @page_title = tr("Partner with {instance_name}", "controller/sub_instances", :instance_name => tr(current_instance.name,"Name from database"))
-    @sub_instance = Partner.new
+    @page_title = tr("SubInstance with {instance_name}", "controller/sub_instances", :instance_name => tr(current_instance.name,"Name from database"))
+    @sub_instance = SubInstance.new
     respond_to do |format|
       format.html # new.html.erb
     end
@@ -39,22 +39,22 @@ class SubInstancesController < ApplicationController
 
   # GET /sub_instances/1/edit
   def edit
-    @sub_instance = Partner.find(params[:id])
-    @page_title = tr("Partner settings", "controller/sub_instances")
+    @sub_instance = SubInstance.find(params[:id])
+    @page_title = tr("SubInstance settings", "controller/sub_instances")
   end
 
   # GET /sub_instances/1/email
   def email
-    @sub_instance = Partner.find(params[:id])
+    @sub_instance = SubInstance.find(params[:id])
     @page_title = tr("Email list settings", "controller/sub_instances")
   end
 
   # POST /sub_instances
   # POST /sub_instances.xml
   def create
-    @sub_instance = Partner.new(params[:sub_instance])
+    @sub_instance = SubInstance.new(params[:sub_instance])
     @sub_instance.ip_address = request.remote_ip
-    @page_title = tr("Partner with {instance_name}", "controller/sub_instances", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("SubInstance with {instance_name}", "controller/sub_instances", :instance_name => tr(current_instance.name,"Name from database"))
     respond_to do |format|
       if @sub_instance.save
         @sub_instance.register!
@@ -72,8 +72,8 @@ class SubInstancesController < ApplicationController
   # PUT /sub_instances/1
   # PUT /sub_instances/1.xml
   def update
-    @sub_instance = Partner.find(params[:id])
-    @page_title = tr("Partner settings", "controller/sub_instances")
+    @sub_instance = SubInstance.find(params[:id])
+    @page_title = tr("SubInstance settings", "controller/sub_instances")
     respond_to do |format|
       if @sub_instance.update_attributes(params[:sub_instance])
         flash[:notice] = tr("Saved settings", "controller/sub_instances")
@@ -99,12 +99,12 @@ class SubInstancesController < ApplicationController
   end
   
   def picture
-    @sub_instance = Partner.find(params[:id])
+    @sub_instance = SubInstance.find(params[:id])
     @page_title = tr("Upload sub_instance logo", "controller/sub_instances")
   end
 
   def picture_save
-    @sub_instance = Partner.find(params[:id])
+    @sub_instance = SubInstance.find(params[:id])
     respond_to do |format|
       if @sub_instance.update_attributes(params[:sub_instance])
         flash[:notice] = tr("Picture uploaded successfully", "controller/sub_instances")
@@ -118,7 +118,7 @@ class SubInstancesController < ApplicationController
   # DELETE /sub_instances/1
   # DELETE /sub_instances/1.xml
   def destroy
-    @sub_instance = Partner.find(params[:id])
+    @sub_instance = SubInstance.find(params[:id])
     @sub_instance.destroy
 
     respond_to do |format|

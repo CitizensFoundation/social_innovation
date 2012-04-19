@@ -1,5 +1,5 @@
 - if Instance.last.layout=="better_iceland"
-  - cache(["portlets_issues_cloud", locale, Partner.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
+  - cache(["portlets_issues_cloud", locale, SubInstance.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
     #topics{:align => "center"}
       - for tag in Tag.find(:all, :conditions => ["priorities_count > ?", 12], :order => "name asc", :include => :top_priority)
         - next if ["Law proposals", "Parliamentary Resolution Proposals"].include?(tag.name)
@@ -15,7 +15,7 @@
         >#{h(tr(tag.title, "model/category"))}
         \&middot;
 - else
-  - cache(["portlets_issues_cloud", locale, Partner.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
+  - cache(["portlets_issues_cloud", locale, SubInstance.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
     #topics{:align => "center"}
       - for tag in Tag.find(:all, :conditions => ["priorities_count > ?", 2], :order => "name asc", :include => :top_priority)
         - next if ["Law proposals", "Parliamentary Resolution Proposals"].include?(tag.name)

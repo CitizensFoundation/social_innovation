@@ -1,5 +1,5 @@
 - if Instance.last.layout=="better_iceland"
-  - cache(["portlets_issues_list", locale, Partner.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
+  - cache(["portlets_issues_list", locale, SubInstance.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
     - for issue in Tag.most_priorities.item_limit(portlet.portlet_template.item_limit)
       .priority_listing
         %span.priority_name
@@ -19,7 +19,7 @@
             %a{:href => "/issues/#{issue.slug}/discussions"}= tr("{count} discussions", "view/portal/portlets", :count => issue.discussions_count)
     = link_to "#{tr("More", "view/portal/portlets")}...", "/issues/"
 - else
-  - cache(["portlets_issues_list", locale, Partner.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
+  - cache(["portlets_issues_list", locale, SubInstance.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
     - for issue in Tag.most_priorities.item_limit(portlet.portlet_template.item_limit)
       .priority_listing
         %span.priority_name

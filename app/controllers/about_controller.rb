@@ -24,7 +24,7 @@ class AboutController < ApplicationController
       @page_title = tr("SubInstances", "controller/about")
       render :action => 'sub_instances'
     elsif params[:id] == 'sub_instance_rules'
-      @page_title = tr("Partner rules", "controller/about")
+      @page_title = tr("SubInstance rules", "controller/about")
       render :action => 'sub_instance_rules'
     elsif params[:id] == 'choose_sub_instance'
       @page_title = tr("Choose a sub_instance", "controller/about")

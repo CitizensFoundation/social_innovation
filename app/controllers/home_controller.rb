@@ -13,9 +13,9 @@ class HomeController < ApplicationController
   
   def index
     @page_title = tr("{instance_name} Welcome","shared/language_selection_master",:instance_name => tr(current_instance.name,"Name from database"))
-    @world_priorities = Priority.where(:sub_instance_id=>Partner.find_by_short_name("world").id).published.top_rank.limit(3)
-    @eu_eea_priorities = Priority.where(:sub_instance_id=>Partner.find_by_short_name("eu").id).published.top_rank.limit(3)
-    @country_sub_instance = Partner.where(:iso_country_id=>@iso_country.id).first if @iso_country
+    @world_priorities = Priority.where(:sub_instance_id=>SubInstance.find_by_short_name("world").id).published.top_rank.limit(3)
+    @eu_eea_priorities = Priority.where(:sub_instance_id=>SubInstance.find_by_short_name("eu").id).published.top_rank.limit(3)
+    @country_sub_instance = SubInstance.where(:iso_country_id=>@iso_country.id).first if @iso_country
     if @country_sub_instance
       @country_sub_instance_priorities = Priority.where(:sub_instance_id=>@country_sub_instance.id).published.top_rank.limit(3)
     else

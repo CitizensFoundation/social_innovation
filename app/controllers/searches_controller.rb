@@ -6,13 +6,13 @@ class SearchesController < ApplicationController
     if params[:q]
       @query = params[:q]
       @page_title = tr("Search for '{query}'", "controller/searches", :instance_name => tr(current_instance.name,"Name from database"), :query => @query)
-      @facets = ThinkingSphinx.facets @query, :all_facets => true, :with => {:sub_instance_id => Partner.current ? Partner.current.id : 0}, :star => true, :page => params[:page]
+      @facets = ThinkingSphinx.facets @query, :all_facets => true, :with => {:sub_instance_id => SubInstance.current ? SubInstance.current.id : 0}, :star => true, :page => params[:page]
       if params[:category_name]
         @search_results = @facets.for(:category_name=>params[:category_name])
       elsif params[:class]
         @search_results = @facets.for(:class=>params[:class].to_s)
       else
-        @search_results = ThinkingSphinx.search @query, :with => {:sub_instance_id => Partner.current ? Partner.current.id : 0}, :star => true, :retry_stale => true, :page => params[:page]
+        @search_results = ThinkingSphinx.search @query, :with => {:sub_instance_id => SubInstance.current ? SubInstance.current.id : 0}, :star => true, :retry_stale => true, :page => params[:page]
       end
     end
     respond_to do |format|

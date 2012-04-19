@@ -73,7 +73,7 @@ namespace :utils do
   desc "Create sub_instances from iso countries"
   task :create_sub_instances_from_iso => :environment do
     Tr8n::IsoCountry.all.each do |country|
-      p=Partner.new
+      p=SubInstance.new
       p.name = country.country_english_name
       p.geoblocking_enabled = true
       p.geoblocking_open_countries = country.code.downcase
@@ -84,7 +84,7 @@ namespace :utils do
       end
       puts p.short_name
       p.iso_country_id = country.id
-      p.save unless Partner.find_by_iso_country_id(country.id)
+      p.save unless SubInstance.find_by_iso_country_id(country.id)
     end
   end
 
@@ -215,7 +215,7 @@ namespace :utils do
       current_user.save(:validate => false)
     end
     f = File.open(ENV['csv_import_file'])
-    sub_instance = Partner.find_by_short_name(ENV['sub_instance_short_name'])
+    sub_instance = SubInstance.find_by_short_name(ENV['sub_instance_short_name'])
     CSV.parse(f.read) do |row|
       puts row.inspect
       create_priority_from_row(row, current_user, sub_instance)

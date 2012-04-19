@@ -1,4 +1,4 @@
-- cache(["portlets_news_activities",locale,Partner.current_id,@inline_translations_enabled], :expires_in => 1.minutes) do
+- cache(["portlets_news_activities",locale,SubInstance.current_id,@inline_translations_enabled], :expires_in => 1.minutes) do
   = render(:partial=>"portal/portlets/activity_list", :locals=>{:portlet=>portlet,                                            |
     :activities=>Activity.active.filtered.for_all_users.by_recently_created.item_limit(portlet.portlet_template.item_limit)}) |
   = link_to "#{tr("More", "view/portal/portlets")}...", "/news/activities"

@@ -11,7 +11,7 @@ class IssuesController < ApplicationController
     @sub_instance_tags = []
     if current_sub_instance.required_tags
       sub_instance_tags = {}
-      Partner.all.each do |sub_instance|
+      SubInstance.all.each do |sub_instance|
         sub_instance.required_tags.split(',').each do |tag|
           sub_instance_tags[tag] = true
         end

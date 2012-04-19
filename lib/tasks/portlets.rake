@@ -228,7 +228,7 @@ namespace :portlets do
 
   desc "initialize island.is"
   task(:initialize_island_is => :environment) do
-    sub_instance = Partner.find_by_short_name("island")
+    sub_instance = SubInstance.find_by_short_name("island")
     unless PortletTemplateCategory.find_by_name("island.is")
       pc=PortletTemplateCategory.new
       pc.name="island.is"
