@@ -1,0 +1,20 @@
+- if point.flags_count > 0 and point.status == 'published' and logged_in? and current_user.is_admin?
+  %div{:id => "point_flag_#{point.id}"}
+    .warning_inline_point{:id => "point_flag_#{point.id.to_s}"}
+      %span.red>= tr("{count} flags", "view/points/_flagged", :count => point.flags_count)
+      \. #{tr("Issue {user_name} warning {warnings_count}", "view/points/_flagged", :user_name => point.last_author.name, :warnings_count => point.user.warnings_count)}
+      %br/
+      %span.tag_button
+        = link_to tr("YES", "view/points/_flagged"), "/points/abusive/#{point.id}",                 |
+          :remote=>true,                                                                            |
+          'data-disable-with' => escape_t(tr("Issuing warning","Ajax")),                            |
+          'data-loader-name' => "horizontal_small",                                                 |
+          :class => "quality_unhelpful_link", :title => tr("Issue warning", "view/points/_flagged") |
+      %span.or= tr("OR", "view/points/_flagged")
+      %span.tag_button
+        = link_to tr("NO", "view/points/_flagged"), "/points/not_abusive/#{point.id}",           |
+          :remote=>true,                                                                         |
+          'data-disable-with' => escape_t(tr("Clearing warning","Ajax")),                        |
+          'data-loader-name' => "horizontal_small",                                              |
+          :class => "quality_unhelpful_link", :title => tr("Clear flag", "view/points/_flagged") |
+  .clear

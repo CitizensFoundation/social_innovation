@@ -1,0 +1,11 @@
+  /
+    <form method="get" action="http://www.google.com/search">
+    <input type="text" class="searchbox"  name="q" maxlength="255" value="">
+    <input type="submit" class="button" value="Leita">
+    <input type="radio"  name="sitesearch" class="radio" value="betrireykjavik.is">
+    <input type="radio"  name="sitesearch" class="radio" value="betrireykjavik.is" checked>
+    </form>
+  .search_box
+    - form_tag(searches_path, :method => 'get') do
+      = text_field_tag "q", params[:q], :id => "q_top", :value=>""
+      %input.button{:type => "submit", :value => "Leita"}/

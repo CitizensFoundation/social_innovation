@@ -1,0 +1,22 @@
+- if not ['inactive', 'buried'].include?(priority.status)
+  %table{:width => "100%"}
+    %tr
+      <td align="left" #{"colspan=\"2\"".html_safe unless defined?(noaction) and noaction == true}>
+  .priority_actions
+    %ul
+      %li.button_small_li
+        = render :partial => "priorities/button_small", :locals => {:priority => priority, :endorsement => endorsement, :region => "priority_inline"}
+        .clear
+        #test2
+      %li.list_left
+        .move_test
+      %li.list_report
+      %li.list_right
+        .fblike
+          %fb:like{:action => tr("like", "facebook"), :colorscheme => "light", :href => priority.show_url, :layout => "button_count", :ref => "priority", "show-faces" => "false", :width => "120"}
+  %tr
+    %td
+      .clear
+      %div
+        = render :partial => "priorities/endorsement_count", :locals => {:priority => priority} unless defined?(noaction) and noaction == true
+      - unless defined?(noaction) and noaction == true

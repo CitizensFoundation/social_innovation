@@ -1,0 +1,2 @@
+%img.icon{:border => "0", :height => "16", :src => "/assets/icons/accept.png", :width => "16"}/
+= raw tr("Now endorsing {new_priority_name} because it acquired the opposers of {priority_name}", "view/activities/_activityendorsementflippedimplicit_nouser", :priority_name => link_to(activity.priority.name, activity.priority), :new_priority_name => link_to(activity.change.new_priority.name, activity.change.new_priority))

@@ -1,0 +1,36 @@
+- if endorsement and endorsement.status == 'active'
+  - if endorsement.is_up?
+    .green_button.green_button_priority{:id => "priority_remove_endorse_#{priority.id.to_s}"}
+      %span.text= tr("YOU ENDORSED", "view/priorities/_button_subs")
+      %span.big_x
+        = link_to "X", endorsement_path(endorsement, :region => "priority_subs"),                                             |
+          :method => :delete,                                                                                                 |
+          :remote=>true,                                                                                                      |
+          'data-disable-with' => "",                                                                                          |
+          'data-loader-name' => "circle",                                                                                     |
+          :class => "priority_remove_link", :title => tr("Remove from my list of priorities", "view/priorities/_button_subs") |
+  - else
+    .red_button.red_button_priority{:id => "priority_remove_endorse_#{priority.id.to_s}"}
+      = tr("YOU OPPOSED", "view/priorities/_button_subs")
+      %span.big_x
+        = link_to "X", endorsement_path(endorsement, :region => "priority_subs"), :method => :delete,                         |
+          :remote=>true,                                                                                                      |
+          'data-disable-with' => "",                                                                                          |
+          'data-loader-name' => "circle",                                                                                     |
+          :class => "priority_remove_link", :title => tr("Remove from my list of priorities", "view/priorities/_button_subs") |
+- else
+  .yellow_button.endorse{:id => "priority_add_endorse_#{priority.id.to_s}"}
+    = link_to tr("Endorse", "view/priorities/_button_subs"), endorse_priority_path(priority, :referral_id => (@user || nil), :region => "priority_subs", :value => 1), |
+      :method => :post,                                                                                                                                                |
+      :remote=>true,                                                                                                                                                   |
+      'data-disable-with' => escape_t(tr("Endorsing","Ajax")),                                                                                                         |
+      'data-loader-name' => "horizontal_small",                                                                                                                        |
+      :class => "priority_add_link", :title => tr("I support this, add it to my priority list", "view/priorities/_button_subs")                                        |
+  .endorse_or= tr("OR", "view/priorities/_button_subs")
+  .yellow_button.oppose{:id => "priority_add_oppose_#{priority.id.to_s}"}
+    = link_to tr("Oppose", "view/priorities/_button_subs"), endorse_priority_path(priority, :referral_id => (@user || nil), :region => "priority_subs", :value => -1), |
+      :method => :post,                                                                                                                                                |
+      :remote=>true,                                                                                                                                                   |
+      'data-disable-with' => escape_t(tr("Opposing","Ajax")),                                                                                                          |
+      'data-loader-name' => "horizontal_small",                                                                                                                        |
+      :class => "priority_add_link", :title => tr("I oppose this, and want to add my opposition to my priority list.", "view/priorities/_button_subs")                 |

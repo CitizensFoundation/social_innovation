@@ -1,0 +1,43 @@
+#login
+  - if current_instance.has_facebook_enabled?
+    %div{:style => "margin-bottom: 10px; margin-top: 7px;"}
+      = fb_login_and_redirect "/", :text=>tr("Sign in with Facebook","views/shared/_login"), :size=>"small", :title=>tr("Sign in with Facebook","views/shared/_login"), :scope=>"email"
+  %p
+    - if current_instance.has_twitter_enabled?
+      %div{:style => "margin-bottom: 5px;"}
+        = link_to image_tag("twitter_signin.png", :border => 0, :title=>tr("Sign in with Twitter","_login")), :controller => "twitter", :action => "create"
+    - if current_instance.google_login_enabled
+      %div{:style => "margin-bottom: 5px;margin-top: 5px;"}
+        = link_to image_tag("logos/Gmail_logo.png", :border => 0, :title=>tr("Sign in with Gmail","_login")), :controller => "open_ids", :action => "new"
+        %br/
+    - if @geoblocked
+      %a#login_link{:href => "#"}>= raw tr("Sign in", "view/shared/_login")
+      \.
+    - else
+      = raw tr("<b><a href='{signup_url}'>Sign up</a></b> or <a href='#' id='login_link'>Sign in</a>.", "view/shared/_login", :signup_url => signup_url, :instance_name => tr(current_instance.name,"Name from database"))
+  %p
+  #login_form
+    = form_for :session, :remote=>true,                       |
+      'data-disable-with' =>  escape_t(tr("Sending","Ajax")), |
+      :url => session_path(:region => "inline") do |f|        |
+      %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+        %tr
+          %td.email
+            %br/
+            = tr("Email address", "view/shared/_login")
+            %br/
+            %input#login_email{:name => "email", :size => "15", :type => "text"}/
+        %tr
+          %td.password
+            = tr("Password", "view/shared/_login")
+            %br/
+            %input#login_password{:name => "password", :size => "8", :type => "password"}/
+        %tr
+          %td.submit
+            = submit_tag tr("Sign in", "view/shared/_login"), :class => "submit_button"
+      #login_message
+      = link_to tr("I forgot my password", "view/shared/_login"), new_password_path
+  - if current_instance.has_facebook_enabled? or current_instance.has_twitter_enabled? or current_instance.google_login_enabled
+    %p
+  - if @geoblocked
+    = render :partial=>"shared/geoblocking_info"

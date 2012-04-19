@@ -1,0 +1,8 @@
+#user_name
+  %table{:border => "0", :cellpading => "0", :cellspacing => "0"}
+    %tr
+      %td{:style => "padding-left: 5px;", :valign => "top"}
+        .user_name
+          = link_to tr("Your Priorities", "view/shared/_your_priorities", :user_name => current_user.name), yours_priorities_url
+#your_priorities_container
+  = render :partial => "priorities/yours"

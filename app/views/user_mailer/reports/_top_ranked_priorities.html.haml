@@ -1,0 +1,20 @@
+- if not @important.empty?
+  %h4= tr("These are your top {priorities_count} priorities, if you really feel strongly about them then you can encourage others to support them.", |
+      "email", priorities_count: @important.count)                                                                                                  |
+  - @important.each do |priority|
+    %p
+      %small
+        %b= link_to priority.name, priority.show_url
+        %br/
+        = link_to (priority.up_endorsements_count.to_s + ' ' + tr("endorsed", "view/priorities/_endorsement_count")).html_safe, priority.show_endorsers_url
+        - if priority.down_endorsements_count > 0
+          \&middot; #{link_to (priority.down_endorsements_count.to_s + ' ' + tr("opposed", "view/priorities/_endorsement_count")).html_safe, priority.show_opposers_url}
+        - if priority.points_count > 0
+          \&middot; #{link_to tr("{count} points", "view/priorities/_endorsement_count", :count => priority.points_count).downcase, priority.show_top_points_url}
+        - else
+          \&middot; #{link_to tr("New point", "view/priorities/_endorsement_count").downcase, new_priority_point_path(priority)+"?support=1" , :title => tr("Can you make a compelling point for or against this priority in less than 500 characters?", "view/priorities/_endorsement_count")}
+        - if priority.discussions_count > 0
+          \&middot; #{link_to tr("{count} discussions", "view/priorities/_endorsement_count", :count => priority.discussions_count), priority.show_discussion_url}
+        - if priority.priority_processes.count > 0
+          \&middot; #{priority.latest_priority_process_at}
+  %br/

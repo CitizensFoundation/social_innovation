@@ -1,0 +1,25 @@
+%table.show-with-processes-table.single3
+  %tr
+    %td.add_note{:valign => "top"}
+      - if @priority.points_count == 0
+        = tr("Please tell us why we should endorse or oppose this priority by <a href='{new_point_url}'>adding a point</a>. You can even suggest a different priority instead.", "view/priorities/show_with_processes", :new_point_url => new_priority_point_path(@priority))
+      - else
+        .endorse-wrap
+          .header-add
+            = render partial: "points_header", locals: { priority: @priority, support: true }
+          .sub_header
+            = tr("Best points for endorse", "view/priorities/show_with_processes")
+            %span.separator |
+            = link_to(tr("All best points", "view/priorities/show_with_processes"), top_points_priority_url(@priority))
+          #pro_top
+            = render :partial => "points/long_list", :locals => {:id => "pro_top", :point=>@priority.points.published.by_helpfulness.up_value.first }
+        .oppose-wrap
+          .header-add
+            = render partial: "points_header", locals: { priority: @priority, support: false }
+          .sub_header
+            = tr("Best points for oppose", "view/priorities/show_with_processes")
+            %span.separator |
+            = link_to(tr("All best points", "view/priorities/show_with_processes"), top_points_priority_url(@priority))
+          #con_top
+            = render :partial => "points/long_list", :locals => {:id => "con_top", :point => @priority.points.published.by_helpfulness.down_value.first |
+              }                                                                                                                                         |

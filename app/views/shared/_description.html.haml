@@ -1,0 +1,14 @@
+- if params[:controller] == 'priorities' and @priority
+  %meta{:content => "#{tr("{prompt} {priority_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :priority_name => @priority.name)} ", :name => "description"}/
+  %meta{:content => tr("{priority_name}", "view/shared/_description", :priority_name => @priority.name), :itemprop => "name"}/
+  %meta{:content => tr("{prompt} {priority_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :priority_name => @priority.name), :itemprop => "description"}/
+  %meta{:content => "http://#{request.host_with_port+current_instance.logo.url}", :itemprop => "image"}/
+- elsif params[:controller] == 'users' and @user and @user.has_top_priority?
+  %meta{:content => tr("{user_name} top priority for: {priority_name}", "view/shared/_description", :user_name => @user.name, :priority_name => @user.top_endorsement.priority.name), :name => "description"}/
+- else
+  %meta{:content => tr(current_instance.description,"Description from database"), :name => "description"}/
+  %meta{:content => tr(current_instance.name,"Name from database"), :itemprop => "name"}/
+  %meta{:content => tr(current_instance.description,"Description from database"), :itemprop => "description"}/
+  %meta{:content => "http://#{request.host_with_port+current_instance.logo.url}", :itemprop => "image"}/
+- if current_instance.has_logo? and not controller_name=="process_speech_videos" and not controller_name=="process_documents"
+  %link{:href => current_instance.logo.url, :rel => "image_src"}/

@@ -1,0 +1,20 @@
+= stylesheet_link_tag "fg.menu.css"
+= stylesheet_link_tag "portal"
+= javascript_include_tag "fg.menu.js"
+= javascript_include_tag "portal.js"
+- if current_user and current_user.is_admin?
+  :javascript
+    	    jQuery(function(){
+                setup_portal_menu(#{@portlet_container ? @portlet_container.id : -1},'#{tr("Choose an option", "view/portal/index")}','#{tr("All", "view/portal/index")}');
+    			setup_portal_dialogues('#{tr("Delete portlet", "view/portal/index")}','#{tr("Cancel", "view/portal/index")}');
+    			setup_columns();
+    		});
+    	
+#main-portal-div
+  = render(:partial => "portal")
+  .clear
+- if current_user and current_user.is_admin?
+  #portal-menu-div
+    = render(:partial=>'portal/menu')
+  #main-dialogues-div
+    = render(:partial=>'portal/dialogues')

@@ -1,0 +1,33 @@
+- if Instance.last.layout=="better_iceland"
+  - cache(["portlets_issues_cloud", locale, Partner.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
+    #topics{:align => "center"}
+      - for tag in Tag.find(:all, :conditions => ["priorities_count > ?", 12], :order => "name asc", :include => :top_priority)
+        - next if ["Law proposals", "Parliamentary Resolution Proposals"].include?(tag.name)
+        <a href="/issues/#{tag.slug}" style="font-size:
+        - if tag.priorities_count > 4
+          = 15+((tag.priorities_count.to_f/Priority.count.to_f)*20).to_i
+          px;
+        - else
+          11px; font-weight:normal;
+        padding-left: 3px; padding-right: 3px; line-height: 1.35em;"
+        - if tag.has_top_priority?
+          title="#{"#{tr("Top priority: ")} #{tag.top_priority.name}"}"
+        >#{h(tr(tag.title, "model/category"))}
+        \&middot;
+- else
+  - cache(["portlets_issues_cloud", locale, Partner.current_id, @inline_translations_enabled], :expires_in => 5.minutes) do
+    #topics{:align => "center"}
+      - for tag in Tag.find(:all, :conditions => ["priorities_count > ?", 2], :order => "name asc", :include => :top_priority)
+        - next if ["Law proposals", "Parliamentary Resolution Proposals"].include?(tag.name)
+        <a href="/issues/#{tag.slug}" style="font-size:
+        - if tag.priorities_count > 4
+          = 15+((tag.priorities_count.to_f/Priority.count.to_f)*20).to_i
+          px;
+        - else
+          11px; font-weight:normal;
+        padding-left: 3px; padding-right: 3px; line-height: 1.35em;"
+        - if tag.has_top_priority?
+          title="#{"#{tr("Top priority: ")} #{tag.top_priority.name}"}"
+        >#{h(tr(tag.title, "model/category"))}
+        \&middot;
+  = link_to "#{tr("More", "view/portal/portlets")}...", "/issues"

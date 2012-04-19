@@ -1,0 +1,4 @@
+- cache(["portlets_news_changes",locale,Partner.current_id,@inline_translations_enabled], :expires_in => 1.minutes) do
+  = render(:partial=>"portal/portlets/change_list", :locals=>{:portlet=>portlet,                     |
+    :changes=>Change.suggested.by_recently_created.item_limit(portlet.portlet_template.item_limit)}) |
+  = link_to "#{tr("More", "view/portal/portlets")}...", "/news/changes"

@@ -1,0 +1,15 @@
+:javascript
+  $(function(){
+      
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+      po.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  });
+- if params[:controller] == "portal"
+  .socmedia_buttons
+    %ul
+      %li.list_left
+        .g-plusone{"data-href" => "http://#{request.host_with_port}", "data-size" => "medium"}
+      %li.list_left
+        %span.point_fblike
+          %fb:like{:action => tr("like","facebook"), :colorscheme => "light", :href => "http://#{request.host_with_port}", :layout => "button_count", :ref => "priority", "show-faces" => "false", :width => "120"}

@@ -1,0 +1,15 @@
+- unless session[:have_shown_welcome] or Instance.current.layout=="better_reykjavik" or Instance.current.layout=="better_iceland"
+  #encouragements= render :partial => "ads/welcome"
+- else
+  - if logged_in?
+    - ad = current_user.pick_ad(current_priority_ids)
+    - if ad
+      #encouragements
+        #notification_show
+          = render :partial => "ads/show", :locals => {:ad => ad }
+  - else
+    - ad = Ad.active.filtered.by_random.first
+    - if ad
+      #encouragements
+        #notification_show
+          = render :partial => "ads/show", :locals => {:ad => ad }

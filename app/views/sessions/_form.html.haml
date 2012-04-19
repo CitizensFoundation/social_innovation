@@ -1,0 +1,12 @@
+= form_for :session, :url => session_path, :remote => true do |f|
+  .field
+    .field_label
+      = tr("Email address", "view/sessions/_form")
+    .field_box.scale_bottom
+      = text_field_tag :email
+  .field
+    .field_label
+      = tr("Password", "view/sessions/_form")
+    .field_box.scale_bottom
+      = password_field_tag :password
+  = submit_tag tr("Sign in", "view/sessions/_form"), :class => "submit_button"

@@ -1,0 +1,12 @@
+- if not @important_to_followers.empty?
+  %h4 Your followers' priorities, are you sure you don't have an opinion on these?
+  - @important_to_followers.each do |important|
+    %p
+      = tr("{followers_count} of your followers have taken a position on the popular priority {priority_name}, but you haven't done so.", "email", |
+        priority_name: link_to(important[:priority].name, important[:priority].show_url),                                                          |
+        followers_count: important[:follower_endorsements])                                                                                        |
+      -#
+      = tr("It is currently in {position}. place in the {category} category.", "email", |
+        position: important[:position],                                                 |
+        category: link_to(important[:category].name, important[:category].show_url))    |
+  %br/

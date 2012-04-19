@@ -1,0 +1,3 @@
+%li#endorser_link.tab2
+  %span.tab_header
+    = link_to tr("{count} endorsers", "view/priorities/_endorser_link", :count => @priority.up_endorsements_count), endorsers_priority_url(@priority)

@@ -1,0 +1,74 @@
+:css
+  .top_level_priority_listing {width: 560px !important;}
+  .priority_tags {padding-right: 35px !important;}
+  .plus_sign {display: none !important;}
+%table{:width => "960px"}
+  %tr
+    %td{:align => "center"}
+      = image_tag "logos/YourPriorities_large.png"
+      %br/
+  %tr
+    %td{:align => "center"}
+      = render :partial=>"ads/welcome", :locals=>{:show_always=>true}
+      %br/
+      = tr("You can select your country or participate in a discussion about issues that affect the World as a whole.","welcome")
+      %br/
+      %br/
+  %tr
+    %td{:align => "center"}
+      - sub_instance=Partner.find_by_iso_country_id(@iso_country.id)
+      = link_to sub_instance.show_url do
+        = image_tag @iso_country.large_flag_image, :border=>0
+        %br/
+        %h2
+          = tr("Top priorities for","welcome")
+          = tr(@iso_country.country_english_name,"welcome")
+      - if @country_sub_instance_priorities.any?
+        = render :partial=>"priorities/top_level_listing", :locals=>{:priorities=>@country_sub_instance_priorities, :endorsements=>@endorsements}
+      - elsif @iso_country
+        - if sub_instance
+          = tr("No priority has been created for your country - be the first by clicking here: ","welcome")
+          = link_to sub_instance.show_url, sub_instance.show_url
+  %tr
+    %td{:align => "center"}
+      %br/
+      %br/
+      - sub_instance=Partner.find_by_short_name("world")
+      = link_to sub_instance.show_url do
+        = image_tag "tr8n/flags/64/_united-nations.png", :border=>0
+        %br/
+        %h2= tr("The Worlds Top Priorities","welcome")
+      - if @world_priorities.any?
+        = render :partial=>"priorities/top_level_listing", :locals=>{:priorities=>@world_priorities, :endorsements=>@endorsements}
+      - else
+        - if sub_instance
+          = tr("No priority has been created for the World - be the first by clicking here: ","welcome")
+          = link_to sub_instance.show_url, sub_instance.show_url
+  - if country_in_eu_or_eea?(@country_code)
+    %tr
+      %td{:align => "center"}
+        %br/
+        %br/
+        - sub_instance=Partner.find_by_short_name("eu")
+        = link_to sub_instance.show_url do
+          = image_tag "tr8n/flags/64/_european-union.png", :border=>0
+          %br/
+          %h2= tr("European Union and EEA Top Priorities","welcome")
+        - if @eu_eea_priorities.any?
+          = render :partial=>"priorities/top_level_listing", :locals=>{:priorities=>@eu_eea_priorities, :endorsements=>@endorsements}
+        - else
+          - if sub_instance
+            = tr("No priority has been created for the European Union and EEA - be the first by clicking here: ","welcome")
+            = link_to sub_instance.show_url, sub_instance.show_url
+  %tr
+    %td{:align => "center"}
+      %br/
+      %br/
+      = render :partial => "shared/language_selection_master"
+  %tr
+    %td{:align => "center"}
+      %h2= tr("Explore other countries priorities","welcome")
+      = render :partial => "home/country_options"
+      %br/
+      %br/
+      %p

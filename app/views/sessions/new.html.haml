@@ -1,0 +1,18 @@
+%table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+  %tr
+    %td{:valign => "top"}
+      %div{:style => "margin-bottom: 10px; border-bottom: dashed 1px #CCC; font-size: 1.3em; padding-bottom:5px;"}
+        = tr("<b>First time?</b> Create an account:", "view/sessions/new")
+      = render :partial => "users/form"
+    %td{:style => "padding-left: 100px; padding-right: 20px;", :valign => "top"}
+      %div{:style => "margin-bottom: 10px; border-bottom: dashed 1px #CCC; font-size: 1.3em; padding-bottom:5px;"}
+        = tr("<b>Already have an account?</b>", "view/sessions/new")
+      = render :partial => "sessions/form"
+      %div{:style => "margin-top: 10px;"}
+        = link_to tr("I forgot my password", "view/sessions/new"), new_password_path
+      - if current_instance.has_facebook_enabled? or current_instance.has_twitter_enabled?
+        %p= tr("or <b>sign in instantly</b> with:", "view/sessions/new")
+        - if current_instance.has_facebook_enabled?
+          = fb_login_and_redirect "/", :text=>tr("Sign in with Facebook","views/shared/_login"), :size=>"small", :title=>tr("Sign in with Facebook","views/shared/_login"), :scope=>"email"
+        - if current_instance.has_twitter_enabled?
+          = link_to image_tag("twitter_signin.png", :border => 0), :controller => "twitter", :action => "create"

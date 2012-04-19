@@ -1,0 +1,42 @@
+= render :partial => "points/header"
+= render :partial => "points/nav"
+%table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+  %tr
+    %td{:valign => "top"}
+      %p
+        = tr("<p>Aðstoðaðu við að gera þessar umræður betri, skilvirkari eða bættu við upplýsingum:</p>", "view/revisions/new")
+      %p
+        = form_for :revision, :url => point_revisions_path(@point)  do |f|
+          = f.error_messages :header_message => tr("Please review", "view/revisions/new"), :message => tr("We need a change to your point", "view/revisions/new")
+          %p
+            = tr("Summarize your point in <span class='small'>60 characters</span>", "view/revisions/new")
+            %br/
+            = f.text_field :name, :size => 50, :maxlength => 60
+          %p
+            = tr("Is this point {support_radio} in support or {oppose_radio} in opposition to {priority_name}?", "view/revisions/new", :priority_name => link_to(@priority.name, @priority), :support_radio => f.radio_button(:value, 1), :oppose_radio => f.radio_button(:value, -1), :neutral_radio => f.radio_button(:value, 0))
+          %p
+            = tr("Explain your point.", "view/revisions/new")
+            %span#revisionContentDown
+            = tr("characters left", "view/revisions/new")
+            = f.text_area :content, :id => 'revisionContent', :button => 'submit', :rows => 5, :cols => 60, :maxLength => 500
+          %p
+            = tr("Include a website source link", "view/revisions/new")
+            %br/
+            = f.text_field :website, :size => 50
+          %p
+            = tr("Link this to another priority <span class='small'>Just start typing the name</span>", "view/revisions/new")
+            = f.text_field :other_priority_name, :size => 50, :autocomplete => "off"
+          %p= tr("Linking to another priority is optional. If your point is in opposition, you can link to a better priority. OR, if your point is supportive or neutral, you can highlight a more specific or related priority.", "view/revisions/new")
+          %br/
+          %p
+            = tr("Why did you make this change?", "view/revisions/new")
+            %br/
+            = fields_for :comment do |c|
+              = c.text_field :content, :size => 50
+          %br/
+          %p
+            = f.submit tr("Save point", "view/revisions/new"), :id => "submit", :class => "yellow_button"
+    %td{:style => "padding-left: 20px;", :valign => "top", :width => "150"}
+      = link_to tr("Cancel this revision", "view/revisions/new"), @point
+      %p
+        = render :partial => "documents/authors", :locals => {:users => @point.authors }

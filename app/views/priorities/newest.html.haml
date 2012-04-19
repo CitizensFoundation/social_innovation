@@ -1,0 +1,12 @@
+%div{:style => "width:auto;"}
+  %ul
+    %li.list_left
+      #hp_intro= @page_title
+    %li.list_right
+      = rss_url(@rss_url)
+  %ul
+.clear
+.white_line
+- if @priorities.any?
+  = render :partial=>"priorities/top_level_listing", :locals=>{:priorities=>@priorities, :endorsements=>@endorsements, :timeago => true}
+  = will_paginate @priorities

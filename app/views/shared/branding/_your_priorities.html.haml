@@ -1,0 +1,18 @@
+#branding{:style => "height: 85px"}
+  %table
+    %tr
+      %td
+        #main_logo
+          = link_to :controller=>"portal", :host=>"www.yrpri.org" do
+            = image_tag "/assets/logos/header.png"
+      %td
+        #branding_text
+          #branding_text_header
+            = tr("{instance_name}","views/shared/_branding", :instance_name => tr(current_instance.name,"Name from database"))
+          #branding_text_sub
+            = request.host
+      - if false and current_sub_instance
+        %td
+          #sub_instance_logo
+            = render :partial => "sub_instances/logo"
+      %td

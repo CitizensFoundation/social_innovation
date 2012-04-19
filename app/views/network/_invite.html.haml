@@ -1,0 +1,22 @@
+= tr("Select people from your Facebook, Gmail, Yahoo or Windows Live contacts to invite and recieve 5 social points for everybody that accepts the invitiation.", "view/user_contacts/index")
+%p
+  %br/
+  %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+    %tr
+      %td{:align => "middle", :valign => "middle"}
+        - if current_instance.has_facebook_enabled?
+          - if current_facebook_user_if_on_facebook
+            = link_to image_tag("facebook-logo.jpg", :border => 0), :controller => "facebook", :action => "invite", :html => {:class => "import_button"}
+          - else
+            %a{:href => "#", :onclick => "FB.login(function() { window.location='#{url_for(:only_path => false, :controller => 'facebook', :action => 'invite')}'; });"}= image_tag("facebook-logo.jpg", :border => 0)
+          %br/
+          %br/
+        = link_to image_tag("gmail-logo.jpg", :border => 0), :controller => "import", :action => "authenticate_google" unless current_instance.layout=="better_reykjavik"
+        %br/
+        %br/
+        - if current_instance.has_yahoo_enabled?
+          = link_to image_tag("yahoo-mail-logo.jpg", :border => 0), :controller => "import", :action => "yahoo"
+          %br/
+          %br/
+        - if current_instance.has_windows_enabled?
+          = link_to image_tag("windows-live-hotmail-logo.gif", :border => 0), :controller => "import", :action => "windows"

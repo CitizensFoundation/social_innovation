@@ -1,0 +1,95 @@
+#nav_sub
+  - if @priority
+    %div{:id => "nav_sub_<haml:silent> if @priority.new_record? </haml:silent><haml:block>1</haml:block><haml:silent> elsif @priority.is_finished? </haml:silent><haml:block>10</haml:block><haml:silent> elsif params[:controller] == 'ads' </haml:silent><haml:block>5</haml:block><haml:silent> elsif @endorsement </haml:silent><haml:block>1</haml:block><haml:silent> elsif @priority.is_top? </haml:silent><haml:block>4</haml:block><haml:silent> elsif @priority.is_official_endorsed? </haml:silent><haml:block>3</haml:block><haml:silent> elsif @priority.is_rising? </haml:silent><haml:block>7</haml:block><haml:silent> elsif @priority.is_new? </haml:silent><haml:block>9</haml:block><haml:silent> elsif @priority.is_controversial? </haml:silent><haml:block>6</haml:block><haml:silent> else </haml:silent><haml:block>8</haml:block>"}
+  - else
+    %div{:id => "nav_sub_<haml:silent> if ['yours','yours_finished','yours_created','yours_top','yours_lowest','yours_ads'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif logged_in? and ['network'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif not logged_in? and ['index'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['official','not_official','official_opposed'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['top','top_24hr','top_7days','top_30days'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['ads'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['controversial'].include?(params[:action]) </haml:silent><haml:block>6</haml:block><haml:silent> elsif ['rising'].include?(params[:action]) </haml:silent><haml:block>7</haml:block><haml:silent> elsif ['random'].include?(params[:action]) </haml:silent><haml:block>8</haml:block><haml:silent> elsif ['newest'].include?(params[:action]) </haml:silent><haml:block>9</haml:block><haml:silent> elsif ['finished'].include?(params[:action]) </haml:silent><haml:block>10</haml:block>"}
+  %ul#menu_sub
+    - if not logged_in? and current_instance.homepage == 'index'
+      %li.tab2
+        %span.tab_header
+          = link_to tr("Overview", "view/priorities/_browse_nav"), priorities_url
+    %li.tab9
+      %span.tab_header
+        = link_to tr("New", "view/priorities/_browse_nav"), newest_priorities_url
+    %li.tab4
+      %span.tab_header
+        = link_to tr("Top", "view/priorities/_browse_nav"), top_priorities_url
+    %li.tab8
+      %span.tab_header
+        = link_to tr("Random", "view/priorities/_browse_nav"), random_priorities_url
+    %li.tab10
+      %span.tab_header
+        = link_to tr("In progress", "view/priorities/_browse_nav"), finished_priorities_url
+    - if logged_in?
+      %li.tab2
+        %span.tab_header
+          = link_to tr("Your network", "view/priorities/_browse_nav"), network_priorities_url
+    %li.tab6
+      %span.tab_header
+        = link_to tr("Controversial", "view/priorities/_browse_nav"), controversial_priorities_url
+    %li.tab7
+      %span.tab_header
+        = link_to tr("Rising", "view/priorities/_browse_nav"), rising_priorities_url
+    %li.tab1
+      %span.tab_header
+        = link_to tr("Yours", "view/priorities/_browse_nav"), yours_priorities_url
+    %li.tab5
+      %span.tab_header
+        = link_to tr("Ads", "view/priorities/_browse_nav"), ads_priorities_url
+- if logged_in? and ['yours','yours_finished','yours_created','yours_top','yours_lowest','yours_ads'].include?(params[:action]) or ( params[:controller] != 'ads' and @endorsement) or (@priority and @priority.new_record?)
+  #nav_third
+    - if @priority and @endorsement
+      %div{:id => "nav_third_<haml:silent> if current_user.id == @priority.user_id </haml:silent><haml:block>2</haml:block><haml:silent> elsif @endorsement and @priority.is_finished? </haml:silent><haml:block>6</haml:block><haml:silent> elsif @endorsement </haml:silent><haml:block>1</haml:block>"}
+    - elsif @priority and @priority.new_record?
+      #nav_third_2
+    - else
+      %div{:id => "nav_third_<haml:silent> if ['yours'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['yours_created'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['yours_ads'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['yours_top'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['yours_lowest'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['yours_finished'].include?(params[:action]) </haml:silent><haml:block>6</haml:block>"}
+    %ul#menu_third
+      %li.tab1
+        %span.tab_header
+          = link_to tr("Active", "view/priorities/_browse_nav"), yours_priorities_url
+      %li.tab2
+        %span.tab_header
+          = link_to tr("Priorities you created", "view/priorities/_browse_nav"), yours_created_priorities_url
+      %li.tab3
+        %span.tab_header
+          = link_to tr("Ads you bought", "view/priorities/_browse_nav"), yours_ads_priorities_url
+      %li.tab4
+        %span.tab_header
+          = link_to tr("Top ranked", "view/priorities/_browse_nav"), yours_top_priorities_url
+      %li.tab5
+        %span.tab_header
+          = link_to tr("Lowest ranked", "view/priorities/_browse_nav"), yours_lowest_priorities_url
+      %li.tab6
+        %span.tab_header
+          = link_to tr("In progress", "view/priorities/_browse_nav"), yours_finished_priorities_url
+- elsif ['top','top_24hr','top_7days','top_30days'].include?(params[:action])
+  #nav_third
+    %div{:id => "nav_third_<haml:silent> if ['top'].include?(params[:action]) </haml:silent><haml:block>11</haml:block><haml:silent> elsif ['top_24hr'].include?(params[:action]) </haml:silent><haml:block>12</haml:block><haml:silent> elsif ['top_7days'].include?(params[:action]) </haml:silent><haml:block>13</haml:block><haml:silent> elsif ['top_30days'].include?(params[:action]) </haml:silent><haml:block>14</haml:block>"}
+      %ul#menu_third
+        %li.tab1
+          %span.tab_header
+            = link_to tr("All", "view/priorities/_browse_nav"), top_priorities_url
+        %li.tab2
+          %span.tab_header
+            = link_to tr("Active 24 hours", "view/priorities/_browse_nav"), top_24hr_priorities_url
+        %li.tab3
+          %span.tab_header
+            = link_to tr("Active 7 days", "view/priorities/_browse_nav"), top_7days_priorities_url
+        %li.tab4
+          %span.tab_header
+            = link_to tr("Active 30 days", "view/priorities/_browse_nav"), top_30days_priorities_url
+- if logged_in?
+  - if ['official','not_official','official_opposed'].include?(params[:action])
+    #nav_third
+      %div{:id => "nav_third_<haml:silent> if ['official'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['not_official'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['official_opposed'].include?(params[:action]) </haml:silent><haml:block>3</haml:block>"}
+        %ul#menu_third
+          %li.tab1
+            %span.tab_header
+              = link_to tr("Endorsed", "view/priorities/_browse_nav"), official_priorities_url
+          %li.tab2
+            %span.tab_header
+              = link_to tr("Not on the agenda", "view/priorities/_browse_nav"), not_official_priorities_url
+          %li.tab3
+            %span.tab_header
+              = link_to tr("Opposed", "view/priorities/_browse_nav"), official_opposed_priorities_url

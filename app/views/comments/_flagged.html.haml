@@ -1,0 +1,19 @@
+- if comment.flags_count > 0 and comment.status == 'published' and logged_in? and current_user.is_admin?
+  .warning_inline{:id => "comment_flag_#{comment.id.to_s}"}
+    %span.red>= tr("{count} flags", "view/comments/_flagged", :count => comment.flags_count)
+    \. #{tr("Issue {user_name} warning {warnings_count}", "view/comments/_flagged", :user_name => comment.user.login, :warnings_count => comment.user.warnings_count)}
+    %span.tag_button
+      = link_to tr("YES", "view/comments/_flagged"), abusive_activity_comment_url(comment.activity_id,comment), |
+        :method=>:post,                                                                                         |
+        :remote=>true,                                                                                          |
+        'data-disable-with' => escape_t(tr("Issuing warning","Ajax")),                                          |
+        'data-loader-name' => "horizontal_small",                                                               |
+        :class => "quality_unhelpful_link", :title => tr("Issue warning", "view/comments/_flagged")             |
+    %span.or= tr("OR", "view/comments/_flagged")
+    %span.tag_button
+      = link_to tr("NO", "view/comments/_flagged"),not_abusive_activity_comment_url(comment.activity_id,comment), |
+        :method=>:post,                                                                                           |
+        :remote=>true,                                                                                            |
+        'data-disable-with' => escape_t(tr("Clearing warning","Ajax")),                                           |
+        'data-loader-name' => "horizontal_small",                                                                 |
+        :class => "quality_unhelpful_link", :title => tr("Clear flag", "view/comments/_flagged")                  |

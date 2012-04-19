@@ -1,0 +1,4 @@
+- session[:have_shown_welcome] = true unless defined?(show_always)
+%div
+  %h2= tr("Welcome to {instance_name}","welcome", :instance_name => tr(current_instance.name,"Name from database"))
+  = tr("Welcome to this beta version of the {instance_name} website.","welcome", :instance_name => tr(current_instance.name,"Name from database"))

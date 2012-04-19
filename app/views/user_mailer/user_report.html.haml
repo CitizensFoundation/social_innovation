@@ -1,0 +1,11 @@
+= render :partial=>"user_mailer/header.html"
+%p
+  = tr("Hi","email")
+  = @user.first_name
+  ,
+= render :partial=>"user_mailer/reports/near_top_priorities_in_categories.html"
+= render :partial=>"user_mailer/reports/top_follower_priorities.html"
+= render :partial=>"user_mailer/reports/top_ranked_priorities.html"
+%hr/
+%p Better Reykjavík is a platform that enables citizens to have an effect on the administration of the City of Reykjavik. Let your voice be heard!
+= render :partial=>"user_mailer/footer.html"

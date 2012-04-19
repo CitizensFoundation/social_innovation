@@ -1,0 +1,9 @@
+= render :partial => "header"
+%p
+  - if @documents.empty?
+    = tr("No documents yet.", "view/users/documents")
+  - else
+    - for document in @documents
+      = render :partial => "documents/show_full", :locals => {:document => document, :revision => nil}
+    %p
+      = will_paginate(@documents)

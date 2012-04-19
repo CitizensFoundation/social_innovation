@@ -1,0 +1,48 @@
+%table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "150"}
+  %tr
+    %td.right_scale{:align => "center"}
+      %span.table_header= tr("Rank", "view/priorities/_rank_yday_week_month")
+    %td.left_scale
+      %span.table_header= tr("Yday", "view/priorities/_rank_yday_week_month")
+    %td.left_scale
+      %span.table_header= tr("Week", "view/priorities/_rank_yday_week_month")
+    %td.left_scale
+      %span.table_header= tr("Month", "view/priorities/_rank_yday_week_month")
+  %tr
+    - if priority.status == 'buried'
+      %td{:align => "center", :colspan => "4", :valign => "top"}
+        .position_nochange= tr("delisted", "view/priorities/_rank_yday_week_month")
+    - elsif priority.status == 'inactive'
+      %td{:align => "center", :colspan => "4", :valign => "top"}
+        .priority_inactive
+          = official_status(priority)
+    - else
+      %td.right_scale{:align => "right", :valign => "top", :width => "30"}
+        .priority_position{:title => tr("This is the {position} highest ranked priority across all {instance_name} members.", "view/priorities/_rank_yday_week_month", :position => priority.position, :instance_name => tr(current_instance.name,"Name from database"))}
+          - if priority.position != 0
+            - if priority.position > 999
+              %span.size08= priority.position
+            - else
+              = priority.position
+      - if priority.is_new?
+        %td{:align => "center", :colspan => "3", :valign => "top"}
+          .position_new= tr("new", "view/priorities/_rank_yday_week_month")
+      - elsif priority.position_7days_change == 0 and priority.position_30days_change == 0 and priority.position_24hr_change == 0
+        %td{:align => "center", :colspan => "3", :valign => "top"}
+          .position_nochange{:title => tr("This priority hasn't moved up or down in the rankings at all this month.", "view/priorities/_rank_yday_week_month")}= tr("UNCH", "view/priorities/_rank_yday_week_month").upcase
+      - else
+        %td.left_scale{:align => "center", :valign => "top"}
+          - if priority.position_24hr_change > 0
+            .position_up{:title => tr("This priority moved up {count} spots in the rankings in the last 24 hours", "view/priorities/_rank_yday_week_month", :count => priority.position_24hr_change.abs)}= priority.position_24hr_change.abs
+          - elsif priority.position_24hr_change < 0
+            .position_down{:title => tr("This priority moved down {count} spots in the rankings in the last 24 hours", "view/priorities/_rank_yday_week_month", :count => priority.position_24hr_change.abs)}= priority.position_24hr_change.abs
+        %td.left_scale{:align => "center", :valign => "top"}
+          - if priority.position_7days_change > 0
+            .position_up{:title => tr("This priority moved up {count} spots in the rankings this week", "view/priorities/_rank_yday_week_month", :count => priority.position_7days_change.abs)}= priority.position_7days_change.abs
+          - elsif priority.position_7days_change < 0
+            .position_down{:title => tr("This priority moved down {count} spots in the rankings this week", "view/priorities/_rank_yday_week_month", :count => priority.position_7days_change.abs)}= priority.position_7days_change.abs
+        %td.left_scale{:align => "center", :valign => "top"}
+          - if priority.position_30days_change > 0
+            .position_up{:title => tr("This priority moved up {count} spots in the rankings this month", "view/priorities/_rank_yday_week_month", :count => priority.position_30days_change.abs)}= priority.position_30days_change.abs
+          - elsif priority.position_30days_change < 0
+            .position_down{:title => tr("This priority moved down {count} spots in the rankings this month", "view/priorities/_rank_yday_week_month", :count => priority.position_30days_change.abs)}= priority.position_30days_change.abs

@@ -1,0 +1,19 @@
+#hp_intro= @page_title
+%p
+  = tr("Imagine each person's priorities are a portfolio of stocks like a mutual fund. This page is updated at midnight ET with the people whose priorities fell the most in the rankings in the last week.", "view/charts/losers_")
+  %p
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+      %tr
+        %td.left_scale
+          %span.table_header= tr("Change", "view/charts/losers_")
+        %td.pagination{:colspan => "2"}= will_paginate @users
+      - for user in @users
+        %tr
+          %td.top_scale10{:align => "right", :valign => "top"}
+            = agenda_change(user,'7days')
+          %td.user_pic_contributors{:valign => "top", :width => "26"}
+            = render :partial => "users/pic", :locals => {:user => user}
+          %td.user_name_chart{:valign => "top"}
+            = render :partial => "users/name_top", :locals => {:user => user }
+    %p
+      = will_paginate(@users)

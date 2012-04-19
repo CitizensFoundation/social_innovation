@@ -1,0 +1,19 @@
+- if not @near_top.empty?
+  - if Instance.current.layout == 'better_reykjavik'
+    %h4
+      Here are those of your priorities that are close to being processed into the City of Reykjavík administration.
+      You have until the end of this month to help them gain more support. The best way to do this is to share them on
+      Facebook and other social media and encourage your friends to support them!
+    - @near_top.each do |near_top|
+      %p
+        - if near_top[:endorsement] == 1
+          = tr("The priority {priority_name}, which you support, is in {position}. place in the {category} category.", "email", |
+            priority_name: link_to(near_top[:priority].name, near_top[:priority].show_url),                                     |
+            position: near_top[:position],                                                                                      |
+            category: link_to(near_top[:category].name, near_top[:category].show_url))                                          |
+        - else
+          = tr("The priority {priority_name}, which you oppose, is in {position}. place in the {category} category.", "email", |
+            priority_name: link_to(near_top[:priority].name, near_top[:priority].show_url),                                    |
+            position: near_top[:position],                                                                                     |
+            category: link_to(near_top[:category].name, near_top[:category].show_url))                                         |
+  %br/

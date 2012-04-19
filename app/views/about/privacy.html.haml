@@ -1,0 +1,16 @@
+#infopage
+  %h1= tr("Your privacy", "view/about/privacy")
+  - if current_instance.layout=="better_reykjavik"
+    %br/
+    %p= tr("Your real name and email address are never made public, and you can identify yourself however you want by clicking on Settings.", "view/about/privacy")
+    %br/
+    %p= tr("Any other optional information you provide in your account will be public on your profile. You can remove it any time by clicking on Settings.", "view/about/privacy")
+    %br/
+    %p= tr("By joining, you will get occasional emails from {instance_name}, which you can turn off <a href=\"/unsubscribe\">here</a>.  Your information will never be shared with anyone else without your explicit permission. ", "view/about/privacy", :instance_name => tr(current_instance.name, "Name from database"))
+  - else
+    %br/
+    %p= tr("Your real name and email address are never made public, and you can identify yourself however you want by clicking on Settings.", "view/about/privacy")
+    %br/
+    %p= tr("Any other optional information you provide in your account will be public on your profile. You can remove it any time by clicking on Settings.", "view/about/privacy")
+    %br/
+    %p= tr("By joining, you will get occasional emails from {instance_name}, which you can turn off <a href=\"/unsubscribe\">here</a>.  Your information will never be shared with anyone else without your explicit permission. ", "view/about/privacy", :instance_name => tr(current_instance.name, "Name from database"))

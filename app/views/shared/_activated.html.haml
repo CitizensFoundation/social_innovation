@@ -1,0 +1,5 @@
+- if logged_in? and not current_user.activated?
+  #not_activated_header= tr("Please verify your account", "view/shared/_activated")
+  #not_activated
+    = tr("<p>Check your <span class=\"highlight\">{user_email}</span> inbox for an email from admin@yrpri.org to verify your account and ensure your priorities count. If that email address is incorrect, please <a href=\"/settings\">update it here</a> then <a href=\"/users/{user_id}/resend_activation\">click here</a> to have a new verification email sent.","view/shared/_activated", :user_email=>current_user.email, :user_id=>current_user.id)
+    = tr("<p>This message will go away when verified.</p>", "view/shared/_activated")

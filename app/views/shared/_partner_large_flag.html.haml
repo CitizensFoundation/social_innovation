@@ -1,0 +1,7 @@
+%center
+  - if Partner.current and Partner.current.short_name=="world"
+    = image_tag "tr8n/flags/64/_united-nations.png"
+  - elsif Partner.current and Partner.current.short_name=="eu"
+    = image_tag "tr8n/flags/64/_european-union.png"
+  - elsif Partner.current and Partner.current.iso_country
+    = image_tag Partner.current.iso_country.large_flag_image

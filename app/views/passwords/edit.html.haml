@@ -1,0 +1,16 @@
+#hp_intro= @page_title
+= error_messages_for :user
+= form_for(:user, :url => password_path(@user), :html => { :method => :put }) do |f|
+  %p
+    %label{:for => "password"}= tr("Current password", "view/passwords/edit")
+    %br/
+    = password_field_tag :old_password
+  %p
+    %label{:for => "password"}= tr("New password", "view/passwords/edit")
+    %br/
+    = f.password_field :password
+  %p
+    %label{:for => "password_confirmation"}= tr("Repeat new password", "view/passwords/edit")
+    %br/
+    = f.password_field :password_confirmation
+  %p= f.submit tr("Change password", "view/passwords/edit"), :class => "yellow_button"

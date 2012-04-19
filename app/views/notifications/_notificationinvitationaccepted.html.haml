@@ -1,0 +1,2 @@
+%img.notification_icon{:border => "0", :height => "16", :src => "/assets/icons/chart_organisation.png", :width => "16"}/
+= tr("{sender_name} accepted your invitation to join {instance_name}", "view/notifications/_notificationinvitationaccepted", :sender_name => link_to(notification.sender.name, notification.sender), :instance_name => tr(current_instance.name,"Name from database"))

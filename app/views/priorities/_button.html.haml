@@ -1,0 +1,36 @@
+- if endorsement and endorsement.status == 'active'
+  - if endorsement.is_up?
+    .green_button.green_button_priority{:id => "priority_remove_endorse#{priority.id.to_s}"}
+      %span.text= tr("YOU ENDORSED", "view/priorities/_button")
+      %span.big_x
+        = link_to "X", endorsement_path(endorsement, :region => "priority_left"),      |
+          :method => :delete, :remote=>true,                                           |
+          :class => "priority_remove_link",                                            |
+          'data-disable-with' => "",                                                   |
+          'data-loader-name' => "circle",                                              |
+          :title => tr("Remove from my list of priorities", "view/priorities/_button") |
+  - else
+    .red_button.red_button_priority{:id => "priority_remove_oppose#{priority.id.to_s}"}
+      = tr("YOU OPPOSED", "view/priorities/_button")
+      %span.big_x
+        = link_to "X", endorsement_path(endorsement, :region => "priority_left"),      |
+          :method => :delete, :remote=>true,                                           |
+          :class => "priority_remove_link",                                            |
+          'data-disable-with' => "",                                                   |
+          'data-loader-name' => "circle",                                              |
+          :title => tr("Remove from my list of priorities", "view/priorities/_button") |
+- else
+  .yellow_button.endorse{:id => "priority_add_endorse_#{priority.id.to_s}"}
+    = link_to tr("Endorse", "view/priorities/_button"), endorse_priority_path(priority, :referral_id => (@user || nil), :region => "priority_left", :value => 1), |
+      :remote=>true, :method => :post,                                                                                                                            |
+      'data-disable-with' => escape_t(tr("Endorsing","Ajax")),                                                                                                    |
+      'data-loader-name' => "horizontal_small",                                                                                                                   |
+      :class => "priority_add_link1", :title => tr("I support this, add it to my priority list", "view/priorities/_button")                                       |
+  .endorse_or
+    = tr("OR", "view/priorities/_button")
+  .yellow_button.oppose{:id => "priority_add_oppose_#{priority.id.to_s}"}
+    = link_to tr("Oppose", "view/priorities/_button"), endorse_priority_path(priority, :referral_id => (@user || nil), :region => "priority_left", :value => -1), |
+      :remote=>true, :method => :post,                                                                                                                            |
+      'data-disable-with' => escape_t(tr("Opposing","Ajax")),                                                                                                     |
+      'data-loader-name' => "horizontal_small",                                                                                                                   |
+      :class => "priority_add_link2", :title => tr("I oppose this, and want to add my opposition to my priority list.", "view/priorities/_button")                |

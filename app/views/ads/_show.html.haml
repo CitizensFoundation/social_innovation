@@ -1,0 +1,37 @@
+%table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+  %tr
+    %td.top_scale{:valign => "top"}
+      = render :partial => "users/pic", :locals => {:user => ad.user}
+    %td.left_scale8{:valign => "top"}
+      = tr("{user_name} asks you to consider {priority_name}", "view/ads/_show", :user_name => link_to(ad.user.name, ad.user), :priority_name => link_to(ad.priority.name, ad.priority))
+      - if ad.has_content?
+        .notification_show_message
+          "#{h(ad.content)}"
+          %span.show_all_ads
+      .notification_show_footer
+        %span{:id => "priority_#{ad.priority.id}_button_small"}
+          %span.priority_add{:id => "priority_add_endorse_#{ad.priority.id}"}
+            = link_to tr("endorse", "view/ads/_show"), endorse_priority_path(ad.priority, :referral_id => ad.user, :region => "ad_top", :value => 1, :ad_id => ad),     |
+              :method => :post,                                                                                                                                         |
+              :remote=>true,                                                                                                                                            |
+              'data-disable-with' => '<span class="encouragement_click priority_add_link priority_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>', |
+              'data-loader-name' => "no_loader",                                                                                                                        |
+              :class => "priority_add_link", :title => tr("I support this, add it to my priority list", "view/ads/_show")                                               |
+          %span.endorse_or= tr("OR", "view/ads/_show")
+          %span.priority_add{:id => "priority_add_oppose_#{ad.priority.id}"}
+            = link_to tr("oppose", "view/ads/_show"), endorse_priority_path(ad.priority, :referral_id => ad.user, :region => "ad_top", :value => -1, :ad_id => ad),     |
+              :method => :post,                                                                                                                                         |
+              :remote=>true,                                                                                                                                            |
+              'data-disable-with' => '<span class="encouragement_click priority_add_link priority_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>', |
+              'data-loader-name' => "no_loader",                                                                                                                        |
+              :class => "priority_add_link", :title => tr("I oppose this, and want to add my opposition to my priority list.", "view/ads/_show")                        |
+        - unless ad.new_record?
+          %span.tag_button.tag_scale{:id => "notification_show_#{ad.priority.id}_skip"}
+            = link_to tr("Skip", "view/ads/_show"), skip_priority_ad_path(ad.priority,ad),                                                  |
+              :method => :post,                                                                                                             |
+              :remote=>true,                                                                                                                |
+              'data-disable-with' => '<span class="tag_scale priority_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>', |
+              'data-loader-name' => "no_loader"                                                                                             |
+      .clear
+      .notification_show_counts
+        = render :partial => "priorities/endorsement_count", :locals => {:priority => ad.priority }

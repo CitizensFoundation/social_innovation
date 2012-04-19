@@ -1,0 +1,8 @@
+  - if @portlet_container
+    - @portlet_container.portlets.in_column_order(column_number, @portlet_container.id).each do |portlet|
+      - partial_name = portlet.portlet_template.partial_name
+      - portlet_locals = send(portlet.portlet_template.locals_data_function,portlet.portlet_template.item_limit, portlet.portlet_template.tag) if portlet.portlet_template.locals_data_function and respond_to?( portlet.portlet_template.locals_data_function)
+      = render(:partial => "portlet_header", :locals=>{:portlet=>portlet, :portlet_locals=>portlet_locals})
+      %div{:id => "portlet_contents_#{portlet.id}"}
+        = render(:partial => "/portal/portlets/#{partial_name}", :locals=>{:portlet=>portlet, :portlet_locals=>portlet_locals})
+        = render(:partial => "portlet_footer", :locals=>{:portlet=>portlet, :portlet_locals=>portlet_locals})

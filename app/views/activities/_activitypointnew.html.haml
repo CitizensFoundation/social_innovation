@@ -1,0 +1,3 @@
+%img.icon{:border => "0", :height => "16", :src => "/assets/icons/comments_add.png", :width => "16"}/
+= link_to h(activity.user.login), activity.user
+added #{link_to activity.point.name, activity.point} to #{link_to h(activity.priority.name), activity.priority}.

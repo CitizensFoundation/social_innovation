@@ -1,0 +1,7 @@
+#hp_intro
+  = @page_title
+%p
+  = debug @color_scheme
+  = link_to 'Edit', edit_color_scheme_path(@color_scheme)
+  |
+  \#{link_to 'Back', color_schemes_path}

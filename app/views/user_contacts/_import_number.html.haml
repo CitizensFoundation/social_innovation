@@ -1,0 +1,3 @@
+- if user.contacts_count > 0 or user.contacts_members_count > 0 or user.contacts_not_invited_count > 0 or user.contacts_invited_count > 0
+  #hp_subhead
+    = tr("You have {count} contacts", "view/user_contacts/_import_number", :count => user.contacts_count)

@@ -1,0 +1,230 @@
+#hp_intro
+  = @page_title
+%p
+  = form_for(@color_scheme) do |f|
+    = f.error_messages
+    .field
+      .heading= tr("Font", "view/color_schemes/new")
+      .field_box
+        = f.text_field :fonts
+    .heading= tr("Page", "view/color_schemes/new")
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+      %tr
+        %td{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :background, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_background", :color => @color_scheme.background }
+              %td= tr("Background", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :link, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_link", :color => @color_scheme.link}
+              %td= tr("Links", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :main, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_main", :color => @color_scheme.main}
+              %td= tr("Main", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_text", :color => @color_scheme.text}
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :box, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_box", :color => @color_scheme.box }
+              %td= tr("Boxes", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :box_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_box_text", :color => @color_scheme.box_text }
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :comments, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_comments", :color => @color_scheme.comments }
+              %td= tr("Comments", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :comments_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_comments_text", :color => @color_scheme.comments_text }
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :footer, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_footer", :color => @color_scheme.footer}
+              %td= tr("Footer", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :footer_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_footer_text", :color => @color_scheme.footer_text}
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :heading, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_heading", :color => @color_scheme.heading}
+              %td= tr("Headings", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :sub_heading, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_sub_heading", :color => @color_scheme.sub_heading}
+              %td= tr("Sub Headings", "view/color_schemes/new")
+    %p
+    .heading= tr("Toolbar", "view/color_schemes/new")
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+      %tr
+        %td{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :nav_background, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_nav_background", :color => @color_scheme.nav_background }
+              %td= tr("Color", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :nav_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_nav_text", :color => @color_scheme.nav_text }
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :nav_selected_background, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_nav_selected_background", :color => @color_scheme.nav_selected_background}
+              %td= tr("Selected", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :nav_selected_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_nav_selected_text", :color => @color_scheme.nav_selected_text}
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :nav_hover_background, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_nav_hover_background", :color => @color_scheme.nav_hover_background}
+              %td= tr("Hovering", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :nav_hover_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_nav_hover_text", :color => @color_scheme.nav_hover_text}
+              %td= tr("Text", "view/color_schemes/new")
+    %p
+    .heading= tr("Buttons", "view/color_schemes/new")
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+      %tr
+        %td{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :action_button, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_action_button", :color => @color_scheme.action_button }
+              %td= tr("Primary action", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :action_button_border, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_action_button_border", :color => @color_scheme.action_button_border }
+              %td= tr("Border", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :action_button_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_action_button_text", :color => @color_scheme.action_button_text}
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :grey_button, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_grey_button", :color => @color_scheme.grey_button}
+              %td= tr("Secondary action", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :grey_button_border, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_grey_button_border", :color => @color_scheme.grey_button_border}
+              %td= tr("Border", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :grey_button_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_grey_button_text", :color => @color_scheme.grey_button_text}
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :endorsed_button, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_endorsed_button", :color => @color_scheme.endorsed_button }
+              %td= tr("Endorsed", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :endorsed_button_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_endorsed_button_text", :color => @color_scheme.endorsed_button_text }
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :compromised_button, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_compromised_button", :color => @color_scheme.compromised_button}
+              %td= tr("Compromised", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :compromised_button_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_compromised_button_text", :color => @color_scheme.compromised_button_text}
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :opposed_button, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_opposed_button", :color => @color_scheme.opposed_button}
+              %td= tr("Opposed", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :opposed_button_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_opposed_button_text", :color => @color_scheme.opposed_button_text}
+              %td= tr("Text", "view/color_schemes/new")
+    %p
+    .heading= tr("Miscellaneous", "view/color_schemes/new")
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+      %tr
+        %td{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :up, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_up", :color => @color_scheme.up }
+              %td= tr("Rising", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :down, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_down", :color => @color_scheme.down }
+              %td= tr("Falling", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :input, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_input", :color => @color_scheme.input}
+              %td= tr("Input boxes", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :border, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_border", :color => @color_scheme.border}
+              %td= tr("Border", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :error, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_error", :color => @color_scheme.error}
+              %td= tr("Errors", "view/color_schemes/new")
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :error_text, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_error_text", :color => @color_scheme.error_text}
+              %td= tr("Text", "view/color_schemes/new")
+        %td.left_scale15{:valign => "top"}
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+            %tr
+              %td= f.hidden_field :greyed_out, :size => 6, :class => "color_picker"
+              %td{:width => "38"}= render :partial => "color_schemes/picker", :locals => {:name => "color_scheme_greyed_out", :color => @color_scheme.greyed_out}
+              %td= tr("Inactive", "view/color_schemes/new")
+        %td
+    %p
+      = f.submit tr("Save color scheme", "view/color_schemes/new"), :class => "yellow_button"

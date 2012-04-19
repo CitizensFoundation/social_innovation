@@ -1,0 +1,22 @@
+#priority_nav
+  %div{:id => "priority_nav<haml:silent> if ['points'].include?(params[:controller]) and ['show'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['revisions'].include?(params[:controller]) and ['new'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['revisions'].include?(params[:controller]) and ['show','clean'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['discussions'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['activity'].include?(params[:action]) </haml:silent><haml:block>5</haml:block>"}
+    %ul#priority_menu
+      %li.tab1
+        %span.tab_header
+          = link_to tr("Full text", "view/points/_nav"), point_url(@point)
+      %li.tab2
+        %span.tab_header
+          = link_to tr("Edit", "view/points/_nav"), new_point_revision_url(@point)
+      %li.tab3
+        %span.tab_header
+          = link_to tr("{count} revisions", "view/points/_nav", :count => @point.revisions_count), point_revision_url(@point,@point.revision_id)
+      %li.tab4
+        %span.tab_header
+          = link_to tr("{count} discussions", "view/points/_nav", :count => @point.discussions_count), discussions_point_url(@point)
+      %li.tab5
+        %span.tab_header
+          = link_to tr("All activity", "view/points/_nav"), activity_point_url(@point)
+      - if logged_in? and (@point.user_id == current_user.id or current_user.is_admin?)
+        %li.tab6
+          %span.tab_header
+            = link_to tr("Delete", "view/points/_nav"), point_path(@point), :method => :delete, :confirm => tr("Are you sure you want to delete this?", "view/points/_nav")

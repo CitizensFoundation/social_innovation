@@ -1,0 +1,8 @@
+- if priority.replaced?
+  #hp_intro
+    %strike= tg(priority.name)
+- else
+  #hp_intro.priorities
+    = link_to_unless_current tg(priority.name), priority
+    = render :partial=>"priorities/report_content", :locals=>{:priority=>priority}
+= render :partial=>"priorities/flagged", :locals=>{:priority=>priority}

@@ -1,0 +1,17 @@
+= render :partial => "header"
+%p
+  %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+    - @followings.in_groups_of(4) do |row_followings|
+      %tr
+        - for following in row_followings
+          - if following
+            %td{:style => "padding: 0px 0px 5px 5px;", :valign => "top", :width => "150"}
+              %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+                %tr
+                  %td{:valign => "top", :width => "24"}
+                    = render :partial => "users/pic", :locals => {:user => following.user}
+                  %td{:style => "padding-left: 5px;", :valign => "top"}
+                    = link_to following.user.name, following.user
+                    .small= time_ago(following.created_at)
+          - else
+            %td{:style => "padding-bottom: 5px;", :width => "150"} &nbsp;

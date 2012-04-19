@@ -1,0 +1,39 @@
+- if @activity.has_priority?
+  #priority_intro
+    = link_to @activity.priority.name, @activity.priority
+    \&raquo;
+    \#{link_to tr("{count} discussions", "view/comments/index", :count => @activity.priority.discussions_count), discussions_priority_url(@activity.priority)} &raquo;
+  %p
+#hp_intro
+  = render :partial => "activities/#{@activity[:type].downcase}", :locals => {:activity => @activity}
+%p
+  %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+    %tr
+      %td{:valign => "top"}
+        .comment_list_detail{:id => "activity_#{@activity.id}_comments"}
+          - for comment in @activity.comments.published_and_abusive.by_first_created
+            = render :partial => "comments/show", :locals => {:comment => comment}
+          - if @activity.comments_count > 0
+            = render :partial => "comments/new_inline", :locals => {:activity => @activity, :comment => Comment.new}
+        - if @activity.comments_count > 0 and @activity.priority and @activity.priority.discussions_count > 1
+          %p
+            = link_to tr("{count} more discussions in {priority_name}", "view/comments/index", :count => @activity.priority.discussions_count-1, :priority_name => @activity.priority.name), discussions_priority_url(@activity.priority)
+      %td.left_scale30{:valign => "top", :width => "180"}
+        - if @activity.comments_count > 0
+          = render :partial => "activities/button", :locals => {:activity => @activity, :following => @following}
+          %p
+        - if @activity.comments_count > 1
+          .heading= tr("People commenting", "view/comments/index")
+          - for user in @activity.commenters_count
+            %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+              %tr
+                %td{:valign => "top", :width => "48"}
+                  = render :partial => "users/pic_48", :locals => {:user => user[0]}
+                %td.left_scale8{:valign => "top"}
+                  - if user[0].status == 'suspended' or user[0].status == 'deleted'
+                    %strike/
+                  = link_to user[0].name, user[0]
+                  %span.pc= tr("{capital}{currency_short_name}", "view/comments/index", :capital => user[0].capitals_count, :currency_short_name => current_instance.currency_short_name)
+                  - if user[0].status == 'suspended' or user[0].status == 'deleted'
+                  .profile_small= tr("{count} comments", "view/comments/index", :count => user[1])
+            %p

@@ -1,0 +1,5 @@
+#hp_intro= @page_title
+- for color_scheme in @color_schemes
+  .color_scheme{:id => "color_scheme_#{color_scheme.id}"}
+    = link_to color_scheme.name, new_color_scheme_url(:id => color_scheme.id)
+    = render :partial => "show", :locals => {:color_scheme => color_scheme}

@@ -1,0 +1,8 @@
+- if ['color_schemes'].include?(params[:controller])
+  = stylesheet_link_tag "colorpicker"
+= render :partial => "color_schemes/css", :locals => {:id => current_instance.color_scheme_id }
+= stylesheet_link_tag "application"
+/[if IE]
+  <haml:loud> stylesheet_link_tag &amp;quot;/stylesheets/iehacks&amp;quot; </haml:loud>
+/[if IE 7]
+  <haml:loud> stylesheet_link_tag &amp;quot;/stylesheets/ie7&amp;quot; </haml:loud>

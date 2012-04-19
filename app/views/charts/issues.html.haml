@@ -1,0 +1,23 @@
+#hp_intro= @page_title
+%p
+  - cache("issues_performance-#{session[:locale]}-#{@inline_translations_enabled}", :expires_in => 6.hours) do
+    %table{:border => "0", :cellpading => "0", :cellspacing => "0"}
+      %tr
+        %td
+        %td.table_header= current_instance.tags_name.titleize
+        %td.table_header= tr("Endorsers", "view/charts/issues")
+        %td.table_header= tr("Opposers", "view/charts/issues")
+        %td.table_header{:align => "center"}= tr("falling/rising", "view/charts/issues")
+      - row = 0
+      - for tag in Tag.find(:all, :conditions => "priorities_count > 4", :order => "tags.up_endorsers_count desc")
+        - row += 1
+        %tr
+          %td{:align => "right"}
+            = row
+            \.&nbsp;
+          %td= link_to tr(tag.title,"model/category"), :controller => "issues", :tag_names => tag.slug
+          %td= tag.up_endorsers_count
+          %td= tag.down_endorsers_count
+          %td{:valign => "top"}= render :partial => "issues/bar", :locals => {:tag => tag}
+    %p
+      = tr("Last updated {time_ago}", "view/charts/issues", :time_ago => time_ago(Time.now))

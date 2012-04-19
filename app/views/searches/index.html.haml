@@ -1,0 +1,96 @@
+- if @error
+  = @error
+- elsif not @search_results
+  = tr("No search results","_searches")
+- else
+  - form_tag(searches_path, :method => 'get') do
+    %tr
+      %td{:valign => "middle"}
+        .magnifier_wrap
+          %span.magnifier_image
+            %img{:border => "0", :height => "14", :src => "/assets/icons/magnifier.gif", :width => "14"}/
+          %span.magnifier_box
+            = text_field_tag "q", params[:q], :value=>params[:q]
+  %br/
+  %h2{:style => "padding-bottom:5px !important; border-bottom: solid 1px #CCC;"}
+    = tr("Search results","search")
+  %br/
+  - if false and params[:class]
+    %h4
+      = tr("All","search")
+      = translate_facet_option(params[:class])
+  %table
+    %tr
+      %td{:width => "150"}
+        .search_results
+          - unless @search_results.empty?
+            #left{:style => "float: left;"}
+              - if params[:category_name] or params[:class]
+                %h3= link_to tr("Everything","search"), "/search?q=#{@query}"
+                %br/
+              - @facets.each do |facet, facet_options|
+                %div
+                  %ul
+                    - facet_options.each do |option, count|
+                      - next if option==nil or option==""
+                      - translated_option = translate_facet_option(option)
+                      - if translated_option==params[:category_name]
+                        %li
+                          %b= link_to "#{tr(translated_option, "model/category")} (#{count})".html_safe, "/search?q=#{@query}&#{facet}=#{option}"
+                      - elsif option==params[:class]
+                        %li
+                          %b= link_to "#{translated_option.humanize} (#{count})".html_safe, "/search?q=#{@query}&#{facet}=#{option}"
+                      - else
+                        %li
+                          = link_to "#{tr(translated_option, "model/category")} (#{count})".html_safe, "/search?q=#{@query}&#{facet}=#{option}"
+                  %br/
+          - else
+            = tr("No search results","search")
+            %br/
+      %td
+        - unless not @facets or @facets.empty? or @search_results.empty?
+          #left{:style => "float: left"}
+            - @search_results.each do |result|
+              - if result.class == Priority
+                %div
+                  %h4{:style => "color: #777; border-bottom: none;"}
+                    = tr("Priority","search")
+                    \- #{time_ago(result.excerpts.created_at)}
+                  %span{:style => "color: #3B5998; font-size:1.083em; font-weight: bold;"}= link_to result.excerpts.name.force_encoding("UTF-8").html_safe, :controller=>"priorities", :action=>"show", :id=>result.id
+                  / </haml:block><haml:silent></haml:silent><haml:block>
+                  %br/
+                  %br/
+              - elsif result.class == Point
+                %div
+                  %h4{:style => "color: #777; border-bottom: none;"}
+                    = tr("Point","search")
+                    \- #{time_ago(result.excerpts.created_at)}
+                  %span{:style => "color: #3B5998; border-bottom: none; font-size:1.083em; font-weight:bold;"}= link_to result.excerpts.name.force_encoding("UTF-8").html_safe, :controller=>"points", :action=>"show", :id=>result.id
+                  = result.excerpts.content.force_encoding("UTF-8").html_safe
+                  %br/
+                  / </haml:block><haml:silent></haml:silent><haml:block>
+                  %br/
+                  %br/
+              - elsif result.class == ProcessDocumentElement
+                %div
+                  %h4{:style => "color: #777; border-bottom: none;"}
+                    = tr("Law Article","search")
+                    \- #{time_ago(result.process_document.external_date)}
+                  %span{:style => "color: #3B5998; border-bottom: none; font-size:1.083em; font-weight:bold;"}= link_to result.priority.name.force_encoding("UTF-8").html_safe, :controller=>"process_documents", :action=>"show", :anchor =>"gr_#{result.id}", :id=>result.process_document.id
+                  = result.excerpts.content_text_only.force_encoding("UTF-8").html_safe
+                  %br/
+                  / </haml:block><haml:silent></haml:silent><haml:block>
+                  %br/
+                  %br/
+              - elsif result.class == Comment
+                %div
+                  %h4
+                    = tr("Comment","search")
+                    \- #{time_ago(result.excerpts.created_at)}
+                  = result.excerpts.content.force_encoding("UTF-8").html_safe
+                  %br/
+                  = link_to tr("Show","search"), result.show_url
+                  %br/
+                  %br/
+            = will_paginate @search_results
+        - else

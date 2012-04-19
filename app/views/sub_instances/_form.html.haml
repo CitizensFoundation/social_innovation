@@ -1,0 +1,67 @@
+%p
+  %table{:border => "0", :cellpading => "0", :cellspacing => "0"}
+    %tr
+      %td http://
+      %td= f.text_field :short_name, :size => 10, :maxlength => 20
+      %td
+        \.#{current_instance.base_url}/
+  %span.small= tr("Less than 20 characters", "view/sub_instances/_form")
+%p
+  %label{:for => "sub_instance_name"}= tr("Title or Organization name", "view/sub_instances/_form")
+  %br/
+  = f.text_field :name, :size => 30, :maxlength => 30
+  %br/
+  %span.small= tr("(example: Donate Life America)", "view/sub_instances/_form")
+%p
+  %label{:for => "sub_instance_name"} Beygingar á nafni
+  %br/
+  = f.text_field :name_variations_data, :size => 50, :maxlength => 300
+  %br/
+  %span.small (hér er,um,frá,til,stutt_útgáfa_fyrir_að_búa_til_hugmynd)
+%p
+  %label{:for => "sub_instance_website"}= tr("Link to your homepage", "view/sub_instances/_form")
+  %br/
+  = f.text_field :website
+  %br/
+  %span.small= tr("(example: http://donatelife.net/)", "view/sub_instances/_form")
+%p
+  %label{:for => "default_locale"}= tr("Default locale", "view/sub_instances/_form")
+  %br/
+  = f.text_field :default_locale
+  %br/
+= f.check_box :geoblocking_enabled
+= tr("Enable geoblocking", "view/sub_instances/_form")
+%br/
+%p
+  %label{:for => "geoblocking_open_countries"}= tr("Geoblocking open countries", "view/sub_instances/_form")
+  %br/
+  = f.text_field :geoblocking_open_countries
+  %br/
+%p
+  %label{:for => "default_tags"}= tr("Default category", "view/sub_instances/_form")
+  %br/
+  = f.text_field :default_tags
+  %br/
+%p
+  %label{:for => "custom_tag_checkbox"}= tr("Custom tag", "view/sub_instances/_form")
+  %br/
+  = f.text_field :custom_tag_checkbox
+  %br/
+%p
+  %label{:for => "custom_tag_dropdown_1"}= tr("Custom tags 1", "view/sub_instances/_form")
+  %br/
+  = f.text_field :custom_tag_dropdown_1
+  %br/
+%p
+  %label{:for => "custom_tag_dropdown_2"}= tr("Custom tags 2", "view/sub_instances/_form")
+  %br/
+  = f.text_field :custom_tag_dropdown_2
+  %br/
+.field
+  .field_label
+    = tr("Message for new priority", "view/instances/edit")
+  .field_box
+    = f.text_area :message_for_new_priority, :rows => 7, :cols=>20
+= f.check_box :is_daily_summary
+= tr("Email me a weekly summary of activity", "view/sub_instances/_form")
+%br/

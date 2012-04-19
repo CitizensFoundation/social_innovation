@@ -1,0 +1,44 @@
+- if @point or @priority or @user or @document
+  #bulletin_form.bulletin_form
+    .happening_heading
+      - if @point and params[:action].include?("discussions")
+        = tr("Start a discussion on this point", "view/bulletins/_form")
+      - elsif @document and params[:action].include?("discussions")
+        = tr("Start a discussion on this document", "view/bulletins/_form")
+      - elsif @user and @user != current_user
+        = tr("Post a bulletin to {user_name} profile", "view/bulletins/_form", :user_name => @user.login)
+      - elsif @priority
+        - if params[:action].include?("discussions")
+          = tr("Start a discussion on this priority", "view/bulletins/_form")
+        - else
+          = tr("What's happening on this priority?", "view/bulletins/_form")
+      - elsif params[:action].include?("discussions")
+        = tr("Start a discussion", "view/bulletins/_form")
+      - elsif controller_name=="users"
+        = tr("Post a message to wall", "view/bulletins/_form")
+      - else
+        = tr("What's happening?", "view/bulletins/_form")
+    = form_for comment, :remote=>true,                |
+      :url => bulletins_url,                          |
+      :disable_with=>escape_t(tr("Sending","Ajax")),  |
+      'data-loader-name' => "horizontal_small" do |f| |
+      = f.error_messages
+      = f.text_area :content, :size => "70x2", :id => "bulletin_content"
+      %br/
+      <div class="top_scale"">
+      %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+        %tr
+          %td{:valign => "top"}
+            = f.submit tr("New discussion thread", "view/bulletins/_form"), :id => "bulletin-form-submit", :class => "submit_button"
+          %td{:valign => "top"}
+            #bulletin_error.comment_error
+          <td valign="top" class="left_scale"" align="right">
+          - if @priority
+            %input{:name => "activity[priority_id]", :type => "hidden", :value => @priority.id}/
+          - if @point
+            %input{:name => "activity[point_id]", :type => "hidden", :value => @point.id}/
+          - if @document
+            %input{:name => "activity[document_id]", :type => "hidden", :value => @document.id}/
+          - if @user and @user != current_user
+            %input{:name => "activity[other_user_id]", :type => "hidden", :value => @user.id}/
+%p

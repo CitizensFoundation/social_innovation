@@ -1,0 +1,20 @@
+- for issue in issues
+  .priority_listing
+    %span.priority_name
+      %a{:href => "/issues/#{issue.slug}"}= tr(issue.title, "model/category")
+    - if issue.attribute_present?("description")
+      = h(issue.description)
+    .priority_action
+      %a{:href => "/issues/#{issue.slug}"}= tr("{count} priorities", "view/issues/index", :count => issue.priorities_count)
+      - if issue.points_count > 0
+        \&middot;
+        %a{:href => "/issues/#{issue.slug}/points"}= tr("{count} points", "view/issues/index", :count => issue.points_count)
+      - if issue.documents_count > 0
+        \&middot;
+        %a{:href => "/issues/#{issue.slug}/documents"}= tr("{count} documents", "view/issues/index", :count => issue.documents_count)
+      - if issue.discussions_count > 0
+        \&middot;
+        %a{:href => "/issues/#{issue.slug}/discussions"}= tr("{count} discussions", "view/issues/index", :count => issue.discussions_count)
+      - if logged_in? and current_user.is_admin?
+        \&nbsp;
+        %span.tag_button= link_to tr("Edit", "view/issues/index"), edit_tag_url(issue)

@@ -1,0 +1,24 @@
+- if activity.comments_count > 0
+  .comment_list{:id => "activity_#{activity.id}_comments"}
+- else
+  .comment_list_empty{:id => "activity_#{activity.id}_comments"}
+- if activity.comments_count > 0
+  - @comments = activity.comments.published_and_abusive.by_first_created.find(:all, :include => :user)
+  - comments_without_abuse = @comments.reject {|x| x.status == 'abusive'}
+  = render :partial => "comments/show", :locals => {:comment => comments_without_abuse.first} if comments_without_abuse.first
+  - if comments_without_abuse.length > 10
+    .comment_more
+  - # if activity.priority and activity.priority.class==Priority
+  - #Rails.logger.info activity.priority
+    = link_to tr("More", "view/activities/_comments")+" (#{(comments_without_abuse.length-2).to_s})", activity_comments_url(activity), :class => "priority_name_link"
+  - # end
+  - elsif comments_without_abuse.length > 2
+    .comment_more
+      = link_to tr("More", "view/activities/_comments")+" (#{(comments_without_abuse.length-2).to_s})", more_activity_comments_url(activity), |
+        :method => :get,                                                                                                                      |
+        :remote=>true,                                                                                                                        |
+        'data-disable-with' => "",                                                                                                            |
+        'data-loader-name' => "horizontal_small"                                                                                              |
+  = render :partial => "comments/show", :locals => {:comment => comments_without_abuse.last} if comments_without_abuse.length > 1
+  - if @comments.length > 0 and activity.class != ActivityCommentParticipant
+    = render :partial => "comments/new_inline", :locals => {:activity => activity, :comment => Comment.new}

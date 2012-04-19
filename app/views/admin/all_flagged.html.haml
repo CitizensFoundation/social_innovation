@@ -1,0 +1,14 @@
+%b= @page_title
+%br/
+%br/
+- @all.each do |action_item|
+  - if action_item.instance_of?(Priority)
+    = render :partial => "priorities/flagged_listing", :locals => {:priority => action_item, :suffix => "_noself"}
+  - elsif action_item.instance_of?(Point)
+    = render :partial => "points/show_full", :locals => {:point => action_item, :revision=>nil, :skip_details=>true, :suffix => "_noself"}
+  - elsif action_item.instance_of?(Document)
+    = render :partial => "documents/show_full", :locals => {:document => action_item, :revision=>nil, :skip_details=>true, :suffix => "_noself"}
+  - elsif action_item.instance_of?(Comment)
+    = render :partial => "comments/show", :locals => {:comment => action_item, :suffix => "_noself"}
+  _________________________________________________________________
+  %br/

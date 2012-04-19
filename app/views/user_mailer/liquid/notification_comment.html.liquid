@@ -1,0 +1,14 @@
+Hæ {{ recipient.first_name | capitalize }},
+
+{{ sender.name }} kom með athugasemd um {{ notifiable.activity.name }}:
+
+{{ notifiable.content }}
+
+Hér er svarað: {{ notifiable.show_url }}
+
+Þú getur líka hætt að fylgjast með þessari umræðu á {{ notifiable.show_url }}
+
+
+---
+Þetta er sjálfvirk tilkynning {{ instance.name }} send á {{ recipient.email }}.
+Ef þú vilt ekki fá svona bréf, breyttu þá póststillingunum þínum hér: {{ recipient.unsubscribe_url }}

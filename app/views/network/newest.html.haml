@@ -1,0 +1,24 @@
+#hp_intro= @page_title
+%p
+  %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+    - for user in @users
+      %tr
+        %td{:style => "padding: 7px 5px 4px 0px;", :valign => "top", :width => "26"}
+          = render :partial => "users/pic", :locals => {:user => user}
+        %td{:style => "padding: 7px 5px 4px 0px;", :valign => "top"}
+          = link_to user.login, user
+          %span.pc
+            = user.capitals_count
+            = current_instance.currency_short_name
+          = tr("Joined {time_ago}", "view/network/newest", :time_ago => time_ago(user.created_at))
+          \&middot; #{tr("{count} endorsements", "view/network/newest", :count => user.up_endorsements_count)}
+          - if user.down_endorsements_count > 0
+            \&middot; #{tr("{count} oppositions", "view/network/newest", :count => user.down_endorsements_count)}
+          - if user.has_top_priority?
+            %br/
+            = tr("#1 priority:", "view/network/newest")
+            - if user.top_endorsement.is_down?
+              %span.opposed= tr("Opposing", "view/network/newest")
+            = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+  %p
+    = will_paginate(@users)

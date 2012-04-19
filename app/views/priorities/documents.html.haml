@@ -1,0 +1,10 @@
+= render :partial => "header"
+= render :partial => "nav"
+%p
+  - if @documents.empty? and not @priority.replaced?
+    = tr("No documents yet.", "view/priorities/documents")
+    = link_to tr("Add a document", "view/priorities/documents"), new_priority_document_path(@priority)
+  - if @documents.any?
+    - for document in @documents
+      = render :partial => "documents/show", :locals => {:document => document, :priority => @priority}
+    = will_paginate(@documents)

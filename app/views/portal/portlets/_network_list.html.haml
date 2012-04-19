@@ -1,0 +1,34 @@
+- cache(["portlets_network_influencial",locale,Partner.current_id,@inline_translations_enabled], :expires_in => 5.minutes) do
+  %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+    %tr
+      %td
+      %td
+        %span.table_header= tr("Rank", "view/portal/portlets")
+      %td.left_scale
+        %span.table_header= tr("Wk", "view/portal/portlets")
+      %td.left_scale
+        %span.table_header= tr("Mo", "view/portal/portlets")
+    - if current_instance.users_count < 100
+      - users = User.active.at_least_one_endorsement.by_capital.item_limit(portlet.portlet_template.item_limit)
+    - else
+      - users = User.active.at_least_one_endorsement.by_ranking.item_limit(portlet.portlet_template.item_limit)
+    - for user in users
+      %tr
+        %td{:valign => "top"}
+        = render :partial => "priorities/rank_week_month", :locals => {:priority => user }
+        %td.user_pic_network{:valign => "top", :width => "26"}
+          = render :partial => "users/pic", :locals => {:user => user}
+        %td.user_text{:valign => "top"}
+          = link_to user.login, user
+          %span.pc
+            = user.capitals_count
+            = current_instance.currency_short_name
+          - if user.followers_count > 0
+            = tr("{count} followers", "view/portal/portlets", :count => user.followers_count)
+          - if user.has_top_priority? and user.top_endorsement.priority
+            %br/
+            = tr("#1 priority:", "view/portal/portlets")
+            - if user.top_endorsement.is_down?
+              %span.opposed= tr("Opposing", "view/portal/portlets")
+            = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+  = link_to "#{tr("More", "view/portal/portlets")}...", "/network/"

@@ -1,0 +1,134 @@
+#nav_sub
+  - if @activity and ['activity','comments'].include?(params[:controller])
+    %div{:id => "nav_sub_<haml:silent> if @activity.has_point? or @activity.has_document? </haml:silent><haml:block>3</haml:block><haml:silent> elsif @activity.is_official_user? </haml:silent><haml:block>4</haml:block><haml:silent> elsif @activity.has_change? </haml:silent><haml:block>6</haml:block><haml:silent> elsif @activity.has_capital? </haml:silent><haml:block>5</haml:block><haml:silent> elsif @activity.comments_count &gt; 0 </haml:silent><haml:block>2</haml:block><haml:silent> else </haml:silent><haml:block>1</haml:block>"}
+  - else
+    %div{:id => "nav_sub_<haml:silent> if params[:action].include?(&quot;top&quot;) </haml:silent><haml:block>0</haml:block><haml:silent> elsif params[:action].include?(&quot;activities&quot;) </haml:silent><haml:block>1</haml:block><haml:silent> elsif params[:action].include?(&quot;discussions&quot;) </haml:silent><haml:block>2</haml:block><haml:silent> elsif params[:action].include?(&quot;points&quot;) </haml:silent><haml:block>3</haml:block><haml:silent> elsif params[:action].include?(&quot;capital&quot;) </haml:silent><haml:block>5</haml:block><haml:silent> elsif params[:action].include?(&quot;changes&quot;) </haml:silent><haml:block>6</haml:block><haml:silent> elsif params[:action].include?(&quot;official&quot;) </haml:silent><haml:block>4</haml:block>"}
+  %ul#menu_sub
+    %li.tab0
+      %span.tab_header
+        = link_to tr("Top", "view/news/_nav"), :controller => "news", :action => "top"
+    %li.tab1
+      %span.tab_header
+        = link_to tr("Everything", "view/news/_nav"), :controller => "news", :action => "activities"
+    %li.tab2
+      %span.tab_header
+        = link_to tr("Discussions", "view/news/_nav"), :controller => "news", :action => "discussions"
+    %li.tab3
+      %span.tab_header
+        = link_to tr("Points", "view/news/_nav"), :controller => "news", :action => "points"
+    %li.tab5
+      %span.tab_header
+        = link_to current_instance.currency_name.titleize, :controller => "news", :action => "capital"
+- if logged_in?
+  - if params[:action].include?("discussions")
+    #nav_third
+      %div{:id => "nav_third_<haml:silent> if ['discussions'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['your_discussions'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['your_priority_discussions'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['your_priorities_created_discussions'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['your_network_discussions'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['your_followers_discussions'].include?(params[:action]) </haml:silent><haml:block>6</haml:block>"}
+        %ul#menu_third
+          %li.tab1
+            %span.tab_header
+              = link_to tr("All", "view/news/_nav"), :controller => "news", :action => "discussions"
+          %li.tab2
+            %span.tab_header
+              = link_to tr("Yours", "view/news/_nav"), :controller => "news", :action => "your_discussions"
+          %li.tab3
+            %span.tab_header
+              = link_to tr("Your priorities", "view/news/_nav"), :controller => "news", :action => "your_priority_discussions"
+          %li.tab4
+            %span.tab_header
+              = link_to tr("Priorities you created", "view/news/_nav"), :controller => "news", :action => "your_priorities_created_discussions"
+          - if current_user.followings_count > 0
+            %li.tab5
+              %span.tab_header
+                = link_to tr("Your network", "view/news/_nav"), :controller => "news", :action => "your_network_discussions"
+          - if current_user.followers_count > 0
+            %li.tab6
+              %span.tab_header
+                = link_to tr("Your followers", "view/news/_nav"), :controller => "news", :action => "your_followers_discussions"
+  - if params[:action].include?("activities")
+    #nav_third
+      %div{:id => "nav_third_<haml:silent> if ['activities'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['your_activities'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['your_priority_activities'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['your_priorities_created_activities'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['your_network_activities'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['your_followers_activities'].include?(params[:action]) </haml:silent><haml:block>6</haml:block>"}
+        %ul#menu_third
+          %li.tab1
+            %span.tab_header
+              = link_to tr("All", "view/news/_nav"), :controller => "news", :action => "activities"
+          %li.tab2
+            %span.tab_header
+              = link_to tr("Yours", "view/news/_nav"), :controller => "news", :action => "your_activities"
+          %li.tab3
+            %span.tab_header
+              = link_to tr("Your priorities", "view/news/_nav"), :controller => "news", :action => "your_priority_activities"
+          %li.tab4
+            %span.tab_header
+              = link_to tr("Priorities you created", "view/news/_nav"), :controller => "news", :action => "your_priorities_created_activities"
+          - if current_user.followings_count > 0
+            %li.tab5
+              %span.tab_header
+                = link_to tr("Your network", "view/news/_nav"), :controller => "news", :action => "your_network_activities"
+          - if current_user.followers_count > 0
+            %li.tab6
+              %span.tab_header
+                = link_to tr("Your followers", "view/news/_nav"), :controller => "news", :action => "your_followers_activities"
+  - if params[:action].include?("points")
+    #nav_third
+      %div{:id => "nav_third_<haml:silent> if ['points'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['your_points'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['your_priority_points'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['your_priorities_created_points'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['your_network_points'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['your_followers_points'].include?(params[:action]) </haml:silent><haml:block>6</haml:block>"}
+        %ul#menu_third
+          %li.tab1
+            %span.tab_header
+              = link_to tr("All", "view/news/_nav"), :controller => "news", :action => "points"
+          %li.tab2
+            %span.tab_header
+              = link_to tr("Yours", "view/news/_nav"), :controller => "news", :action => "your_points"
+          %li.tab3
+            %span.tab_header
+              = link_to tr("Your priorities", "view/news/_nav"), :controller => "news", :action => "your_priority_points"
+          %li.tab4
+            %span.tab_header
+              = link_to tr("Priorities you created", "view/news/_nav"), :controller => "news", :action => "your_priorities_created_points"
+          - if current_user.followings_count > 0
+            %li.tab5
+              %span.tab_header
+                = link_to tr("Your network", "view/news/_nav"), :controller => "news", :action => "your_network_points"
+          - if current_user.followers_count > 0
+            %li.tab6
+              %span.tab_header
+                = link_to tr("Your followers", "view/news/_nav"), :controller => "news", :action => "your_followers_points"
+  - if params[:action].include?("capital")
+    #nav_third
+      %div{:id => "nav_third_<haml:silent> if ['capital'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['your_capital'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['your_network_capital'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['your_followers_capital'].include?(params[:action]) </haml:silent><haml:block>4</haml:block>"}
+        %ul#menu_third
+          %li.tab1
+            %span.tab_header
+              = link_to tr("All", "view/news/_nav"), :controller => "news", :action => "capital"
+          %li.tab2
+            %span.tab_header
+              = link_to tr("Yours", "view/news/_nav"), :controller => "news", :action => "your_capital"
+          - if current_user.followings_count > 0
+            %li.tab3
+              %span.tab_header
+                = link_to tr("Your network", "view/news/_nav"), :controller => "news", :action => "your_network_capital"
+          - if current_user.followers_count > 0
+            %li.tab4
+              %span.tab_header
+                = link_to tr("Your followers", "view/news/_nav"), :controller => "news", :action => "your_followers_capital"
+  - if params[:action].include?("changes")
+    #nav_third
+      %div{:id => "nav_third_<haml:silent> if ['changes'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['changes_voting'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['your_changes'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['your_priorities_created_changes','your_priority_changes_activity'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['your_priority_changes_activity'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['changes_activity'].include?(params[:action]) </haml:silent><haml:block>6</haml:block>"}
+        %ul#menu_third
+          %li.tab1
+            %span.tab_header
+              = link_to tr("Proposals", "view/news/_nav"), :controller => "news", :action => "changes"
+          %li.tab2
+            %span.tab_header
+              = link_to tr("Voting results", "view/news/_nav"), :controller => "news", :action => "changes_voting"
+          %li.tab3
+            %span.tab_header
+              = link_to tr("Your activity", "view/news/_nav"), :controller => "news", :action => "your_changes"
+          %li.tab4
+            %span.tab_header
+              = link_to tr("Priorities you created", "view/news/_nav"), :controller => "news", :action => "your_priorities_created_changes"
+          %li.tab5
+            %span.tab_header
+              = link_to tr("Your priorities", "view/news/_nav"), :controller => "news", :action => "your_priority_changes_activity"
+          %li.tab6
+            %span.tab_header
+              = link_to tr("All activity", "view/news/_nav"), :controller => "news", :action => "changes_activity"

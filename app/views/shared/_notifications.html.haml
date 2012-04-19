@@ -1,0 +1,37 @@
+- if logged_in?
+  - if current_user.unread_notifications_count > 0
+    - @unread = current_user.received_notifications.unread.count(:group => [:type], :order => "count_all desc")
+    - if @unread.any?
+      #notification_box
+        %span.notification_sentence
+          = notifications_sentence(@unread)
+  - if current_user.endorsements_count > 1
+    - display_box = false
+    #next_steps_box
+      %h4= tr("There's a lot you can do at {instance_name}. Here's how to get started:", "view/shared/_notifications", :instance_name => tr(current_instance.name,"Name from database"))
+      %ol
+        - if current_user.followings_count < 2
+          - display_box = true
+          %li= link_to tr("Find people you know", "view/shared/_notifications"), user_contacts_path(current_user)
+        - if current_user.referrals_count == 0
+          - display_box = true
+          - if current_facebook_user_if_on_facebook
+            %li= link_to tr("Invite your Facebook friends", "view/shared/_notifications"), :controller => "facebook", :action => "invite"
+          - else
+            %li= link_to tr("Invite people to join", "view/shared/_notifications"), new_user_contact_url(current_user)
+        - if not current_user.has_picture? and not current_user.has_facebook?
+          - display_box = true
+          %li= link_to tr("Add your picture", "view/shared/_notifications"), picture_settings_url
+        - if not current_user.profile
+          - display_box = true
+          %li= link_to tr("Add your bio", "view/shared/_notifications"), new_user_profile_url(current_user)
+        - if current_user.points_count < 2 and current_user.endorsements_count > 2
+          - display_box = true
+          %li= link_to tr("Write points for your priorities", "view/shared/_notifications"), :controller => "briefing", :action => "points"
+        - if current_user.comments_count < 2 and current_user.endorsements_count > 2
+          - display_box = true
+          %li= link_to tr("Join the discussion on your priorities", "view/shared/_notifications"), :controller => "news", :action => "your_priority_discussions"
+    - unless display_box
+      :javascript
+        jQuery("#next_steps_box").hide();
+  			

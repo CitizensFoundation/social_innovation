@@ -1,0 +1,35 @@
+%b>= link_to tr("Top priorities", "view/home/top_issues"), top_priorities_url
+\:
+%br/
+- for tag in @issues
+  = tr(tag.title,"model/category")
+  \:
+  \#{link_to tag.top_priority.name, tag.top_priority}
+  %br/
+%p
+  %b>= link_to tr("Controversial priorities", "view/home/top_issues"), controversial_priorities_url
+  \:
+  %br/
+  - for tag in @issues
+    = tr(tag.title,"model/category")
+    \:
+    \#{link_to tag.controversial_priority.name, tag.controversial_priority}
+    %br/
+  %p
+    %b>= link_to tr("Rising priorities", "view/home/top_issues"), rising_priorities_url
+    \:
+    %br/
+    - for tag in @issues
+      = tr(tag.title,"model/category")
+      \:
+      \#{link_to tag.rising_priority.name, tag.rising_priority}
+      %br/
+    %p
+      %b>= link_to tr("{official_user_name} priorities", "view/home/top_issues", :official_user_name => current_instance.official_user_short_name), official_priorities_url
+      \:
+      %br/
+      - for tag in @issues
+        = tr(tag.title,"model/category")
+        \:
+        \#{link_to tag.official_priority.name, tag.official_priority}
+        %br/

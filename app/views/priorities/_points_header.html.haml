@@ -1,0 +1,10 @@
+- if support
+  %span#endorse-title= tr("Points for", "view/priorities/_nav")
+  %span.priority_add{:id => "priority_add_point_for#{priority.id.to_s}"}
+    = link_to tr("Add point for", "view/priorities/_nav"), new_priority_point_path(priority, support: true),          |
+      :class => "priority_add_link1", :title => tr("I endorse this and want to explain why.", "view/priorities/_nav") |
+- else
+  %span#oppose-title= tr("Points against", "view/priorities/_nav")
+  %span.priority_add{:id => "priority_add_point_against#{priority.id.to_s}"}
+    = link_to tr("Add point against", "view/priorities/_nav"), new_priority_point_path(priority),                       |
+      :class => "priority_add_link2", :title => tr("I oppose this and want to explain why.", "view/priorities/_button") |

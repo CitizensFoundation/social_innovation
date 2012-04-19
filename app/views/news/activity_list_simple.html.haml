@@ -1,0 +1,6 @@
+.clear
+- if not @activities
+  = tr("No activity here yet.", "view/news/activity_list")
+- else
+  #activities.single
+    = render :partial=>"news/activity_list"

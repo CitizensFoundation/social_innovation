@@ -1,0 +1,8 @@
+#hp_intro= @page_title
+= form_for :password, :url => passwords_path do |f|
+  %p
+    %label{:for => "email"}= tr("Your email address", "view/passwords/new")
+    %br/
+    = text_field_tag :email
+    = submit_tag tr("Request a new password", "view/passwords/new"), :class => "yellow_button"
+= link_to tr("Never mind, I remember it now", "view/passwords/new"), new_session_url

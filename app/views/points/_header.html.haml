@@ -1,0 +1,9 @@
+.intro
+  = render :partial => "points/intro", :locals => {:point => @point}
+#hp_intro
+  = h(@point.name)
+  - if (defined? quality and quality) or !logged_in?
+    %span.point_fblike
+      %fb:like{:action => tr("like","facebook"), :colorscheme => "light", :href => @point.show_url, :layout => "button_count", :ref => "priority", "show-faces" => "false", :width => "120"}
+  = render :partial=>"points/report_content", :locals=>{:point=>@point}
+  = render :partial=>"points/flagged", :locals=>{:point=>@point}

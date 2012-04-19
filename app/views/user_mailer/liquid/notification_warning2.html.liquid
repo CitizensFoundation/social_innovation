@@ -1,0 +1,16 @@
+Hæ {{ recipient.first_name | capitalize }},
+
+Þetta er önnur viðvörun.  Þú braust reglur Skuggaþings.  Þú hefur misst 10% (eða 1{{ instance.currency_short_name }}, hvort sem er meira) af þínum {{ instance.currency_name | downcase }}.  Vinsamlegast hættu að brjóta reglurnar!
+
+Skoðaðu reglurnar: {{ recipient.root_url }}about/rules
+
+Við þriðju viðvörun þá ferðu á skilorð, tapar 30% (eða 3{{ instance.currency_short_name }}, hvort sem er meira) af þínum {{ instance.currency_name | downcase }} og munt ekki geta sett neitt á vefinn í viku.
+
+Við fjórðu viðvörun þá verður þú bannaður á vefnum. 
+
+Hér er athugasemdin sem orsakaði þetta bréf. Ef þú hefur einhverjar spurningar þá geturðu haft samband við {{ instance.admin_name }} á netfangið {{ instance.admin_email }}.
+
+"{{ notifiable.content }}"
+
+---
+Þetta er sjálfvirk tilkynning {{ instance.name }} send á {{ recipient.email }}.

@@ -1,0 +1,25 @@
+%h1= tr("About {instance_name}", "view/about/index", :instance_name => tr(current_instance.name, "Name from database"))
+- if current_instance.layout=="better_reykjavik"
+  %br/
+  %p= tr("We believe the people of the world need good online democracy tools to find and choose their top priorities. And together discover which priorities they want to implement and in what order.", "view/about/index")
+  %br/
+  %p= tr("This is a global service by the Citizens Foundation in Iceland. The service provides a website for every country in the world under the yrpri domain.", "view/about/index")
+  %br/
+  %p= tr("Using Social Innovation software developed by the Citizens Foundation and others, people can add new ideas, add arguments for and against priorities, indicate if they support or oppose an idea, create a personal list of priorities and discuss all priorities. The end results are lists of top priorities in many categories as well as the best arguments for and against each priority.", "view/about/index")
+  %br/
+  %p= tr("The Citizens Foundation is an Icelandic non-profit organization focused on developing and promoting tools for citizen democracy worldwide.  All the software it creates is released as open source which anybody can use for free. The Citizens Foundation is and will be a neutral entity whose main objective is to foster collaboration between people and their politicians.", "view/about/index")
+  %br/
+  %p
+    %b= tr("Enjoy!", "view/about/index")
+- else
+  %br/
+  %p= tr("We believe the people of the world need good online democracy tools to find and choose their top priorities. And together discover which priorities they want to implement and in what order.", "view/about/index")
+  %br/
+  %p= tr("This is a global service by the Citizens Foundation in Iceland. The service provides a website for every country in the world under the yrpri domain.", "view/about/index")
+  %br/
+  %p= tr("Using Social Innovation software developed by the Citizens Foundation and others, people can add new ideas, add arguments for and against priorities, indicate if they support or oppose an idea, create a personal list of priorities and discuss all priorities. The end results are lists of top priorities in many categories as well as the best arguments for and against each priority.", "view/about/index")
+  %br/
+  %p= tr("The Citizens Foundation is an Icelandic non-profit organization focused on developing and promoting tools for citizen democracy worldwide.  All the software it creates is released as open source which anybody can use for free. The Citizens Foundation is and will be a neutral entity whose main objective is to foster collaboration between people and their politicians.", "view/about/index")
+  %br/
+  %p
+    %b= tr("Enjoy!", "view/about/index")

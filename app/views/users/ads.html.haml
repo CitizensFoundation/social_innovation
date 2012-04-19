@@ -1,0 +1,18 @@
+= render :partial => "header"
+%p
+  - if @ads.empty?
+    = tr("{user_name} hasn't purchased any ads yet.", "view/users/ads", :user_name => @user.name)
+  - else
+    - shown_active = false
+    - shown_past = false
+    - for ad in @ads
+      - if ad.status == 'active' and not shown_active
+        - shown_active = true
+        .heading= tr("Currently running ads", "view/users/ads")
+      - elsif ad.status != 'active' and not shown_past
+        %p
+          - shown_past = true
+        .heading= tr("Past ads", "view/users/ads")
+      = render :partial => "ads/show_inline", :locals => {:ad => ad}
+    %p
+      = will_paginate(@ads)

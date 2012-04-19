@@ -1,0 +1,7 @@
+- if user.has_picture?
+  = image_tag user.buddy_icon.url(:icon_48), :size => "48x48", :border => 0, :align => "left", :alt => "Click to add picture"
+- elsif user.facebook_id
+  = fb_profile_pic user,:facebook_logo=>false, :linked=>false, :size=>"square", :height=>"48",:width=>"48"
+- else
+  .border_miss_avatar48
+    = image_tag current_instance.buddy_icon.url(:icon_48), :size => "48x48", :border => 0, :alt => ""

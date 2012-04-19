@@ -1,0 +1,2 @@
+%img.icon{:border => "0", :height => "16", :src => "/assets/icons/link_break.png", :width => "16"}/
+= raw tr("{new_priority_name} failed to acquire {priority_name}", "view/activities/_activitypriorityacquisitionproposaldeclined_noself", :priority_name => link_to(activity.priority.name, activity.priority), :new_priority_name => link_to(activity.change.new_priority.name, activity.change.new_priority))

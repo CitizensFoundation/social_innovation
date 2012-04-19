@@ -1,0 +1,15 @@
+.activity_border
+  .notification{:id => "notification_#{notification.id}"}
+    .comment_x
+      - if logged_in? and (current_user.is_admin? or current_user.id == notification.recipient_id)
+        = link_to 'x', notification_url(notification.id),           |
+          :remote=>true,                                            |
+          'data-disable-with' => "",                                |
+          'data-loader-name' => "circle",                           |
+          :method => :delete,                                       |
+          :confirm => escape_t(tr("Remove from this page?","Ajax")) |
+    - cache("#{notification[:type].downcase}-#{notification.id}-#{session[:locale]}-#{@inline_translations_enabled}") do
+      = render :partial => "notifications/#{notification[:type].downcase}", :locals => {:notification => notification}
+    %span.small= time_ago(notification.created_at)
+    - if notification.unread?
+      %span.new NEW

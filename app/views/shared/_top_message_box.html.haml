@@ -1,0 +1,8 @@
+#message_to_users
+  .information_icon= image_tag("new/information_icon.png", :alt => "icon")
+  %a#close_information_box.close_notify2{:href => "#"} x
+  = tr(message_text,"message_from_database")
+:javascript
+  $('#close_information_box').click(function() {
+    $('#message_to_users').hide('fast');
+  });

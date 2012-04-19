@@ -1,0 +1,7 @@
+- unless current_facebook_user_if_on_facebook
+  = fb_login_and_redirect "/", :text=>"Samtengja", :size=>"small", :title=> "Samtengja við Facebook", :scope=>"publish_stream"
+  - if current_user
+    - unless current_user.buddy_icon
+      eða
+      %a{:href => "/settings/picture"} settu inn mynd
+      af þér.

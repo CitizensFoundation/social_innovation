@@ -1,0 +1,11 @@
+Hæ {{ recipient.first_name | capitalize}},
+
+{{ sender.name }} var að breyta skjali. Þú getur séð nákvæmlega hverju var breytt á {{ notifiable.url }}
+
+Núna stendur þar: 
+
+{{ notifiable.text }}
+
+---
+Þetta er sjálfvirk tilkynning {{ instance.name }} send á {{ recipient.email }}.
+Ef þú vilt ekki fá svona bréf, breyttu þá póststillingunum þínum hér: {{ recipient.unsubscribe_url }}

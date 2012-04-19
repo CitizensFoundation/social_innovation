@@ -1,0 +1,43 @@
+- if @google_translate_enabled_for_locale and session[:enable_google_translate]
+  %script{:src => "https://www.google.com/jsapi?key=AIzaSyCZPiaKns75_v5l-OKvFsmoL38CjwqReGs"}
+  = javascript_include_tag "jquery.translate.js"
+  = javascript_include_tag "google_translate.js"
+  :javascript
+    google.load("language", "1");
+    $(document).ready(function(){
+      google_translate_all_content('#{@google_translate_enabled_for_locale}');
+    });      
+  :javascript
+  function toggleGoogleTranslate(object) {
+    if (object.checked) {
+      insertParam('gt','1')
+    } else {
+      insertParam('gt','0')
+    }
+  }
+
+  function insertParam(key, value) {
+      key = escape(key); value = escape(value);
+
+      var kvp = document.location.search.substr(1).split('&');
+      if (kvp == "") {
+          document.location.search = key + "=" + value;
+      }
+      else {
+
+          var i = kvp.length; var x; while (i--) {
+              x = kvp[i].split('=');
+
+              if (x[0] == key) {
+                  x[1] = value;
+                  kvp[i] = x.join('=');
+                  break;
+              }
+          }
+
+          if (i < 0) { kvp[kvp.length] = [key, value].join('='); }
+
+          //this will reload the page, it's likely better to store this until finished
+          document.location.search = kvp.join('&');
+      }
+  }

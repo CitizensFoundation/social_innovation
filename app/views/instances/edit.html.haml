@@ -1,0 +1,146 @@
+#hp_intro= @page_title
+%p
+  = form_for(@instance) do |f|
+    = f.error_messages
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+      %tr
+        %td{:valign => "top"}
+          .field
+            .field_label
+              = tr("Name of Nation", "view/instances/edit")
+            .field_box
+              = f.text_field :name, :size => 40, :maxlength => 60
+          .field
+            .field_label
+              = tr("Tagline", "view/instances/edit")
+            .field_box
+              = f.text_field :tagline, :size => 40, :maxlength => 100
+          .field
+            .field_label
+              = tr("Meta Description", "view/instances/edit")
+            .field_box
+              = f.text_field :description, :size => 40
+          .field
+            .field_label
+              = tr("What are you running?", "view/instances/edit")
+            .field_box
+              = f.text_field :target, :size => 40, :maxlength => 30
+          .field
+            .field_label
+              = tr("Prompt", "view/instances/edit")
+            .field_box
+              = f.text_field :prompt, :size => 40, :maxlength => 100
+          .field
+            .field_label
+              = tr("Mission statement", "view/instances/edit")
+            .field_box
+              = f.text_field :mission, :size => 40, :maxlength => 100
+          .field
+            %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+              %tr
+                %td{:valign => "top"}
+                  .field_label
+                    = tr("Official User", "view/instances/edit")
+                  .field_box
+                    = f.text_field :official_user_name, :size => 20, :maxlength => 40
+                %td{:valign => "top"}
+                  .field_label
+                    = tr("Nickname", "view/instances/edit")
+                  .field_box
+                    = f.text_field :official_user_short_name, :size => 15, :maxlength => 25
+          .field
+            %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+              %tr
+                %td{:valign => "top"}
+                  .field_label
+                    = tr("Currency name (like 'political capital')", "view/instances/edit")
+                  .field_box
+                    = f.text_field :currency_name, :size => 30, :maxlength => 30
+                %td{:valign => "top"}
+                  .field_label
+                    = tr("Short (like 'pc')", "view/instances/edit")
+                  .field_box
+                    = f.text_field :currency_short_name, :size => 5, :maxlength => 3
+          .field
+            .field_label
+              Language:
+              \#{f.select :language_code, [1, 2, 3]}
+        %td{:style => "padding-left: 20px;", :valign => "top"}
+          .field
+            .field_label
+              = tr("Administrator Name", "view/instances/edit")
+            .field_box
+              = f.text_field :admin_name, :size => 40, :maxlength => 60
+          .field
+            .field_label
+              = tr("Base domain name", "view/instances/edit")
+            .field_box
+              = f.text_field :domain_name, :size => 40, :maxlength => 60
+          .field
+            .field_label
+              = tr("Default tags checkboxes", "view/instances/edit")
+            .field_box
+              = f.text_field :default_tags_checkbox, :size => 60, :maxlength => 220
+          .field
+            .field_label
+              = tr("Administrator's public email address", "view/instances/edit")
+            .field_box
+              = f.text_field :admin_email, :size => 40, :maxlength => 100
+          .field
+            .field_label
+              = tr("Notification 'from' email address", "view/instances/edit")
+            .field_box
+              = f.text_field :email, :size => 40, :maxlength => 100
+          .field
+            .field_label
+              = tr("Name for tags: (singular, like Category or Issue)", "view/instances/edit")
+            .field_box
+              = f.text_field :tags_name, :size => 40, :maxlength => 20
+          .field
+            .field_label
+              = tr("Message to users from the service", "view/instances/edit")
+            .field_box
+              = f.text_area :message_to_users, :rows => 7, :cols=>15
+          .field
+            .field_label
+              = tr("Message for ads", "view/instances/edit")
+            .field_box
+              = f.text_area :message_for_ads, :rows => 7, :cols=>20
+          .field
+            .field_label
+              = tr("Message for issues", "view/instances/edit")
+            .field_box
+              = f.text_area :message_for_issues, :rows => 7, :cols=>20
+          .field
+            .field_label
+              = tr("Message for network", "view/instances/edit")
+            .field_box
+              = f.text_area :message_for_network, :rows => 7, :cols=>20
+          .field
+            .field_label
+              = tr("Message for finished", "view/instances/edit")
+            .field_box
+              = f.text_area :message_for_finished, :rows => 7, :cols=>20
+          .field
+            .field_label
+              = tr("Message for points", "view/instances/edit")
+            .field_box
+              = f.text_area :message_for_points, :rows => 7, :cols=>20
+          .field
+            .field_label
+              = tr("Message for new priority", "view/instances/edit")
+            .field_box
+              = f.text_area :message_for_new_priority, :rows => 7, :cols=>20
+          .field
+            .field_label
+              = tr("Message for new news", "view/instances/edit")
+            .field_box
+              = f.text_area :message_for_news, :rows => 7, :cols=>20
+          .field
+            .field_box
+              = f.check_box :is_suppress_empty_priorities
+              = tr("Hide priorities with 0 endorsers/opposers", "view/instances/edit")
+            .field_box
+              = f.check_box :is_tags
+              = tr("Enable {tags_name}", "view/instances/edit", :tags_name => current_instance.tags_name.pluralize.downcase)
+    = f.submit tr("Save Nation Settings", "view/instances/edit"), :class => "submit_button"

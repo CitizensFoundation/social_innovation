@@ -1,0 +1,3 @@
+- for priority in @priorities
+  .priority_listing{:id => "priority_#{priority.id}"}
+    = render :partial => "priorities/listing", :locals => {:priority => priority, :value => 0}

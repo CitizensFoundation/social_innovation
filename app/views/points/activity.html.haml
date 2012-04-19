@@ -1,0 +1,17 @@
+= render :partial => "points/header"
+= render :partial => "points/nav"
+%table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+  %tr
+    %td{:valign => "top"}
+      - if logged_in? and params[:action] == 'discussions'
+        %p
+          = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
+      = will_paginate(@activities)
+      %p
+      #activities
+        - for activity in @activities
+          = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_noself" }
+      %p
+        = will_paginate(@activities)
+    %td{:style => "padding-left: 20px;", :valign => "top", :width => "150"}
+      = render :partial => "revisions/revisions"

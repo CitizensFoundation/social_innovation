@@ -1,0 +1,22 @@
+- cache(["portlets_network_newest",locale,Partner.current_id,@inline_translations_enabled], :expires_in => 5.minutes) do
+  %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+    - for user in User.active.at_least_one_endorsement.by_recently_created.item_limit(portlet.portlet_template.item_limit)
+      %tr
+        %td{:style => "padding: 7px 5px 4px 0px;", :valign => "top", :width => "26"}
+          = render :partial => "users/pic", :locals => {:user => user}
+        %td{:style => "padding: 7px 5px 4px 0px;", :valign => "top"}
+          = link_to user.login, user
+          %span.pc
+            = user.capitals_count
+            = current_instance.currency_short_name
+          = tr("Joined {time_ago}", "view/portal/portlets", :time_ago => time_ago(user.created_at))
+          \&middot; #{tr("{count} endorsements", "view/portal/portlets", :count => user.up_endorsements_count)}
+          - if user.down_endorsements_count > 0
+            \&middot; #{tr("{count} oppositions", "view/portal/portlets", :count => user.down_endorsements_count)}
+          - if user.has_top_priority?
+            %br/
+            = tr("#1 priority:", "view/portal/portlets")
+            - if user.top_endorsement.is_down?
+              %span.opposed= tr("Opposing", "view/portal/portlets")
+            = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+  = link_to "#{tr("More", "view/portal/portlets")}...", "/network/newest"
