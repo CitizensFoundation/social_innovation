@@ -10,7 +10,6 @@
     = render :partial => "shared/priority_processes_head" if controller_name.index("process")
     - if controller_name == "users"
       = stylesheet_link_tag "fb_invite_hack"
-    = javascript_include_tag "skuggathing.js" unless controller_name=="priority_processes"
     - if ["users","sessions"].include?(controller_name)
       = stylesheet_link_tag "jquery.keypad.css"
       = javascript_include_tag "jquery.keypad.min.js"

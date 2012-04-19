@@ -10,5 +10,5 @@
   %meta{:content => tr(current_instance.name,"Name from database"), :itemprop => "name"}/
   %meta{:content => tr(current_instance.description,"Description from database"), :itemprop => "description"}/
   %meta{:content => "http://#{request.host_with_port+current_instance.logo.url}", :itemprop => "image"}/
-- if current_instance.has_logo? and not controller_name=="process_speech_videos" and not controller_name=="process_documents"
+- if current_instance.has_logo?
   %link{:href => current_instance.logo.url, :rel => "image_src"}/

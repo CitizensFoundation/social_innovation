@@ -26,10 +26,6 @@
               (#{@user.followers_count})
               %br/
             %p
-      - if @user.documents_count > 0 or @user.points_count > 0
-        %li.tab5
-          %span.tab_header
-            = link_to tr("Points", "view/users/_profile_nav") + " (" + (@user.points_count+@user.documents_count).to_s + ")", points_user_url(@user)
       %li.tab6.mega
         %span.tab_header
           = link_to tr("News", "view/users/_profile_nav"), activities_user_url(@user)

@@ -7,7 +7,6 @@ class AdminController < ApplicationController
     @all += Priority.published.flagged
     @all += Point.published.flagged
     @all += Comment.published.flagged
-    @all += Document.published.flagged
     @all = @all.sort_by {|s| s.created_at}
     @page_title = tr("All Flagged Content", "controller/admin")
   end
@@ -18,7 +17,6 @@ class AdminController < ApplicationController
     @all += Priority.unpublished
     @all += Question.unpublished
     @all += Comment.unpublished
-    @all += Document.unpublished
     @all = @all.sort_by {|s| s.updated_at}.reverse
     @page_title = tr("All Deleted Content", "controller/admin")    
     render :action=>:all_flagged

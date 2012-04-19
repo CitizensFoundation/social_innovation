@@ -25,7 +25,7 @@ GIT
       riddle (>= 1.5.0)
 
 GIT
-  remote: git://github.com/hinrik/tr8n.git
+  remote: git://github.com/rbjarnason/tr8n.git
   revision: 9505c0fa23989783c3217803130ac497c1152ce5
   specs:
     tr8n (3.1.8)
@@ -118,6 +118,12 @@ GEM
     gem_plugin (0.2.3)
     geoip (1.1.2)
     googlecharts (1.6.8)
+    haml (3.1.4)
+    haml-rails (0.3.4)
+      actionpack (~> 3.0)
+      activesupport (~> 3.0)
+      haml (~> 3.0)
+      railties (~> 3.0)
     hashie (1.1.0)
     headless (0.3.1)
     highline (1.6.11)
@@ -295,6 +301,7 @@ DEPENDENCIES
   factory_girl_rails
   geoip
   googlecharts
+  haml-rails
   headless
   hpricot (>= 0.6)
   htmlentities

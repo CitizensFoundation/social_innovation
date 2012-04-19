@@ -150,12 +150,14 @@ class UserMailer < ActionMailer::Base
   private
 
     def get_conditional_logo
-      if @instance.layout.include?("better_reykjavik")
+      if Instance.first.layout.include?("better_reykjavik")
         File.read(Rails.root.join("app/assets/images/logos/BR_email.png"))
-      elsif @instance.layout.include?("better_iceland")
+      elsif Instance.first.layout.include?("better_iceland")
         File.read(Rails.root.join("app/assets/images/logos/betraIsland-merki.png"))
-      else
+      elsif Instance.first.layout.include?("your_priorities")
         File.read(Rails.root.join("app/assets/images/logos/YourPriorities_large.png"))
+      else
+        File.read(Rails.root.join("app/assets/images/logos/default.gif"))
       end
     end
 

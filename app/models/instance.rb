@@ -34,12 +34,6 @@ class Instance < ActiveRecord::Base
   validates_presence_of     :name
   validates_length_of       :name, :within => 3..60
 
-  validates_presence_of     :short_name
-  validates_uniqueness_of   :short_name, :case_sensitive => false
-  ReservedShortnames = %w[admin blog dev ftp mail pop pop3 imap smtp stage stats status www jim jgilliam gilliam feedback facebook builder nationbuilder misc]
-  validates_exclusion_of    :short_name, :in => ReservedShortnames, :message => 'is already taken'  
-  validates_format_of       :short_name, :with => /^([a-z]|[a-z][a-z0-9]|[a-z]([a-z0-9]|\-[a-z0-9])*)$/
-
   validates_presence_of     :admin_name
   validates_length_of       :admin_name, :within => 3..60
 
@@ -47,9 +41,9 @@ class Instance < ActiveRecord::Base
   validates_length_of       :admin_email, :within => 3..100, :allow_nil => true, :allow_blank => true
   validates_format_of       :admin_email, :with => /^[-^!$#%&'*+\/=3D?`{|}~.\w]+@[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])*(\.[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])*)+$/x
 
-  validates_presence_of     :email
-  validates_length_of       :email, :within => 3..100, :allow_nil => true, :allow_blank => true
-  validates_format_of       :email, :with => /^[-^!$#%&'*+\/=3D?`{|}~.\w]+@[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])*(\.[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])*)+$/x
+#  validates_presence_of     :email
+#  validates_length_of       :email, :within => 3..100, :allow_nil => true, :allow_blank => true
+#  validates_format_of       :email, :with => /^[-^!$#%&'*+\/=3D?`{|}~.\w]+@[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])*(\.[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])*)+$/x
 
   validates_presence_of     :tags_name
   validates_length_of       :tags_name, :maximum => 20
@@ -119,9 +113,7 @@ class Instance < ActiveRecord::Base
     self.endorsements_count = Endorsement.active_and_inactive.count
     self.sub_instances_count = SubInstance.active.count
     self.points_count = Point.published.count
-    self.documents_count = Document.published.count
     self.contributors_count = User.active.at_least_one_endorsement.contributed.count
-    self.official_user_priorities_count = official_user.endorsements_count if has_official?
     self.save(:validate => false)
   end  
   

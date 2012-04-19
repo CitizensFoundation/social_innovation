@@ -114,13 +114,8 @@ class Tag < ActiveRecord::Base
     Point.published.count(:conditions => ["priority_id in (?)",published_priority_ids])
   end  
   
-  def calculate_documents_count
-    Document.published.count(:conditions => ["priority_id in (?)",published_priority_ids])
-  end
-  
   def update_counts
     self.priorities_count = priorities.published.count
-    self.documents_count = calculate_documents_count
     self.points_count = calculate_points_count
     self.discussions_count = calculate_discussions_count
   end  

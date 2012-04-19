@@ -149,7 +149,6 @@ namespace :fix do
     connection.execute("OPTIMIZE TABLE blasts;")
     connection.execute("OPTIMIZE TABLE capitals;")
     connection.execute("OPTIMIZE TABLE changes;")
-    connection.execute("OPTIMIZE TABLE client_applications;")
     connection.execute("OPTIMIZE TABLE comments;")
     connection.execute("OPTIMIZE TABLE constituents;")
     connection.execute("OPTIMIZE TABLE delayed_jobs;")

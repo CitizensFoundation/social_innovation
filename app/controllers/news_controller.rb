@@ -223,7 +223,7 @@ class NewsController < ApplicationController
   end  
   
   def your_followers_points
-    @page_title = tr("Points and documents from your followers", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Points from your followers", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = Activity.active.filtered.points_and_docs.paginate :conditions => ["user_id in (?)",current_user.followers.collect{|e|e.user_id}.uniq.compact], :page => params[:page]      
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -284,7 +284,7 @@ class NewsController < ApplicationController
   end  
   
   def your_network_points
-    @page_title = tr("Points and documents in your network", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Points in your network", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     if current_following_ids.empty?
       @activities = Activity.active.filtered.points_and_docs.paginate :conditions => "user_id = #{current_user.id.to_s}", :page => params[:page]      
     else
@@ -405,7 +405,7 @@ class NewsController < ApplicationController
   end
   
   def your_priority_points
-    @page_title = tr("Points and documents on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Points on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     if current_priority_ids.any?  
       @activities = Activity.active.filtered.last_seven_days.points_and_docs.paginate :conditions => ["priority_id in (?)",current_priority_ids], :page => params[:page]

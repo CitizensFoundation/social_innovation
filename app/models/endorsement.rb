@@ -275,11 +275,6 @@ class Endorsement < ActiveRecord::Base
         p.calculate_score(true,self)
       end
     end
-    if user.qualities_count > 0 and priority.documents_count > 0
-      for p in priority.documents.published.all
-        p.calculate_score(true,self)
-      end
-    end
   end
   
   def add_update_counts
@@ -300,11 +295,6 @@ class Endorsement < ActiveRecord::Base
         p.calculate_score(true,self)
       end
     end
-    if user.qualities_count > 0 and priority.documents_count > 0
-      for p in priority.documents.published.all
-        p.calculate_score(true,self)
-      end
-    end    
-  end  
+  end
   
 end

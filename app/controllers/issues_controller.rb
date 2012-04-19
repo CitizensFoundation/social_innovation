@@ -234,18 +234,7 @@ class IssuesController < ApplicationController
       format.xml { render :xml => @activities.to_xml(:include => :comments, :except => NB_CONFIG['api_exclude_fields']) }
       format.json { render :json => @activities.to_json(:include => :comments, :except => NB_CONFIG['api_exclude_fields']) }
     end
-  end  
-  
-  def documents
-    @page_title = tr("Documents on {tag_name}", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @priorities = Priority.filtered.tagged_with(@tag_names, :on => :issues)
-    @documents = Document.by_helpfulness.find(:all, :conditions => ["priority_id in (?)",@priorities.collect{|p| p.id}]).paginate :page => params[:page], :per_page => params[:per_page]
-    respond_to do |format|
-      format.html
-      format.xml { render :xml => @documents.to_xml(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @documents.to_json(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-    end        
-  end  
+  end
 
   def points
     @page_title = tr("{tag_name} points", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)

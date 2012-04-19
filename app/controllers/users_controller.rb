@@ -267,19 +267,6 @@ class UsersController < ApplicationController
     end    
   end
   
-  def documents
-    @user = User.find(params[:id])
-    redirect_to '/' and return if check_for_suspension
-    get_following
-    @page_title = tr("{user_name} documents at {instance_name}", "controller/users", :user_name => @user.name.possessive, :instance_name => tr(current_instance.name,"Name from database"))
-    @documents = @user.documents.published.by_recently_updated.paginate :page => params[:page], :per_page => params[:per_page]
-    respond_to do |format|
-      format.html
-      format.xml { render :xml => @documents.to_xml(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @documents.to_json(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-    end    
-  end
-
   def stratml
     @user = User.find(params[:id])
     @page_title = tr("{user_name} priorities at {instance_name}", "controller/users", :user_name => @user.name.possessive, :instance_name => tr(current_instance.name,"Name from database"))

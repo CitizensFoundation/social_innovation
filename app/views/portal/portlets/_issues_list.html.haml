@@ -11,9 +11,6 @@
           - if issue.points_count > 0
             \&middot;
             %a{:href => "/issues/#{issue.slug}/points"}= tr("{count} points", "view/portal/portlets", :count => issue.points_count)
-          - if issue.documents_count > 0
-            \&middot;
-            %a{:href => "/issues/#{issue.slug}/documents"}= tr("{count} documents", "view/portal/portlets", :count => issue.documents_count)
           - if issue.discussions_count > 0
             \&middot;
             %a{:href => "/issues/#{issue.slug}/discussions"}= tr("{count} discussions", "view/portal/portlets", :count => issue.discussions_count)
@@ -31,9 +28,6 @@
           - if issue.points_count > 0
             \&middot;
             %a{:href => "/issues/#{issue.slug}/points"}= tr("{count} points", "view/portal/portlets", :count => issue.points_count)
-          - if issue.documents_count > 0
-            \&middot;
-            %a{:href => "/issues/#{issue.slug}/documents"}= tr("{count} documents", "view/portal/portlets", :count => issue.documents_count)
           - if issue.discussions_count > 0
             \&middot;
             %a{:href => "/issues/#{issue.slug}/discussions"}= tr("{count} discussions", "view/portal/portlets", :count => issue.discussions_count)

@@ -7,7 +7,7 @@
     - nav = 1
   - elsif ['network','users','user_contacts','import','messages','inbox','facebook'].include?(params[:controller]) or (params[:controller] == 'sub_instances' and not logged_in?)
     - nav = 5
-  - elsif ['points','revisions','documents','document_revisions','briefing'].include?(params[:controller])
+  - elsif ['points','revisions'].include?(params[:controller])
     - nav = 3
   - elsif ['settings','profiles','instances','color_schemes','admin','passwords','pages','sub_instances','tags'].include?(params[:controller])
     - nav = 6
@@ -15,113 +15,95 @@
     - nav = 7
   - else
     - nav = 0
-  #nav
-    .clearfix{:id => "nav#{nav}"}
-      - if false and current_instance.has_fav_icon?
-        %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-          %tr
-            %td{:align => "left", :style => "padding: 0px 0px 0px 10px;", :valign => "middle"}
-              %a{:href => "/"}= image_tag current_instance.fav_icon.url(:icon_16), :border => 0
-            %td{:align => "left", :valign => "middle"}
-      %ul#menu
-        %li.tab0
-          %span.tab_header= link_to tr("Home","Menu system"), :controller => "portal"
-        %li.tab2
-          %span.tab_header= link_to tr("Priorities", "view/shared/_menu"), :controller => "priorities", :action=>"top_24hr"
-        %li.tab3
-          %span.tab_header= link_to tr("Points", "view/shared/_menu"), :controller => "points"
-        - if logged_in?
-          %li.tab5
-            %span.tab_header= link_to tr("People", "view/shared/_menu"), following_user_contacts_path(current_user)
-          %li.tab1
-            %span.tab_header= link_to tr("Categories","Menu system"), :controller => "issues"
-          %li.tab4
-            %span.tab_header= link_to tr("News", "view/shared/_menu"), :controller => "news", :action=>"top"
-        - else
-          %li.tab5
-            %span.tab_header= link_to tr("People", "view/shared/_menu"), :controller => "network"
-          %li.tab1
-            %span.tab_header= link_to tr("Categories","Menu system"), :controller => "issues"
-          %li.tab4
-            %span.tab_header= link_to tr("News", "view/shared/_menu"), :controller => "news", :action=>"top"
-        - if  Instance.current.layout=="better_reykjavik"
-          - if true or current_sub_instance or (controller_name == "about" and action_name=="show" and params[:id] == 'choose_sub_instance')
-            %li.tab7.mega
-              %span.tab_header
-                = link_to tr("About sub_instances", "view/shared/_menu"), "/about/choose_sub_instance"
-              .tab_body
-                .tab_subhead
-                  \&middot; #{link_to tr("About sub_instances", "controller/about"), :controller => "about", :action => "sub_instances"}
-                  %br/
-                  \&middot; #{link_to tr("Choose a sub_instance", "controller/about"), :controller => "about", :action => "choose_sub_instance"}
-                  %br/
-                  \&middot; #{link_to tr("What kind of priorities", "controller/about"), :controller => "about", :action => "sub_instance_what_kind"}
-                  %br/
-                  \&middot; #{link_to tr("SubInstance rules", "controller/about"), :controller => "about", :action => "sub_instance_rules"}
-                  %br/
-                  \&middot; #{link_to tr("From priorities to action", "controller/about"), :controller => "about", :action => "sub_instance_from_priorities_to_action"}
-                  %br/
-        - if logged_in? and current_user.is_admin?
-          %li.tab6.mega
-            %span.tab_header
-              = link_to tr("Settings", "view/shared/_menu"), "#"
-            .tab_body
-              - if logged_in? and current_user.is_admin?
-                .tab_subhead
-                  = link_to tr("Setup a sub_instance", "view/shared/_menu"), sub_instances_url
+#nav
+  .clearfix{:id => "nav#{nav}"}
+    - if false and current_instance.has_fav_icon?
+      %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+        %tr
+          %td{:align => "left", :style => "padding: 0px 0px 0px 10px;", :valign => "middle"}
+            %a{:href => "/"}= image_tag current_instance.fav_icon.url(:icon_16), :border => 0
+          %td{:align => "left", :valign => "middle"}
+    %ul#menu
+      %li.tab0
+        %span.tab_header= link_to tr("Home","Menu system"), :controller => "portal"
+      %li.tab2
+        %span.tab_header= link_to tr("Priorities", "view/shared/_menu"), :controller => "priorities", :action=>"top_24hr"
+      %li.tab3
+        %span.tab_header= link_to tr("Points", "view/shared/_menu"), :controller => "points"
+      - if logged_in?
+        %li.tab5
+          %span.tab_header= link_to tr("People", "view/shared/_menu"), following_user_contacts_path(current_user)
+        %li.tab1
+          %span.tab_header= link_to tr("Categories","Menu system"), :controller => "issues"
+        %li.tab4
+          %span.tab_header= link_to tr("News", "view/shared/_menu"), :controller => "news", :action=>"top"
+      - else
+        %li.tab5
+          %span.tab_header= link_to tr("People", "view/shared/_menu"), :controller => "network"
+        %li.tab1
+          %span.tab_header= link_to tr("Categories","Menu system"), :controller => "issues"
+        %li.tab4
+          %span.tab_header= link_to tr("News", "view/shared/_menu"), :controller => "news", :action=>"top"
+      - if logged_in? and current_user.is_admin?
+        %li.tab6.mega
+          %span.tab_header
+            = link_to tr("Settings", "view/shared/_menu"), "#"
+          .tab_body
+            - if logged_in? and current_user.is_admin?
+              .tab_subhead
+                = link_to tr("Setup a sub_instance", "view/shared/_menu"), sub_instances_url
+            - if logged_in? and current_user.is_admin? and SubInstance.current
+              .tab_subhead
+                = link_to tr("SubInstance settings", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+            .tab_sublinks
               - if logged_in? and current_user.is_admin? and SubInstance.current
-                .tab_subhead
-                  = link_to tr("SubInstance settings", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+                = link_to tr("SubInstance account", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+                \&middot; #{link_to tr("Logo", "view/shared/_menu"), picture_sub_instance_path(SubInstance.current)}
+                \&middot; #{link_to tr("Email list", "view/shared/_menu"), email_sub_instance_path(SubInstance.current)}
+            - if current_user.is_admin?
+              .tab_subhead
+                = link_to tr("Nation settings", "view/shared/_menu"), edit_instance_url(current_instance)
               .tab_sublinks
-                - if logged_in? and current_user.is_admin? and SubInstance.current
-                  = link_to tr("SubInstance account", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
-                  \&middot; #{link_to tr("Logo", "view/shared/_menu"), picture_sub_instance_path(SubInstance.current)}
-                  \&middot; #{link_to tr("Email list", "view/shared/_menu"), email_sub_instance_path(SubInstance.current)}
-              - if current_user.is_admin?
-                .tab_subhead
-                  = link_to tr("Nation settings", "view/shared/_menu"), edit_instance_url(current_instance)
-                .tab_sublinks
-                  = link_to tr("Categories", "view/shared/_menu"), "/categories"
-                  \&middot;
-                  \#{link_to tr("Settings", "view/shared/_menu"), edit_instance_url(current_instance)}
-                  \&middot;
-                  \#{link_to tr("All Flagged", "view/shared/_menu"), "/admin/all_flagged"}
-                  \&middot;
-                  - if current_instance.is_tags?
-                    \&middot; #{link_to current_instance.tags_name.pluralize.titleize, tags_url}
-                  \&middot; #{link_to tr("API keys", "view/shared/_menu"), apis_instance_url(current_instance)}
-                  %br/
-                  = link_to tr("Pages", "view/shared/_menu"), pages_url
-                  \&middot;
-                  %br/
-                  = link_to tr("Graphics", "view/shared/_menu"), :controller => "admin", :action => "picture"
-                  \&middot; #{link_to tr("Colors", "view/shared/_menu"), color_schemes_url}
-      - if current_instance.has_fav_icon?
-  - if nav == 1
-    = render :partial => "issues/nav"
-  - elsif nav == 2 and not ["show","discussions","endorsers","opposers",
-  - "top_points","activities","new"].include?(action_name)
-    = render :partial => "priorities/browse_nav"
-  - elsif nav == 3 and not ["new"].include?(action_name)
-    = render :partial => "briefing/nav"
-  - elsif nav == 4
-    = render :partial => "news/nav"
-  - elsif nav == 5
-    - if ['user_contacts','facebook','import'].include?(params[:controller])
-      = render :partial => "network/nav"
-    - elsif ['inbox'].include?(params[:controller])
-      = render :partial => "inbox/nav"
-    - else
-      = render :partial => "network/nav"
-  - elsif nav == 6
-    - if ['instances','color_schemes','admin','pages','tags'].include?(params[:controller])
-      = render :partial => "admin/nav"
-    - elsif ['sub_instances'].include?(params[:controller]) and logged_in?
-      = render :partial => "sub_instances/nav"
-    - elsif logged_in?
-      = render :partial => "settings/nav"
-  - elsif nav == 7
-    - if ['charts'].include?(params[:controller])
-      = render :partial => "charts/nav"
-    - elsif ['widgets'].include?(params[:controller])
-      = render :partial => "widgets/nav"
+                = link_to tr("Categories", "view/shared/_menu"), "/categories"
+                \&middot;
+                \#{link_to tr("Settings", "view/shared/_menu"), edit_instance_url(current_instance)}
+                \&middot;
+                \#{link_to tr("All Flagged", "view/shared/_menu"), "/admin/all_flagged"}
+                \&middot;
+                - if current_instance.is_tags?
+                  \&middot; #{link_to current_instance.tags_name.pluralize.titleize, tags_url}
+                \&middot; #{link_to tr("API keys", "view/shared/_menu"), apis_instance_url(current_instance)}
+                %br/
+                = link_to tr("Pages", "view/shared/_menu"), pages_url
+                \&middot;
+                %br/
+                = link_to tr("Graphics", "view/shared/_menu"), :controller => "admin", :action => "picture"
+                \&middot; #{link_to tr("Colors", "view/shared/_menu"), color_schemes_url}
+- if nav == 1
+  = render :partial => "issues/nav"
+- elsif nav == 2 and not ["show","discussions","endorsers","opposers",
+- "top_points","activities","new"].include?(action_name)
+  = render :partial => "priorities/browse_nav"
+- elsif nav == 3 and not ["new"].include?(action_name)
+  = render :partial => "briefing/nav"
+- elsif nav == 4
+  = render :partial => "news/nav"
+- elsif nav == 5
+  - if ['user_contacts','facebook','import'].include?(params[:controller])
+    = render :partial => "network/nav"
+  - elsif ['inbox'].include?(params[:controller])
+    = render :partial => "inbox/nav"
+  - else
+    = render :partial => "network/nav"
+- elsif nav == 6
+  - if ['instances','color_schemes','admin','pages','tags'].include?(params[:controller])
+    = render :partial => "admin/nav"
+  - elsif ['sub_instances'].include?(params[:controller]) and logged_in?
+    = render :partial => "sub_instances/nav"
+  - elsif logged_in?
+    = render :partial => "settings/nav"
+- elsif nav == 7
+  - if ['charts'].include?(params[:controller])
+    = render :partial => "charts/nav"
+  - elsif ['widgets'].include?(params[:controller])
+    = render :partial => "widgets/nav"

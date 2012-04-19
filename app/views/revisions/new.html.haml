@@ -39,4 +39,4 @@
     %td{:style => "padding-left: 20px;", :valign => "top", :width => "150"}
       = link_to tr("Cancel this revision", "view/revisions/new"), @point
       %p
-        = render :partial => "documents/authors", :locals => {:users => @point.authors }
+        = render :partial => "points/authors", :locals => {:users => @point.authors }

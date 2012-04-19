@@ -5,6 +5,7 @@ gem 'rails', '3.2.3'
 gem 'mysql2'
 gem "recaptcha", :require => "recaptcha/rails"
 gem 'capistrano'
+gem 'haml-rails'
 gem 'nokogiri'
 gem 'tidy-ext'
 gem "ruby-openid"
@@ -36,7 +37,7 @@ gem 'jquery-rails'
 gem 'ckeditor', '3.6.3'
 gem 'kaminari'
 gem 'will_filter'
-gem 'tr8n', :git => "git://github.com/hinrik/tr8n.git"
+gem 'tr8n', :git => "git://github.com/rbjarnason/tr8n.git"
 gem 'workflow'
 gem "airbrake"
 gem 'jquery-rjs', :git => "git://github.com/aaronchi/jquery-rjs.git"

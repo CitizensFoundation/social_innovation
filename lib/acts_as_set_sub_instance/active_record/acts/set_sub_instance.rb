@@ -19,11 +19,12 @@ module ActiveRecord
       
       module InstanceMethods
         def set_sub_instance
-          if self.class.class_name=="Activity" and self.priority and self.priority.sub_instance
-            self.sub_instance_id = self.priority.sub_instance.id
-          else       
+    # DISABLED HACK
+    #      if self.class.class_name=="Activity" and self.priority and self.priority.sub_instance
+    #        self.sub_instance_id = self.priority.sub_instance.id
+    #      else
             self.sub_instance_id = SubInstance.current.id if SubInstance.current
-          end
+    #      end
         end
       end
     end

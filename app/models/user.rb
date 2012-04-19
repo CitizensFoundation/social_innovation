@@ -1,4 +1,5 @@
 require 'digest/sha1'
+
 class User < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
@@ -12,7 +13,7 @@ class User < ActiveRecord::Base
   scope :twitterers, :conditions => "users.twitter_login is not null and users.twitter_login <> ''"
   scope :authorized_twitterers, :conditions => "users.twitter_token is not null"
   scope :uncrawled_twitterers, :conditions => "users.twitter_crawled_at is null"
-  scope :contributed, :conditions => "users.document_revisions_count > 0 or users.point_revisions_count > 0"
+  scope :contributed, :conditions => "users.point_revisions_count > 0"
   scope :no_recent_login, :conditions => "users.loggedin_at < '#{Time.now-90.days}'"
   scope :admins, :conditions => "users.is_admin = true"
   scope :suspended, :conditions => "users.status = 'suspended'"
@@ -26,7 +27,7 @@ class User < ActiveRecord::Base
   scope :by_talkative, :conditions => "users.comments_count > 0", :order => "users.comments_count desc"
   scope :by_twitter_count, :order => "users.twitter_count desc"
   scope :by_recently_created, :order => "users.created_at desc"
-  scope :by_revisions, :order => "users.document_revisions_count+users.point_revisions_count desc"
+  scope :by_revisions, :order => "users.point_revisions_count desc"
   scope :by_invites_accepted, :conditions => "users.contacts_invited_count > 0", :order => "users.referrals_count desc"
   scope :by_suspended_at, :order => "users.suspended_at desc"
   scope :by_deleted_at, :order => "users.deleted_at desc"
@@ -71,14 +72,11 @@ class User < ActiveRecord::Base
   has_many :activities, :dependent => :destroy
   has_many :points, :dependent => :destroy
   has_many :point_revisions, :class_name => "Revision", :dependent => :destroy
-  has_many :documents, :dependent => :destroy  
-  has_many :document_revisions, :class_name => "DocumentRevision", :dependent => :destroy
   has_many :changes, :dependent => :nullify
   has_many :rankings, :class_name => "UserRanking", :dependent => :destroy
     
   has_many :point_qualities, :dependent => :destroy
-  has_many :document_qualities, :dependent => :destroy
-  
+
   has_many :votes, :dependent => :destroy
 
   has_many :comments, :dependent => :destroy
@@ -426,11 +424,9 @@ class User < ActiveRecord::Base
     self.up_endorsements_count = endorsements.active.endorsing.size
     self.down_endorsements_count = endorsements.active.opposing.size
     self.comments_count = comments.size
-    self.document_revisions_count = document_revisions.published.size
-    self.point_revisions_count = point_revisions.published.size      
-    self.documents_count = documents.published.size
+    self.point_revisions_count = point_revisions.published.size
     self.points_count = points.published.size
-    self.qualities_count = point_qualities.size + document_qualities.size
+    self.qualities_count = point_qualities.size
     return true
   end
   
@@ -489,7 +485,7 @@ class User < ActiveRecord::Base
   def quality_factor
     # TODO: this needs to me rethought, since it penalizes users for rating points
     return 1 #if qualities_count < 10
-    rev_count = document_revisions_count+point_revisions_count
+    rev_count = point_revisions_count
     return 10/qualities_count.to_f if rev_count == 0
     i = (rev_count*2).to_f/qualities_count.to_f
     return 1 if i > 1
@@ -507,7 +503,7 @@ class User < ActiveRecord::Base
   end
    
   def revisions_count
-    document_revisions_count+point_revisions_count-points_count-documents_count 
+    point_revisions_count-points_count
   end
   memoize :revisions_count
   
@@ -989,23 +985,8 @@ class User < ActiveRecord::Base
           else
             priorities = []
           end
-          if self.reports_questions
-            questions = Question.tagged_with(tags,:match_any=>true).published.since(self.last_sent_report)
-          else
-            questions = []
-          end
-          if self.reports_documents
-            documents = Document.tagged_with(tags,:match_any=>true).published.since(self.last_sent_report)
-          else
-            documents = []
-          end
-          if self.reports_treaty_documents
-            treaty_documents = TreatyDocument.tagged_with(tags,:match_any=>true).since(self.last_sent_report)
-          else
-            treaty_documents = []
-          end
-          if not treaty_documents.empty? or not documents.empty? or not questions.empty? or not priorities.empty?
-            UserMailer.report(self,priorities,questions,documents,treaty_documents).deliver
+          if not priorities.empty?
+            UserMailer.report(self,priorities).deliver
           end
         end
         self.reload

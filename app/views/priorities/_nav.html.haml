@@ -1,32 +1,11 @@
 #priority_nav
-  %div{:id => "priority_nav<haml:silent> if ['show'].include?(params[:action]) and ['priorities'].include?(params[:controller]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['endorsers'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['opposers'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['everyone_documents','neutral_documents','opposer_documents','endorser_documents'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['everyone_points','neutral_points','opposer_points','endorser_points'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['discussions'].include?(params[:action]) </haml:silent><haml:block>6</haml:block><haml:silent> elsif ['changes'].include?(params[:controller]) </haml:silent><haml:block>7</haml:block><haml:silent> elsif ['activities'].include?(params[:action]) </haml:silent><haml:block>8</haml:block><haml:silent> elsif ['edit','update'].include?(params[:action]) </haml:silent><haml:block>9</haml:block>"}
+  %div{:id => "priority_nav<haml:silent> if ['show'].include?(params[:action]) and ['priorities'].include?(params[:controller]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['endorsers'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['opposers'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['everyone_points','neutral_points','opposer_points','endorser_points'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['discussions'].include?(params[:action]) </haml:silent><haml:block>6</haml:block><haml:silent> elsif ['changes'].include?(params[:controller]) </haml:silent><haml:block>7</haml:block><haml:silent> elsif ['activities'].include?(params[:action]) </haml:silent><haml:block>8</haml:block><haml:silent> elsif ['edit','update'].include?(params[:action]) </haml:silent><haml:block>9</haml:block>"}
     %ul#priority_menu
       %li.tab1
         %span.tab_header
           = link_to tr("Overview", "view/priorities/_nav"), @priority
       = render :partial => "priorities/endorser_link"
       = render :partial => "priorities/opposer_link"
-      - if @priority.documents_count > 0
-        %li.tab4.mega
-          %span.tab_header= link_to tr("{count} documents", "view/priorities/_nav", :count => @priority.documents_count), everyone_documents_priority_url(@priority)
-          .tab_body
-            = tr("Helpful to:", "view/priorities/_nav")
-            %br/
-            = link_to(tr("Endorsers", "view/priorities/_nav"), endorser_documents_priority_url(@priority))
-            - if @priority.up_documents_count > 0
-              (#{@priority.up_documents_count})
-            %br/
-            = link_to(tr("Opposers", "view/priorities/_nav"), opposer_documents_priority_url(@priority))
-            - if @priority.down_documents_count > 0
-              (#{@priority.down_documents_count})
-            %br/
-            = link_to(tr("Undeclared", "view/priorities/_nav"), neutral_documents_priority_url(@priority))
-            - if @priority.neutral_documents_count > 0
-              (#{@priority.neutral_points_count})
-            %br/
-            %p
-              - link_to tr("Add a document", "view/priorities/_nav"), new_priority_document_path(@priority), :title => tr("Documents let you expand on your ideas and collaborate with others in a wiki-like fashion", "view/priorities/_nav"), :class => "qtip_left"
-            %p
       - if @priority.points_count > 0
         %li.tab5
           %span.tab_header
@@ -56,37 +35,12 @@
         %li.tab9
           %span.tab_header
             = link_to tr("Processes", "view/priorities/_nav"), :controller=>"priority_processes", :action=>"show_all_for_priority", :id=>@priority
-        - if has_process_documents?
-          %li.tab10.mega
-            %span.tab_header
-              = link_to tr("Process Documents", "view/priorities/_nav"), "#"
-            .tab_body
-              .box_style
-                - @priority.priority_processes.each do |process|
-                  - process.process_documents.each do |document|
-                    - next if document.external_type == "lög"
-                    = document.get_process_document_link
-                    %br/
-        - if has_process_discussions?
-          %li.tab11.mega
-            %span.tab_header
-              = link_to tr("Process Discussions", "view/priorities/_nav"), "#"
-            .tab_body
-              .box_style
-                - @priority.priority_processes.each do |process|
-                  - process.process_discussions.each do |discussion|
-                    - video = discussion.process_speech_videos.get_first_published
-                    - if video
-                      = link_to video.get_menu_title, :controller=>"process_speech_videos", :action=>"show", :id=>video.id
-                      %br/
       %li.tab12.mega
         %span.tab_header.action
           = link_to tr("Action", "view/priorities/_nav"), new_priority_point_path(@priority)
         .tab_body
           .box_style
             = link_to tr("Add a point", "view/priorities/_nav"), new_priority_point_path(@priority), :title => tr("Can you make a compelling point for or against this priority in less than 500 characters?", "view/priorities/_nav"), :class => "qtip_left"
-            %br/
-            - link_to tr("Add a document", "view/priorities/_nav"), new_priority_document_path(@priority), :title => tr("Documents let you expand on your ideas and collaborate with others in a wiki-like fashion", "view/priorities/_nav"), :class => "qtip_left"
             %br/
             - if @priority.status == 'published'
               - if 1==2 and (@priority.position < 26 and @priority.position > 0) or @priority.is_buried?

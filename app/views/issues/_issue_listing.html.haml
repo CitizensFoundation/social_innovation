@@ -9,9 +9,6 @@
       - if issue.points_count > 0
         \&middot;
         %a{:href => "/issues/#{issue.slug}/points"}= tr("{count} points", "view/issues/index", :count => issue.points_count)
-      - if issue.documents_count > 0
-        \&middot;
-        %a{:href => "/issues/#{issue.slug}/documents"}= tr("{count} documents", "view/issues/index", :count => issue.documents_count)
       - if issue.discussions_count > 0
         \&middot;
         %a{:href => "/issues/#{issue.slug}/discussions"}= tr("{count} discussions", "view/issues/index", :count => issue.discussions_count)

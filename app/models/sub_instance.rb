@@ -49,12 +49,12 @@ class SubInstance < ActiveRecord::Base
 
   before_save :clean_urls
   
-  before_validation :shorten_name
+  #before_validation :shorten_name
 
   belongs_to :iso_country, :class_name => 'Tr8n::IsoCountry', :foreign_key => :iso_country_id
 
   def shorten_name
-    short_name.gsub(/[^a-z0-9]+/i, '-')
+    self.short_name.gsub(/[^a-z0-9]+/i, '-')
   end
   
   def validate

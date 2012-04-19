@@ -17,22 +17,19 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "user_id"
     t.integer  "sub_instance_id"
     t.string   "type",                          :limit => 60
+    t.string   "class_name",                    :limit => 60
     t.string   "status",                        :limit => 8
     t.integer  "priority_id"
     t.datetime "created_at"
     t.boolean  "is_user_only",                                :default => false
     t.integer  "comments_count",                              :default => 0
     t.integer  "activity_id"
-    t.integer  "vote_id"
-    t.integer  "change_id"
     t.integer  "other_user_id"
     t.integer  "tag_id"
     t.integer  "point_id"
     t.integer  "revision_id"
     t.integer  "capital_id"
     t.integer  "ad_id"
-    t.integer  "document_id"
-    t.integer  "document_revision_id"
     t.integer  "position"
     t.integer  "followers_count",                             :default => 0
     t.datetime "changed_at"
@@ -41,11 +38,8 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
 
   add_index "activities", ["activity_id"], :name => "activity_activity_id"
   add_index "activities", ["ad_id"], :name => "activities_ad_id_index"
-  add_index "activities", ["change_id"], :name => "activities_change_id_index"
   add_index "activities", ["changed_at"], :name => "index_activities_on_changed_at"
   add_index "activities", ["created_at"], :name => "created_at"
-  add_index "activities", ["document_id"], :name => "index_activities_on_document_id"
-  add_index "activities", ["document_revision_id"], :name => "index_activities_on_document_revision_id"
   add_index "activities", ["is_user_only"], :name => "activity_is_user_only_index"
   add_index "activities", ["point_id"], :name => "activity_point_id_index"
   add_index "activities", ["priority_id"], :name => "activity_priority_id_index"
@@ -53,7 +47,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
   add_index "activities", ["status"], :name => "activity_status_index"
   add_index "activities", ["type"], :name => "activity_type_index"
   add_index "activities", ["user_id"], :name => "activity_user_id_index"
-  add_index "activities", ["vote_id"], :name => "activities_vote_id_index"
 
   create_table "ads", :force => true do |t|
     t.integer  "priority_id"
@@ -77,25 +70,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
 
   add_index "ads", ["priority_id"], :name => "ads_priority_id_index"
   add_index "ads", ["status"], :name => "ads_status_index"
-
-  create_table "blasts", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "name"
-    t.string   "status"
-    t.datetime "sent_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "type"
-    t.integer  "tag_id"
-    t.string   "code",         :limit => 40
-    t.integer  "clicks_count",               :default => 0
-  end
-
-  add_index "blasts", ["code"], :name => "blasts_code_index"
-  add_index "blasts", ["name"], :name => "blasts_name_index"
-  add_index "blasts", ["status"], :name => "blasts_status_index"
-  add_index "blasts", ["type"], :name => "blasts_type_index"
-  add_index "blasts", ["user_id"], :name => "blast_user_id_index"
 
   create_table "capitals", :force => true do |t|
     t.integer  "sender_id"
@@ -126,49 +100,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.text     "description"
     t.string   "sub_tags"
   end
-
-  create_table "changes", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "priority_id"
-    t.integer  "new_priority_id"
-    t.string   "type"
-    t.string   "status"
-    t.integer  "yes_votes",             :default => 0
-    t.integer  "no_votes",              :default => 0
-    t.datetime "sent_at"
-    t.datetime "approved_at"
-    t.datetime "declined_at"
-    t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "position",              :default => 0
-    t.integer  "cost"
-    t.integer  "estimated_votes_count", :default => 0
-    t.integer  "votes_count",           :default => 0
-    t.boolean  "is_endorsers",          :default => true
-    t.boolean  "is_opposers",           :default => true
-    t.boolean  "is_flip",               :default => false
-  end
-
-  add_index "changes", ["new_priority_id"], :name => "changes_new_priority_id_index"
-  add_index "changes", ["priority_id"], :name => "changes_priority_id_index"
-  add_index "changes", ["status"], :name => "changes_status_index"
-  add_index "changes", ["type"], :name => "changes_type_index"
-  add_index "changes", ["user_id"], :name => "changes_user_id_index"
-
-  create_table "client_applications", :force => true do |t|
-    t.string   "name"
-    t.string   "url"
-    t.string   "support_url"
-    t.string   "callback_url"
-    t.string   "key",          :limit => 50
-    t.string   "secret",       :limit => 50
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "client_applications", ["key"], :name => "index_client_applications_on_key", :unique => true
 
   create_table "color_schemes", :force => true do |t|
     t.string   "nav_background",                :limit => 6,  :default => "f0f0f0"
@@ -406,7 +337,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
 
   create_table "sub_instances", :force => true do |t|
     t.string   "name",                       :limit => 60
-    t.string   "short_name",                 :limit => 50
+    t.string   "short_name",                 :limit => 50,  :null => false
     t.integer  "picture_id"
     t.integer  "is_optin",                   :limit => 1,   :default => 0,         :null => false
     t.string   "optin_text",                 :limit => 60
@@ -596,10 +527,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "official_value",                          :default => 0
     t.datetime "status_changed_at"
     t.integer  "score",                                   :default => 0
-    t.integer  "up_documents_count",                      :default => 0
-    t.integer  "down_documents_count",                    :default => 0
-    t.integer  "neutral_documents_count",                 :default => 0
-    t.integer  "documents_count",                         :default => 0
     t.string   "short_url",                :limit => 20
     t.boolean  "is_controversial",                        :default => false
     t.integer  "trending_score",                          :default => 0
@@ -792,7 +719,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "description",               :limit => 200
     t.integer  "discussions_count",                        :default => 0
     t.integer  "points_count",                             :default => 0
-    t.integer  "documents_count",                          :default => 0
     t.string   "prompt",                    :limit => 100
     t.string   "slug",                      :limit => 60
     t.integer  "sub_instance_id"
@@ -1278,7 +1204,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "user_agent",                   :limit => 200
     t.string   "referrer",                     :limit => 200
     t.boolean  "is_comments_subscribed",                      :default => true
-    t.boolean  "is_votes_subscribed",                         :default => true
     t.boolean  "is_tagger",                                   :default => false
     t.integer  "endorsements_count",                          :default => 0
     t.integer  "up_endorsements_count",                       :default => 0
@@ -1317,8 +1242,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "facebook_uid",                 :limit => 8
     t.string   "city",                         :limit => 80
     t.string   "state",                        :limit => 50
-    t.integer  "documents_count",                             :default => 0
-    t.integer  "document_revisions_count",                    :default => 0
     t.integer  "points_count",                                :default => 0
     t.float    "index_24hr_change",                           :default => 0.0
     t.float    "index_7days_change",                          :default => 0.0
@@ -1348,8 +1271,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "facebook_id"
     t.boolean  "reports_enabled",                             :default => false
     t.boolean  "reports_discussions",                         :default => false
-    t.boolean  "reports_questions",                           :default => false
-    t.boolean  "reports_documents",                           :default => false
     t.integer  "reports_interval"
     t.datetime "last_sent_report"
     t.string   "geoblocking_open_countries",                  :default => ""

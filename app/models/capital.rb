@@ -68,56 +68,6 @@ class CapitalPointHelpfulDeleted < Capital
   
 end
 
-class CapitalDocumentHelpfulEveryone < Capital
-  
-  after_create :add_activity
-  
-  def add_activity
-    ActivityCapitalDocumentHelpfulEveryone.create(:user => recipient, :document => capitalizable, :capital => self)
-  end
-  
-end
-
-class CapitalDocumentHelpfulOpposers < Capital
-  
-  after_create :add_activity
-  
-  def add_activity
-    ActivityCapitalDocumentHelpfulOpposers.create(:user => recipient, :document => capitalizable, :capital => self)
-  end
-  
-end
-
-class CapitalDocumentHelpfulUndeclareds < Capital
-  
-  after_create :add_activity
-  
-  def add_activity
-    ActivityCapitalDocumentHelpfulUndeclareds.create(:user => recipient, :document => capitalizable, :capital => self)
-  end
-  
-end
-
-class CapitalDocumentHelpfulEndorsers < Capital
-  
-  after_create :add_activity
-  
-  def add_activity
-    ActivityCapitalDocumentHelpfulEndorsers.create(:user => recipient, :document => capitalizable, :capital => self)
-  end
-  
-end
-
-class CapitalDocumentHelpfulDeleted < Capital
-  
-  after_create :add_activity
-  
-  def add_activity
-    ActivityCapitalDocumentHelpfulDeleted.create(:user => recipient, :document => capitalizable, :capital => self)
-  end  
-  
-end
-
 class CapitalTwitterFollowers < Capital
   
   after_create :add_activity

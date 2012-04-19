@@ -79,8 +79,7 @@ class Priority < ActiveRecord::Base
   has_many :incoming_points, :foreign_key => "other_priority_id", :class_name => "Point"
   has_many :published_points, :conditions => "status = 'published'", :class_name => "Point", :order => "points.helpful_count-points.unhelpful_count desc"
   has_many :points_with_deleted, :class_name => "Point", :dependent => :destroy
-  has_many :documents, :dependent => :destroy
-  
+
   has_many :rankings, :dependent => :destroy
   has_many :activities, :dependent => :destroy
 
@@ -604,24 +603,6 @@ class Priority < ActiveRecord::Base
         point.opposer_unhelpful_count = unhelpful        
       end      
       point.save(:validate => false)      
-    end
-    for document in documents
-      document.priority = p2
-      if flip == 1
-        if document.value > 0
-          document.value = -1
-        elsif document.value < 0
-          document.value = 1
-        end 
-        # need to flip the helpful/unhelpful counts
-        helpful = document.endorser_helpful_count
-        unhelpful = document.endorser_unhelpful_count
-        document.endorser_helpful_count = document.opposer_helpful_count
-        document.endorser_unhelpful_count = document.opposer_unhelpful_count
-        document.opposer_helpful_count = helpful
-        document.opposer_unhelpful_count = unhelpful        
-      end      
-      document.save(:validate => false)      
     end
     for point in incoming_points
       if flip == 1

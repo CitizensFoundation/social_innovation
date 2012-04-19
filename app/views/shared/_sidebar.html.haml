@@ -8,7 +8,7 @@
         %a{:href => "http://www.reykjavik.is"}= image_tag("/assets/new/reykjavik_icon.png", :alt => "www.reykjavik.is")
   - else
     .yrpri_icon
-      %a{:href => "http://yrpri.org"}= image_tag("/assets/new/yourprioritiesworldwide.png", :alt => "Your Priorities Worldwide")
+      %a{:href => "http://yrpri.org"}= image_tag("/assets/logos/default.gif", :alt => "Your Priorities Worldwide")
   = render :partial => "shared/sub_instance_large_flag"
   = render :partial => "shared/search"
   %div
@@ -33,8 +33,6 @@
               %br/
               \&middot; #{link_to tr("Contributors", "view/shared/_menu"), :controller => "about", :action => "contributors"}
               %br/
-              - cache("pages-#{session[:locale]}-#{@inline_translations_enabled}") do
-                = Page.all.collect{ |page| link_to(page.link_name, about_url(page.short_name))}.to_sentence(:words_connector => " &middot; ", :two_words_connector => " &middot; ", :last_word_connector => " &middot; ")
             .tab_subhead
               = link_to tr("Charts and stats", "view/shared/_menu"), :controller => "charts", :action => "gainers_24hr"
             .tab_sublinks
@@ -77,4 +75,4 @@
         = tr("<p>Getting involved is easy and fun.  Just join and start setting your priorities, like a to do list.  The more people who make your priority their own priority, the higher it <a href=\"/priorities/rising\">rises in the charts</a>. The more people who <a href=\"/signup\">join the network</a>, the more clout we have to make our agenda happen.</p>", "view/layouts/basic")
   = render :partial => "shared/fb_activity_feed"
   .yourpri_logo
-    %a{:href => "http://ibuar.is"}= image_tag("/assets/new/ibuar-logo.png", :alt => "shortcut")
+    %a{:href => "http://ibuar.is"}= image_tag("/assets/logo/default.gif", :alt => "shortcut")

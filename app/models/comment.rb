@@ -70,9 +70,6 @@ class Comment < ActiveRecord::Base
       if self.activity.has_point? 
         Point.update_all("discussions_count = discussions_count + 1", "id=#{self.activity.point_id}")
       end
-      if self.activity.has_document?
-        Document.update_all("discussions_count = discussions_count + 1", "id=#{self.activity.document_id}")
-      end
       if self.activity.has_priority?
         Priority.update_all("discussions_count = discussions_count + 1", "id=#{self.activity.priority_id}")
         if self.activity.priority.attribute_present?("cached_issue_list")
@@ -104,9 +101,6 @@ class Comment < ActiveRecord::Base
     if self.activity.comments_count == 0
       if self.activity.has_point? and self.activity.point
         self.activity.point.decrement!(:discussions_count)
-      end
-      if self.activity.has_document? and self.activity.document
-        self.activity.document.decrement!(:discussions_count)
       end
       if self.activity.has_priority? and self.activity.priority
         self.activity.priority.decrement!(:discussions_count)
@@ -145,8 +139,6 @@ class Comment < ActiveRecord::Base
   def parent_name 
     if activity.has_point?
       user.login + ' commented on ' + activity.point.name
-    elsif activity.has_document?
-      user.login + ' commented on ' + activity.document.name
     elsif activity.has_priority?
       user.login + ' commented on ' + activity.priority.name
     else

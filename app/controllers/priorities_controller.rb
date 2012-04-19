@@ -6,8 +6,7 @@ class PrioritiesController < ApplicationController
                                            :tag, :tag_save, :opposed, :endorsed, :destroy, :new]
   before_filter :admin_required, :only => [:bury, :successful, :compromised, :intheworks, :failed]
   before_filter :load_endorsement, :only => [:show, :show_feed, :activities, :endorsers, :opposers, :opposer_points, :endorser_points, :neutral_points, :everyone_points,
-                                             :opposed_top_points, :endorsed_top_points, :points_overview, :top_points, :discussions, :everyone_points, :documents, :opposer_documents, 
-                                             :endorser_documents, :neutral_documents, :everyone_documents]
+                                             :opposed_top_points, :endorsed_top_points, :points_overview, :top_points, :discussions, :everyone_points ]
   before_filter :check_for_user, :only => [:yours, :network, :yours_finished, :yours_created]
 
   caches_action :index, :top, :top_24hr, :top_7days, :top_30days,
@@ -418,29 +417,6 @@ class PrioritiesController < ApplicationController
     @total_down_points_new = [0,@total_down_points-@points_top_down.length].max
     get_qualities([@points_new_up,@points_new_down,@points_top_up,@points_top_down])
 
-    document_ids = []
-    if @priority.up_documents_count > 0
-      @endorser_documents = @priority.documents.published.by_endorser_helpfulness.find(:all, :limit => 3)
-      document_ids += @endorser_documents.collect {|c| c.id}
-    end
-    if @priority.down_documents_count > 0
-      if document_ids.any? 
-        @opposer_documents = @priority.documents.published.by_opposer_helpfulness.find(:all, :conditions => ["id not in (?)",document_ids], :limit => 3)
-      else
-        @opposer_documents = @priority.documents.published.by_opposer_helpfulness.find(:all, :limit => 3)
-      end
-      document_ids += @opposer_documents.collect {|c| c.id}
-    end
-    if @priority.neutral_documents_count > 0
-      if document_ids.any?
-        @neutral_documents = @priority.documents.published.by_neutral_helpfulness.find(:all, :conditions => ["id not in (?)",document_ids], :limit => 3)
-      else
-        @neutral_documents = @priority.documents.published.by_neutral_helpfulness.find(:all, :limit => 3)
-      end
-      document_ids += @neutral_documents.collect {|c| c.id}        
-    end
-    @document_ids = document_ids.uniq.compact    
-    
     @activities = @priority.activities.active.top_discussions.for_all_users :include => :user
     if logged_in? and @endorsement
       if @endorsement.is_up?
@@ -576,54 +552,6 @@ class PrioritiesController < ApplicationController
   def points
     redirect_to :action => "everyone_points"
   end
-  
-  def documents
-    redirect_to :action => "everyone_documents"
-  end  
-  
-  def opposer_documents
-    @page_title = tr("Documents opposing {priority_name}", "controller/priorities", :priority_name => @priority.name) 
-    @document_value = -1  
-    @documents = @priority.documents.published.by_opposer_helpfulness.paginate :page => params[:page], :per_page => params[:per_page]
-    respond_to do |format|
-      format.html { render :action => "documents" }
-      format.xml { render :xml => @documents.to_xml(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @documents.to_json(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-    end
-  end
-
-  def endorser_documents
-    @page_title = tr("Documents supporting {priority_name}", "controller/priorities", :priority_name => @priority.name)   
-    @document_value = 1
-    @documents = @priority.documents.published.by_endorser_helpfulness.paginate :page => params[:page], :per_page => params[:per_page]
-    respond_to do |format|
-      format.html { render :action => "documents" }
-      format.xml { render :xml => @documents.to_xml(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @documents.to_json(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-    end
-  end
-
-  def neutral_documents
-    @page_title = tr("Documents about {priority_name}", "controller/priorities", :priority_name => @priority.name)   
-    @document_value = 2 
-    @documents = @priority.documents.published.by_neutral_helpfulness.paginate :page => params[:page], :per_page => params[:per_page]
-    respond_to do |format|
-      format.html { render :action => "documents" }
-      format.xml { render :xml => @documents.to_xml(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @documents.to_json(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-    end
-  end  
-
-  def everyone_documents
-    @page_title = tr("Best documents on {priority_name}", "controller/priorities", :priority_name => @priority.name) 
-    @document_value = 0 
-    @documents = @priority.documents.published.by_helpfulness.paginate :page => params[:page], :per_page => params[:per_page]
-    respond_to do |format|
-      format.html { render :action => "documents" }
-      format.xml { render :xml => @documents.to_xml(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @documents.to_json(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-    end
-  end  
   
   def discussions
     @page_title = tr("Discussions on {priority_name}", "controller/priorities", :priority_name => @priority.name) 

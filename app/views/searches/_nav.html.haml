@@ -7,7 +7,4 @@
       %li.tab2
         %span.tab_header
           = link_to tr("{count} points", "view/searches/_nav", :count => @point_results.total_hits), points_searches_path(:q => params[:q])
-      %li.tab3
-        %span.tab_header
-          = link_to tr("{count} documents", "view/searches/_nav", :count => @document_results.total_hits), documents_searches_path(:q => params[:q])
 %p/

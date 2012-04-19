@@ -144,9 +144,7 @@ end
 class NotificationComment < Notification
   
   def name
-    if notifiable.activity.has_document?
-      tr("{sender_name} commented on {comment_name}", "model/notification", :sender_name => sender.name, :comment_name => notifiable.activity.document.name)
-    elsif notifiable.activity.has_point?
+    if notifiable.activity.has_point?
       tr("{sender_name} commented on {comment_name}", "model/notification", :sender_name => sender.name, :comment_name => notifiable.activity.point.name)      
     elsif notifiable.activity.has_priority?
       tr("{sender_name} commented on {comment_name}", "model/notification", :sender_name => sender.name, :comment_name => notifiable.activity.priority.name)      
@@ -268,18 +266,6 @@ class NotificationPointRevision < Notification
   
   def name
     tr("{sender_name} revised {point_name}", "model/notification", :sender_name => sender.name, :point_name => notifiable.name)
-  end
-  
-  def is_recipient_subscribed?
-    recipient.is_point_changes_subscribed?
-  end  
-  
-end
-
-class NotificationDocumentRevision < Notification
-  
-  def name
-    tr("{sender_name} revised {document_name}", "model/notification", :sender_name => sender.name, :document_name => notifiable.name)
   end
   
   def is_recipient_subscribed?

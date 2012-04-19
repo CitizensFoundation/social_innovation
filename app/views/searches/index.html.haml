@@ -71,17 +71,6 @@
                   / </haml:block><haml:silent></haml:silent><haml:block>
                   %br/
                   %br/
-              - elsif result.class == ProcessDocumentElement
-                %div
-                  %h4{:style => "color: #777; border-bottom: none;"}
-                    = tr("Law Article","search")
-                    \- #{time_ago(result.process_document.external_date)}
-                  %span{:style => "color: #3B5998; border-bottom: none; font-size:1.083em; font-weight:bold;"}= link_to result.priority.name.force_encoding("UTF-8").html_safe, :controller=>"process_documents", :action=>"show", :anchor =>"gr_#{result.id}", :id=>result.process_document.id
-                  = result.excerpts.content_text_only.force_encoding("UTF-8").html_safe
-                  %br/
-                  / </haml:block><haml:silent></haml:silent><haml:block>
-                  %br/
-                  %br/
               - elsif result.class == Comment
                 %div
                   %h4
