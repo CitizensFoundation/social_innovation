@@ -24,18 +24,6 @@ class IdeasController < ApplicationController
   def index
     if params[:q] and request.xhr?
       @ideas = Idea.published.filtered.find(:all, :select => "ideas.name", :conditions => ["name LIKE ?", "%#{params[:q]}%"], :order => "endorsements_count desc")
-    elsif current_instance.homepage != 'index' and current_instance.homepage.index("/")
-      redirect_to :controller => current_instance.homepage
-      return
-    elsif current_instance.homepage != 'index'
-      redirect_to :action => current_instance.homepage
-      return
-    else
-      @issues = Tag.most_ideas.find(:all, :conditions => "tags.id <> 384 and ideas_count > 4", :include => :top_idea).paginate(:page => params[:page])
-      if logged_in? 
-        idea_ids = @issues.collect {|c| c.top_idea_id} + @issues.collect {|c| c.rising_idea_id} + @issues.collect {|c| c.controversial_idea_id}
-        @endorsements = Endorsement.find(:all, :conditions => ["idea_id in (?) and user_id = ? and status='active'",idea_ids,current_user.id])
-      end
     end
     respond_to do |format|
       format.html

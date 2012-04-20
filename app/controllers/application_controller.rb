@@ -158,38 +158,20 @@ class ApplicationController < ActionController::Base
           if params[:sub_instance_short_name].empty?
             session.delete(:set_sub_instance_id)
             SubInstance.current = @current_sub_instance = nil
-            return @current_sub_instance
           else
             @current_sub_instance = SubInstance.find_by_short_name(params[:sub_instance_short_name])
             SubInstance.current = @current_sub_instance
             session[:set_sub_instance_id] = @current_sub_instance.id
-            return @current_sub_instance
           end
         elsif session[:set_sub_instance_id]
           @current_sub_instance = SubInstance.find(session[:set_sub_instance_id])
           SubInstance.current = @current_sub_instance
-          return @current_sub_instance
         end
       end
     end
-    if request.subdomains.size == 0 or request.host == current_instance.base_url or request.subdomains.first == 'www'
-      if (controller_name=="home" and action_name=="index") or
-         Rails.env.development? or
-         self.class.name.downcase.include?("tr8n") or
-         ["endorse","oppose","authorise_google","windows","yahoo"].include?(action_name)
-        @current_sub_instance = nil
-        SubInstance.current = @current_sub_instance
-        Rails.logger.info("No sub_instance")
-        return nil
-      else
-        redirect_to "/welcome"
-      end
-    else
-      @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
-      SubInstance.current = @current_sub_instance
-      Rails.logger.info("SubInstance: #{@current_sub_instance.short_name}")
-      return @current_sub_instance
-    end
+    @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
+    @current_sub_instance ||= SubInstance.first
+    SubInstance.current = @current_sub_instance
   end
   
   def check_geoblocking
@@ -468,7 +450,7 @@ class ApplicationController < ActionController::Base
     @sub_menu_items = @items
     Rails.logger.debug action_name
 
-    if action_name == "index"
+    if action_name == "index" and @items
       Rails.logger.debug "index"
       Rails.logger.debug "cookie #{cookies["selected_#{controller_name}_filter_id"]}"
       if cookies["selected_#{controller_name}_filter_id"] and @sub_menu_items[cookies["selected_#{controller_name}_filter_id"]]
