@@ -1,5 +1,5 @@
 - if not @important_to_followers.empty?
-  %h4= tr("Your followers' priorities, are you sure you don't have an opinion on these?", "email")
+  %h4= tr("Your followers' ideas, are you sure you don't have an opinion on these?", "email")
   - @important_to_followers.each do |important|
     %p
       = tr("{followers_count} of your followers have taken a position on the popular idea {idea_name}, but you haven't done so.", "email", |
