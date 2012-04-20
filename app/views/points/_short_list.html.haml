@@ -18,7 +18,7 @@
           = link_to tr("Discuss", "view/points/_short_list"), discussions_point_url(point)
         eða
         \#{link_to tr("Edit", "view/points/_short_list"), new_point_revision_url(point), :title => tr("Can you make this point more persuasive? Go ahead, change it!", "view/points/_short_list")}
-    %p= tg(point.content)
+    %p= tg(point.content.html)
     - if point.has_website?
       .point_source
         = tr("Source:", "view/points/_show")

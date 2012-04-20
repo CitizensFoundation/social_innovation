@@ -1,5 +1,5 @@
 - if not @important_to_followers.empty?
-  %h4 Your followers' ideas, are you sure you don't have an opinion on these?
+  %h4= tr("Your followers' priorities, are you sure you don't have an opinion on these?", "email")
   - @important_to_followers.each do |important|
     %p
       = tr("{followers_count} of your followers have taken a position on the popular idea {idea_name}, but you haven't done so.", "email", |
@@ -8,5 +8,5 @@
       -#
       = tr("It is currently in {position}. place in the {category} category.", "email", |
         position: important[:position],                                                 |
-        category: link_to(important[:category].name, important[:category].show_url))    |
+        category: link_to(tr(important[:category].name, "model/category"), important[:category].show_url))   |
   %br/

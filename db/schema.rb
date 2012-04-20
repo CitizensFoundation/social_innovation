@@ -384,6 +384,8 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "iso_country_id"
     t.string   "required_tags"
     t.text     "message_for_new_idea"
+    t.string   "parent_tag"
+    t.text     "message_to_users"
   end
 
   add_index "sub_instances", ["short_name"], :name => "short_name"
@@ -1230,6 +1232,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "post_code"
     t.string   "my_gender"
     t.integer  "report_frequency",                            :default => 2
+    t.boolean  "is_capital_subscribed",                       :default => true
   end
 
   add_index "users", ["facebook_uid"], :name => "index_users_on_facebook_uid"

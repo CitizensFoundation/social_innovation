@@ -28,6 +28,9 @@
   = f.check_box :is_messages_subscribed
   = tr("Private messages and profile bulletins", "view/settings/signups")
   %br/
+  = f.check_box :is_capital_subscribed
+  = tr("Notify whenever you gain or lose social points", "view/users/signups")
+  %br/
   - if current_user.is_admin?
     = f.check_box :is_admin_subscribed
     = tr("For administrators", "view/settings/signups")

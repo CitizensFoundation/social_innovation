@@ -82,8 +82,10 @@
               var RecaptchaOptions = { theme : 'clean' };
             = recaptcha_tags
             %br/
-            = check_box("user", "terms")
-            = tr("I accept the terms detailed below", "view/users/_form_long")
+            = render partial: "rules_info"
+            .accept_terms
+              = check_box("user", "terms")
+              = tr("I accept the terms detailed below", "view/users/_form_long")
             - if @idea
               - if @value == 1
                 = submit_tag tr("Endorse and signup", "view/users/_form_long"), :class => "submit_button"

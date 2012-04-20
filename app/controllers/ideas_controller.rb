@@ -794,7 +794,7 @@ class IdeasController < ApplicationController
         # already renamed?
         @activity = ActivityIdeaRenamed.find_by_user_id_and_idea_id(current_user.id,@idea.id)
         if @activity
-          @activity.update_attribute(:updated_at,Time.now)
+          @activity.update_attribute(:changed_at,Time.now)
         else
           @activity = ActivityIdeaRenamed.create(:user => current_user, :idea => @idea)
         end
