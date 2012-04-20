@@ -1,0 +1,11 @@
+= render :partial=>"header.html"
+%p
+  = tr("Hi","email")
+  = @user.first_name
+  ,
+%p= tr('The following activity has affected your social points on {government_name}:', |
+    "email",                                                                           |
+    government_name: tr(Government.current.name, "Name from database"))                |
+= render :partial=>"activities/#{@activity.class_name}_email.html.erb", locals: { activity: @activity, current_government: Government.current }
+%p= tr('You now have {points} social point(s).', 'email', points: @user.capitals_count)
+= render :partial=>"footer.html"

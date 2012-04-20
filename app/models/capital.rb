@@ -7,9 +7,6 @@ class Capital < ActiveRecord::Base
   has_many :activities, :dependent => :destroy
   
   belongs_to :capitalizable, :polymorphic => true
-  
-  after_create :update_user_capital
-  after_destroy :update_user_capital
 
   def update_user_capital
     sender.update_capital if sender
@@ -21,6 +18,8 @@ end
 class CapitalPointHelpfulEveryone < Capital
   
   after_create :add_activity
+  after_create :update_user_capital
+  after_destroy :update_user_capital
   
   def add_activity
     ActivityCapitalPointHelpfulEveryone.create(:user => recipient, :point => capitalizable, :capital => self)
@@ -31,6 +30,8 @@ end
 class CapitalPointHelpfulOpposers < Capital
   
   after_create :add_activity
+  after_create :update_user_capital
+  after_destroy :update_user_capital
   
   def add_activity
     ActivityCapitalPointHelpfulOpposers.create(:user => recipient, :point => capitalizable, :capital => self)
@@ -41,6 +42,8 @@ end
 class CapitalPointHelpfulUndeclareds < Capital
   
   after_create :add_activity
+  after_create :update_user_capital
+  after_destroy :update_user_capital
   
   def add_activity
     ActivityCapitalPointHelpfulUndeclareds.create(:user => recipient, :point => capitalizable, :capital => self)
@@ -51,6 +54,8 @@ end
 class CapitalPointHelpfulEndorsers < Capital
   
   after_create :add_activity
+  after_create :update_user_capital
+  after_destroy :update_user_capital
   
   def add_activity
     ActivityCapitalPointHelpfulEndorsers.create(:user => recipient, :point => capitalizable, :capital => self)
@@ -61,6 +66,8 @@ end
 class CapitalPointHelpfulDeleted < Capital
   
   after_create :add_activity
+  after_create :update_user_capital
+  after_destroy :update_user_capital
   
   def add_activity
     ActivityCapitalPointHelpfulDeleted.create(:user => recipient, :point => capitalizable, :capital => self)
@@ -71,6 +78,8 @@ end
 class CapitalTwitterFollowers < Capital
   
   after_create :add_activity
+  after_create :update_user_capital
+  after_destroy :update_user_capital
   
   def add_activity
     ActivityCapitalTwitterFollowers.create(:user => recipient, :capital => self)
@@ -81,6 +90,8 @@ end
 class CapitalInstanceNew < Capital
   
   after_create :add_activity
+  after_create :update_user_capital
+  after_destroy :update_user_capital
   
   def add_activity
     ActivityCapitalInstanceNew.create(:user => recipient, :capital => self)

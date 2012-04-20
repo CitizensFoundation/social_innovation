@@ -48,7 +48,7 @@
               \&middot; #{link_to tr("Ideas", "view/shared/_menu"), :controller => "widgets", :action => "ideas"}
               %br/
               \&middot; #{link_to tr("Discussions", "view/shared/_menu"), :controller => "widgets", :action => "discussions"}
-  = render :partial => "ideas/new_button"
+  = render :partial => "ideas/new_button" unless current_sub_instance and current_sub_instance.status == "inactive"
   = render :partial => "shared/social_media_buttons"
   = render :partial => "shared/rvk_countdown" if Instance.current.layout == "better_reykjavik"
   .userwrap

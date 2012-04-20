@@ -13,7 +13,7 @@
               .list_left= render :partial => "users/pic_35", :locals => {:user => comment.user}
             %td
               %span.list_left
-                = h(comment.user.login)
+                = link_to(comment.user.login, comment.user)
                 \- #{time_ago(comment.created_at)}
                 - if logged_in? and current_user.id != comment.user_id
                   = link_to image_tag("report.png", :align => "right", :border => 0, :class => "comment_report"),                                                              |

@@ -1,5 +1,5 @@
 - if not @important.empty?
-  %h4= tr("These are your top {ideas_count} ideas, if you really feel strongly about them then you can encourage others to support them.", |
+  %h4= tr("These are your top {ideas_count} ideas, if you really feel strongly about them then you can encourage others to support or oppose them.", |
       "email", ideas_count: @important.count)                                                                                                  |
   - @important.each do |idea|
     %p

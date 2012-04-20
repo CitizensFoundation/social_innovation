@@ -728,7 +728,14 @@ class User < ActiveRecord::Base
   end
   
   def update_capital
-    self.update_attribute(:capitals_count,capital_received-capital_spent)
+    new_capitals_count = capital_received-capital_spent
+    capitals_difference = new_capitals_count - self.capitals_count
+    self.update_attribute(:capitals_count,new_capitals_count)
+
+    if capitals_difference != 0 and !self.is_admin and self.is_capital_subscribed and self.status == "active"
+      activity_id = self.activities.last.id
+      self.delay.send_capital_email(activity_id, capitals_difference)
+    end
   end  
   
   def follow(u)
@@ -1092,6 +1099,12 @@ class User < ActiveRecord::Base
     self.increment!("warnings_count")
   end
 
+  def send_capital_email(activity_id, point_difference)
+    activity = Activity.find(activity_id)
+    user = activity.user
+    UserMailer.lost_or_gained_capital(user, activity, point_difference).deliver
+  end
+
   def self.send_status_email(idea_id, status, date, subject, message)
     status_types = {
       '-2' => tr("Failed","status_messages"),
@@ -1114,8 +1127,8 @@ class User < ActiveRecord::Base
     top_ideas = {}
     idea_followers = {}
     top_category_score = {}
-    Instance.current.default_tags_checkbox.split(',').each do |tag|
-      category = Tag.find_by_name(tag)
+    Category.all.each do |category|
+      category = Tag.find_by_name(category.name)
       top_ideas[category] = Idea.filtered.tagged_with(category, :on => :issues).published.top_rank.limit(3)
       top_category_score[category] = top_ideas[category].shift.score
       top_ideas[category].each do |idea|
