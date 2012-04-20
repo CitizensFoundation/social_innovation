@@ -2,13 +2,13 @@
   .heading= tr("{user_name} Agenda", "view/users/_index_chart", :user_name => current_instance.official_user_short_name)
 - else
   .heading= tr("{user_name} Agenda", "view/users/_index_chart", :user_name => user.name)
-- cache("user_priority_chart-#{user.id.to_s}-#{user.endorsements_count.to_s}-#{session[:locale]}-#{@inline_translations_enabled}") do
+- cache("user_idea_chart-#{user.id.to_s}-#{user.endorsements_count.to_s}-#{session[:locale]}-#{@inline_translations_enabled}") do
   - cu = user.index_chart_hash
-  .priority_chart
+  .idea_chart
     %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
       %tr
         %td{:colspan => "3", :rowspan => "3", :valign => "top"}
-          = image_tag Gchart.line(:size => '130x80', :data => cu[:adjusted_percentages], :line_colors => "13499b", :chart_background => 'EEEEEE', :min_value => 0, :max_value => cu[:max_percentage]*2, :custom => "chg=0,50,1,0"), :title => tr("Tracks the movement of {user_name} priorities in the rankings over the last 30 days. The more people who endorse priorities on {user_name} agenda at a high priority, the higher it rises.", "view/users/_index_chart", :user_name => user.name), :class => "qtip_left", :size => "130x80"
+          = image_tag Gchart.line(:size => '130x80', :data => cu[:adjusted_percentages], :line_colors => "13499b", :chart_background => 'EEEEEE', :min_value => 0, :max_value => cu[:max_percentage]*2, :custom => "chg=0,50,1,0"), :title => tr("Tracks the movement of {user_name} ideas in the rankings over the last 30 days. The more people who endorse ideas on {user_name} agenda at a high idea, the higher it rises.", "view/users/_index_chart", :user_name => user.name), :class => "qtip_left", :size => "130x80"
         %td.chart_label_plus{:height => "17", :valign => "top"}
           +#{number_to_percentage(cu[:max_percentage]*100, :precision => 0)}
       %tr

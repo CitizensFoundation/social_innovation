@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
   scope :by_30days_losers, :conditions => "users.endorsements_count > 4", :order => "users.index_30days_change asc"  
 
   scope :item_limit, lambda{|limit| {:limit=>limit}}
-  scope :all_endorsers_and_opposers_for_priority, lambda { |priority_id| User.joins(:endorsements).where(endorsements: {priority_id: priority_id}); }
+  scope :all_endorsers_and_opposers_for_idea, lambda { |idea_id| User.joins(:endorsements).where(endorsements: {idea_id: idea_id}); }
 
   belongs_to :picture
   has_attached_file :buddy_icon, :styles => { :icon_24 => "24x24#", :icon_35 => "35x35#", :icon_48 => "48x48#", :icon_96 => "96x96#" }
@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
   belongs_to :sub_instance
   belongs_to :referral, :class_name => "User", :foreign_key => "referral_id"
   belongs_to :sub_instance_referral, :class_name => "SubInstance", :foreign_key => "sub_instance_referral_id"
-  belongs_to :top_endorsement, :class_name => "Endorsement", :foreign_key => "top_endorsement_id", :include => :priority  
+  belongs_to :top_endorsement, :class_name => "Endorsement", :foreign_key => "top_endorsement_id", :include => :idea
 
   has_one :profile, :dependent => :destroy
 
@@ -64,10 +64,10 @@ class User < ActiveRecord::Base
   has_many :sub_instances, :through => :signups
     
   has_many :endorsements, :dependent => :destroy
-  has_many :priorities, :conditions => "endorsements.status = 'active'", :through => :endorsements
-  has_many :finished_priorities, :conditions => "endorsements.status = 'finished'", :through => :endorsements, :source => :priority
+  has_many :ideas, :conditions => "endorsements.status = 'active'", :through => :endorsements
+  has_many :finished_ideas, :conditions => "endorsements.status = 'finished'", :through => :endorsements, :source => :idea
     
-  has_many :created_priorities, :class_name => "Priority"
+  has_many :created_ideas, :class_name => "Idea"
   
   has_many :activities, :dependent => :destroy
   has_many :points, :dependent => :destroy
@@ -434,7 +434,7 @@ class User < ActiveRecord::Base
     user_path(self)
   end
   
-  def has_top_priority?
+  def has_top_idea?
     attribute_present?("top_endorsement_id") and top_endorsement
   end
 
@@ -443,16 +443,16 @@ class User < ActiveRecord::Base
   end  
   memoize :most_recent_activity
 
-  def priority_list
-    s = tr("My top priorities","user")
+  def idea_list
+    s = tr("My top ideas","user")
     row = 0
     for e in endorsements
       row=row+1
-      s += "\r\n" + row.to_s + ". " + e.priority.name if row < 11
+      s += "\r\n" + row.to_s + ". " + e.idea.name if row < 11
     end
     return s
   end
-  memoize :priority_list
+  memoize :idea_list
     
   # ranking metrics
   def up_issue_diversity
@@ -507,10 +507,10 @@ class User < ActiveRecord::Base
   end
   memoize :revisions_count
   
-  def pick_ad(current_priority_ids)
+  def pick_ad(current_idea_ids)
   	shown = 0
   	for ad in Ad.active.filtered.most_paid.all
-  		if shown == 0 and not current_priority_ids.include?(ad.priority_id)
+  		if shown == 0 and not current_idea_ids.include?(ad.idea_id)
   			shown_ad = ad.shown_ads.find_by_user_id(self.id)
   			if shown_ad and not shown_ad.has_response? and shown_ad.seen_count < 4
   				shown_ad.increment!(:seen_count)
@@ -542,33 +542,33 @@ class User < ActiveRecord::Base
   end
 
   def expire_charts
-    Rails.cache.delete("views/user_priority_chart_official-#{self.id.to_s}-#{self.endorsements_count.to_s}")
-    Rails.cache.delete("views/user_priority_chart-#{self.id.to_s}-#{self.endorsements_count.to_s}")
+    Rails.cache.delete("views/user_idea_chart_official-#{self.id.to_s}-#{self.endorsements_count.to_s}")
+    Rails.cache.delete("views/user_idea_chart-#{self.id.to_s}-#{self.endorsements_count.to_s}")
   end
   
   def recommend(limit=10)
     return [] unless self.endorsements_count > 0
-    sql = "select relationships.percentage, priorities.id
-    from relationships,priorities
-    where relationships.other_priority_id = priorities.id and ("
+    sql = "select relationships.percentage, ideas.id
+    from relationships,ideas
+    where relationships.other_idea_id = ideas.id and ("
     if up_endorsements_count > 0
-      sql += "(relationships.priority_id in (#{endorsements.active_and_inactive.endorsing.collect{|e|e.priority_id}.join(',')}) and relationships.type = 'RelationshipEndorserEndorsed')"
+      sql += "(relationships.idea_id in (#{endorsements.active_and_inactive.endorsing.collect{|e|e.idea_id}.join(',')}) and relationships.type = 'RelationshipEndorserEndorsed')"
     end
     if up_endorsements_count > 0 and down_endorsements_count > 0
       sql += " or "
     end
     if down_endorsements_count > 0
-      sql += "(relationships.priority_id in (#{endorsements.active_and_inactive.opposing.collect{|e|e.priority_id}.join(',')}) and relationships.type = 'RelationshipOpposerEndorsed')"
+      sql += "(relationships.idea_id in (#{endorsements.active_and_inactive.opposing.collect{|e|e.idea_id}.join(',')}) and relationships.type = 'RelationshipOpposerEndorsed')"
     end
-    sql += ") and relationships.other_priority_id not in (select priority_id from endorsements where user_id = " + self.id.to_s + ")
-    and priorities.position > 25
-    and priorities.status = 'published'
-    group by priorities.id, relationships.percentage
+    sql += ") and relationships.other_idea_id not in (select idea_id from endorsements where user_id = " + self.id.to_s + ")
+    and ideas.position > 25
+    and ideas.status = 'published'
+    group by ideas.id, relationships.percentage
     order by relationships.percentage desc"
     sql += " limit " + limit.to_s
     
-    priority_ids = Priority.find_by_sql(sql).collect{|p|p.id}
-    Priority.find(priority_ids).paginate :per_page => limit, :page => 1
+    idea_ids = Idea.find_by_sql(sql).collect{|p|p.id}
+    Idea.find(idea_ids).paginate :per_page => limit, :page => 1
   end
   memoize :recommend
 
@@ -785,19 +785,19 @@ class User < ActiveRecord::Base
   end
   
   def index_charts(limit=30)
-    PriorityChart.find_by_sql(["select priority_charts.date_year,priority_charts.date_month,priority_charts.date_day, 
-    sum(priority_charts.volume_count) as volume_count,
-    sum((priority_charts.down_count*(endorsements.value*-1))+(priority_charts.up_count*endorsements.value)) as down_count, 
-    avg(endorsements.value*priority_charts.change_percent) as percentage
-    from priority_charts, endorsements
+    IdeaChart.find_by_sql(["select idea_charts.date_year,idea_charts.date_month,idea_charts.date_day,
+    sum(idea_charts.volume_count) as volume_count,
+    sum((idea_charts.down_count*(endorsements.value*-1))+(idea_charts.up_count*endorsements.value)) as down_count,
+    avg(endorsements.value*idea_charts.change_percent) as percentage
+    from idea_charts, endorsements
     where endorsements.user_id = ? and endorsements.status = 'active'
-    and endorsements.priority_id = priority_charts.priority_id
-    group by endorsements.user_id, priority_charts.date_year, priority_charts.date_month, priority_charts.date_day
-    order by priority_charts.date_year desc, priority_charts.date_month desc, priority_charts.date_day desc limit ?",id,limit])
+    and endorsements.idea_id = idea_charts.idea_id
+    group by endorsements.user_id, idea_charts.date_year, idea_charts.date_month, idea_charts.date_day
+    order by idea_charts.date_year desc, idea_charts.date_month desc, idea_charts.date_day desc limit ?",id,limit])
   end
   memoize :index_charts
   
-  # computes the change in percentage of all their priorities over the last [limit] days.
+  # computes the change in percentage of all their ideas over the last [limit] days.
   def index_change_percent(limit=7)
     index_charts(limit-1).collect{|c|c.percentage.to_f}.reverse.sum
   end
@@ -981,12 +981,12 @@ class User < ActiveRecord::Base
         tags = TagSubscription.find_all_by_user_id(self.id).collect {|sub| sub.tag.name if sub.tag }.compact
         unless tags.empty?
           if self.reports_discussions
-            priorities = Priority.tagged_with(tags,:match_any=>true).published.since(self.last_sent_report)
+            ideas = Idea.tagged_with(tags,:match_any=>true).published.since(self.last_sent_report)
           else
-            priorities = []
+            ideas = []
           end
-          if not priorities.empty?
-            UserMailer.report(self,priorities).deliver
+          if not ideas.empty?
+            UserMailer.report(self,ideas).deliver
           end
         end
         self.reload
@@ -1092,7 +1092,7 @@ class User < ActiveRecord::Base
     self.increment!("warnings_count")
   end
 
-  def self.send_status_email(priority_id, status, date, subject, message)
+  def self.send_status_email(idea_id, status, date, subject, message)
     status_types = {
       '-2' => tr("Failed","status_messages"),
       '-1' => tr("In Progress","status_messages"),
@@ -1100,58 +1100,58 @@ class User < ActiveRecord::Base
        '2' => tr("Successful","status_messages")
     }
     status = status_types[status]
-    priority = Priority.find(priority_id)
+    idea = Idea.find(idea_id)
     Tr8n::Config.init('is', Tr8n::Config.current_user) if Instance.last.layout == "better_reykjavik" or Instance.last.layout == "better_iceland"
-    all_endorsers_and_opposers_for_priority(priority_id).each do |user|
+    all_endorsers_and_opposers_for_idea(idea_id).each do |user|
       next unless user.is_finished_subscribed
-      position = Endorsement.where(priority_id: priority_id, user_id: user.id).first.value
-      UserMailer.priority_status_update(priority, status, date, subject, message, user, position).deliver
+      position = Endorsement.where(idea_id: idea_id, user_id: user.id).first.value
+      UserMailer.idea_status_update(idea, status, date, subject, message, user, position).deliver
     end
   end
 
   def self.send_report_emails(frequency)
     Tr8n::Config.init('is', Tr8n::Config.current_user) if Instance.last.layout == "better_reykjavik" or Instance.last.layout == "better_iceland"
-    top_priorities = {}
-    priority_followers = {}
+    top_ideas = {}
+    idea_followers = {}
     top_category_score = {}
     Instance.current.default_tags_checkbox.split(',').each do |tag|
       category = Tag.find_by_name(tag)
-      top_priorities[category] = Priority.filtered.tagged_with(category, :on => :issues).published.top_rank.limit(3)
-      top_category_score[category] = top_priorities[category].shift.score
-      top_priorities[category].each do |priority|
-        priority_followers[priority.id] = all_endorsers_and_opposers_for_priority(priority.id).collect { |u| u.id }
+      top_ideas[category] = Idea.filtered.tagged_with(category, :on => :issues).published.top_rank.limit(3)
+      top_category_score[category] = top_ideas[category].shift.score
+      top_ideas[category].each do |idea|
+        idea_followers[idea.id] = all_endorsers_and_opposers_for_idea(idea.id).collect { |u| u.id }
       end
     end
 
     User.where("status = 'active' AND report_frequency = ? AND is_admin = 0", frequency).each do |user|
-      # the user's top 5 ranked priorities
-      important = user.endorsements.active.by_position.limit(5).collect { |e| Priority.find(e.priority) }
+      # the user's top 5 ranked ideas
+      important = user.endorsements.active.by_position.limit(5).collect { |e| Idea.find(e.idea) }
       next if important.empty?
 
-      # priorities in 2nd/3rd place which the user has not endorsed/opposed,
+      # ideas in 2nd/3rd place which the user has not endorsed/opposed,
       # but at least a quarter of his/her followers has
       important_to_followers = []
 
-      # priorities the user has endorsed/opposed which are in 2nd or 3rd
+      # ideas the user has endorsed/opposed which are in 2nd or 3rd
       # place in a category
       near_top = []
 
-      top_priorities.each do |category, priorities|
-        priorities.each_with_index do |priority, index|
+      top_ideas.each do |category, ideas|
+        ideas.each_with_index do |idea, index|
           follower_count = user.followers.count
-          if priority_followers[priority.id].include?(user.id)
-            position = Endorsement.find(:first, conditions: { user_id: user.id, priority_id: priority.id }).value
+          if idea_followers[idea.id].include?(user.id)
+            position = Endorsement.find(:first, conditions: { user_id: user.id, idea_id: idea.id }).value
             near_top << {
-                priority: priority,
+                idea: idea,
                 position: index+2,
                 category: category,
                 endorsement: position,
-                distance: top_category_score[category] - priority.score,
+                distance: top_category_score[category] - idea.score,
             }
           else
-            follower_endorsements = Endorsement.find(:all, conditions: ["priority_id = ? AND user_id IN (?)", priority.id, user.follower_ids]).count
+            follower_endorsements = Endorsement.find(:all, conditions: ["idea_id = ? AND user_id IN (?)", idea.id, user.follower_ids]).count
             if follower_endorsements > follower_count / 10
-              important_to_followers << { priority: priority, position: index+2, category: category, follower_endorsements: follower_endorsements }
+              important_to_followers << { idea: idea, position: index+2, category: category, follower_endorsements: follower_endorsements }
             end
           end
         end

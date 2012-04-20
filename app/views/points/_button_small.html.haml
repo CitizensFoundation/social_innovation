@@ -25,11 +25,11 @@
 - if not quality and logged_in?
   %br/
   = tr("Is this helpful?", "view/points/_button_small")
-  %span.tag_button.tag_button_hack{:id => "priority_helpful_yes_#{point.id.to_s}"}
+  %span.tag_button.tag_button_hack{:id => "idea_helpful_yes_#{point.id.to_s}"}
     = link_to tr("YES", "view/points/_button_small"), quality_point_path(point, :region => "point_inline", :value => true),                    |
       :method=>:post,                                                                                                                          |
       :remote=>true,                                                                                                                           |
-      'data-disable-with' => '<span class="quality_helpful_link priority_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>', |
+      'data-disable-with' => '<span class="quality_helpful_link idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>', |
       'data-loader-name' => "no_loader",                                                                                                       |
       :class => "quality_helpful_link", :title => tr("This is helpful", "view/points/_button_small")                                           |
   %span.or= tr("OR", "view/points/_button_small")
@@ -37,9 +37,9 @@
     = link_to tr("NO", "view/points/_button_small"), quality_point_path(point, :region => "point_inline", :value => false),                      |
       :method=>:post,                                                                                                                            |
       :remote=>true,                                                                                                                             |
-      'data-disable-with' => '<span class="quality_unhelpful_link priority_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>', |
+      'data-disable-with' => '<span class="quality_unhelpful_link idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>', |
       'data-loader-name' => "no_loader",                                                                                                         |
       :class => "quality_unhelpful_link", :title => tr("This is not helpful", "view/points/_button_small")                                       |
 - if quality or !logged_in?
   %span.point_fblike
-    %fb:like{:action => tr("like","facebook"), :colorscheme => "light", :href => point.show_url, :layout => "button_count", :ref => "priority", "show-faces" => "false", :width => "120"}
+    %fb:like{:action => tr("like","facebook"), :colorscheme => "light", :href => point.show_url, :layout => "button_count", :ref => "idea", "show-faces" => "false", :width => "120"}

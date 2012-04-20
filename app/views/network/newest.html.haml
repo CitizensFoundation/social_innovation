@@ -14,11 +14,11 @@
           \&middot; #{tr("{count} endorsements", "view/network/newest", :count => user.up_endorsements_count)}
           - if user.down_endorsements_count > 0
             \&middot; #{tr("{count} oppositions", "view/network/newest", :count => user.down_endorsements_count)}
-          - if user.has_top_priority?
+          - if user.has_top_idea?
             %br/
-            = tr("#1 priority:", "view/network/newest")
+            = tr("#1 idea:", "view/network/newest")
             - if user.top_endorsement.is_down?
               %span.opposed= tr("Opposing", "view/network/newest")
-            = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+            = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
   %p
     = will_paginate(@users)

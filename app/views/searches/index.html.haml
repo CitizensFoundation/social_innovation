@@ -51,12 +51,12 @@
         - unless not @facets or @facets.empty? or @search_results.empty?
           #left{:style => "float: left"}
             - @search_results.each do |result|
-              - if result.class == Priority
+              - if result.class == Idea
                 %div
                   %h4{:style => "color: #777; border-bottom: none;"}
-                    = tr("Priority","search")
+                    = tr("Idea","search")
                     \- #{time_ago(result.excerpts.created_at)}
-                  %span{:style => "color: #3B5998; font-size:1.083em; font-weight: bold;"}= link_to result.excerpts.name.force_encoding("UTF-8").html_safe, :controller=>"priorities", :action=>"show", :id=>result.id
+                  %span{:style => "color: #3B5998; font-size:1.083em; font-weight: bold;"}= link_to result.excerpts.name.force_encoding("UTF-8").html_safe, :controller=>"ideas", :action=>"show", :id=>result.id
                   / </haml:block><haml:silent></haml:silent><haml:block>
                   %br/
                   %br/

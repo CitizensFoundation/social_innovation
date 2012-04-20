@@ -6,7 +6,7 @@
       - @row += 1
       %tr
         %td{:valign => "top"}
-          .priority_position= @row
+          .idea_position= @row
         %td{:style => "padding: 10px 5px 4px 7px;", :valign => "top", :width => "26"}
           = render :partial => "users/pic", :locals => {:user => user}
         %td{:style => "padding: 5px 5px 4px 0px;", :valign => "top"}
@@ -15,11 +15,11 @@
             = user.capitals_count
             = current_instance.currency_short_name
           = tr("<a href='{comment_url}'>{count} comments</a>", "view/network/talkative", :count => user.comments_count, :comment_url => discussions_user_url(user))
-          - if user.has_top_priority?
+          - if user.has_top_idea?
             %br/
-            = tr("#1 priority:", "view/network/talkative")
+            = tr("#1 idea:", "view/network/talkative")
             - if user.top_endorsement.is_down?
               %span.opposed= tr("Opposing", "view/network/talkative")
-            = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+            = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
   %p
     = will_paginate(@users)

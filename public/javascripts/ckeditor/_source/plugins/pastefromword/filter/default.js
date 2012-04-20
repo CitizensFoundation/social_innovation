@@ -489,7 +489,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							else
 							{
 								// Probably share the same list style type with previous list item,
-								// give it priority to avoid ambiguous between C(Alpha) and C.(Roman).
+								// give it idea to avoid ambiguous between C(Alpha) and C.(Roman).
 								if ( previousListType && listMarkerPatterns[ previousListType ] [ previousListStyleType ].test( bullet[ 1 ] ) )
 								{
 									listType = previousListType;
@@ -503,7 +503,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											if ( listMarkerPatterns[ type ][ style ].test( bullet[ 1 ] ) )
 											{
-												// Small numbering has higher priority, when dealing with ambiguous
+												// Small numbering has higher idea, when dealing with ambiguous
 												// between C(Alpha) and C.(Roman).
 												if ( type == 'ol' && ( /alpha|roman/ ).test( style ) )
 												{
@@ -907,7 +907,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										style = rules[ name ];
 										if ( typeof style == 'object' )
 											style = style[ className ];
-										// Maintain style rules priorities.
+										// Maintain style rules ideas.
 										style && element.addStyle( style, true );
 									}
 								};
@@ -1301,7 +1301,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var dataProcessor = new pasteProcessor(),
 			dataFilter = dataProcessor.dataFilter;
 
-		// These rules will have higher priorities than default ones.
+		// These rules will have higher ideas than default ones.
 		dataFilter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ) );
 
 		// Allow extending data filter rules.

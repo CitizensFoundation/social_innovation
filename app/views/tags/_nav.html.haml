@@ -6,6 +6,6 @@
   .blurb_nav
     - for tag in @tags
       = link_to_unless_current tr(tag.title,"model/category"), edit_tag_url(tag)
-      %span.tag_count= tag.priorities_count
+      %span.tag_count= tag.ideas_count
       %span.x= link_to 'X', tag, :confirm => 'Are you sure?', :method => :delete
       %br/

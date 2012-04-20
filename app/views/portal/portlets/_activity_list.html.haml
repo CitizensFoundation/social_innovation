@@ -1,9 +1,0 @@
-- if not activities
-  = raw tr("No activity here yet.", "view/portal/portlets")
-- else
-  #activities
-    - for activity in activities
-      - if ['news.your.activity','news.your.capital','news.your.changes'].include?(portlet.portlet_template.name)
-        = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_nouser"}
-      - else
-        = render :partial => "activities/show", :locals => {:activity => activity, :suffix => ""}

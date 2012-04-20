@@ -60,8 +60,8 @@ module ApplicationHelper
       tr("comments","helpers/application")
     elsif option=="Point"
       tr("Points","helpers/application")
-    elsif option=="Priority"
-      tr("priorities","helpers/application")
+    elsif option=="Idea"
+      tr("ideas","helpers/application")
     elsif option=="Document"
       tr("document","helpers/application")
     else
@@ -121,8 +121,8 @@ module ApplicationHelper
         r << tr('{count} {sentence}', "notifications", :count => u[1], :sentence =>messages_sentence(current_user.received_notifications.messages.unread.count(:group => [:sender], :order => "count_all desc")))
       elsif u[0] == 'NotificationCommentFlagged'
         r << link_to(tr('{count} comment flag(s)', "notifications", :count => u[1]), :controller => "inbox", :action => "notifications")
-      elsif u[0] == 'NotificationPriorityFlagged'
-        r << link_to(tr('{count} priority flag(s)', "notifications", :count => u[1]), :controller => "inbox", :action => "notifications")       
+      elsif u[0] == 'NotificationIdeaFlagged'
+        r << link_to(tr('{count} idea flag(s)', "notifications", :count => u[1]), :controller => "inbox", :action => "notifications")
       elsif u[0] == 'NotificationPointFlagged'
         r << link_to(tr('{count} point flag(s)', "notifications", :count => u[1]), :controller => "inbox", :action => "notifications")       
       elsif u[0] == 'NotificationComment' 
@@ -139,8 +139,8 @@ module ApplicationHelper
         r << link_to(tr('{count} document revision(s)', "notifications", :count => u[1]), :controller => "inbox", :action => "notifications")
       elsif u[0] == 'NotificationPointRevision' 
         r << link_to(tr('{count} point revision(s)', "notifications", :count => u[1]), :controller => "inbox", :action => "notifications")
-      elsif u[0] == 'NotificationPriorityFinished' 
-        r << link_to(tr('{count} prioritie(s) finished', "notifications", :count => u[1]), yours_finished_priorities_url)
+      elsif u[0] == 'NotificationIdeaFinished'
+        r << link_to(tr('{count} prioritie(s) finished', "notifications", :count => u[1]), yours_finished_ideas_url)
       elsif false and u[0] == 'NotificationChangeVote' 
         r << link_to(tr('{count} merger vote(s)', "notifications",:count => u[1]), :controller => "news", :action => "changes_voting")
       elsif false and u[0] == 'NotificationChangeProposed' 
@@ -172,7 +172,7 @@ module ApplicationHelper
 				r << tr('{percentage} endorsers', "relationships", :percentage => number_to_percentage(relationship.percentage, :precision => 0))			  
 			end
 		end
-		t('priorities.relationship.name', :sentence => r.to_sentence)
+		t('ideas.relationship.name', :sentence => r.to_sentence)
   end
   
   def tags_sentence(list)
@@ -185,7 +185,7 @@ module ApplicationHelper
   end
     
   def relationship_tags_sentence(list)
-		t('priorities.relationship.tags_sentence', :sentence => tags_sentence(list))
+		t('ideas.relationship.tags_sentence', :sentence => tags_sentence(list))
   end
   
   def rss_url(url)
@@ -218,15 +218,15 @@ module ApplicationHelper
 		return s.html_safe
   end
 
-  def official_status(priority)
-  	if priority.is_failed?
-  		out = '<span class="opposed">' + priority.official_status_name + '</span>'
-  	elsif priority.is_successful?
-  		out = '<span class="endorsed">' + priority.official_status_name + '</span>'
-  	elsif priority.is_compromised?
-  		out = '<span class="compromised">' + priority.official_status_name + '</span>'
-  	elsif priority.is_intheworks?
-  		out = '<span>' + priority.official_status_name + '</span>'
+  def official_status(idea)
+  	if idea.is_failed?
+  		out = '<span class="opposed">' + idea.official_status_name + '</span>'
+  	elsif idea.is_successful?
+  		out = '<span class="endorsed">' + idea.official_status_name + '</span>'
+  	elsif idea.is_compromised?
+  		out = '<span class="compromised">' + idea.official_status_name + '</span>'
+  	elsif idea.is_intheworks?
+  		out = '<span>' + idea.official_status_name + '</span>'
     else
       out = ""
   	end

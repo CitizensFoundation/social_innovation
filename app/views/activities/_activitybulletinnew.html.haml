@@ -1,7 +1,7 @@
 %img.icon{:border => "0", :height => "16", :src => "/assets/fugue/sticky_note_pin.png", :width => "16"}/
 - if activity.has_point?
   = raw tr("{user_name} posted a bulletin to {discussion_name}", "view/activities/_activitybulletinnew", :user_name => link_to(activity.user.login, activity.user), :discussion_name => link_to(activity.point.name, activity.point))
-- elsif activity.has_priority?
-  = raw tr("{user_name} posted a bulletin to {discussion_name}", "view/activities/_activitybulletinnew", :user_name => link_to(activity.user.login, activity.user), :discussion_name => link_to(activity.priority.name, activity.priority))
+- elsif activity.has_idea?
+  = raw tr("{user_name} posted a bulletin to {discussion_name}", "view/activities/_activitybulletinnew", :user_name => link_to(activity.user.login, activity.user), :discussion_name => link_to(activity.idea.name, activity.idea))
 - else
   = raw tr("{user_name} posted a bulletin", "view/activities/_activitybulletinnew", :user_name => link_to(activity.user.login, activity.user))

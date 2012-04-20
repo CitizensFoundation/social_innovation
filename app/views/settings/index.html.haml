@@ -49,7 +49,7 @@
             = f.select :my_gender, options_for_select([tr("Select gender", "model/user"), tr("Male", "model/user"),tr("Female", "model/user")],@user.my_gender)
         .field
           .field_box
-            %h4= tr("Periodic updates on your priorities", "view/settings/signups")
+            %h4= tr("Periodic updates on your ideas", "view/settings/signups")
             = f.radio_button :report_frequency, 2
             = tr("Weekly", "view/settings/signups")
             = f.radio_button :report_frequency, 1

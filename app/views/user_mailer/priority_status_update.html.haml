@@ -3,10 +3,10 @@
   = tr("Hi","email")
   = @user.first_name
   ,
-%p= tr('The status of the priority <a href="{priority_link}">{priority_name}</a> {support_or_endorse_text} has been changed on {instance_name}.', |
+%p= tr('The status of the idea <a href="{idea_link}">{idea_name}</a> {support_or_endorse_text} has been changed on {instance_name}.', |
     "email",                                                                                                                                      |
-    priority_name: @priority.name,                                                                                                                |
-    priority_link: @priority.show_url,                                                                                                            |
+    idea_name: @idea.name,                                                                                                                |
+    idea_link: @idea.show_url,                                                                                                            |
     support_or_endorse_text: @support_or_endorse_text,                                                                                            |
     instance_name: tr(Instance.current.name, "Name from database"))                                                                               |
 %p= @date.strftime("%d.%m.%Y")

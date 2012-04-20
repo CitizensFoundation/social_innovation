@@ -26,8 +26,8 @@ class Point < ActiveRecord::Base
   scope :since, lambda{|time| {:conditions=>["questions.created_at>?",time]}}
 
   belongs_to :user
-  belongs_to :priority
-  belongs_to :other_priority, :class_name => "Priority"
+  belongs_to :idea
+  belongs_to :other_idea, :class_name => "Idea"
   belongs_to :revision # the current revision
   
   has_many :revisions, :dependent => :destroy
@@ -46,7 +46,7 @@ class Point < ActiveRecord::Base
   define_index do
     indexes name
     indexes content
-    indexes priority.category.name, :facet=>true, :as=>"category_name"
+    indexes idea.category.name, :facet=>true, :as=>"category_name"
     has sub_instance_id, :as=>:sub_instance_id, :type => :integer
     where "points.status = 'published'"    
   end
@@ -60,8 +60,8 @@ class Point < ActiveRecord::Base
   end
   
   def category_name
-    if priority.category
-      priority.category.name
+    if idea.category
+      idea.category.name
     else
       'No category'
     end
@@ -130,7 +130,7 @@ class Point < ActiveRecord::Base
     self.published_at = Time.now
     add_counts
     save(:validate => false) if persisted?
-    priority.save(:validate => false)    
+    idea.save(:validate => false)
   end
   
   def on_deleted_entry(new_state, event)
@@ -142,7 +142,7 @@ class Point < ActiveRecord::Base
     #if capital_earned != 0
     #  self.capitals << CapitalPointHelpfulDeleted.new(:recipient => user, :amount => (capital_earned*-1))
     #end
-    priority.save(:validate => false)
+    idea.save(:validate => false)
     for r in revisions
       r.delete!
     end
@@ -153,35 +153,35 @@ class Point < ActiveRecord::Base
   end
  
   def ensure_request_and_user_are_set
-    if self.priority
-      self.ip_address = self.priority.ip_address if not self.ip_address
-      self.user_agent = self.priority.user_agent if not self.user_agent
-      self.user_id = self.priority.user_id if not self.user_id
-      Rails.logger.debug("SELF PRIORITY: #{pp self.priority.inspect}")
+    if self.idea
+      self.ip_address = self.idea.ip_address if not self.ip_address
+      self.user_agent = self.idea.user_agent if not self.user_agent
+      self.user_id = self.idea.user_id if not self.user_id
+      Rails.logger.debug("SELF PRIORITY: #{pp self.idea.inspect}")
     else
-      Rails.logger.error("No Priority for point id: #{self.id}")
-      puts "No Priority for point id: #{self.id}"
+      Rails.logger.error("No Idea for point id: #{self.id}")
+      puts "No Idea for point id: #{self.id}"
     end
   end
   
   def on_buried_entry(new_state, event)
     remove_counts
-    priority.save(:validate => false)    
+    idea.save(:validate => false)
   end
   
   def add_counts
-    priority.up_points_count += 1 if is_up?
-    priority.down_points_count += 1 if is_down?
-    priority.neutral_points_count += 1 if is_neutral?        
-    priority.points_count += 1
+    idea.up_points_count += 1 if is_up?
+    idea.down_points_count += 1 if is_down?
+    idea.neutral_points_count += 1 if is_neutral?
+    idea.points_count += 1
     user.increment!(:points_count)    
   end
   
   def remove_counts
-    priority.up_points_count -= 1 if is_up?
-    priority.down_points_count -= 1 if is_down?
-    priority.neutral_points_count -= 1 if is_neutral?        
-    priority.points_count -= 1
+    idea.up_points_count -= 1 if is_up?
+    idea.down_points_count -= 1 if is_down?
+    idea.neutral_points_count -= 1 if is_neutral?
+    idea.points_count -= 1
     user.decrement!(:points_count)        
   end
   
@@ -199,7 +199,7 @@ class Point < ActiveRecord::Base
 
   def text
     s = name_with_type
-    s += "\r\nIn support of " + other_priority.name if has_other_priority?
+    s += "\r\nIn support of " + other_idea.name if has_other_idea?
     s += "\r\n" + content
     s += "\r\nSource: " + website_link if has_website?
     return s
@@ -303,24 +303,24 @@ class Point < ActiveRecord::Base
     capitals.sum(:amount, :conditions => "type = 'CapitalPointHelpfulEveryone'")
   end  
 
-  def priority_name
-    priority.name if priority
+  def idea_name
+    idea.name if idea
   end
   
-  def priority_name=(n)
-    self.priority = Priority.find_by_name(n) unless n.blank?
+  def idea_name=(n)
+    self.idea = Idea.find_by_name(n) unless n.blank?
   end
   
-  def other_priority_name
-    other_priority.name if other_priority
+  def other_idea_name
+    other_idea.name if other_idea
   end
   
-  def other_priority_name=(n)
-    self.other_priority = Priority.find_by_name(n) unless n.blank?
+  def other_idea_name=(n)
+    self.other_idea = Idea.find_by_name(n) unless n.blank?
   end
 
-  def has_other_priority?
-    attribute_present?("other_priority_id")
+  def has_other_idea?
+    attribute_present?("other_idea_id")
   end
   
   def website_link

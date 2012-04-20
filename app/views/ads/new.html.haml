@@ -1,17 +1,17 @@
-= render :partial => "priorities/header"
-= render :partial => "priorities/nav"
-= tr("<p><b>Buy an ad for this priority</b>.  You can spend some of your social points and put this priority with your message at the top of all the pages on {instance_name}.  Whichever ad has the most<span class=\"pc\">{currency_short_name}</span> spent per member is shown first until the member responds, the more you spend, the faster it's seen.  Ads are only shown to logged in members who have not already endorsed or opposed the priority, so your<span class=\"pc\">sp</span> is not wasted.</p>", |
+= render :partial => "ideas/header"
+= render :partial => "ideas/nav"
+= tr("<p><b>Buy an ad for this idea</b>.  You can spend some of your social points and put this idea with your message at the top of all the pages on {instance_name}.  Whichever ad has the most<span class=\"pc\">{currency_short_name}</span> spent per member is shown first until the member responds, the more you spend, the faster it's seen.  Ads are only shown to logged in members who have not already endorsed or opposed the idea, so your<span class=\"pc\">sp</span> is not wasted.</p>", |
   "view/ads/new",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
   :instance_name => tr(current_instance.name,"Name from database"),                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
   :currency_short_name => tr(current_instance.currency_short_name, "Name from database"                                                                                                                                                                                                                                                                                                                                                                                                                                |
   ))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 = tr("<p>You cannot buy<span class=\"pc\">sp</span> with real money, but you can earn it in a variety of ways, like <a href=\"/network/find\">inviting people to join</a>, and writing helpful <a href=\"../points/new\">talking points</a>.  <a href=\"/about/faq#pc\">Details here</a>.</p>", "view/ads/new")
 %p
-  = form_for(@ad, :url => priority_ads_path(@priority)) do |f|
+  = form_for(@ad, :url => idea_ads_path(@idea)) do |f|
     = f.error_messages :header_message => tr("There was a problem creating your ad", "view/ads/new")
     .field
       .field_label
-        = tr("Your message to go underneath the link to the priority:", "view/ads/new")
+        = tr("Your message to go underneath the link to the idea:", "view/ads/new")
       .field_box
         = f.text_field :content, :size => 45, :maxlength => 45, :id => "encouragement_text"
     .field
@@ -41,7 +41,7 @@
   :javascript
     //
     function sendForm() {
-      jQuery.ajax({type:'post', data: jQuery('form.new_ad').serialize(), url:'#{preview_priority_ads_url(@priority)}'})  
+      jQuery.ajax({type:'post', data: jQuery('form.new_ad').serialize(), url:'#{preview_idea_ads_url(@idea)}'})
     }
     
     $('#encouragement_text').delayedObserver(function() {

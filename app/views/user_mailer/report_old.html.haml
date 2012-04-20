@@ -10,12 +10,12 @@
           %p
             %img{:alt => "Vidraedur.is", :src => "http://www.utanrikisraduneyti.is/media/Logo/vidraedur.is-logo.jpg", :width => "600"}/
           %p Eftirfarandi nýtt efni er komið inn síðan seinast:
-          - unless @priorities.empty?
+          - unless @ideas.empty?
             %p
               Umræðurefni:
               %br/
-              - @priorities.each do |priority|
-                %a{:href => link_to priority.show_url}= priority.name
+              - @ideas.each do |idea|
+                %a{:href => link_to idea.show_url}= idea.name
                 %br/
           - unless @questions.empty?
             %p

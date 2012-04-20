@@ -6,9 +6,9 @@
     - else
       .reykjavik_icon
         %a{:href => "http://www.reykjavik.is"}= image_tag("/assets/new/reykjavik_icon.png", :alt => "www.reykjavik.is")
-  - elsif  Instance.current.layout == "your_priorities"
+  - elsif  Instance.current.layout == "your_ideas"
     .yrpri_icon
-      %a{:href => "http://yrpri.org"}= image_tag("/assets/logos/default.gif", :alt => "Your Priorities Worldwide")
+      %a{:href => "http://yrpri.org"}= image_tag("/assets/logos/default.gif", :alt => "Your Ideas Worldwide")
   = render :partial => "shared/sub_instance_large_flag"
   = render :partial => "shared/search"
   %div
@@ -43,12 +43,12 @@
               %br/
               \&middot; #{link_to tr("Falling agendas", "view/shared/_menu"), :controller => "charts", :action => "losers_24hr"}
             .tab_subhead
-              = link_to tr("Widgets for your site", "view/shared/_menu"), :controller => "widgets", :action => "priorities"
+              = link_to tr("Widgets for your site", "view/shared/_menu"), :controller => "widgets", :action => "ideas"
             .tab_sublinks
-              \&middot; #{link_to tr("Priorities", "view/shared/_menu"), :controller => "widgets", :action => "priorities"}
+              \&middot; #{link_to tr("Ideas", "view/shared/_menu"), :controller => "widgets", :action => "ideas"}
               %br/
               \&middot; #{link_to tr("Discussions", "view/shared/_menu"), :controller => "widgets", :action => "discussions"}
-  = render :partial => "priorities/new_button"
+  = render :partial => "ideas/new_button"
   = render :partial => "shared/social_media_buttons"
   = render :partial => "shared/rvk_countdown" if Instance.current.layout == "better_reykjavik"
   .userwrap
@@ -67,12 +67,12 @@
     - else
       = render :partial => "shared/login"
   - if logged_in?
-    #priority_column.userwrap
-      = render :partial => "shared/your_priorities"
+    #idea_column.userwrap
+      = render :partial => "shared/your_ideas"
   - else
     - unless @geoblocked
       #intro
-        = tr("<p>Getting involved is easy and fun.  Just join and start setting your priorities, like a to do list.  The more people who make your priority their own priority, the higher it <a href=\"/priorities/rising\">rises in the charts</a>. The more people who <a href=\"/signup\">join the network</a>, the more clout we have to make our agenda happen.</p>", "view/layouts/basic")
+        = tr("<p>Getting involved is easy and fun.  Just join and start setting your ideas, like a to do list.  The more people who make your idea their own idea, the higher it <a href=\"/ideas/rising\">rises in the charts</a>. The more people who <a href=\"/signup\">join the network</a>, the more clout we have to make our agenda happen.</p>", "view/layouts/basic")
   = render :partial => "shared/fb_activity_feed"
   .yourpri_logo
     %a{:href => "http://ibuar.is"}= image_tag("/assets/logo/default.gif", :alt => "shortcut")

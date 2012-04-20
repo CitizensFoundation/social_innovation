@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
     if @activity.status == 'deleted'
       flash[:error] = tr("That comment was deleted", "controller/comments")
       if not (logged_in? and current_user.is_admin?)
-        redirect_to @activity.priority and return if @activity.priority
+        redirect_to @activity.idea and return if @activity.idea
         redirect_to '/' and return
       end
     end
@@ -103,9 +103,9 @@ class CommentsController < ApplicationController
     @comment = @activity.comments.new(params[:comment])
     @comment.user = current_user
     @comment.request = request
-    if @activity.priority
-      # if this is related to a priority, check to see if they endorse it
-      e = @activity.priority.endorsements.active_and_inactive.find_by_user_id(@comment.user.id)
+    if @activity.idea
+      # if this is related to a idea, check to see if they endorse it
+      e = @activity.idea.endorsements.active_and_inactive.find_by_user_id(@comment.user.id)
       @comment.is_endorser = true if e and e.is_up?
       @comment.is_opposer = true if e and e.is_down?
     end

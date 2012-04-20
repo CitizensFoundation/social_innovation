@@ -1,10 +1,10 @@
-= render :partial => "priorities/header"
-= render :partial => "priorities/nav"
+= render :partial => "ideas/header"
+= render :partial => "ideas/nav"
 %p
   %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
     %tr
       %td{:valign => "top"}
-        = tr("{user_name} spent {capital}{currency_short_name} on an ad for {priority_name}", "view/ads/show", :user_name => link_to(@ad.user.name, @ad.user), :capital => @ad.cost, :currency_short_name => current_instance.currency_short_name, :priority_name => link_to(@ad.priority.name, @ad.priority))
+        = tr("{user_name} spent {capital}{currency_short_name} on an ad for {idea_name}", "view/ads/show", :user_name => link_to(@ad.user.name, @ad.user), :capital => @ad.cost, :currency_short_name => current_instance.currency_short_name, :idea_name => link_to(@ad.idea.name, @ad.idea))
         - if @ad.attribute_present?("content")
           "#{h(@ad.content)}"
         %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
@@ -29,7 +29,7 @@
         %br/
         = tr("Shown to {seen_count} of {total_count} members so far<br />{user_name} spent <span class='pc'>{cost}{currency_short_name}</span> or <span class='pc'>{per_user_cost}{currency_short_name}</span> per member", "view/ads/show", :user_name => link_to(@ad.user.name, @ad.user), :cost => @ad.cost, :seen_count => @ad.shown_ads_count, :total_count => @ad.show_ads_count, :currency_short_name => current_instance.currency_short_name, :per_user_cost => @ad.per_user_cost)
   - if @ad.status == 'active'
-    = tr("This ad is currently {position}. You can see all the ads running <a href='{ads_url}'>here</a>.", "view/ads/show", :position => @ad.position, :ads_url => ads_priorities_url)
+    = tr("This ad is currently {position}. You can see all the ads running <a href='{ads_url}'>here</a>.", "view/ads/show", :position => @ad.position, :ads_url => ads_ideas_url)
   %p
     #activities
       - for activity in @activities
@@ -37,4 +37,4 @@
     %p
       = will_paginate(@activities)
       %td.left_scale20{:valign => "top", :width => "160"}
-        = render :partial => "priorities/left_nav"
+        = render :partial => "ideas/left_nav"

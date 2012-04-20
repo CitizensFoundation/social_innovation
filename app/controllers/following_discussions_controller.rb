@@ -9,7 +9,7 @@ class FollowingDiscussionsController < ApplicationController
     if @activity.status == 'deleted'
       flash[:error] = tr("That comment was deleted", "controller/discussions")
       if not (logged_in? and current_user.is_admin?)
-        redirect_to @activity.priority and return if @activity.priority
+        redirect_to @activity.idea and return if @activity.idea
         redirect_to '/' and return
       end
     end

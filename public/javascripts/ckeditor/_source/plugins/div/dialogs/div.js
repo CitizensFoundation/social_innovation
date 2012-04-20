@@ -391,7 +391,7 @@
 											'default' : '',
 											commit : function( element )
 											{
-												// Merge with 'elementStyle', which is of higher priority.
+												// Merge with 'elementStyle', which is of higher idea.
 												var merged = this.getValue() + ( element.getCustomData( 'elementStyle' ) || '' );
 												element.setAttribute( 'style', merged );
 											}

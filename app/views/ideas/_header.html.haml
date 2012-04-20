@@ -1,0 +1,40 @@
+:javascript
+  $(function(){
+  	$('.move_test').replaceWith($('.category'));
+  	$('.replace_fblike').replaceWith($('.fblike'));
+  	$('.replace_report').replaceWith($('.report1'));
+  	$('.replace_notice').replaceWith($('.single .warning_inline2'));
+  
+      
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+      po.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  });
+%table.idea-show-table.single
+  %tr
+    = render :partial => "ideas/rank_week_month", :locals => {:idea => @idea }
+    %td{:colspan => "3", :rowspan => "2", :valign => "top"}
+      %ul
+        %li.list_idea_overview
+          .idea_listing{:id => "idea_#{@idea.id}"}
+            = render :partial => "ideas/listing", :locals => {:idea => @idea, :endorsement => @endorsement, :value => 0, :noaction=>true}
+        %li.list_report
+          .replace_report{:style => "margin-left:10px !important;"}
+        %li.list_left
+          .g-plusone{"data-size" => "medium"}
+        %li.list_left
+          .tweet
+            %a.twitter-share-button{"data-count" => "horizontal", :href => "http://twitter.com/share"} Tweet
+            %script{:src => "http://platform.twitter.com/widgets.js", :type => "text/javascript"}
+        %li.list_left
+          .replace_fblike
+      .clear
+      .replace_notice
+      - if @idea.status == "inactive" and [-1,-2,2].include?(@idea.official_status)
+        = render :partial => "ideas/idea_status_changelogs"
+  %tr
+    %td{:colspan => "2"}
+      - if @idea.category and @idea.category.icon
+        .idea_icon_single
+          = image_tag @idea.category.icon.url(:icon_50), :size => "50x50", :border => 0
+%br/

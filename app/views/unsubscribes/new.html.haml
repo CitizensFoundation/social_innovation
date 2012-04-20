@@ -9,7 +9,7 @@
       = f.text_field :email
     %p
     .option_group{:style => "line-height: 1"}
-      %h4= tr("Periodic updates on your priorities", "view/settings/signups")
+      %h4= tr("Periodic updates on your ideas", "view/settings/signups")
       = f.radio_button :report_frequency, 2
       = tr("Weekly", "view/settings/signups")
       = f.radio_button :report_frequency, 1
@@ -30,7 +30,7 @@
     = tr("When your vote is needed on an acquisition", "view/unsubscribes/new")
     %br/
     = f.check_box :is_finished_subscribed
-    = tr("When a priority's status is changed", "view/unsubscribes/new")
+    = tr("When a idea's status is changed", "view/unsubscribes/new")
     %br/
     = f.check_box :is_messages_subscribed
     = tr("Private messages and profile bulletins", "view/unsubscribes/new")

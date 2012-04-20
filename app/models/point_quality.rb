@@ -37,7 +37,7 @@ class PointQuality < ActiveRecord::Base
       end
 
       point.save(:validate => false)
-      ActivityPointHelpful.create(:point => point, :user => user, :priority => point.priority)      
+      ActivityPointHelpful.create(:point => point, :user => user, :idea => point.idea)
     else
       point.unhelpful_count += 1
       if is_endorser?
@@ -53,7 +53,7 @@ class PointQuality < ActiveRecord::Base
 
       point.delay.calculate_score(true)
       point.save(:validate => false)
-      ActivityPointUnhelpful.create(:point => point, :user => user, :priority => point.priority)
+      ActivityPointUnhelpful.create(:point => point, :user => user, :idea => point.idea)
     end
     user.increment!(:qualities_count)
   end
@@ -73,7 +73,7 @@ class PointQuality < ActiveRecord::Base
       end
       point.delay.calculate_score(true)
       point.save(:validate => false)
-      ActivityPointHelpfulDelete.create(:point => point, :user => user, :priority => point.priority)        
+      ActivityPointHelpfulDelete.create(:point => point, :user => user, :idea => point.idea)
     else
       point.unhelpful_count -= 1
       if is_endorser?
@@ -88,7 +88,7 @@ class PointQuality < ActiveRecord::Base
       end
       point.delay.calculate_score(true)
       point.save(:validate => false)
-      ActivityPointUnhelpfulDelete.create(:point => point, :user => user, :priority => point.priority)      
+      ActivityPointUnhelpfulDelete.create(:point => point, :user => user, :idea => point.idea)
     end
     user.decrement!(:qualities_count)    
   end
@@ -102,7 +102,7 @@ class PointQuality < ActiveRecord::Base
   end  
   
   def endorsement
-    user.endorsements.active_and_inactive.find_by_priority_id(point.priority_id)    
+    user.endorsements.active_and_inactive.find_by_idea_id(point.idea_id)
   end 
   memoize :endorsement
   

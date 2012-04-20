@@ -2,7 +2,7 @@ namespace :portlets do
   desc "initialize"
   task(:initialize => :environment) do
     pc=PortletTemplateCategory.new
-    pc.name="Priorities"
+    pc.name="Ideas"
     pc.weight = 1
     pc.save
     
@@ -27,64 +27,64 @@ namespace :portlets do
     pc5.save
 
     p=PortletTemplate.new
-    p.name="Latest Priorities"
+    p.name="Latest Ideas"
     p.portlet_template_category_id=pc.id
-    p.locals_data_function="setup_priorities_newest"
-    p.partial_name = "priority_newest"
+    p.locals_data_function="setup_ideas_newest"
+    p.partial_name = "idea_newest"
     p.item_limit = 3
     p.weight = 1
     p.save
     
     p=PortletTemplate.new
-    p.name="Top Priorities"
+    p.name="Top Ideas"
     p.portlet_template_category_id=pc.id
-    p.locals_data_function="setup_priorities_top"
-    p.partial_name = "priority_list"
+    p.locals_data_function="setup_ideas_top"
+    p.partial_name = "idea_list"
     p.item_limit = 3
     p.weight = 2
     p.save
     
     p=PortletTemplate.new
-    p.name="Rising Priorities"
+    p.name="Rising Ideas"
     p.portlet_template_category_id=pc.id
-    p.locals_data_function="setup_priorities_rising"
-    p.partial_name = "priority_list"
+    p.locals_data_function="setup_ideas_rising"
+    p.partial_name = "idea_list"
     p.item_limit = 3
     p.weight = 3
     p.save
     
     p=PortletTemplate.new
-    p.name="Falling Priorities"
+    p.name="Falling Ideas"
     p.portlet_template_category_id=pc.id
-    p.locals_data_function="setup_priorities_falling"
-    p.partial_name = "priority_list"
+    p.locals_data_function="setup_ideas_falling"
+    p.partial_name = "idea_list"
     p.item_limit = 3
     p.weight = 4
     p.save
     
     p=PortletTemplate.new
-    p.name="Controversial Priorities"
+    p.name="Controversial Ideas"
     p.portlet_template_category_id=pc.id
-    p.locals_data_function="setup_priorities_controversial"
-    p.partial_name = "priority_list"
+    p.locals_data_function="setup_ideas_controversial"
+    p.partial_name = "idea_list"
     p.item_limit = 3
     p.weight = 5
     p.save
     
     p=PortletTemplate.new
-    p.name="Finished Priorities"
+    p.name="Finished Ideas"
     p.portlet_template_category_id=pc.id
-    p.locals_data_function="setup_priorities_finished"
-    p.partial_name = "priority_list"
+    p.locals_data_function="setup_ideas_finished"
+    p.partial_name = "idea_list"
     p.item_limit = 3
     p.weight = 6
     p.save
     
     p=PortletTemplate.new
-    p.name="Random Priorities"
+    p.name="Random Ideas"
     p.portlet_template_category_id=pc.id
-    p.locals_data_function="setup_priorities_random"
-    p.partial_name = "priority_list"
+    p.locals_data_function="setup_ideas_random"
+    p.partial_name = "idea_list"
     p.item_limit = 5
     p.weight = 7
     p.caching_disabled = true
@@ -201,8 +201,8 @@ namespace :portlets do
     p=PortletTemplate.new
     p.name="Latest Processes"
     p.portlet_template_category_id=pc5.id
-    p.locals_data_function = "setup_priorities_latest_processes"
-    p.partial_name = "priority_list"
+    p.locals_data_function = "setup_ideas_latest_processes"
+    p.partial_name = "idea_list"
     p.item_limit = 3
     p.weight = 3
     p.save    
@@ -219,8 +219,8 @@ namespace :portlets do
     p=PortletTemplate.new
     p.name="Icesave"
     p.portlet_template_category_id=pc5.id
-    p.locals_data_function="setup_priorities_process_icesave"
-    p.partial_name = "priority_list"
+    p.locals_data_function="setup_ideas_process_icesave"
+    p.partial_name = "idea_list"
     p.item_limit = 3
     p.weight = 5
     p.save    

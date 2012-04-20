@@ -1,9 +1,9 @@
 #hp_intro= @page_title
 %p
-  - if @priorities.empty?
+  - if @ideas.empty?
     %p
-      = tr("This is where priorities that have been finished, either successfully or unsuccessfully will be.", "view/issues/finished")
+      = tr("This is where ideas that have been finished, either successfully or unsuccessfully will be.", "view/issues/finished")
   - else
-    - for priority in @priorities
-      = render :partial => "priorities/listing_finished", :locals => {:priority => priority }
-    = will_paginate @priorities
+    - for idea in @ideas
+      = render :partial => "ideas/listing_finished", :locals => {:idea => idea }
+    = will_paginate @ideas

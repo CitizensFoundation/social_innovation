@@ -1,11 +1,11 @@
 - for issue in issues
-  .priority_listing
-    %span.priority_name
+  .idea_listing
+    %span.idea_name
       %a{:href => "/issues/#{issue.slug}"}= tr(issue.title, "model/category")
     - if issue.attribute_present?("description")
       = h(issue.description)
-    .priority_action
-      %a{:href => "/issues/#{issue.slug}"}= tr("{count} priorities", "view/issues/index", :count => issue.priorities_count)
+    .idea_action
+      %a{:href => "/issues/#{issue.slug}"}= tr("{count} ideas", "view/issues/index", :count => issue.ideas_count)
       - if issue.points_count > 0
         \&middot;
         %a{:href => "/issues/#{issue.slug}/points"}= tr("{count} points", "view/issues/index", :count => issue.points_count)

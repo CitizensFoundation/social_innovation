@@ -20,8 +20,8 @@ module ActiveRecord
       module InstanceMethods
         def set_sub_instance
     # DISABLED HACK
-    #      if self.class.class_name=="Activity" and self.priority and self.priority.sub_instance
-    #        self.sub_instance_id = self.priority.sub_instance.id
+    #      if self.class.class_name=="Activity" and self.idea and self.idea.sub_instance
+    #        self.sub_instance_id = self.idea.sub_instance.id
     #      else
             self.sub_instance_id = SubInstance.current.id if SubInstance.current
     #      end

@@ -120,7 +120,7 @@ end
 class NotificationChangeVote < Notification
   
   def name
-    tr("Voting has started on {new_priority_name} acquiring {priority_name}", "model/notification", :priority_name => notifiable.change.priority_name, :new_priority_name => notifiable.change.new_priority.name)
+    tr("Voting has started on {new_idea_name} acquiring {idea_name}", "model/notification", :idea_name => notifiable.change.idea_name, :new_idea_name => notifiable.change.new_idea.name)
   end
   
   def is_recipient_subscribed?
@@ -132,7 +132,7 @@ end
 class NotificationChangeProposed < Notification
   
   def name
-    tr("{sender_name} proposed {new_priority_name} acquire {priority_name}", "model/notification", :sender_name => sender.name, :priority_name => notifiable.priority_name, :new_priority_name => notifiable.new_priority.name)
+    tr("{sender_name} proposed {new_idea_name} acquire {idea_name}", "model/notification", :sender_name => sender.name, :idea_name => notifiable.idea_name, :new_idea_name => notifiable.new_idea.name)
   end
   
   def is_recipient_subscribed?
@@ -146,8 +146,8 @@ class NotificationComment < Notification
   def name
     if notifiable.activity.has_point?
       tr("{sender_name} commented on {comment_name}", "model/notification", :sender_name => sender.name, :comment_name => notifiable.activity.point.name)      
-    elsif notifiable.activity.has_priority?
-      tr("{sender_name} commented on {comment_name}", "model/notification", :sender_name => sender.name, :comment_name => notifiable.activity.priority.name)      
+    elsif notifiable.activity.has_idea?
+      tr("{sender_name} commented on {comment_name}", "model/notification", :sender_name => sender.name, :comment_name => notifiable.activity.idea.name)
     elsif notifiable.activity.class == ActivityBulletinProfileNew
       tr("{sender_name} left a comment on {user_name} profile", "model/notification", :sender_name => sender.name, :user_name => notifiable.activity.user.name)
     else
@@ -226,10 +226,10 @@ class NotificationMessage < Notification
   
 end
 
-class NotificationPriorityFlagged < Notification
+class NotificationIdeaFlagged < Notification
   
   def name
-    tr("{sender_name} flagged {priority_name} for review", "model/notification", :sender_name => sender.name, :priority_name => notifiable.name)
+    tr("{sender_name} flagged {idea_name} for review", "model/notification", :sender_name => sender.name, :idea_name => notifiable.name)
   end
   
   def is_recipient_subscribed?
@@ -274,17 +274,17 @@ class NotificationPointRevision < Notification
   
 end
 
-class NotificationPriorityFinished < Notification
+class NotificationIdeaFinished < Notification
   
   def name
-    if notifiable.priority.is_successful?
-       tr("{priority_name} was completed successfully", "model/notification", :priority_name => notifiable.priority.name)
-    elsif notifiable.priority.is_compromised?
-      tr("{priority_name} was completed with a compromise", "model/notification", :priority_name => notifiable.priority.name)
-    elsif notifiable.priority.is_failed?
-      tr("{priority_name} failed", "model/notification", :priority_name => notifiable.priority.name)
-    elsif notifiable.priority.is_intheworks?
-      tr("{priority_name} is in the works", "model/notification", :priority_name => notifiable.priority.name)
+    if notifiable.idea.is_successful?
+       tr("{idea_name} was completed successfully", "model/notification", :idea_name => notifiable.idea.name)
+    elsif notifiable.idea.is_compromised?
+      tr("{idea_name} was completed with a compromise", "model/notification", :idea_name => notifiable.idea.name)
+    elsif notifiable.idea.is_failed?
+      tr("{idea_name} failed", "model/notification", :idea_name => notifiable.idea.name)
+    elsif notifiable.idea.is_intheworks?
+      tr("{idea_name} is in the works", "model/notification", :idea_name => notifiable.idea.name)
     end
   end
   

@@ -12,11 +12,11 @@ xml.StrategicPlanCore :StartDate => @user.created_at.year.to_s + '-' + @user.cre
 			xml.SequenceIndicator tag.id
 			xml.name tr(tag.title,"model/category")
 			xml.description
-			for priority in tag.priorities.published.top_rank
+			for idea in tag.ideas.published.top_rank
 				xml.objective do
-					xml.SequenceIndicator tag.id.to_s + '.' + priority.id.to_s
-					xml.name priority.name
-					xml.description priority.name
+					xml.SequenceIndicator tag.id.to_s + '.' + idea.id.to_s
+					xml.name idea.name
+					xml.description idea.name
 					xml.otherInformation
 				end
 			end

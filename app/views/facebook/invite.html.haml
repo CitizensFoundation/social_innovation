@@ -39,10 +39,10 @@
             %td{:style => "padding: 7px 5px 4px 0px;", :valign => "top"}
               = link_to user.login, user
               %span.pc= tr("{capital}{currency_short_name}", "view/facebook/invite", :capital => user.capitals_count, :currency_short_name => current_instance.currency_short_name)
-              - if user.has_top_priority?
+              - if user.has_top_idea?
                 %br/
-                = tr("#1 priority:", "view/facebook/invite")
+                = tr("#1 idea:", "view/facebook/invite")
                 - if user.top_endorsement.is_down?
                   %span.opposed= tr("opposed", "view/facebook/invite")
-                = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+                = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
                 \.

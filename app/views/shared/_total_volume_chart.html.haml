@@ -1,5 +1,5 @@
 - cache("total_volume_chart-#{session[:locale]}-#{@inline_translations_enabled}") do
-  - volume = PriorityChart.volume(30)
+  - volume = IdeaChart.volume(30)
   - if volume.any?
     %tr
       %td{:colspan => "3", :style => "padding-top: 5px; padding-bottom: 2px;"}= tr("VOLUME", "view/shared/_total_volume_chart")

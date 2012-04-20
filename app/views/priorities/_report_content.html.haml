@@ -1,9 +1,0 @@
-- if logged_in? and current_user.id != priority.user_id
-  %span.report1{:id => "priority_report_#{priority.id}"}
-    = link_to image_tag("report.png", :align => "center", :border => 0, :class => "priority_report warn"),                                                         |
-      flag_priority_url(priority.id), :method => :get,                                                                                                             |
-      :remote=>true,                                                                                                                                               |
-      'data-disable-with' => "",                                                                                                                                   |
-      'data-loader-name' => "circle",                                                                                                                              |
-      :confirm => tr("Is this priority from {user_name} a personal attack or a violation of the rules?", "view/comments/_show", :user_name => priority.user.name), |
-      :title => tr("Report", "view/comments/_show")                                                                                                                |

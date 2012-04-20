@@ -1,0 +1,134 @@
+= javascript_include_tag "jquery.qtip.min.js"
+= stylesheet_link_tag "jquery.qtip.min.css"
+- if current_sub_instance and current_sub_instance.message_for_new_idea
+  = render :partial=>"/shared/top_message_box", :locals=> {:message_text => current_sub_instance.message_for_new_idea.html_safe}
+- elsif Instance.current.message_for_new_idea and Instance.current.message_for_new_idea!=""
+  = render :partial=>"/shared/top_message_box", :locals=> {:message_text => Instance.current.message_for_new_idea.html_safe}
+- if params[:notice]
+  = params[:notice]
+= form_for @idea do |f|
+  = f.error_messages
+  - if @tag_names
+    = hidden_field_tag :tag_names, @tag_names
+  %h3= tr("Create a new idea", "views/ideas/form")
+  %br/
+  #your_idea.form_header
+    = tr("What is your idea?", "views/ideas/form")
+    %span.red *
+  %span.idea_name
+    = f.text_field :name, :size => 60, :maxlength => 60, :autocomplete =>"off"
+  %br/
+  %br/
+  .field
+    .field_label.form_header
+      = tr("Explain your point.", "view/ideas/_form")
+      %span.characters
+        %span#pointContentDown
+        = tr("characters left", "view/ideas/_form")
+      %span.red *
+    .field_box
+      = f.text_area :description, :id => 'pointContent', :button => 'submit', :rows => 5, :cols => 60, :maxLength => 500
+  %br/
+  - if current_sub_instance and current_sub_instance.required_tags
+    #idea_category
+      .form_header
+        = tr("Select idea type", "views/ideas/form")
+        %span.red *
+        %br/
+      - first_tag = true
+      - current_sub_instance.required_tags.split(',').each do |sub_instance_tag|
+        = f.radio_button :idea_type, sub_instance_tag, checked: first_tag
+        %span.Chapter_name= tr(sub_instance_tag, "views/ideas/form")
+        - first_tag = false
+  - if current_sub_instance and Instance.current.layout=="better_reykjavik"
+    %input{:name => "idea[category_id]", :type => "hidden", :value => "14"}/
+  - else
+    #idea_category
+      .form_header
+        = tr("Select category", "views/ideas/form")
+        %span.red *
+        %br/
+        .tiny_info
+          %p= tr("It‘s important to choose a category for the idea. If the idea is chosen to appear before the administration of Reykjavík City, the category will decide which divisional committee will discuss it.", "views/ideas/form")
+      - Category.for_sub_instance.each do |category|
+        = f.radio_button :category_id, category.id
+        %span.Chapter_name{:id => "category_#{category.id}"}= category.i18n_name
+        %span.invisible{:id => "category_#{category.id}_text"}= tr(category.description, "Description from database")
+    - if Instance.current.default_tags_checkbox and Instance.current.default_tags_checkbox!="" and not (current_sub_instance and current_sub_instance.required_tags)
+      %br/
+      #idea_category2
+        %b{:style => "color:red; font-size: 14px; line-height: 140%;"}
+          Ef setja á inn hugmynd að hverfisverkefni, undir Betri hverfi, verður fyrst að
+          %a{:href => "http://betrireykjavik.is/about/choose_sub_instance", :style => "text-decoration:underline !important;"} velja hverfið hér
+          og smella síðan á hnappinn Settu inn nýja hugmynd.
+        %br/
+        %br/
+        .form_header
+          = tr("Select neighborhood (if applicable)", "views/ideas/form")
+          %br/
+        - Instance.current.default_tags_checkbox.split(",").each_with_index do |special_tag, i|
+          = check_box_tag "special_checkbox_tag_#{i}", special_tag
+          %span.Chapter_name_2= special_tag
+    %br/
+    .form_header
+      = tr("Write your own categories, seperated by comma", "views/ideas/form")
+    %span.custom_tag
+      = text_field_tag :custom_tags, "", :maxlength => 200
+    %br/
+    %br/
+  %br/
+  .form_header
+    = tr("Add a point in support or against", "views/ideas/form")
+    %span.red *
+  = f.fields_for(:points) do |point_form|
+    .field
+      .field_box
+        = point_form.text_field :name, :size => 60, :maxlength => 60
+      .field_label
+        .tiny_info
+          %em
+            = tr("To convince other people about this idea a strong point is important", "views/ideas/form")
+    .field.form_header
+      .field_label
+        #point_supports
+          = point_form.radio_button :value, 1, :checked=>true
+          %span.point_supports_label= tr("Yes, this point supports this idea", "views/ideas/form")
+        #point_opposes
+          = point_form.radio_button :value, -1
+          %span.point_opposes_label= tr("No, this point is against this idea", "views/ideas/form")
+    %br/
+    .field
+      .field_label.form_header
+        = tr("Explain your point.", "view/ideas/_form")
+        %span.characters
+          %span#pointContentDown
+          = tr("characters left", "view/ideas/_form")
+        %span.red *
+      .field_box
+        = point_form.text_area :content, :id => 'pointContent', :button => 'submit', :rows => 5, :cols => 60, :maxLength => 500
+      .tiny_info_no_pad
+        = tr("Other people will be able to edit your points, similar to Wikipedia", "views/ideas/form")
+    %br/
+    .field
+      .form_header
+        = tr("Add a link to an external website", "views/ideas/form")
+      .field_box
+        = point_form.text_field :website, :size => 50
+  %br/
+  %b= submit_tag tr("Create idea", "view/ideas/_form"), :class => "submit_button"
+:javascript
+  $(function() {
+      $('.Chapter_name').each(
+              function() {
+                  var category_id = $(this).attr("id");
+                  var tooltip_text = $('#' + category_id + '_text').html();
+                  if (tooltip_text) {
+                      $(this).qtip({
+                          content: tooltip_text,
+                          show: { delay: 300 },
+                          hide: { delay: 500, fixed: true }
+                      })
+                  }
+              }
+      )
+  });

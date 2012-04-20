@@ -1,7 +1,0 @@
-#endorse_oppose
-  %div{:id => "priority_#{@priority.id.to_s}_button"}
-    = render :partial => "priorities/button", :locals => {:priority => @priority, :endorsement => @endorsement}
-  %span.yes_and_no_points_link_hacky.add_point_for.yellow_button
-    = link_to(tr("Add your point for endorse", "view/priorities/_endorse_oppose"), new_priority_point_path(@priority,:support=>true))
-  %span.yes_and_no_points_link_hacky.add_point_against.yellow_button
-    = link_to(tr("Add your point for oppose", "view/priorities/_endorse_oppose"), new_priority_point_path(@priority))

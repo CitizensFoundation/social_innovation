@@ -23,31 +23,31 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		proto :
 		{
-			addRules : function( rules, priority )
+			addRules : function( rules, idea )
 			{
-				if ( typeof priority != 'number' )
-					priority = 10;
+				if ( typeof idea != 'number' )
+					idea = 10;
 
 				// Add the elementNames.
-				addItemsToList( this._.elementNames, rules.elementNames, priority );
+				addItemsToList( this._.elementNames, rules.elementNames, idea );
 
 				// Add the attributeNames.
-				addItemsToList( this._.attributeNames, rules.attributeNames, priority );
+				addItemsToList( this._.attributeNames, rules.attributeNames, idea );
 
 				// Add the elements.
-				addNamedItems( this._.elements, rules.elements, priority );
+				addNamedItems( this._.elements, rules.elements, idea );
 
 				// Add the attributes.
-				addNamedItems( this._.attributes, rules.attributes, priority );
+				addNamedItems( this._.attributes, rules.attributes, idea );
 
 				// Add the text.
-				this._.text = transformNamedItem( this._.text, rules.text, priority ) || this._.text;
+				this._.text = transformNamedItem( this._.text, rules.text, idea ) || this._.text;
 
 				// Add the comment.
-				this._.comment = transformNamedItem( this._.comment, rules.comment, priority ) || this._.comment;
+				this._.comment = transformNamedItem( this._.comment, rules.comment, idea ) || this._.comment;
 
 				// Add root fragment.
-				this._.root = transformNamedItem( this._.root, rules.root, priority ) || this._.root;
+				this._.root = transformNamedItem( this._.root, rules.root, idea ) || this._.root;
 			},
 
 			onElementName : function( name )
@@ -148,7 +148,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return name;
 	}
 
-	function addItemsToList( list, items, priority )
+	function addItemsToList( list, items, idea )
 	{
 		if ( typeof items == 'function' )
 			items = [ items ];
@@ -160,7 +160,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( itemsLength )
 		{
 			// Find the index to insert the items at.
-			for ( i = 0 ; i < listLength && list[ i ].pri < priority ; i++ )
+			for ( i = 0 ; i < listLength && list[ i ].pri < idea ; i++ )
 			{ /*jsl:pass*/ }
 
 			// Add all new items to the list at the specific index.
@@ -169,14 +169,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var item = items[ j ];
 				if ( item )
 				{
-					item.pri = priority;
+					item.pri = idea;
 					list.splice( i, 0, item );
 				}
 			}
 		}
 	}
 
-	function addNamedItems( hashTable, items, priority )
+	function addNamedItems( hashTable, items, idea )
 	{
 		if ( items )
 		{
@@ -188,7 +188,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					transformNamedItem(
 						current,
 						items[ name ],
-						priority );
+						idea );
 
 				if ( !current )
 					hashTable.$length++;
@@ -196,18 +196,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	}
 
-	function transformNamedItem( current, item, priority )
+	function transformNamedItem( current, item, idea )
 	{
 		if ( item )
 		{
-			item.pri = priority;
+			item.pri = idea;
 
 			if ( current )
 			{
 				// If the current item is not an Array, transform it.
 				if ( !current.splice )
 				{
-					if ( current.pri > priority )
+					if ( current.pri > idea )
 						current = [ item, current ];
 					else
 						current = [ current, item ];
@@ -215,7 +215,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					current.filter = callItems;
 				}
 				else
-					addItemsToList( current, item, priority );
+					addItemsToList( current, item, idea );
 
 				return current;
 			}

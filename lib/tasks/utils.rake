@@ -11,29 +11,29 @@ def create_tags(row)
   tags.join(",")
 end
 
-def create_priority_from_row(row,current_user,sub_instance)
-  priority_name = row[0].mb_chars.slice(0..59)
-  priority_tags = create_tags(row)
+def create_idea_from_row(row,current_user,sub_instance)
+  idea_name = row[0].mb_chars.slice(0..59)
+  idea_tags = create_tags(row)
   point_name = row[7].mb_chars.slice(0..59)
   point_text = row[8].mb_chars.slice(0..499)
   point_link = row[9]
   
   begin
-    Priority.transaction do
-      @priority = Priority.new
-      @priority.name = priority_name
-      @priority.user = current_user
-      @priority.ip_address = "127.0.0.1"
-      @priority.issue_list = priority_tags
-      @priority.sub_instance_id = sub_instance.id
-      puts @priority.inspect
-      @saved = @priority.save
+    Idea.transaction do
+      @idea = Idea.new
+      @idea.name = idea_name
+      @idea.user = current_user
+      @idea.ip_address = "127.0.0.1"
+      @idea.issue_list = idea_tags
+      @idea.sub_instance_id = sub_instance.id
+      puts @idea.inspect
+      @saved = @idea.save
       puts @saved
 
       if @saved
         @point = Point.new
         @point.user = current_user
-        @point.priority_id = @priority.id
+        @point.idea_id = @idea.id
         @point.content = point_text
         @point.name = point_name
         @point.value = 1
@@ -119,7 +119,7 @@ namespace :utils do
       if ENV['current_thing_id']
         logg = "#{ENV['current_thing_id']}. log"
         puts "Archiving all processes except for thing: #{logg}"
-        PriorityProcess.find(:all).each do |c|
+        IdeaProcess.find(:all).each do |c|
           puts c.external_info_3
           unless c.external_info_3.index(logg)
             puts "ARCHIVING"
@@ -184,13 +184,13 @@ namespace :utils do
       end
   end
 
-  desc "Expoirt priority categories"
-  task(:export_priority_categories => :environment) do
+  desc "Expoirt idea categories"
+  task(:export_idea_categories => :environment) do
     csv_data = CSV.generate do |csv|
       csv << Category.all.collect {|c| "#{c.name} - #{c.id}"}
       csv << []
-      csv << ["Priority name","Category id"]
-      Priority.all.each do |p|
+      csv << ["Idea name","Category id"]
+      Idea.all.each do |p|
         if p.category
           csv << ["\"#{p.name.gsub("\"","")}\"",p.category.id]
         else
@@ -201,8 +201,8 @@ namespace :utils do
     puts csv_data
   end
 
-  desc "Import priorities"
-  task(:import_priorities => :environment) do
+  desc "Import ideas"
+  task(:import_ideas => :environment) do
     @current_instance = Instance.last
     if @current_instance
       @current_instance.update_counts
@@ -218,7 +218,7 @@ namespace :utils do
     sub_instance = SubInstance.find_by_short_name(ENV['sub_instance_short_name'])
     CSV.parse(f.read) do |row|
       puts row.inspect
-      create_priority_from_row(row, current_user, sub_instance)
+      create_idea_from_row(row, current_user, sub_instance)
     end
   end
 end

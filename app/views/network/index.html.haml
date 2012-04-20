@@ -15,7 +15,7 @@
         / <td style="padding-left: 7px; margin-bottom: 2px;" colspan="2"><haml:loud> will_paginate @users </haml:loud></td>
       - for user in @users
         %tr
-          = render :partial => "priorities/rank_week_month", :locals => {:priority => user }
+          = render :partial => "ideas/rank_week_month", :locals => {:idea => user }
           %td.user_pic_box{:valign => "top", :width => "26"}
             = render :partial => "users/pic", :locals => {:user => user}
           %td.people_text{:colspan => "2", :valign => "top"}
@@ -25,11 +25,11 @@
               = current_instance.currency_short_name
             - if user.followers_count > 0
               = tr("{count} followers", "view/network/index", :count => user.followers_count)
-            - if user.has_top_priority? and user.top_endorsement.priority
+            - if user.has_top_idea? and user.top_endorsement.idea
               %br/
-              = tr("#1 priority:", "view/network/index")
+              = tr("#1 idea:", "view/network/index")
               - if user.top_endorsement.is_down?
                 %span.opposed= tr("Opposing", "view/network/index")
-              = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+              = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
     %p
       = will_paginate(@users)

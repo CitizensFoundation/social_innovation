@@ -65,7 +65,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		};
 
 		// Custom commit dialog logic, where we're intended to give inline style
-		// field (txtdlgGenStyle) higher priority to avoid overwriting styles contribute
+		// field (txtdlgGenStyle) higher idea to avoid overwriting styles contribute
 		// by other fields.
 		function commitContent()
 		{

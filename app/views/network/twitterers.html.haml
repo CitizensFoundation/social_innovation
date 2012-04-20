@@ -10,7 +10,7 @@
       - @row += 1
       %tr
         %td{:valign => "top"}
-          .priority_position= @row
+          .idea_position= @row
         %td{:style => "padding: 10px 5px 4px 7px;", :valign => "top", :width => "26"}
           = render :partial => "users/pic", :locals => {:user => user}
         %td{:style => "padding: 5px 5px 4px 0px;", :valign => "top"}
@@ -20,11 +20,11 @@
             = current_instance.currency_short_name
           - if user.twitter_count > 0
             = tr("{count} followers on <a href='http://twitter.com/{twitter_login}'>Twitter</a>", "view/network/twitterers", :count => user.twitter_count, :twitter_login => user.twitter_login)
-          - if user.has_top_priority?
+          - if user.has_top_idea?
             %br/
-            = tr("#1 priority:", "view/network/twitterers")
+            = tr("#1 idea:", "view/network/twitterers")
             - if user.top_endorsement.is_down?
               %span.opposed= tr("Opposing", "view/network/twitterers")
-            = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+            = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
   %p
     = will_paginate(@users)

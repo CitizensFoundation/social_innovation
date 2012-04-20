@@ -5,7 +5,7 @@
   ,
 %p= tr("Welcome to {instance_name}","email", :instance_name => tr(@instance.name,"Name from database"))
 - if @user.needs_activation?
-  %p= tr("Please confirm your account so you can fully take part in {instance_name}. If you do not confirm your account your support for priorities is not included in global priority calculations.","email", :instance_name => tr(@instance.name,"Name from database"))
+  %p= tr("Please confirm your account so you can fully take part in {instance_name}. If you do not confirm your account your support for ideas is not included in global idea calculations.","email", :instance_name => tr(@instance.name,"Name from database"))
   %p
     = tr("Visit this link to confirm your account","email")
     \: #{link_to @user.root_url+'activate/'+@user.activation_code+'?utm_source=activation&utm_medium=email', @user.root_url+'activate/'+@user.activation_code+'?utm_source=activation&utm_medium=email'}
@@ -14,8 +14,8 @@
   \: #{link_to @user.root_url+'network/find?utm_source=signup&utm_medium=email',@user.root_url+'network/find?utm_source=signup&utm_medium=email'}
 %p
   = tr("You earn 5 social points for everyone you invite that register with {instance_name}. Social points are a way to see how socially active \                   |
-    and constructive people are. You earn social points when other people find your points for or against priorities useful. \                                      |
-    You can use your social points to buy \"ads\" for your favorite priorities on the website.","email", :instance_name => tr(@instance.name,"Name from database")) |
+    and constructive people are. You earn social points when other people find your points for or against ideas useful. \                                      |
+    You can use your social points to buy \"ads\" for your favorite ideas on the website.","email", :instance_name => tr(@instance.name,"Name from database")) |
   = tr("More here","email")
   \: #{link_to @user.root_url+'about/faq#pc', @user.root_url+'about/faq#pc'}
   %p

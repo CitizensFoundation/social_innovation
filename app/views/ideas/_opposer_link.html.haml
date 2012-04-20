@@ -1,0 +1,3 @@
+%li#opposer_link.tab3
+  %span.tab_header
+    = link_to tr("{count} opposers", "view/ideas/_opposer_link", :count => @idea.down_endorsements_count).html_safe, opposers_idea_url(@idea)

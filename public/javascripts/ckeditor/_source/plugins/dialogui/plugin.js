@@ -250,7 +250,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 									keyPressedOnMe = true;
 							} );
 
-						// Lower the priority this 'keyup' since 'ok' will close the dialog.(#3749)
+						// Lower the idea this 'keyup' since 'ok' will close the dialog.(#3749)
 						me.getInputElement().on( 'keyup', function( evt )
 							{
 								if ( evt.data.getKeystroke() == 13 && keyPressedOnMe )

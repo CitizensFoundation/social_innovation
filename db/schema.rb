@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "type",                          :limit => 60
     t.string   "class_name",                    :limit => 60
     t.string   "status",                        :limit => 8
-    t.integer  "priority_id"
+    t.integer  "idea_id"
     t.datetime "created_at"
     t.boolean  "is_user_only",                                :default => false
     t.integer  "comments_count",                              :default => 0
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "position"
     t.integer  "followers_count",                             :default => 0
     t.datetime "changed_at"
-    t.integer  "priority_status_change_log_id"
+    t.integer  "idea_status_change_log_id"
   end
 
   add_index "activities", ["activity_id"], :name => "activity_activity_id"
@@ -42,14 +42,14 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
   add_index "activities", ["created_at"], :name => "created_at"
   add_index "activities", ["is_user_only"], :name => "activity_is_user_only_index"
   add_index "activities", ["point_id"], :name => "activity_point_id_index"
-  add_index "activities", ["priority_id"], :name => "activity_priority_id_index"
+  add_index "activities", ["idea_id"], :name => "activity_idea_id_index"
   add_index "activities", ["revision_id"], :name => "index_activities_on_revision_id"
   add_index "activities", ["status"], :name => "activity_status_index"
   add_index "activities", ["type"], :name => "activity_type_index"
   add_index "activities", ["user_id"], :name => "activity_user_id_index"
 
   create_table "ads", :force => true do |t|
-    t.integer  "priority_id"
+    t.integer  "idea_id"
     t.integer  "user_id"
     t.integer  "show_ads_count",                 :default => 0
     t.integer  "shown_ads_count",                :default => 0
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "sub_instance_id"
   end
 
-  add_index "ads", ["priority_id"], :name => "ads_priority_id_index"
+  add_index "ads", ["idea_id"], :name => "ads_idea_id_index"
   add_index "ads", ["status"], :name => "ads_status_index"
 
   create_table "capitals", :force => true do |t|
@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
 
 
   create_table "delayed_jobs", :force => true do |t|
-    t.integer  "priority",   :default => 0
+    t.integer  "idea",   :default => 0
     t.integer  "attempts",   :default => 0
     t.text     "handler"
     t.text     "last_error"
@@ -193,7 +193,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "status",      :limit => 50
     t.integer  "position"
     t.integer  "sub_instance_id"
-    t.integer  "priority_id"
+    t.integer  "idea_id"
     t.integer  "user_id"
     t.string   "ip_address",  :limit => 16
     t.datetime "created_at"
@@ -205,8 +205,8 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
 
   add_index "endorsements", ["sub_instance_id"], :name => "endorsements_sub_instance_id_index"
   add_index "endorsements", ["position"], :name => "position"
-  add_index "endorsements", ["priority_id"], :name => "endorsements_priority_id_index"
-  add_index "endorsements", ["status", "priority_id", "user_id", "value"], :name => "endorsements_status_pid_uid"
+  add_index "endorsements", ["idea_id"], :name => "endorsements_idea_id_index"
+  add_index "endorsements", ["status", "idea_id", "user_id", "value"], :name => "endorsements_status_pid_uid"
   add_index "endorsements", ["status"], :name => "endorsements_status_index"
   add_index "endorsements", ["user_id"], :name => "endorsements_user_id_index"
   add_index "endorsements", ["value"], :name => "value"
@@ -262,7 +262,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "currency_name",                  :limit => 30,  :default => "political capital"
     t.string   "currency_short_name",            :limit => 3,   :default => "pc"
     t.string   "homepage",                       :limit => 20,  :default => "top"
-    t.integer  "priorities_count",                              :default => 0
+    t.integer  "ideas_count",                              :default => 0
     t.integer  "points_count",                                  :default => 0
     t.integer  "users_count",                                   :default => 0
     t.integer  "contributors_count",                            :default => 0
@@ -274,7 +274,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "prompt",                         :limit => 100
     t.integer  "buddy_icon_id"
     t.integer  "fav_icon_id"
-    t.boolean  "is_suppress_empty_priorities",                  :default => false
+    t.boolean  "is_suppress_empty_ideas",                  :default => false
     t.string   "tags_page",                      :limit => 20,  :default => "list"
     t.string   "facebook_api_key",               :limit => 32
     t.string   "facebook_secret_key",            :limit => 32
@@ -308,7 +308,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.text     "message_for_network"
     t.text     "message_for_finished"
     t.text     "message_for_points"
-    t.text     "message_for_new_priority"
+    t.text     "message_for_new_idea"
     t.text     "message_for_news"
   end
 
@@ -369,10 +369,10 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "menu_strip_side_content_type",          :limit => 30
     t.integer  "menu_strip_side_file_size"
     t.datetime "menu_strip_side_updated_at"
-    t.string   "add_priority_button_file_name"
-    t.string   "add_priority_button_content_type",          :limit => 30
-    t.integer  "add_priority_button_file_size"
-    t.datetime "add_priority_button_updated_at"
+    t.string   "add_idea_button_file_name"
+    t.string   "add_idea_button_content_type",          :limit => 30
+    t.integer  "add_idea_button_file_size"
+    t.datetime "add_idea_button_updated_at"
     t.string   "default_tags"
     t.string   "custom_tag_checkbox"
     t.string   "custom_tag_dropdown_1"
@@ -383,7 +383,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "default_locale"
     t.integer  "iso_country_id"
     t.string   "required_tags"
-    t.text     "message_for_new_priority"
+    t.text     "message_for_new_idea"
   end
 
   add_index "sub_instances", ["short_name"], :name => "short_name"
@@ -413,8 +413,8 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
 
   create_table "points", :force => true do |t|
     t.integer  "revision_id"
-    t.integer  "priority_id"
-    t.integer  "other_priority_id"
+    t.integer  "idea_id"
+    t.integer  "other_idea_id"
     t.integer  "user_id"
     t.integer  "value",                                   :default => 0
     t.integer  "revisions_count",                         :default => 0
@@ -446,70 +446,13 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "ip_address"
   end
 
-  add_index "points", ["other_priority_id"], :name => "index_points_on_other_priority_id"
-  add_index "points", ["priority_id"], :name => "index_points_on_priority_id"
+  add_index "points", ["other_idea_id"], :name => "index_points_on_other_idea_id"
+  add_index "points", ["idea_id"], :name => "index_points_on_idea_id"
   add_index "points", ["revision_id"], :name => "index_points_on_revision_id"
   add_index "points", ["status"], :name => "index_points_on_status"
   add_index "points", ["user_id"], :name => "index_points_on_user_id"
 
-  create_table "portlet_containers", :force => true do |t|
-    t.string   "title"
-    t.integer  "weight"
-    t.integer  "user_id"
-    t.boolean  "default_admin"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "sub_instance_id"
-  end
-
-  add_index "portlet_containers", ["user_id"], :name => "index_portlet_containers_on_user_id"
-
-  create_table "portlet_positions", :force => true do |t|
-    t.integer  "portlet_id"
-    t.integer  "css_column"
-    t.integer  "css_position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "portlet_positions", ["portlet_id"], :name => "index_portlet_positions_on_portlet_id"
-
-  create_table "portlet_template_categories", :force => true do |t|
-    t.string   "name"
-    t.integer  "weight"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "sub_instance_id"
-  end
-
-  create_table "portlet_templates", :force => true do |t|
-    t.string   "name"
-    t.integer  "portlet_template_category_id"
-    t.string   "locals_data_function"
-    t.string   "partial_name"
-    t.text     "description"
-    t.integer  "weight"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "column_count",                 :default => 1
-    t.boolean  "caching_disabled",             :default => false
-    t.integer  "item_limit"
-    t.string   "tag"
-  end
-
-  add_index "portlet_templates", ["portlet_template_category_id"], :name => "index_portlet_templates_on_portlet_template_category_id"
-
-  create_table "portlets", :force => true do |t|
-    t.integer  "portlet_template_id"
-    t.integer  "portlet_container_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "portlets", ["portlet_container_id"], :name => "index_portlets_on_portlet_container_id"
-  add_index "portlets", ["portlet_template_id"], :name => "index_portlets_on_portlet_template_id"
-
-  create_table "priorities", :force => true do |t|
+  create_table "ideas", :force => true do |t|
     t.integer  "position",                                :default => 0,     :null => false
     t.integer  "user_id"
     t.string   "name",                     :limit => 250
@@ -568,16 +511,16 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.date     "finished_status_date"
   end
 
-  add_index "priorities", ["category_id"], :name => "index_priorities_on_category_id"
-  add_index "priorities", ["official_status"], :name => "index_priorities_on_official_status"
-  add_index "priorities", ["official_value"], :name => "index_priorities_on_official_value"
-  add_index "priorities", ["position"], :name => "priorities_position_index"
-  add_index "priorities", ["status"], :name => "priorities_status_index"
-  add_index "priorities", ["trending_score"], :name => "index_priorities_on_trending_score"
-  add_index "priorities", ["user_id"], :name => "priorities_user_id_index"
+  add_index "ideas", ["category_id"], :name => "index_ideas_on_category_id"
+  add_index "ideas", ["official_status"], :name => "index_ideas_on_official_status"
+  add_index "ideas", ["official_value"], :name => "index_ideas_on_official_value"
+  add_index "ideas", ["position"], :name => "ideas_position_index"
+  add_index "ideas", ["status"], :name => "ideas_status_index"
+  add_index "ideas", ["trending_score"], :name => "index_ideas_on_trending_score"
+  add_index "ideas", ["user_id"], :name => "ideas_user_id_index"
 
-  create_table "priority_charts", :force => true do |t|
-    t.integer  "priority_id"
+  create_table "idea_charts", :force => true do |t|
+    t.integer  "idea_id"
     t.integer  "date_year"
     t.integer  "date_month"
     t.integer  "date_day"
@@ -591,11 +534,11 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "change",         :default => 0
   end
 
-  add_index "priority_charts", ["date_year", "date_month", "date_day"], :name => "priority_chart_date_index"
-  add_index "priority_charts", ["priority_id"], :name => "priority_chart_priority_index"
+  add_index "idea_charts", ["date_year", "date_month", "date_day"], :name => "idea_chart_date_index"
+  add_index "idea_charts", ["idea_id"], :name => "idea_chart_idea_index"
 
-  create_table "priority_status_change_logs", :force => true do |t|
-    t.integer  "priority_id"
+  create_table "idea_status_change_logs", :force => true do |t|
+    t.integer  "idea_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "content"
@@ -614,7 +557,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
 
   create_table "rankings", :force => true do |t|
-    t.integer  "priority_id"
+    t.integer  "idea_id"
     t.integer  "version",            :default => 0
     t.integer  "position"
     t.integer  "endorsements_count", :default => 0
@@ -624,20 +567,20 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
   end
 
   add_index "rankings", ["created_at"], :name => "rankings_created_at_index"
-  add_index "rankings", ["priority_id"], :name => "rankings_priority_id"
+  add_index "rankings", ["idea_id"], :name => "rankings_idea_id"
   add_index "rankings", ["version"], :name => "rankings_version_index"
 
   create_table "relationships", :force => true do |t|
-    t.integer  "priority_id"
-    t.integer  "other_priority_id"
+    t.integer  "idea_id"
+    t.integer  "other_idea_id"
     t.string   "type",              :limit => 70
     t.integer  "percentage"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "relationships", ["other_priority_id"], :name => "relationships_other_priority_index"
-  add_index "relationships", ["priority_id"], :name => "relationships_priority_index"
+  add_index "relationships", ["other_idea_id"], :name => "relationships_other_idea_index"
+  add_index "relationships", ["idea_id"], :name => "relationships_idea_index"
   add_index "relationships", ["type"], :name => "relationships_type_index"
 
   create_table "revisions", :force => true do |t|
@@ -654,11 +597,11 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "user_agent",        :limit => 150
     t.string   "website",           :limit => 100
     t.text     "content_diff"
-    t.integer  "other_priority_id"
+    t.integer  "other_idea_id"
     t.text     "content_html"
   end
 
-  add_index "revisions", ["other_priority_id"], :name => "index_revisions_on_other_priority_id"
+  add_index "revisions", ["other_idea_id"], :name => "index_revisions_on_other_idea_id"
   add_index "revisions", ["point_id"], :name => "index_revisions_on_point_id"
   add_index "revisions", ["status"], :name => "index_revisions_on_status"
   add_index "revisions", ["user_id"], :name => "index_revisions_on_user_id"
@@ -688,15 +631,6 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
   add_index "signups", ["sub_instance_id"], :name => "signups_sub_instance_id"
   add_index "signups", ["user_id"], :name => "signups_user_id"
 
-  create_table "simple_captcha_data", :force => true do |t|
-    t.string   "key",        :limit => 40
-    t.string   "value",      :limit => 20
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "simple_captcha_data", ["key"], :name => "index_simple_captcha_data_on_key"
-
   create_table "tag_subscriptions", :id => false, :force => true do |t|
     t.integer "user_id", :null => false
     t.integer "tag_id",  :null => false
@@ -723,14 +657,14 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "name",                      :limit => 60
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "top_priority_id"
+    t.integer  "top_idea_id"
     t.integer  "up_endorsers_count",                       :default => 0
     t.integer  "down_endorsers_count",                     :default => 0
-    t.integer  "controversial_priority_id"
-    t.integer  "rising_priority_id"
-    t.integer  "official_priority_id"
+    t.integer  "controversial_idea_id"
+    t.integer  "rising_idea_id"
+    t.integer  "official_idea_id"
     t.integer  "webpages_count",                           :default => 0
-    t.integer  "priorities_count",                         :default => 0
+    t.integer  "ideas_count",                         :default => 0
     t.integer  "feeds_count",                              :default => 0
     t.string   "title",                     :limit => 60
     t.string   "description",               :limit => 200
@@ -743,7 +677,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
   end
 
   add_index "tags", ["slug"], :name => "index_tags_on_slug"
-  add_index "tags", ["top_priority_id"], :name => "tag_top_priority_id_index"
+  add_index "tags", ["top_idea_id"], :name => "tag_top_idea_id_index"
 
   create_table "tr8n_glossary", :force => true do |t|
     t.string   "keyword"

@@ -1,7 +1,7 @@
 class NewsController < ApplicationController
 
-  before_filter :login_required, :except => [:index, :top, :top_feed, :discussions, :points, :activities, :capitals, :official, :changes, :changes_voting, :changes_activity, :ads, :videos, :comments, :your_discussions, :your_priority_discussions, :your_network_discussions, :your_priorities_created_discussions]
-  before_filter :check_for_user, :only => [:your_discussions, :your_priority_discussions, :your_network_discussions, :your_priorities_created_discussions]
+  before_filter :login_required, :except => [:index, :top, :top_feed, :discussions, :points, :activities, :capitals, :official, :changes, :changes_voting, :changes_activity, :ads, :videos, :comments, :your_discussions, :your_idea_discussions, :your_network_discussions, :your_ideas_created_discussions]
+  before_filter :check_for_user, :only => [:your_discussions, :your_idea_discussions, :your_network_discussions, :your_ideas_created_discussions]
 
   caches_action :top, :discussions, :activities, :points,
                 :if => proc {|c| c.do_action_cache? },
@@ -115,8 +115,8 @@ class NewsController < ApplicationController
     @changes = Change.suggested.by_recently_created.paginate :page => params[:page]
     respond_to do |format|
       format.html { render :action => "change_list" }
-      format.xml { render :xml => @changes.to_xml(:include => [:priority, :new_priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @changes.to_json(:include => [:priority, :new_priority], :except => NB_CONFIG['api_exclude_fields']) }
+      format.xml { render :xml => @changes.to_xml(:include => [:idea, :new_idea], :except => NB_CONFIG['api_exclude_fields']) }
+      format.json { render :json => @changes.to_json(:include => [:idea, :new_idea], :except => NB_CONFIG['api_exclude_fields']) }
     end    
   end  
   
@@ -125,8 +125,8 @@ class NewsController < ApplicationController
     @changes = Change.voting.by_recently_started.paginate :page => params[:page]
     respond_to do |format|
       format.html { render :action => "change_list" }
-      format.xml { render :xml => @changes.to_xml(:include => [:priority, :new_priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @changes.to_json(:include => [:priority, :new_priority], :except => NB_CONFIG['api_exclude_fields']) }
+      format.xml { render :xml => @changes.to_xml(:include => [:idea, :new_idea], :except => NB_CONFIG['api_exclude_fields']) }
+      format.json { render :json => @changes.to_json(:include => [:idea, :new_idea], :except => NB_CONFIG['api_exclude_fields']) }
     end    
   end
   
@@ -325,11 +325,11 @@ class NewsController < ApplicationController
     end    
   end  
   
-  def your_priority_activities
+  def your_idea_activities
     @page_title = tr("What's happening on {instance_name}?", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
-    if current_priority_ids.any?
-      @activities = Activity.active.filtered.last_seven_days.by_recently_created.paginate :conditions => ["priority_id in (?)",current_priority_ids], :page => params[:page]
+    if current_idea_ids.any?
+      @activities = Activity.active.filtered.last_seven_days.by_recently_created.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -338,11 +338,11 @@ class NewsController < ApplicationController
     end
   end
   
-  def your_priority_official
+  def your_idea_official
     @page_title = tr("What {official_user_name} is doing on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :official_user_name => current_instance.official_user.name)
     @activities = nil
-    if current_priority_ids.any?
-      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["(type like 'ActivityPriorityOfficialStatus%' or user_id = #{current_instance.official_user_id}) and priority_id in (?)",current_priority_ids], :page => params[:page]
+    if current_idea_ids.any?
+      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["(type like 'ActivityIdeaOfficialStatus%' or user_id = #{current_instance.official_user_id}) and idea_id in (?)",current_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -351,37 +351,37 @@ class NewsController < ApplicationController
     end    
   end  
   
-  def your_priority_changes
+  def your_idea_changes
     @page_title = tr("Acquisitions proposed on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @changes = nil
-    if current_priority_ids.any?
-      @changes = Change.suggested.by_recently_created.paginate :conditions => ["priority_id in (?)",current_priority_ids], :page => params[:page]
+    if current_idea_ids.any?
+      @changes = Change.suggested.by_recently_created.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "change_list" }
-      format.xml { render :xml => @changes.to_xml(:include => [:priority, :new_priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @changes.to_json(:include => [:priority, :new_priority], :except => NB_CONFIG['api_exclude_fields']) }
+      format.xml { render :xml => @changes.to_xml(:include => [:idea, :new_idea], :except => NB_CONFIG['api_exclude_fields']) }
+      format.json { render :json => @changes.to_json(:include => [:idea, :new_idea], :except => NB_CONFIG['api_exclude_fields']) }
     end          
   end  
   
-  def your_priority_changes_voting
+  def your_idea_changes_voting
     @page_title = tr("Acquisitions to vote on", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @changes = nil
-    if current_priority_ids.any?
-      @changes = Change.voting.by_recently_started.paginate :conditions => ["priority_id in (?)",current_priority_ids], :page => params[:page]
+    if current_idea_ids.any?
+      @changes = Change.voting.by_recently_started.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "change_list" }
-      format.xml { render :xml => @changes.to_xml(:include => [:priority, :new_priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @changes.to_json(:include => [:priority, :new_priority], :except => NB_CONFIG['api_exclude_fields']) }
+      format.xml { render :xml => @changes.to_xml(:include => [:idea, :new_idea], :except => NB_CONFIG['api_exclude_fields']) }
+      format.json { render :json => @changes.to_json(:include => [:idea, :new_idea], :except => NB_CONFIG['api_exclude_fields']) }
     end    
   end  
   
-  def your_priority_changes_activity
+  def your_idea_changes_activity
     @page_title = tr("M&A activity on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
-    if current_priority_ids.any?
-      @activities = Activity.active.filtered.changes.for_all_users.by_recently_created.paginate :conditions => ["priority_id in (?)",current_priority_ids], :page => params[:page]
+    if current_idea_ids.any?
+      @activities = Activity.active.filtered.changes.for_all_users.by_recently_created.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "changes_activity" }
@@ -390,11 +390,11 @@ class NewsController < ApplicationController
     end
   end  
   
-  def your_priority_discussions
+  def your_idea_discussions
     @page_title = tr("Discussions on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     if @user.endorsements_count > 0
-      @activities = Activity.active.filtered.last_seven_days.discussions.for_all_users.by_recently_updated.paginate :conditions => ["priority_id in (?)",@user.endorsements.active_and_inactive.collect{|e|e.priority_id}], :page => params[:page], :per_page => 15
+      @activities = Activity.active.filtered.last_seven_days.discussions.for_all_users.by_recently_updated.paginate :conditions => ["idea_id in (?)",@user.endorsements.active_and_inactive.collect{|e|e.idea_id}], :page => params[:page], :per_page => 15
     end
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -404,11 +404,11 @@ class NewsController < ApplicationController
     end       
   end
   
-  def your_priority_points
+  def your_idea_points
     @page_title = tr("Points on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
-    if current_priority_ids.any?  
-      @activities = Activity.active.filtered.last_seven_days.points_and_docs.paginate :conditions => ["priority_id in (?)",current_priority_ids], :page => params[:page]
+    if current_idea_ids.any?
+      @activities = Activity.active.filtered.last_seven_days.points_and_docs.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -417,14 +417,14 @@ class NewsController < ApplicationController
     end    
   end
   
-  def your_priorities_created_activities
-    @page_title = tr("Everything happening on priorities you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+  def your_ideas_created_activities
+    @page_title = tr("Everything happening on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
-    created_priority_ids = current_user.created_priorities.collect{|p|p.id}
-    if created_priority_ids.any?
-      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["priority_id in (?)",created_priority_ids], :page => params[:page]
+    created_idea_ids = current_user.created_ideas.collect{|p|p.id}
+    if created_idea_ids.any?
+      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["idea_id in (?)",created_idea_ids], :page => params[:page]
     end
-    @rss_url = url_for(:only_path => false, :controller => "rss", :action => "your_priorities_created_activities", :format => "rss", :c => current_user.rss_code)
+    @rss_url = url_for(:only_path => false, :controller => "rss", :action => "your_ideas_created_activities", :format => "rss", :c => current_user.rss_code)
     respond_to do |format|
       format.html { render :action => "activity_list" }
       format.xml { render :xml => @activities.to_xml(:include => [:user, :comments], :except => NB_CONFIG['api_exclude_fields']) }
@@ -432,12 +432,12 @@ class NewsController < ApplicationController
     end
   end
   
-  def your_priorities_created_official
-    @page_title = tr("What {official_user_name} is doing on priorities you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :official_user_name => current_instance.official_user.name)
+  def your_ideas_created_official
+    @page_title = tr("What {official_user_name} is doing on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :official_user_name => current_instance.official_user.name)
     @activities = nil
-    created_priority_ids = current_user.created_priorities.collect{|p|p.id}
-    if created_priority_ids.any?
-      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["(type like 'ActivityPriorityOfficialStatus%' or user_id = #{current_instance.official_user_id}) and priority_id in (?)",created_priority_ids], :page => params[:page]
+    created_idea_ids = current_user.created_ideas.collect{|p|p.id}
+    if created_idea_ids.any?
+      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["(type like 'ActivityIdeaOfficialStatus%' or user_id = #{current_instance.official_user_id}) and idea_id in (?)",created_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -446,12 +446,12 @@ class NewsController < ApplicationController
     end    
   end  
   
-  def your_priorities_created_changes
-    @page_title = tr("M&A activity on priorities you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+  def your_ideas_created_changes
+    @page_title = tr("M&A activity on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
-    created_priority_ids = current_user.created_priorities.collect{|p|p.id}
-    if created_priority_ids.any?
-      @activities = Activity.active.filtered.changes.for_all_users.by_recently_created.paginate :conditions => ["priority_id in (?)",created_priority_ids], :page => params[:page]
+    created_idea_ids = current_user.created_ideas.collect{|p|p.id}
+    if created_idea_ids.any?
+      @activities = Activity.active.filtered.changes.for_all_users.by_recently_created.paginate :conditions => ["idea_id in (?)",created_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "changes_activity" }
@@ -460,12 +460,12 @@ class NewsController < ApplicationController
     end
   end  
   
-  def your_priorities_created_discussions
-    @page_title = tr("Discussions on priorities you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+  def your_ideas_created_discussions
+    @page_title = tr("Discussions on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
-    created_priority_ids = @user.created_priorities.collect{|p|p.id}
-    if created_priority_ids.any?   
-      @activities = Activity.active.filtered.discussions.for_all_users.by_recently_updated.paginate :conditions => ["priority_id in (?)",created_priority_ids], :page => params[:page], :per_page => 15
+    created_idea_ids = @user.created_ideas.collect{|p|p.id}
+    if created_idea_ids.any?
+      @activities = Activity.active.filtered.discussions.for_all_users.by_recently_updated.paginate :conditions => ["idea_id in (?)",created_idea_ids], :page => params[:page], :per_page => 15
     end
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -475,12 +475,12 @@ class NewsController < ApplicationController
     end       
   end
   
-  def your_priorities_created_points
-    @page_title = tr("Points activity on priorities you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+  def your_ideas_created_points
+    @page_title = tr("Points activity on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
-    created_priority_ids = current_user.created_priorities.collect{|p|p.id}
-    if created_priority_ids.any?
-      @activities = Activity.active.filtered.points_and_docs.paginate :conditions => ["priority_id in (?)",created_priority_ids], :page => params[:page]
+    created_idea_ids = current_user.created_ideas.collect{|p|p.id}
+    if created_idea_ids.any?
+      @activities = Activity.active.filtered.points_and_docs.paginate :conditions => ["idea_id in (?)",created_idea_ids], :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "activity_list" }

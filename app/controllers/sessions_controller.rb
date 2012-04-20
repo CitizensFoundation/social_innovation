@@ -1,6 +1,6 @@
 # This controller handles the login/logout function of the site.  
 class SessionsController < ApplicationController
-  skip_before_filter :check_priority
+  skip_before_filter :check_idea
   skip_before_filter :check_referral
   skip_before_filter :check_suspension
   skip_before_filter :update_loggedin_at
@@ -37,18 +37,18 @@ class SessionsController < ApplicationController
           Rails.logger.debug("BLAH -4: #{session[:return_to]}")
           if logged_in?
             Rails.logger.debug("BLAH -3: #{session[:return_to]}")
-            if session[:priority_id] # they were trying to endorse a priority, so let's go ahead and add it and take htem to their priorities page immediately
+            if session[:idea_id] # they were trying to endorse a idea, so let's go ahead and add it and take htem to their ideas page immediately
               Rails.logger.debug("BLAH -2: #{session[:return_to]}")
-              @priority = Priority.find(session[:priority_id])
+              @idea = Idea.find(session[:idea_id])
               @value = session[:value].to_i
-              if @priority
+              if @idea
                 if @value == 1
-                  @priority.endorse(current_user,request,current_sub_instance,@referral)
+                  @idea.endorse(current_user,request,current_sub_instance,@referral)
                 else
-                  @priority.oppose(current_user,request,current_sub_instance,@referral)
+                  @idea.oppose(current_user,request,current_sub_instance,@referral)
                 end
               end  
-              session[:priority_id] = nil
+              session[:idea_id] = nil
               session[:value] = nil
             end            
             Rails.logger.debug("BLAH -1: #{session[:return_to]}")

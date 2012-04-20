@@ -12,8 +12,8 @@
     - if ["users","sessions"].include?(controller_name)
       = stylesheet_link_tag "jquery.keypad.css"
       = javascript_include_tag "jquery.keypad.min.js"
-    - if controller_name == "priorities" and action_name == "show"
-      = render :partial=>"priorities/fb_og_tags"
+    - if controller_name == "ideas" and action_name == "show"
+      = render :partial=>"ideas/fb_og_tags"
     = tr8n_scripts_tag
   %body{:class => "#{h(controller.controller_name)}-#{h(controller.action_name)}"}
     = csrf_meta_tag

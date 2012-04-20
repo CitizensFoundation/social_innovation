@@ -1,16 +1,16 @@
-class PriorityRanker
-  @@all_priorities = Hash.new
+class IdeaRanker
+  @@all_ideas = Hash.new
 
   def perform
-    puts "PriorityRanker.perform starting... at #{start_time=Time.now}"
+    puts "IdeaRanker.perform starting... at #{start_time=Time.now}"
     Instance.current = Instance.all.last
     setup_endorsements_counts
     if Instance.current.is_tags? and Tag.count > 0
       # update the # of issues people who've logged in the last two hours have up endorsed
       users = User.find_by_sql("SELECT users.id, users.up_issues_count, count(distinct taggings.tag_id) as num_issues
       FROM taggings,endorsements, users
-      where taggings.taggable_id = endorsements.priority_id
-      and taggings.taggable_type = 'Priority'
+      where taggings.taggable_id = endorsements.idea_id
+      and taggings.taggable_type = 'Idea'
       and endorsements.user_id = users.id
       and endorsements.value > 0
       and endorsements.status = 'active'
@@ -22,8 +22,8 @@ class PriorityRanker
       # update the # of issues they've DOWN endorsed
       users = User.find_by_sql("SELECT users.id, users.down_issues_count, count(distinct taggings.tag_id) as num_issues
       FROM taggings,endorsements, users
-      where taggings.taggable_id = endorsements.priority_id
-      and taggings.taggable_type = 'Priority'
+      where taggings.taggable_id = endorsements.idea_id
+      and taggings.taggable_type = 'Idea'
       and endorsements.user_id = users.id
       and endorsements.value < 0
       and endorsements.status = 'active'
@@ -51,54 +51,54 @@ class PriorityRanker
       end
     end
 
-    # ranks all the priorities in the database with any endorsements.
+    # ranks all the ideas in the database with any endorsements.
 
     sub_instances_with_nil = SubInstance.all<<nil
     sub_instances_with_nil.each do |sub_instance|
       update_positions_by_sub_instance(sub_instance)
     end
 
-    # determines any changes in the #1 priority for an issue, and updates the # of distinct endorsers and opposers across the entire issue
+    # determines any changes in the #1 idea for an issue, and updates the # of distinct endorsers and opposers across the entire issue
     
     if Instance.current.is_tags? and Tag.count > 0
       keep = []
       # get the number of endorsers on the issue
-      tags = Tag.find_by_sql("SELECT tags.id, tags.name, tags.top_priority_id, tags.controversial_priority_id, tags.rising_priority_id, tags.official_priority_id, count(distinct endorsements.user_id) as num_endorsers
+      tags = Tag.find_by_sql("SELECT tags.id, tags.name, tags.top_idea_id, tags.controversial_idea_id, tags.rising_idea_id, tags.official_idea_id, count(distinct endorsements.user_id) as num_endorsers
       FROM tags,taggings,endorsements
       where 
-      taggings.taggable_id = endorsements.priority_id
-      and taggable_type = 'Priority'
+      taggings.taggable_id = endorsements.idea_id
+      and taggable_type = 'Idea'
       and taggings.tag_id = tags.id
       and endorsements.status = 'active'
       and endorsements.value > 0
-      group by tags.id, tags.name, tags.top_priority_id, tags.controversial_priority_id, tags.rising_priority_id, tags.official_priority_id, taggings.tag_id")
+      group by tags.id, tags.name, tags.top_idea_id, tags.controversial_idea_id, tags.rising_idea_id, tags.official_idea_id, taggings.tag_id")
       for tag in tags
        keep << tag.id
-       priorities = tag.priorities.published.top_rank # figure out the top priority while we're at it
-       if priorities.any?
-         if tag.top_priority_id != priorities[0].id # new top priority
-           ActivityIssuePriority1.create(:tag => tag, :priority_id => priorities[0].id)
-           tag.top_priority_id = priorities[0].id
+       ideas = tag.ideas.published.top_rank # figure out the top idea while we're at it
+       if ideas.any?
+         if tag.top_idea_id != ideas[0].id # new top idea
+           ActivityIssueIdea1.create(:tag => tag, :idea_id => ideas[0].id)
+           tag.top_idea_id = ideas[0].id
          end
-         controversial = tag.priorities.published.controversial
-         if controversial.any? and tag.controversial_priority_id != controversial[0].id
-           ActivityIssuePriorityControversial1.create(:tag => tag, :priority_id => controversial[0].id)
-           tag.controversial_priority_id = controversial[0].id
+         controversial = tag.ideas.published.controversial
+         if controversial.any? and tag.controversial_idea_id != controversial[0].id
+           ActivityIssueIdeaControversial1.create(:tag => tag, :idea_id => controversial[0].id)
+           tag.controversial_idea_id = controversial[0].id
          elsif controversial.empty?
-           tag.controversial_priority_id = nil
+           tag.controversial_idea_id = nil
          end
-         rising = tag.priorities.published.rising
-         if rising.any? and tag.rising_priority_id != rising[0].id
-           ActivityIssuePriorityRising1.create(:tag => tag, :priority_id => rising[0].id)
-           tag.rising_priority_id = rising[0].id
+         rising = tag.ideas.published.rising
+         if rising.any? and tag.rising_idea_id != rising[0].id
+           ActivityIssueIdeaRising1.create(:tag => tag, :idea_id => rising[0].id)
+           tag.rising_idea_id = rising[0].id
          elsif rising.empty?
-           tag.rising_priority_id = nil
+           tag.rising_idea_id = nil
          end 
        else
-         tag.top_priority_id = nil
-         tag.controversial_priority_id = nil
-         tag.rising_priority_id = nil
-         tag.official_priority_id = nil
+         tag.top_idea_id = nil
+         tag.controversial_idea_id = nil
+         tag.rising_idea_id = nil
+         tag.official_idea_id = nil
        end
        tag.up_endorsers_count = tag.num_endorsers
        tag.save(:validate => false)
@@ -107,8 +107,8 @@ class PriorityRanker
       tags = Tag.find_by_sql("SELECT tags.id, tags.name, tags.down_endorsers_count, count(distinct endorsements.user_id) as num_opposers
       FROM tags,taggings,endorsements
       where 
-      taggings.taggable_id = endorsements.priority_id
-      and taggable_type = 'Priority'
+      taggings.taggable_id = endorsements.idea_id
+      and taggable_type = 'Idea'
       and taggings.tag_id = tags.id
       and endorsements.status = 'active'
       and endorsements.value < 0
@@ -129,15 +129,15 @@ class PriorityRanker
     start_date = date.year.to_s + "-" + date.month.to_s + "-" + date.day.to_s
     end_date = (date+1.day).year.to_s + "-" + (date+1.day).month.to_s + "-" + (date+1.day).day.to_s
     
-    if PriorityChart.count(:conditions => ["date_year = ? and date_month = ? and date_day = ?", date.year, date.month, date.day]) == 0  # check to see if it's already been done for yesterday      
-      priorities = Priority.published.find(:all)
-      for p in priorities
+    if IdeaChart.count(:conditions => ["date_year = ? and date_month = ? and date_day = ?", date.year, date.month, date.day]) == 0  # check to see if it's already been done for yesterday
+      ideas = Idea.published.find(:all)
+      for p in ideas
         # find the ranking
         r = p.rankings.find(:all, :conditions => ["rankings.created_at between ? and ?",start_date,end_date], :order => "created_at desc",:limit => 1)
         if r.any?
           c = p.charts.find_by_date_year_and_date_month_and_date_day(date.year,date.month,date.day)
           if not c
-            c = PriorityChart.new(:priority => p, :date_year => date.year, :date_month => date.month, :date_day => date.day)
+            c = IdeaChart.new(:idea => p, :date_year => date.year, :date_month => date.month, :date_day => date.day)
           end
           c.position = r[0].position
           c.up_count = p.endorsements.active.endorsing.count(:conditions => ["endorsements.created_at between ? and ?",start_date,end_date])
@@ -150,10 +150,10 @@ class PriorityRanker
           end
           c.save
           if p.created_at+2.days > Time.now # within last two days, check to see if we've given them their priroity debut activity
-            ActivityPriorityDebut.create(:user => p.user, :priority => p, :position => p.position) unless ActivityPriorityDebut.find_by_priority_id(p.id)
+            ActivityIdeaDebut.create(:user => p.user, :idea => p, :position => p.position) unless ActivityIdeaDebut.find_by_idea_id(p.id)
           end        
         end
-        Rails.cache.delete('views/priority_chart-' + p.id.to_s)      
+        Rails.cache.delete('views/idea_chart-' + p.id.to_s)
       end
       Rails.cache.delete('views/total_volume_chart') # reset the daily volume chart
       for u in User.active.at_least_one_endorsement.all
@@ -165,10 +165,10 @@ class PriorityRanker
       end       
     end
 
-    puts "PriorityRanker.perform before ranged positions... at #{Time.now} total of #{Time.now-start_time}"    
+    puts "IdeaRanker.perform before ranged positions... at #{Time.now} total of #{Time.now-start_time}"
     setup_ranged_endorsment_positions
 
-    puts "PriorityRanker.perform stopping... at #{Time.now} total of #{Time.now-start_time}"
+    puts "IdeaRanker.perform stopping... at #{Time.now} total of #{Time.now-start_time}"
   end
 
   def setup_ranged_endorsment_positions
@@ -186,9 +186,9 @@ class PriorityRanker
     puts "update positions by sub_instances #{sub_instance}"
     if sub_instance
       SubInstance.current = sub_instance
-      sub_instance_sql = "priorities.sub_instance_id = #{sub_instance.id}"
+      sub_instance_sql = "ideas.sub_instance_id = #{sub_instance.id}"
     else
-      sub_instance_sql = "priorities.sub_instance_id IS NULL"
+      sub_instance_sql = "ideas.sub_instance_id IS NULL"
     end
 
     # make sure the scores for all the positions above the max position are set to 0
@@ -209,21 +209,21 @@ class PriorityRanker
     r = Ranking.filtered.find(:all, :select => "max(version) as version", :conditions => "created_at < '#{Time.now-1.hour}'")[0]
     v_24hr = r.version if r
 
-    priorities = Priority.find_by_sql("
-       select priorities.id, priorities.endorsements_count, priorities.up_endorsements_count, priorities.down_endorsements_count, \
+    ideas = Idea.find_by_sql("
+       select ideas.id, ideas.endorsements_count, ideas.up_endorsements_count, ideas.down_endorsements_count, \
        sum(((#{Endorsement.max_position+1}-endorsements.position)*endorsements.value)*users.score) as number
-       from users,endorsements,priorities
+       from users,endorsements,ideas
        where endorsements.user_id = users.id
        and #{sub_instance_sql}
-       and endorsements.priority_id = priorities.id
-       and priorities.status = 'published'
+       and endorsements.idea_id = ideas.id
+       and ideas.status = 'published'
        and endorsements.status = 'active' and endorsements.position <= #{Endorsement.max_position}
-       group by priorities.id, priorities.endorsements_count, priorities.up_endorsements_count, priorities.down_endorsements_count, endorsements.priority_id
+       group by ideas.id, ideas.endorsements_count, ideas.up_endorsements_count, ideas.down_endorsements_count, endorsements.idea_id
        order by number desc")
 
     i = 0
-    puts "priorities.count = #{priorities.count}"
-    for p in priorities
+    puts "ideas.count = #{ideas.count}"
+    for p in ideas
      p.score = p.number
      first_time = false
      i = i + 1
@@ -286,19 +286,19 @@ class PriorityRanker
        end
        p.controversial_score = p.endorsements_count - (p.endorsements_count-p.down_endorsements_count).abs
      end
-     Priority.update_all("position = #{p.position}, trending_score = #{p.trending_score}, is_controversial = #{p.is_controversial}, controversial_score = #{p.controversial_score}, score = #{p.score}, position_1hr = #{p.position_1hr}, position_1hr_change = #{p.position_1hr_change}, position_24hr = #{p.position_24hr}, position_24hr_change = #{p.position_24hr_change}, position_7days = #{p.position_7days}, position_7days_change = #{p.position_7days_change}, position_30days = #{p.position_30days}, position_30days_change = #{p.position_30days_change}", ["id = ?",p.id])
-     r = Ranking.create(:version => v, :priority => p, :position => i, :endorsements_count => p.endorsements_count)
+     Idea.update_all("position = #{p.position}, trending_score = #{p.trending_score}, is_controversial = #{p.is_controversial}, controversial_score = #{p.controversial_score}, score = #{p.score}, position_1hr = #{p.position_1hr}, position_1hr_change = #{p.position_1hr_change}, position_24hr = #{p.position_24hr}, position_24hr_change = #{p.position_24hr_change}, position_7days = #{p.position_7days}, position_7days_change = #{p.position_7days_change}, position_30days = #{p.position_30days}, position_30days_change = #{p.position_30days_change}", ["id = ?",p.id])
+     r = Ranking.create(:version => v, :idea => p, :position => i, :endorsements_count => p.endorsements_count)
     end
-    Priority.connection.execute("update priorities set position = 0, trending_score = 0, is_controversial = false, controversial_score = 0, score = 0 where endorsements_count = 0;")
+    Idea.connection.execute("update ideas set position = 0, trending_score = 0, is_controversial = false, controversial_score = 0, score = 0 where endorsements_count = 0;")
 
-    # check if there's a new fastest rising priority
-    rising = Priority.filtered.published.rising.all[0]
-    ActivityPriorityRising1.find_or_create_by_priority_id(rising.id) if rising    
+    # check if there's a new fastest rising idea
+    rising = Idea.filtered.published.rising.all[0]
+    ActivityIdeaRising1.find_or_create_by_idea_id(rising.id) if rising
     SubInstance.current = nil
   end
   
   def setup_endorsements_counts
-    Priority.all.each do |p|
+    Idea.all.each do |p|
       p.endorsements_count = p.endorsements.active_and_inactive.size
       p.up_endorsements_count = p.endorsements.endorsing.active_and_inactive.size
       p.down_endorsements_count = p.endorsements.opposing.active_and_inactive.size
@@ -324,8 +324,8 @@ class PriorityRanker
     puts deleted_count
   end
 
-  def add_missing_tags_for_priorities
-    Priority.all.each do |p|
+  def add_missing_tags_for_ideas
+    Idea.all.each do |p|
       if p.category
         the_tags = []
         the_tags<<p.category.name
@@ -351,44 +351,44 @@ class PriorityRanker
     puts "Processing #{position_db_name}"
     if sub_instance
       SubInstance.current = sub_instance
-      sub_instance_sql = "priorities.sub_instance_id = #{sub_instance.id}"
+      sub_instance_sql = "ideas.sub_instance_id = #{sub_instance.id}"
     else
-      sub_instance_sql = "priorities.sub_instance_id IS NULL"
+      sub_instance_sql = "ideas.sub_instance_id IS NULL"
     end
-    @@all_priorities[sub_instance_sql] = Priority.find(:all, :conditions=>sub_instance_sql) unless @@all_priorities[sub_instance_sql]
-    puts @@all_priorities[sub_instance_sql].count
-    priorities = Priority.find_by_sql("
-       select priorities.id, priorities.endorsements_count, priorities.up_endorsements_count, priorities.down_endorsements_count, \
+    @@all_ideas[sub_instance_sql] = Idea.find(:all, :conditions=>sub_instance_sql) unless @@all_ideas[sub_instance_sql]
+    puts @@all_ideas[sub_instance_sql].count
+    ideas = Idea.find_by_sql("
+       select ideas.id, ideas.endorsements_count, ideas.up_endorsements_count, ideas.down_endorsements_count, \
        sum(((#{Endorsement.max_position+1}-endorsements.position)*endorsements.value)*users.score) as number
-       from users,endorsements,priorities
+       from users,endorsements,ideas
        where endorsements.user_id = users.id
        and #{sub_instance_sql}
-       and endorsements.priority_id = priorities.id
+       and endorsements.idea_id = ideas.id
        and endorsements.created_at >= '#{time_since}'
-       and priorities.status = 'published'
+       and ideas.status = 'published'
        and endorsements.status = 'active' and endorsements.position <= #{Endorsement.max_position}
-       group by priorities.id, priorities.endorsements_count, priorities.up_endorsements_count, priorities.down_endorsements_count, endorsements.priority_id
+       group by ideas.id, ideas.endorsements_count, ideas.up_endorsements_count, ideas.down_endorsements_count, endorsements.idea_id
        order by number desc")
 
-    puts "Found #{priorities.count} in range"
-    Priority.transaction do
-      priorities.each_with_index do |priority,index|
-        priority.reload
-        eval_cmd = "priority.#{position_db_name} = #{index+1}"
-        puts "#{priority.id} - #{eval_cmd}"
+    puts "Found #{ideas.count} in range"
+    Idea.transaction do
+      ideas.each_with_index do |idea,index|
+        idea.reload
+        eval_cmd = "idea.#{position_db_name} = #{index+1}"
+        puts "#{idea.id} - #{eval_cmd}"
         eval eval_cmd
-        priority.save
+        idea.save
       end
     end
 
-    not_in_range_priorites = @@all_priorities[sub_instance_sql]-priorities
+    not_in_range_priorites = @@all_ideas[sub_instance_sql]-ideas
 
     puts "Found #{not_in_range_priorites.count} NOT in range"
-    Priority.transaction do
-      not_in_range_priorites.each do |priority|
-        priority.reload
-        eval "priority.#{position_db_name} = nil"
-        priority.save
+    Idea.transaction do
+      not_in_range_priorites.each do |idea|
+        idea.reload
+        eval "idea.#{position_db_name} = nil"
+        idea.save
       end
     end
     SubInstance.current = nil

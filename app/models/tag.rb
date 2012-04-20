@@ -7,10 +7,10 @@ class Tag < ActiveRecord::Base
   scope :by_endorsers_count, :order => "tags.up_endorsers_count desc"
 
   scope :alphabetical, :order => "tags.name asc"
-  scope :more_than_three_priorities, :conditions => "tags.priorities_count > 3"
-  scope :with_priorities, :conditions => "tags.priorities_count > 0"
+  scope :more_than_three_ideas, :conditions => "tags.ideas_count > 3"
+  scope :with_ideas, :conditions => "tags.ideas_count > 0"
   
-  scope :most_priorities, :conditions => "tags.priorities_count > 0", :order => "tags.priorities_count desc"
+  scope :most_ideas, :conditions => "tags.ideas_count > 0", :order => "tags.ideas_count desc"
   scope :most_feeds, :conditions => "tags.feeds_count > 0", :order => "tags.feeds_count desc"
 
   scope :item_limit, lambda{|limit| {:limit=>limit}}
@@ -19,13 +19,13 @@ class Tag < ActiveRecord::Base
 
   has_many :activities, :dependent => :destroy
   has_many :taggings
-  has_many :priorities, :through => :taggings, :source => :priority, :conditions => "taggings.taggable_type = 'Priority'"
+  has_many :ideas, :through => :taggings, :source => :idea, :conditions => "taggings.taggable_type = 'Idea'"
   has_many :feeds, :through => :taggings, :source => :feed, :conditions => "taggings.taggable_type = 'Feed'"
                             
-  belongs_to :top_priority, :class_name => "Priority", :foreign_key => "top_priority_id"
-  belongs_to :rising_priority, :class_name => "Priority", :foreign_key => "rising_priority_id"
-  belongs_to :controversial_priority, :class_name => "Priority", :foreign_key => "controversial_priority_id"  
-  belongs_to :official_priority, :class_name => "Priority", :foreign_key => "official_priority_id"    
+  belongs_to :top_idea, :class_name => "Idea", :foreign_key => "top_idea_id"
+  belongs_to :rising_idea, :class_name => "Idea", :foreign_key => "rising_idea_id"
+  belongs_to :controversial_idea, :class_name => "Idea", :foreign_key => "controversial_idea_id"
+  belongs_to :official_idea, :class_name => "Idea", :foreign_key => "official_idea_id"
   
   validates_presence_of :name
   validates_uniqueness_of :name
@@ -99,75 +99,75 @@ class Tag < ActiveRecord::Base
     return Instance.current.prompt
   end
   
-  def published_priority_ids
-    Priority.published.filtered.tagged_with(self.name, :on => :issues).collect{|p| p.id}
+  def published_idea_ids
+    Idea.published.filtered.tagged_with(self.name, :on => :issues).collect{|p| p.id}
   end
-  memoize :published_priority_ids  
+  memoize :published_idea_ids
   
   def calculate_discussions_count
-    Activity.active.filtered.discussions.for_all_users.by_recently_updated.count(:conditions => ["priority_id in (?)",published_priority_ids])
+    Activity.active.filtered.discussions.for_all_users.by_recently_updated.count(:conditions => ["idea_id in (?)",published_idea_ids])
   end
   
   def calculate_points_count
-    Point.published.count(:conditions => ["priority_id in (?)",published_priority_ids])
+    Point.published.count(:conditions => ["idea_id in (?)",published_idea_ids])
   end  
   
   def update_counts
-    self.priorities_count = priorities.published.count
+    self.ideas_count = ideas.published.count
     self.points_count = calculate_points_count
     self.discussions_count = calculate_discussions_count
   end  
   
-  def has_top_priority?
-    attribute_present?("top_priority_id")
+  def has_top_idea?
+    attribute_present?("top_idea_id")
   end
   
   def rising_7days_count
-    priorities.published.rising_7days.count
+    ideas.published.rising_7days.count
   end
   
   def flat_7days_count
-    priorities.published.flat_7days.count
+    ideas.published.flat_7days.count
   end
   
   def falling_7days_count
-    priorities.published.falling_7days.count
+    ideas.published.falling_7days.count
   end    
   
   def rising_7days_percent
-    priorities.published.rising_7days.count.to_f/priorities_count.to_f
+    ideas.published.rising_7days.count.to_f/ideas_count.to_f
   end  
   
   def flat_7days_percent
-    priorities.published.flat_7days.count.to_f/priorities_count.to_f
+    ideas.published.flat_7days.count.to_f/ideas_count.to_f
   end
   
   def falling_7days_percent
-    priorities.published.falling_7days.count.to_f/priorities_count.to_f
+    ideas.published.falling_7days.count.to_f/ideas_count.to_f
   end    
   
   def rising_30days_count
-    priorities.published.rising_30days.count
+    ideas.published.rising_30days.count
   end
   
   def flat_30days_count
-    priorities.published.flat_30days.count
+    ideas.published.flat_30days.count
   end
   
   def falling_30days_count
-    priorities.published.falling_30days.count
+    ideas.published.falling_30days.count
   end    
   
   def rising_24hr_count
-    priorities.published.rising_24hr.count
+    ideas.published.rising_24hr.count
   end
   
   def flat_24hr_count
-    priorities.published.flat_24hr.count
+    ideas.published.flat_24hr.count
   end
   
   def falling_24hr_count
-    priorities.published.falling_24hr.count
+    ideas.published.falling_24hr.count
   end  
   
   def subscribers
@@ -175,9 +175,9 @@ class Tag < ActiveRecord::Base
     select distinct users.*
     from users, endorsements, taggings
     where 
-    endorsements.priority_id = taggings.taggable_id
+    endorsements.idea_id = taggings.taggable_id
     and taggings.tag_id = ?
-    and taggings.taggable_type = 'Priority'
+    and taggings.taggable_type = 'Idea'
     and endorsements.status = 'active'
     and endorsements.user_id = users.id
     and users.report_frequency != 0
@@ -189,9 +189,9 @@ class Tag < ActiveRecord::Base
     select distinct users.*
     from users, endorsements, taggings
     where 
-    endorsements.priority_id = taggings.taggable_id
+    endorsements.idea_id = taggings.taggable_id
     and taggings.tag_id = ?
-    and taggings.taggable_type = 'Priority'
+    and taggings.taggable_type = 'Idea'
     and endorsements.status = 'active'
     and endorsements.value = 1
     and endorsements.user_id = users.id
@@ -203,9 +203,9 @@ class Tag < ActiveRecord::Base
     select distinct users.*
     from users, endorsements, taggings
     where 
-    endorsements.priority_id = taggings.taggable_id
+    endorsements.idea_id = taggings.taggable_id
     and taggings.tag_id = ?
-    and taggings.taggable_type = 'Priority'
+    and taggings.taggable_type = 'Idea'
     and endorsements.status = 'active'
     and endorsements.value = -1
     and endorsements.user_id = users.id

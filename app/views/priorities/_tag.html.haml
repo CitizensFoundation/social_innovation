@@ -1,3 +1,0 @@
-= form_for priority, :remote=>true, 'data-disable-with' => escape_t(tr("Tagging","Ajax")), :url => tag_save_priority_path(priority) do |f|
-  = f.text_field :issue_list, :id => 'priority_' + priority.id.to_s + '_issue_list', :size => 70
-  = f.submit tr("save", "view/priorities/_tag"), :class => "tag_button"

@@ -10,9 +10,9 @@ class Activity < ActiveRecord::Base
   scope :changes, :conditions => "change_id is not null"
   scope :points, :conditions => "type like 'ActivityPoint%'", :order => "activities.created_at desc"
   scope :capital, :conditions => "type like '%Capital%'"
-  scope :interesting, :conditions => "type in ('ActivityPriorityMergeProposal','ActivityPriorityAcquisitionProposal') or comments_count > 0"
+  scope :interesting, :conditions => "type in ('ActivityIdeaMergeProposal','ActivityIdeaAcquisitionProposal') or comments_count > 0"
 
-  scope :top, :order=>"changed_at DESC", :conditions => "type in ('ActivityPointNew','ActivityPriorityNew','ActivityBulletinNew')"
+  scope :top, :order=>"changed_at DESC", :conditions => "type in ('ActivityPointNew','ActivityIdeaNew','ActivityBulletinNew')"
   scope :top_discussions, :order=>"changed_at DESC", :conditions => "type in ('ActivityBulletinNew')", :limit=>5
   scope :with_20, :limit=> 20
 
@@ -34,7 +34,7 @@ class Activity < ActiveRecord::Base
   belongs_to :sub_instance
   
   belongs_to :other_user, :class_name => "User", :foreign_key => "other_user_id"
-  belongs_to :priority
+  belongs_to :idea
   belongs_to :activity
   belongs_to :tag
   belongs_to :point
@@ -42,7 +42,7 @@ class Activity < ActiveRecord::Base
   belongs_to :capital
   belongs_to :ad
 
-  belongs_to :priority_status_change_log
+  belongs_to :idea_status_change_log
   has_many :comments, :order => "comments.created_at asc", :dependent => :destroy
   has_many :published_comments, :class_name => "Comment", :foreign_key => "activity_id", :conditions => "comments.status = 'published'", :order => "comments.created_at asc"
   has_many :commenters, :through => :published_comments, :source => :user, :select => "DISTINCT users.*"
@@ -71,8 +71,8 @@ class Activity < ActiveRecord::Base
 
   def multi_name
     return "test x"
-    if self.priority_id
-      self.priority.name
+    if self.idea_id
+      self.idea.name
     elsif self.point_id
       self.question.name
     else
@@ -82,8 +82,8 @@ class Activity < ActiveRecord::Base
 
   def show_multi_url
     return "test m"
-    if self.priority_id
-      self.priority.show_url
+    if self.idea_id
+      self.idea.show_url
     elsif self.point_id
       self.point.show_url
     else
@@ -110,8 +110,8 @@ class Activity < ActiveRecord::Base
     user_id == Instance.current.official_user_id
   end
 
-  def has_priority?
-    attribute_present?("priority_id")
+  def has_idea?
+    attribute_present?("idea_id")
   end
   
   def has_activity?
@@ -221,13 +221,13 @@ class ActivityCapitalPartnerUserRecruited < Activity
   end
 end
 
-class ActivityPriorityDebut < Activity
+class ActivityIdeaDebut < Activity
 
   def name
     if attribute_present?("position")
-      tr("{priority_name} debuted on the charts at {position}", "model/activity", :priority_name => priority.name, :position => position)
+      tr("{idea_name} debuted on the charts at {position}", "model/activity", :idea_name => idea.name, :position => position)
     else
-      tr("{priority_name} debuted on the charts", "model/activity", :priority_name => priority.name)
+      tr("{idea_name} debuted on the charts", "model/activity", :idea_name => idea.name)
     end
   end
 
@@ -250,15 +250,15 @@ class ActivityEndorsementNew < Activity
   def name
     if has_ad?
       if attribute_present?("position")
-        tr("{user_name} endorsed {priority_name} at priority {position} due to {ad_user} ad", "model/activity", :user_name => user.name, :priority_name => priority.name, :position => position, :ad_user => ad.user.name.possessive)
+        tr("{user_name} endorsed {idea_name} at idea {position} due to {ad_user} ad", "model/activity", :user_name => user.name, :idea_name => idea.name, :position => position, :ad_user => ad.user.name.possessive)
       else
-        tr("{user_name} endorsed {priority_name} due to {ad_user} ad", "model/activity", :user_name => user.name, :priority_name => priority.name, :ad_user => ad.user.name.possessive)
+        tr("{user_name} endorsed {idea_name} due to {ad_user} ad", "model/activity", :user_name => user.name, :idea_name => idea.name, :ad_user => ad.user.name.possessive)
       end
     else
       if attribute_present?("position")
-        tr("{user_name} endorsed {priority_name} at priority {position}", "model/activity", :user_name => user.name, :priority_name => priority.name, :position => position)
+        tr("{user_name} endorsed {idea_name} at idea {position}", "model/activity", :user_name => user.name, :idea_name => idea.name, :position => position)
       else
-        tr("{user_name} endorsed {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name)
+        tr("{user_name} endorsed {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name)
       end
     end
   end
@@ -267,7 +267,7 @@ end
 
 class ActivityEndorsementDelete < Activity
   def name
-    tr("{user_name} no longer endorses {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name)
+    tr("{user_name} no longer endorses {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name)
   end
 end
 
@@ -276,15 +276,15 @@ class ActivityOppositionNew < Activity
   def name
     if has_ad?
       if attribute_present?("position")
-        tr("{user_name} opposed {priority_name} at priority {position} due to {ad_user} ad", "model/activity", :user_name => user.name, :priority_name => priority.name, :position => position, :ad_user => ad.user.name.possessive)
+        tr("{user_name} opposed {idea_name} at idea {position} due to {ad_user} ad", "model/activity", :user_name => user.name, :idea_name => idea.name, :position => position, :ad_user => ad.user.name.possessive)
       else
-        tr("{user_name} opposed {priority_name} due to {ad_user} ad", "model/activity", :user_name => user.name, :priority_name => priority.name, :ad_user => ad.user.name.possessive)
+        tr("{user_name} opposed {idea_name} due to {ad_user} ad", "model/activity", :user_name => user.name, :idea_name => idea.name, :ad_user => ad.user.name.possessive)
       end
     else
       if attribute_present?("position")
-        tr("{user_name} opposed {priority_name} at priority {position}", "model/activity", :user_name => user.name, :priority_name => priority.name, :position => position)
+        tr("{user_name} opposed {idea_name} at idea {position}", "model/activity", :user_name => user.name, :idea_name => idea.name, :position => position)
       else
-        tr("{user_name} opposed {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name)
+        tr("{user_name} opposed {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name)
       end
     end
   end
@@ -293,55 +293,55 @@ end
 
 class ActivityOppositionDelete < Activity
   def name
-    tr("{user_name} no longer opposes {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name)
+    tr("{user_name} no longer opposes {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name)
   end
 end
 
 class ActivityEndorsementReplaced < Activity
   def name
-    tr("{user_name} endorsed {new_priority_name} instead of {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} endorsed {new_idea_name} instead of {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityEndorsementReplacedImplicit < Activity
   def name
-    tr("{user_name} is now endorsing {new_priority_name} because {priority_name} was acquired", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} is now endorsing {new_idea_name} because {idea_name} was acquired", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityEndorsementFlipped < Activity
   def name
-    tr("{user_name} endorsed {new_priority_name} instead of opposing {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} endorsed {new_idea_name} instead of opposing {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityEndorsementFlippedImplicit < Activity
   def name
-    tr("{user_name} is now endorsing {new_priority_name} because it acquired the opposers of {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} is now endorsing {new_idea_name} because it acquired the opposers of {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityOppositionReplaced < Activity
   def name
-    tr("{user_name} opposed {new_priority_name} instead of {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} opposed {new_idea_name} instead of {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityOppositionReplacedImplicit < Activity
   def name
-    tr("{user_name} is now opposing {new_priority_name} because {priority_name} was acquired", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} is now opposing {new_idea_name} because {idea_name} was acquired", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityOppositionFlipped < Activity
   def name
-    tr("{user_name} opposed {new_priority_name} instead of opposing {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} opposed {new_idea_name} instead of opposing {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityOppositionFlippedImplicit < Activity
   def name
-    tr("{user_name} is now endorsing {new_priority_name} because it acquired the opposers of {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} is now endorsing {new_idea_name} because it acquired the opposers of {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
@@ -351,48 +351,48 @@ class ActivityPartnerNew < Activity
   end
 end
 
-class ActivityPriorityNew < Activity
+class ActivityIdeaNew < Activity
   def name
-    tr("{user_name} first suggested {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name)
+    tr("{user_name} first suggested {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name)
   end
 end
 
-# [user name] flagged [priority name] as inappropriate.
-class ActivityPriorityFlagInappropriate < Activity
+# [user name] flagged [idea name] as inappropriate.
+class ActivityIdeaFlagInappropriate < Activity
 
   def name
-    tr("{user_name} flagged {priority_name} for review", "model/activity", :user_name => user.name, :priority_name => priority.name)
+    tr("{user_name} flagged {idea_name} for review", "model/activity", :user_name => user.name, :idea_name => idea.name)
   end
 
-  validates_uniqueness_of :user_id, :scope => [:priority_id], :message => "You've already flagged this."
+  validates_uniqueness_of :user_id, :scope => [:idea_id], :message => "You've already flagged this."
 
 end
 
-class ActivityPriorityFlag < Activity
+class ActivityIdeaFlag < Activity
 
   def name
-    tr("{user_name} flagged {priority_name} for review", "model/activity", :user_name => user.name, :priority_name => priority.name)
+    tr("{user_name} flagged {idea_name} for review", "model/activity", :user_name => user.name, :idea_name => idea.name)
   end
 
   after_create :notify_admin
 
   def notify_admin
     for r in User.active.admins
-      priority.notifications << NotificationPriorityFlagged.new(:sender => user, :recipient => r) if r.id != user.id
+      idea.notifications << NotificationIdeaFlagged.new(:sender => user, :recipient => r) if r.id != user.id
     end
   end
 
 end
 
-# [user name] buried [priority name].
-class ActivityPriorityBury < Activity
+# [user name] buried [idea name].
+class ActivityIdeaBury < Activity
   def name
-    tr("{user_name} buried {priority_name}. It's probably obvious why.", "model/activity", :user_name => user.name, :priority_name => priority.name)
+    tr("{user_name} buried {idea_name}. It's probably obvious why.", "model/activity", :user_name => user.name, :idea_name => idea.name)
   end
 end
 
 # identifies that a person is participating in a discussion about another activity
-# is_user_only!  it's not meant to be shown on the priority page, just on the user page
+# is_user_only!  it's not meant to be shown on the idea page, just on the user page
 # and it's only supposed to be invoked once, when they first start discussing an activity
 # but the updated_at should be updated on subsequent postings in the discussion
 class ActivityCommentParticipant < Activity
@@ -415,9 +415,9 @@ class ActivityDiscussionFollowingDelete < Activity
   end
 end
 
-class ActivityPriorityCommentNew < Activity
+class ActivityIdeaCommentNew < Activity
   def name
-    tr("{user_name} left a comment on {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name)
+    tr("{user_name} left a comment on {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name)
   end
 end
 
@@ -446,8 +446,8 @@ class ActivityBulletinNew < Activity
   def name
     if point
       tr("{user_name} posted a bulletin to {discussion_name}", "model/activity", :user_name => user.name, :discussion_name => point.name)
-    elsif priority
-      tr("{user_name} posted a bulletin to {discussion_name}", "model/activity", :user_name => user.name, :discussion_name => priority.name)
+    elsif idea
+      tr("{user_name} posted a bulletin to {discussion_name}", "model/activity", :user_name => user.name, :discussion_name => idea.name)
     else
       tr("{user_name} posted a bulletin", "model/activity", :user_name => user.name)
     end
@@ -455,64 +455,64 @@ class ActivityBulletinNew < Activity
 
 end
 
-class ActivityPriority1 < Activity
+class ActivityIdea1 < Activity
   def name
-    tr("{priority_name} is {user_name} new #1 priority", "model/activity", :user_name => user.name.possessive, :priority_name => priority.name)
+    tr("{idea_name} is {user_name} new #1 idea", "model/activity", :user_name => user.name.possessive, :idea_name => idea.name)
   end
 end
 
-class ActivityPriority1Opposed < Activity
+class ActivityIdea1Opposed < Activity
   def name
-    tr("Opposing {priority_name} is {user_name} new #1 priority", "model/activity", :user_name => user.name.possessive, :priority_name => priority.name)
+    tr("Opposing {idea_name} is {user_name} new #1 idea", "model/activity", :user_name => user.name.possessive, :idea_name => idea.name)
   end
 end
 
-class ActivityPriorityRising1 < Activity
+class ActivityIdeaRising1 < Activity
   def name
-    tr("{priority_name} is the fastest rising priority", "model/activity", :priority_name => priority.name)
+    tr("{idea_name} is the fastest rising idea", "model/activity", :idea_name => idea.name)
   end
 end
 
-class ActivityIssuePriority1 < Activity
+class ActivityIssueIdea1 < Activity
   def name
-    tr("{priority_name} is the new #1 priority in {tag_name}", "model/activity", :priority_name => priority.name, :tag_name => tr(tag.title,"model/category"))
+    tr("{idea_name} is the new #1 idea in {tag_name}", "model/activity", :idea_name => idea.name, :tag_name => tr(tag.title,"model/category"))
   end
 end
 
-class ActivityIssuePriorityControversial1 < Activity
+class ActivityIssueIdeaControversial1 < Activity
   def name
-    tr("{priority_name} is the most controversial priority in {tag_name}", "model/activity", :priority_name => priority.name, :tag_name => tr(tag.title,"model/category"))
+    tr("{idea_name} is the most controversial idea in {tag_name}", "model/activity", :idea_name => idea.name, :tag_name => tr(tag.title,"model/category"))
   end
 end
 
-class ActivityIssuePriorityRising1 < Activity
+class ActivityIssueIdeaRising1 < Activity
   def name
-    tr("{priority_name} is the fastest rising priority in {tag_name}", "model/activity", :priority_name => priority.name, :tag_name => tr(tag.title,"model/category"))
+    tr("{idea_name} is the fastest rising idea in {tag_name}", "model/activity", :idea_name => idea.name, :tag_name => tr(tag.title,"model/category"))
   end
 end
 
-class ActivityIssuePriorityOfficial1 < Activity
+class ActivityIssueIdeaOfficial1 < Activity
   def name
-    tr("{priority_name} is the new #1 priority on {official_user_name} {tag_name} agenda", "model/activity", :priority_name => priority.name, :tag_name => tr(tag.title,"model/category"), :official_user_name => Instance.current.official_user.name.possessive)
+    tr("{idea_name} is the new #1 idea on {official_user_name} {tag_name} agenda", "model/activity", :idea_name => idea.name, :tag_name => tr(tag.title,"model/category"), :official_user_name => Instance.current.official_user.name.possessive)
   end
 end
 
-class ActivityPriorityMergeProposal < Activity
+class ActivityIdeaMergeProposal < Activity
   def name
-    tr("{user_name} proposed {new_priority_name} acquire {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} proposed {new_idea_name} acquire {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
-class ActivityPriorityRenamed < Activity
+class ActivityIdeaRenamed < Activity
   def name
-    tr("{user_name} renamed {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name)
+    tr("{user_name} renamed {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name)
   end
 end
 
 class ActivityPointNew < Activity
 
   def name
-    tr("{user_name} added {point_name} to {priority_name}", "model/activity", :user_name => user.name, :point_name => point.name, :priority_name => priority.name)
+    tr("{user_name} added {point_name} to {idea_name}", "model/activity", :user_name => user.name, :point_name => point.name, :idea_name => idea.name)
   end
 
 end
@@ -535,12 +535,12 @@ class ActivityPointRevisionName < Activity
   end
 end
 
-class ActivityPointRevisionOtherPriority < Activity
+class ActivityPointRevisionOtherIdea < Activity
   def name
-    if revision.has_other_priority?
-      tr("{user_name} linked {point_name} to {priority_name}", "model/activity", :user_name => user.name, :point_name => point.name, :priority_name => revision.other_priority.name)
+    if revision.has_other_idea?
+      tr("{user_name} linked {point_name} to {idea_name}", "model/activity", :user_name => user.name, :point_name => point.name, :idea_name => revision.other_idea.name)
     else
-      tr("{user_name} removed the priority link from {point_name}", "model/activity", :user_name => user.name, :point_name => point.name)
+      tr("{user_name} removed the idea link from {point_name}", "model/activity", :user_name => user.name, :point_name => point.name)
     end
   end
 end
@@ -557,19 +557,19 @@ end
 
 class ActivityPointRevisionSupportive < Activity
   def name
-    tr("{user_name} revised {point_name} to indicate it's supportive of {priority_name}", "model/activity", :user_name => user.name, :point_name => point.name, :priority_name => priority.name)
+    tr("{user_name} revised {point_name} to indicate it's supportive of {idea_name}", "model/activity", :user_name => user.name, :point_name => point.name, :idea_name => idea.name)
   end
 end
 
 class ActivityPointRevisionNeutral < Activity
   def name
-    tr("{user_name} revised {point_name} to indicate it's neutral on {priority_name}", "model/activity", :user_name => user.name, :point_name => point.name, :priority_name => priority.name)
+    tr("{user_name} revised {point_name} to indicate it's neutral on {idea_name}", "model/activity", :user_name => user.name, :point_name => point.name, :idea_name => idea.name)
   end
 end
 
 class ActivityPointRevisionOpposition < Activity
   def name
-    tr("{user_name} revised {point_name} to indicate it's opposed to {priority_name}", "model/activity", :user_name => user.name, :point_name => point.name, :priority_name => priority.name)
+    tr("{user_name} revised {point_name} to indicate it's opposed to {idea_name}", "model/activity", :user_name => user.name, :point_name => point.name, :idea_name => idea.name)
   end
 end
 
@@ -709,7 +709,7 @@ end
 
 class ActivityCapitalAdRefunded < Activity
   def name
-    tr("{user_name} was refunded {capital}{currency_short_name} for an ad for priority {priority_name} because the priority is now in progress", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :priority_name => priority.name)
+    tr("{user_name} was refunded {capital}{currency_short_name} for an ad for idea {idea_name} because the idea is now in progress", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :idea_name => idea.name)
   end
 end
 
@@ -767,79 +767,79 @@ end
 
 class ActivityCapitalAdNew < Activity
   def name
-    tr("{user_name} spent {capital}{currency_short_name} on an ad for {priority_name}", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :priority_name => priority.name)
+    tr("{user_name} spent {capital}{currency_short_name} on an ad for {idea_name}", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :idea_name => idea.name)
   end
 end
 
 class ActivityCapitalAcquisitionProposal < Activity
   def name
-    tr("{user_name} spent {capital}{currency_short_name} on a proposal for {new_priority_name} to acquire {priority_name}", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} spent {capital}{currency_short_name} on a proposal for {new_idea_name} to acquire {idea_name}", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
-class ActivityPriorityAcquisitionProposalNo < Activity
+class ActivityIdeaAcquisitionProposalNo < Activity
   def name
-    tr("{user_name} voted against {new_priority_name} acquiring {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} voted against {new_idea_name} acquiring {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
-class ActivityPriorityAcquisitionProposalApproved < Activity
+class ActivityIdeaAcquisitionProposalApproved < Activity
   def name
-    tr("{new_priority_name} acquired {priority_name}", "model/activity", :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{new_idea_name} acquired {idea_name}", "model/activity", :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
-class ActivityPriorityAcquisitionProposalDeclined < Activity
+class ActivityIdeaAcquisitionProposalDeclined < Activity
   def name
-    tr("{new_priority_name} failed to acquire {priority_name}", "model/activity", :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{new_idea_name} failed to acquire {idea_name}", "model/activity", :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
-class ActivityPriorityAcquisitionProposalDeleted < Activity
+class ActivityIdeaAcquisitionProposalDeleted < Activity
   def name
-    tr("{user_name} decided not to hold a vote on {new_priority_name} acquiring {priority_name}", "model/activity", :user_name => user.name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} decided not to hold a vote on {new_idea_name} acquiring {idea_name}", "model/activity", :user_name => user.name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityCapitalAcquisitionProposalDeleted < Activity
   def name
-    tr("{user_name} was refunded {capital}{currency_short_name} because no vote will be held on {new_priority_name} acquiring {priority_name}", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} was refunded {capital}{currency_short_name} because no vote will be held on {new_idea_name} acquiring {idea_name}", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
 class ActivityCapitalAcquisitionProposalApproved < Activity
   def name
-    tr("{user_name} earned {capital}{currency_short_name} because {new_priority_name} successfully acquired {priority_name}", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :priority_name => priority.name, :new_priority_name => change.new_priority.name)
+    tr("{user_name} earned {capital}{currency_short_name} because {new_idea_name} successfully acquired {idea_name}", "model/activity", :user_name => user.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name, :idea_name => idea.name, :new_idea_name => change.new_idea.name)
   end
 end
 
-class ActivityPriorityOfficialStatusFailed < Activity
+class ActivityIdeaOfficialStatusFailed < Activity
   def name
-    tr("{priority_name} failed", "model/activity", :priority_name => priority.name)
+    tr("{idea_name} failed", "model/activity", :idea_name => idea.name)
   end
 end
 
-class ActivityPriorityOfficialStatusCompromised < Activity
+class ActivityIdeaOfficialStatusCompromised < Activity
   def name
-    tr("{priority_name} was completed with a compromise", "model/activity", :priority_name => priority.name)
+    tr("{idea_name} was completed with a compromise", "model/activity", :idea_name => idea.name)
   end
 end
 
-class ActivityPriorityOfficialStatusInTheWorks < Activity
+class ActivityIdeaOfficialStatusInTheWorks < Activity
   def name
-    tr("{priority_name} is in progress", "model/activity", :priority_name => priority.name)
+    tr("{idea_name} is in progress", "model/activity", :idea_name => idea.name)
   end
 end
 
-class ActivityPriorityOfficialStatusSuccessful < Activity
+class ActivityIdeaOfficialStatusSuccessful < Activity
   def name
-    tr("{priority_name} was completed successfully", "model/activity", :priority_name => priority.name)
+    tr("{idea_name} was completed successfully", "model/activity", :idea_name => idea.name)
   end
 end
 
-class ActivityPriorityStatusUpdate < Activity
+class ActivityIdeaStatusUpdate < Activity
   def name
-    tr("{priority_name}'s status was updated", "model/activity", priority_name: priority.name)
+    tr("{idea_name}'s status was updated", "model/activity", idea_name: idea.name)
   end
 end
 

@@ -5,7 +5,7 @@ class Revision < ActiveRecord::Base
 
   belongs_to :point  
   belongs_to :user
-  belongs_to :other_priority, :class_name => "Priority"
+  belongs_to :other_idea, :class_name => "Idea"
     
   has_many :activities
   has_many :notifications, :as => :notifiable, :dependent => :destroy
@@ -51,32 +51,32 @@ class Revision < ActiveRecord::Base
     point.revisions_count += 1    
     changed = false
     if point.revisions_count == 1
-      ActivityPointNew.create(:user => user, :priority => point.priority, :point => point, :revision => self)
+      ActivityPointNew.create(:user => user, :idea => point.idea, :point => point, :revision => self)
     else
       if point.content != self.content # they changed content
         changed = true
-        ActivityPointRevisionContent.create(:user => user, :priority => point.priority, :point => point, :revision => self)
+        ActivityPointRevisionContent.create(:user => user, :idea => point.idea, :point => point, :revision => self)
       end
       if point.website != self.website
         changed = true
-        ActivityPointRevisionWebsite.create(:user => user, :priority => point.priority, :point => point, :revision => self)
+        ActivityPointRevisionWebsite.create(:user => user, :idea => point.idea, :point => point, :revision => self)
       end
       if point.name != self.name
         changed = true
-        ActivityPointRevisionName.create(:user => user, :priority => point.priority, :point => point, :revision => self)
+        ActivityPointRevisionName.create(:user => user, :idea => point.idea, :point => point, :revision => self)
       end
-      if point.other_priority_id != self.other_priority_id
+      if point.other_idea_id != self.other_idea_id
         changed = true
-        ActivityPointRevisionOtherPriority.create(:user => user, :priority => point.priority, :point => point, :revision => self)
+        ActivityPointRevisionOtherIdea.create(:user => user, :idea => point.idea, :point => point, :revision => self)
       end
       if point.value != self.value
         changed = true
         if self.is_up?
-          ActivityPointRevisionSupportive.create(:user => user, :priority => point.priority, :point => point, :revision => self)
+          ActivityPointRevisionSupportive.create(:user => user, :idea => point.idea, :point => point, :revision => self)
         elsif self.is_neutral?
-          ActivityPointRevisionNeutral.create(:user => user, :priority => point.priority, :point => point, :revision => self)
+          ActivityPointRevisionNeutral.create(:user => user, :idea => point.idea, :point => point, :revision => self)
         elsif self.is_down?
-          ActivityPointRevisionOpposition.create(:user => user, :priority => point.priority, :point => point, :revision => self)
+          ActivityPointRevisionOpposition.create(:user => user, :idea => point.idea, :point => point, :revision => self)
         end
       end      
     end    
@@ -92,7 +92,7 @@ class Revision < ActiveRecord::Base
     point.revision_id = self.id
     point.value = self.value
     point.name = self.name
-    point.other_priority = self.other_priority
+    point.other_idea = self.other_idea
     point.author_sentence = point.author_user.login
     point.author_sentence += ", #{tr("changes","model/revision")} " + point.editors.collect{|a| a[0].login}.to_sentence if point.editors.size > 0
     point.published_at = Time.now
@@ -123,31 +123,31 @@ class Revision < ActiveRecord::Base
     value == 0
   end
 
-  def priority_name
-    priority.name if priority
+  def idea_name
+    idea.name if idea
   end
   
-  def priority_name=(n)
-    self.priority = Priority.find_by_name(n) unless n.blank?
+  def idea_name=(n)
+    self.idea = Idea.find_by_name(n) unless n.blank?
   end
   
-  def other_priority_name
-    other_priority.name if other_priority
+  def other_idea_name
+    other_idea.name if other_idea
   end
   
-  def other_priority_name=(n)
-    self.other_priority = Priority.find_by_name(n) unless n.blank?
+  def other_idea_name=(n)
+    self.other_idea = Idea.find_by_name(n) unless n.blank?
   end  
   
-  def has_other_priority?
-    attribute_present?("other_priority_id")
+  def has_other_idea?
+    attribute_present?("other_idea_id")
   end
   
   def text
     s = point.name
     s += " [#{tr("In support", "model/revision")}]" if is_down?
     s += " [#{tr("Neutral", "model/revision")}]" if is_neutral?    
-    s += "\r\n#{tr("In support of", "model/revision")} " + point.other_priority.name if point.has_other_priority?
+    s += "\r\n#{tr("In support of", "model/revision")} " + point.other_idea.name if point.has_other_idea?
     s += "\r\n" + content
     s += "\r\n#{tr("Originated at", "model/revision")}: " + website_link if has_website?
     return s

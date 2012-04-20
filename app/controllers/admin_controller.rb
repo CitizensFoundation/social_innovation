@@ -4,7 +4,7 @@ class AdminController < ApplicationController
   
   def all_flagged
     @all = [] 
-    @all += Priority.published.flagged
+    @all += Idea.published.flagged
     @all += Point.published.flagged
     @all += Comment.published.flagged
     @all = @all.sort_by {|s| s.created_at}
@@ -14,7 +14,7 @@ class AdminController < ApplicationController
   def all_deleted
     #TODO: Rethink this as the list of deleted comments grows
     @all = [] 
-    @all += Priority.unpublished
+    @all += Idea.unpublished
     @all += Question.unpublished
     @all += Comment.unpublished
     @all = @all.sort_by {|s| s.updated_at}.reverse

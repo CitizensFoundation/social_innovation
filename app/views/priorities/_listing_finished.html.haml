@@ -1,7 +1,0 @@
-.priority_listing
-  .priority_name{:id => "priority_#{priority.id}_name"}
-    = official_status(priority).html_safe
-    = link_to_unless_current tg(h(priority.name)), priority, :class => "priority_name_link"
-  = render :partial => "priorities/tag_show", :locals => { :priority => priority }
-  %div{:style => "position: relative; right: 3px;"}
-    = render :partial => "priorities/endorsement_count", :locals => {:priority => priority }

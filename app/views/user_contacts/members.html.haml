@@ -27,12 +27,12 @@
                   = c.other_user.capitals_count
                   = current_instance.currency_short_name
                 = tr("Joined {time_ago}", "view/user_contacts/members", :time_ago => time_ago(c.other_user.created_at))
-                - if c.other_user.has_top_priority?
+                - if c.other_user.has_top_idea?
                   %br/
-                  = tr("#1 priority:", "view/user_contacts/members")
+                  = tr("#1 idea:", "view/user_contacts/members")
                   - if c.other_user.top_endorsement.is_down?
                     %span.opposed= tr("Opposing", "view/user_contacts/members")
-                  = link_to c.other_user.top_endorsement.priority.name, c.other_user.top_endorsement.priority
+                  = link_to c.other_user.top_endorsement.idea.name, c.other_user.top_endorsement.idea
                   \.
       %p
       %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}

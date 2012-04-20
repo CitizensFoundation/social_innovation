@@ -1,5 +1,5 @@
 #toolbar.clearfix
-  - if ['priorities','changes','ads','prioritizer'].include?(params[:controller])
+  - if ['ideas','changes','ads','prioritizer'].include?(params[:controller])
     - nav = 2
   - elsif ['news','comments'].include?(params[:controller])
     - nav = 4
@@ -27,7 +27,7 @@
       %li.tab0
         %span.tab_header= link_to tr("Home","Menu system"), :controller => "portal"
       %li.tab2
-        %span.tab_header= link_to tr("Ideas", "view/shared/_menu"), :controller => "priorities", :action=>"index"
+        %span.tab_header= link_to tr("Ideas", "view/shared/_menu"), :controller => "ideas", :action=>"index"
       %li.tab3
         %span.tab_header= link_to tr("Debate", "view/shared/_menu"), :controller => "points"
       - if logged_in?
@@ -82,7 +82,7 @@
 - if nav == 1
   = render :partial => "issues/nav"
 - elsif nav == 2 and not ["show","discussions","endorsers","opposers","top_points","activities","new"].include?(action_name)
-  = render :partial => "priorities/browse_nav"
+  = render :partial => "ideas/browse_nav"
 - elsif nav == 3 and not ["new"].include?(action_name)
   = render :partial => "briefing/nav"
 - elsif nav == 4

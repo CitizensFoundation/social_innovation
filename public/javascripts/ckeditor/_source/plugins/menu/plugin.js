@@ -527,7 +527,7 @@ CKEDITOR.plugins.add( 'menu',
 /**
  * A comma separated list of items group names to be displayed in the context
  * menu. The order of items will reflect the order specified in this list if
- * no priority was defined in the groups.
+ * no idea was defined in the groups.
  * @type String
  * @default 'clipboard,form,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea'
  * @example

@@ -14,7 +14,7 @@
 :javascript
   //
   function sendForm() {
-    jQuery.ajax({type:'post', data: jQuery('form.new_widget').serialize(), url:'#{preview_widgets_url(@priority)}'})  
+    jQuery.ajax({type:'post', data: jQuery('form.new_widget').serialize(), url:'#{preview_widgets_url(@idea)}'})
   }
   
   $("#widget_action_name").change(function(){

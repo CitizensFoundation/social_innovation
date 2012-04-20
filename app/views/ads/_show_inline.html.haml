@@ -1,5 +1,5 @@
 .encouragement_show_inline{:id => "encouragement_#{ad.id}"}
-  %span.point_name= link_to ad.priority.name, priority_ad_url(ad.priority,ad)
+  %span.point_name= link_to ad.idea.name, idea_ad_url(ad.idea,ad)
   - if ad.attribute_present?("content")
     .encouragement_message
       "#{h(ad.content)}"

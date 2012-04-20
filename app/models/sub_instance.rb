@@ -17,7 +17,7 @@ class SubInstance < ActiveRecord::Base
   has_many :signups
   has_many :users, :through => :signups
   has_many :activities
-  has_many :priorities
+  has_many :ideas
   
   has_one :iso_country, :class_name => 'Tr8n::IsoCountry'
 

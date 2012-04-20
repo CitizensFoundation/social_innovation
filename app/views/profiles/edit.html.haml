@@ -1,6 +1,6 @@
 #hp_intro= @page_title
 %p
-  = tr("Your bio will go at the top of <a href='{url}'>your profile page</a>, above your top 5 priorities.", "view/profiles/edit", :url => url_for(@user))
+  = tr("Your bio will go at the top of <a href='{url}'>your profile page</a>, above your top 5 ideas.", "view/profiles/edit", :url => url_for(@user))
   = form_for @profile, :url => user_profile_path(@user) do |f|
     = f.error_messages :header_message => tr("Oops, there was a problem", "view/profiles/edit")
     .field

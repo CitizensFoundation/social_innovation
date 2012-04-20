@@ -2,7 +2,7 @@ class RssController < ApplicationController
   
   skip_before_filter :check_blast_click
   skip_before_filter :check_subdomain
-  skip_before_filter :check_priority
+  skip_before_filter :check_idea
   skip_before_filter :check_referral    
   skip_before_filter :update_loggedin_at
   skip_before_filter :check_facebook
@@ -25,12 +25,12 @@ class RssController < ApplicationController
     end
   end  
   
-  def your_priorities_created_activities
-    @page_title = tr("Everything happening on priorities you created", "controller/rss", :instance_name => tr(current_instance.name,"Name from database"))
+  def your_ideas_created_activities
+    @page_title = tr("Everything happening on ideas you created", "controller/rss", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
-    created_priority_ids = @user.created_priorities.collect{|p|p.id}
-    if created_priority_ids.any?
-      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["priority_id in (?)",created_priority_ids], :page => params[:page], :per_page => params[:per_page]
+    created_idea_ids = @user.created_ideas.collect{|p|p.id}
+    if created_idea_ids.any?
+      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["idea_id in (?)",created_idea_ids], :page => params[:page], :per_page => params[:per_page]
     end
     respond_to do |format|
       format.rss { render :template => "rss/activities" }

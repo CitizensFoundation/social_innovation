@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   
   # Make these methods visible to views as well
-  helper_method :current_facebook_user, :instance_cache, :current_sub_instance, :current_user_endorsements, :current_priority_ids, :current_following_ids, :current_ignoring_ids, :current_following_facebook_uids, :current_instance, :current_tags, :facebook_session, :is_robot?, :js_help
+  helper_method :current_facebook_user, :instance_cache, :current_sub_instance, :current_user_endorsements, :current_idea_ids, :current_following_ids, :current_ignoring_ids, :current_following_facebook_uids, :current_instance, :current_tags, :facebook_session, :is_robot?, :js_help
   
   # switch to the right database for this instance
   before_filter :check_for_localhost
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
 #  before_filter :check_facebook, :unless => [:is_robot?]
     
   before_filter :check_blast_click, :unless => [:is_robot?]
-  before_filter :check_priority, :unless => [:is_robot?]
+  before_filter :check_idea, :unless => [:is_robot?]
   before_filter :check_referral, :unless => [:is_robot?]
   before_filter :check_suspension, :unless => [:is_robot?]
   before_filter :update_loggedin_at, :unless => [:is_robot?]
@@ -295,12 +295,12 @@ class ApplicationController < ActionController::Base
   end
   
   def current_user_endorsements
-		@current_user_endorsements ||= current_user.endorsements.active.by_position.paginate(:include => :priority, :page => session[:endorsement_page], :per_page => 25)
+		@current_user_endorsements ||= current_user.endorsements.active.by_position.paginate(:include => :idea, :page => session[:endorsement_page], :per_page => 25)
   end
   
-  def current_priority_ids
+  def current_idea_ids
     return [] unless logged_in? and current_user.endorsements_count > 0
-    @current_priority_ids ||= current_user.endorsements.active_and_inactive.collect{|e|e.priority_id}
+    @current_idea_ids ||= current_user.endorsements.active_and_inactive.collect{|e|e.idea_id}
   end  
   
   def current_following_ids
@@ -339,19 +339,19 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  # they were trying to endorse a priority, so let's go ahead and add it and take htem to their priorities page immediately    
-  def check_priority
-    return unless logged_in? and session[:priority_id]
-    @priority = Priority.find(session[:priority_id])
+  # they were trying to endorse a idea, so let's go ahead and add it and take htem to their ideas page immediately
+  def check_idea
+    return unless logged_in? and session[:idea_id]
+    @idea = Idea.find(session[:idea_id])
     @value = session[:value].to_i
-    if @priority
+    if @idea
       if @value == 1
-        @priority.endorse(current_user,request,current_sub_instance,@referral)
+        @idea.endorse(current_user,request,current_sub_instance,@referral)
       else
-        @priority.oppose(current_user,request,current_sub_instance,@referral)
+        @idea.oppose(current_user,request,current_sub_instance,@referral)
       end
     end  
-    session[:priority_id] = nil
+    session[:idea_id] = nil
     session[:value] = nil
   end
   

@@ -1,0 +1,36 @@
+- if endorsement and endorsement.status == 'active'
+  - if endorsement.is_up?
+    .green_button.green_button_idea{:id => "idea_remove_endorse_#{idea.id.to_s}"}
+      %span.text= tr("YOU ENDORSED", "view/ideas/_button_subs")
+      %span.big_x
+        = link_to "X", endorsement_path(endorsement, :region => "idea_subs"),                                             |
+          :method => :delete,                                                                                                 |
+          :remote=>true,                                                                                                      |
+          'data-disable-with' => "",                                                                                          |
+          'data-loader-name' => "circle",                                                                                     |
+          :class => "idea_remove_link", :title => tr("Remove from my list of ideas", "view/ideas/_button_subs") |
+  - else
+    .red_button.red_button_idea{:id => "idea_remove_endorse_#{idea.id.to_s}"}
+      = tr("YOU OPPOSED", "view/ideas/_button_subs")
+      %span.big_x
+        = link_to "X", endorsement_path(endorsement, :region => "idea_subs"), :method => :delete,                         |
+          :remote=>true,                                                                                                      |
+          'data-disable-with' => "",                                                                                          |
+          'data-loader-name' => "circle",                                                                                     |
+          :class => "idea_remove_link", :title => tr("Remove from my list of ideas", "view/ideas/_button_subs") |
+- else
+  .yellow_button.endorse{:id => "idea_add_endorse_#{idea.id.to_s}"}
+    = link_to tr("Endorse", "view/ideas/_button_subs"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => "idea_subs", :value => 1), |
+      :method => :post,                                                                                                                                                |
+      :remote=>true,                                                                                                                                                   |
+      'data-disable-with' => escape_t(tr("Endorsing","Ajax")),                                                                                                         |
+      'data-loader-name' => "horizontal_small",                                                                                                                        |
+      :class => "idea_add_link", :title => tr("I support this, add it to my idea list", "view/ideas/_button_subs")                                        |
+  .endorse_or= tr("OR", "view/ideas/_button_subs")
+  .yellow_button.oppose{:id => "idea_add_oppose_#{idea.id.to_s}"}
+    = link_to tr("Oppose", "view/ideas/_button_subs"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => "idea_subs", :value => -1), |
+      :method => :post,                                                                                                                                                |
+      :remote=>true,                                                                                                                                                   |
+      'data-disable-with' => escape_t(tr("Opposing","Ajax")),                                                                                                          |
+      'data-loader-name' => "horizontal_small",                                                                                                                        |
+      :class => "idea_add_link", :title => tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas/_button_subs")                 |

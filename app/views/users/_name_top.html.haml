@@ -5,10 +5,10 @@
 = tr("{count} endorsements", "view/users/_name_top", :count => user.up_endorsements_count)
 - if user.down_endorsements_count > 0
   \&middot; #{tr("{count} oppositions", "view/users/_name_top", :count => user.down_endorsements_count)}
-- if user.has_top_priority?
+- if user.has_top_idea?
   %br/
-  = tr("#1 priority:", "view/users/_name_top")
+  = tr("#1 idea:", "view/users/_name_top")
   - if user.top_endorsement.is_down?
     %span.opposed= tr("Opposing", "view/users/_name_top")
-  = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+  = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
   \.

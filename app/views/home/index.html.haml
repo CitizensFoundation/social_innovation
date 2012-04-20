@@ -1,11 +1,11 @@
 :css
-  .top_level_priority_listing {width: 560px !important;}
-  .priority_tags {padding-right: 35px !important;}
+  .top_level_idea_listing {width: 560px !important;}
+  .idea_tags {padding-right: 35px !important;}
   .plus_sign {display: none !important;}
 %table{:width => "960px"}
   %tr
     %td{:align => "center"}
-      = image_tag "logos/YourPriorities_large.png"
+      = image_tag "logos/YourIdeas_large.png"
       %br/
   %tr
     %td{:align => "center"}
@@ -21,13 +21,13 @@
         = image_tag @iso_country.large_flag_image, :border=>0
         %br/
         %h2
-          = tr("Top priorities for","welcome")
+          = tr("Top ideas for","welcome")
           = tr(@iso_country.country_english_name,"welcome")
-      - if @country_sub_instance_priorities.any?
-        = render :partial=>"priorities/top_level_listing", :locals=>{:priorities=>@country_sub_instance_priorities, :endorsements=>@endorsements}
+      - if @country_sub_instance_ideas.any?
+        = render :partial=>"ideas/top_level_listing", :locals=>{:ideas=>@country_sub_instance_ideas, :endorsements=>@endorsements}
       - elsif @iso_country
         - if sub_instance
-          = tr("No priority has been created for your country - be the first by clicking here: ","welcome")
+          = tr("No idea has been created for your country - be the first by clicking here: ","welcome")
           = link_to sub_instance.show_url, sub_instance.show_url
   %tr
     %td{:align => "center"}
@@ -37,12 +37,12 @@
       = link_to sub_instance.show_url do
         = image_tag "tr8n/flags/64/_united-nations.png", :border=>0
         %br/
-        %h2= tr("The Worlds Top Priorities","welcome")
-      - if @world_priorities.any?
-        = render :partial=>"priorities/top_level_listing", :locals=>{:priorities=>@world_priorities, :endorsements=>@endorsements}
+        %h2= tr("The Worlds Top Ideas","welcome")
+      - if @world_ideas.any?
+        = render :partial=>"ideas/top_level_listing", :locals=>{:ideas=>@world_ideas, :endorsements=>@endorsements}
       - else
         - if sub_instance
-          = tr("No priority has been created for the World - be the first by clicking here: ","welcome")
+          = tr("No idea has been created for the World - be the first by clicking here: ","welcome")
           = link_to sub_instance.show_url, sub_instance.show_url
   - if country_in_eu_or_eea?(@country_code)
     %tr
@@ -53,12 +53,12 @@
         = link_to sub_instance.show_url do
           = image_tag "tr8n/flags/64/_european-union.png", :border=>0
           %br/
-          %h2= tr("European Union and EEA Top Priorities","welcome")
-        - if @eu_eea_priorities.any?
-          = render :partial=>"priorities/top_level_listing", :locals=>{:priorities=>@eu_eea_priorities, :endorsements=>@endorsements}
+          %h2= tr("European Union and EEA Top Ideas","welcome")
+        - if @eu_eea_ideas.any?
+          = render :partial=>"ideas/top_level_listing", :locals=>{:ideas=>@eu_eea_ideas, :endorsements=>@endorsements}
         - else
           - if sub_instance
-            = tr("No priority has been created for the European Union and EEA - be the first by clicking here: ","welcome")
+            = tr("No idea has been created for the European Union and EEA - be the first by clicking here: ","welcome")
             = link_to sub_instance.show_url, sub_instance.show_url
   %tr
     %td{:align => "center"}
@@ -67,7 +67,7 @@
       = render :partial => "shared/language_selection_master"
   %tr
     %td{:align => "center"}
-      %h2= tr("Explore other countries priorities","welcome")
+      %h2= tr("Explore other countries ideas","welcome")
       = render :partial => "home/country_options"
       %br/
       %br/

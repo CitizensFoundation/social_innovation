@@ -1,2 +1,2 @@
 %img.icon{:border => "0", :height => "16", :src => "/assets/icons/link_add.png", :width => "16"}/
-= raw tr("{new_priority_name} acquired {priority_name}", "view/activities/_activitypriorityacquisitionproposalapproved", :priority_name => link_to(activity.priority.name, activity.priority), :new_priority_name => link_to(activity.change.new_priority.name, activity.change.new_priority)) if activity.priority and activity.change.new_priority
+= raw tr("{new_idea_name} acquired {idea_name}", "view/activities/_activityideaacquisitionproposalapproved", :idea_name => link_to(activity.idea.name, activity.idea), :new_idea_name => link_to(activity.change.new_idea.name, activity.change.new_idea)) if activity.idea and activity.change.new_idea

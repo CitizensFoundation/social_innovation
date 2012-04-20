@@ -128,9 +128,9 @@
               = f.text_area :message_for_points, :rows => 7, :cols=>20
           .field
             .field_label
-              = tr("Message for new priority", "view/instances/edit")
+              = tr("Message for new idea", "view/instances/edit")
             .field_box
-              = f.text_area :message_for_new_priority, :rows => 7, :cols=>20
+              = f.text_area :message_for_new_idea, :rows => 7, :cols=>20
           .field
             .field_label
               = tr("Message for new news", "view/instances/edit")
@@ -138,8 +138,8 @@
               = f.text_area :message_for_news, :rows => 7, :cols=>20
           .field
             .field_box
-              = f.check_box :is_suppress_empty_priorities
-              = tr("Hide priorities with 0 endorsers/opposers", "view/instances/edit")
+              = f.check_box :is_suppress_empty_ideas
+              = tr("Hide ideas with 0 endorsers/opposers", "view/instances/edit")
             .field_box
               = f.check_box :is_tags
               = tr("Enable {tags_name}", "view/instances/edit", :tags_name => current_instance.tags_name.pluralize.downcase)

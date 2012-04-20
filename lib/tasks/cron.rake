@@ -60,102 +60,102 @@ task :cron => :environment do
       end
     end
     
-    # update related priorities
+    # update related ideas
     
-    priorities = Priority.published.tagged.top_rank.all
-    for priority in priorities
+    ideas = Idea.published.tagged.top_rank.all
+    for idea in ideas
       time_started = Time.now
       keep = []
-      next unless priority.has_tags?
-      if priority.up_endorsements_count > 2
-        rel_query = Priority.find_by_sql(["
-        SELECT priorities.id, count(endorsements.id) as number, count(endorsements.id)/? as percentage, count(endorsements.id)/up_endorsements_count as endorsement_score
-        FROM endorsements,priorities
-        where endorsements.priority_id = priorities.id
-        and endorsements.priority_id <> ?
+      next unless idea.has_tags?
+      if idea.up_endorsements_count > 2
+        rel_query = Idea.find_by_sql(["
+        SELECT ideas.id, count(endorsements.id) as number, count(endorsements.id)/? as percentage, count(endorsements.id)/up_endorsements_count as endorsement_score
+        FROM endorsements,ideas
+        where endorsements.idea_id = ideas.id
+        and endorsements.idea_id <> ?
         and endorsements.status = 'active'
         and endorsements.value = 1
-        and priorities.id in (#{priority.all_priority_ids_in_same_tags.join(',')})
-        and endorsements.user_id in (#{priority.up_endorser_ids.join(',')})
-        and priorities.status = 'published'
-        group by priorities.id
+        and ideas.id in (#{idea.all_idea_ids_in_same_tags.join(',')})
+        and endorsements.user_id in (#{idea.up_endorser_ids.join(',')})
+        and ideas.status = 'published'
+        group by ideas.id
         having count(endorsements.id)/? > 0.2
         order by endorsement_score desc
-        limit 5",priority.up_endorsements_count,priority.id,priority.up_endorsements_count])
+        limit 5",idea.up_endorsements_count,idea.id,idea.up_endorsements_count])
         for p in rel_query
           pct = (p.percentage.to_f*100).to_i
           next unless pct > 19
-          rel = RelationshipEndorserEndorsed.find_by_priority_id_and_other_priority_id(priority.id,p.id)
+          rel = RelationshipEndorserEndorsed.find_by_idea_id_and_other_idea_id(idea.id,p.id)
           if rel
             rel.update_attribute("percentage",pct) unless rel.percentage == pct
           else
-            rel = RelationshipEndorserEndorsed.create(:priority => priority, :other_priority => Priority.find(p.id), :percentage => pct)
+            rel = RelationshipEndorserEndorsed.create(:idea => idea, :other_idea => Idea.find(p.id), :percentage => pct)
           end
           keep << rel.id
         end
       end
       
-      if priority.endorsements_count > 2
-        rel_query = Priority.find_by_sql(["
-        SELECT priorities.*, count(endorsements.id) as number, count(endorsements.id)/? as percentage, count(endorsements.id)/endorsements_count as endorsement_score
-        FROM endorsements,priorities
-        where endorsements.priority_id = priorities.id
-        and endorsements.priority_id <> ?
+      if idea.endorsements_count > 2
+        rel_query = Idea.find_by_sql(["
+        SELECT ideas.*, count(endorsements.id) as number, count(endorsements.id)/? as percentage, count(endorsements.id)/endorsements_count as endorsement_score
+        FROM endorsements,ideas
+        where endorsements.idea_id = ideas.id
+        and endorsements.idea_id <> ?
         and endorsements.status = 'active'
-        and priorities.id in (#{priority.all_priority_ids_in_same_tags.join(',')})
-        and endorsements.user_id not in (#{priority.endorser_ids.join(',')})
-        and priorities.status = 'published'    
-        group by priorities.id
+        and ideas.id in (#{idea.all_idea_ids_in_same_tags.join(',')})
+        and endorsements.user_id not in (#{idea.endorser_ids.join(',')})
+        and ideas.status = 'published'
+        group by ideas.id
         having count(endorsements.id)/? > 0.2        
         order by endorsement_score desc
-        limit 5",priority.undecideds.size, priority.id, priority.undecideds.size])
+        limit 5",idea.undecideds.size, idea.id, idea.undecideds.size])
         for p in rel_query
           pct = (p.percentage.to_f*100).to_i
           next unless pct > 19        
-          rel = RelationshipUndecidedEndorsed.find_by_priority_id_and_other_priority_id(priority.id,p.id)
+          rel = RelationshipUndecidedEndorsed.find_by_idea_id_and_other_idea_id(idea.id,p.id)
           if rel
             rel.update_attribute("percentage",pct) unless rel.percentage == pct
           else
-            rel = RelationshipUndecidedEndorsed.create(:priority => priority, :other_priority => Priority.find(p.id), :percentage => pct)
+            rel = RelationshipUndecidedEndorsed.create(:idea => idea, :other_idea => Idea.find(p.id), :percentage => pct)
           end
           keep << rel.id
         end
       end
       
-      if priority.down_endorsements_count > 2    
-        rel_query = Priority.find_by_sql(["
-        SELECT priorities.*, count(endorsements.id) as number, count(endorsements.id)/? as percentage, count(endorsements.id)/down_endorsements_count as endorsement_score
-        FROM endorsements,priorities
-        where endorsements.priority_id = priorities.id
-        and endorsements.priority_id <> ?
+      if idea.down_endorsements_count > 2
+        rel_query = Idea.find_by_sql(["
+        SELECT ideas.*, count(endorsements.id) as number, count(endorsements.id)/? as percentage, count(endorsements.id)/down_endorsements_count as endorsement_score
+        FROM endorsements,ideas
+        where endorsements.idea_id = ideas.id
+        and endorsements.idea_id <> ?
         and endorsements.status = 'active'
         and endorsements.value = 1
-        and priorities.id in (#{priority.all_priority_ids_in_same_tags.join(',')})
-        and endorsements.user_id in (#{priority.down_endorser_ids.join(',')})
-        and priorities.status = 'published'    
-        group by priorities.id
+        and ideas.id in (#{idea.all_idea_ids_in_same_tags.join(',')})
+        and endorsements.user_id in (#{idea.down_endorser_ids.join(',')})
+        and ideas.status = 'published'
+        group by ideas.id
         having count(endorsements.id)/? > 0.2    
         order by endorsement_score desc
-        limit 5",priority.down_endorsements_count,priority.id,priority.down_endorsements_count])
+        limit 5",idea.down_endorsements_count,idea.id,idea.down_endorsements_count])
       
         for p in rel_query
           pct = (p.percentage.to_f*100).to_i
           next unless pct > 19        
-          rel = RelationshipOpposerEndorsed.find_by_priority_id_and_other_priority_id(priority.id,p.id)
+          rel = RelationshipOpposerEndorsed.find_by_idea_id_and_other_idea_id(idea.id,p.id)
           if rel
             rel.update_attribute("percentage",pct) unless rel.percentage == pct
           else
-            rel = RelationshipOpposerEndorsed.create(:priority => priority, :other_priority => Priority.find(p.id), :percentage => pct)
+            rel = RelationshipOpposerEndorsed.create(:idea => idea, :other_idea => Idea.find(p.id), :percentage => pct)
           end
           keep << rel.id
         end
       end
       
-      old_rels = Relationship.who_endorsed.find(:all, :conditions => ["id not in (?) and priority_id = ?",keep,priority.id])
+      old_rels = Relationship.who_endorsed.find(:all, :conditions => ["id not in (?) and idea_id = ?",keep,idea.id])
       for rel in old_rels
         rel.destroy
       end
-      puts 'updated related priorities ' + priority.name + ' ' + (Time.now-time_started).seconds.to_s
+      puts 'updated related ideas ' + idea.name + ' ' + (Time.now-time_started).seconds.to_s
     end
     
   end

@@ -1,0 +1,16 @@
+- if controller_name == "ideas" and action_name == "show"
+  %meta{:content => @idea.name, :property => "og:title"}/
+  %meta{:content => tr("{prompt} {idea_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :idea_name => @idea.name), :property => "og:description"}/
+  %meta{:content => "website", :property => "og:type"}/
+  %meta{:content => "http://#{request.host_with_port+current_instance.logo.url}", :property => "og:image"}/
+  %meta{:content => @idea.show_url, :property => "og:url"}/
+  %meta{:content => tr(current_instance.name,"Name from database"), :property => "og:site_name"}/
+  %meta{:content => Facebooker2.app_id, :property => "fb:app_id"}/
+- else
+  %meta{:content => tr(current_instance.name,"Name from database"), :property => "og:title"}/
+  %meta{:content => tr(current_instance.description,"Description from database"), :property => "og:description"}/
+  %meta{:content => "website", :property => "og:type"}/
+  %meta{:content => "http://#{request.host_with_port+current_instance.logo.url}", :property => "og:image"}/
+  %meta{:content => "http://#{request.host_with_port}", :property => "og:url"}/
+  %meta{:content => tr(current_instance.name,"Name from database"), :property => "og:site_name"}/
+  %meta{:content => Facebooker2.app_id, :property => "fb:app_id"}/

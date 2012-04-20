@@ -2,7 +2,7 @@
   #encouragements= render :partial => "ads/welcome"
 - else
   - if logged_in?
-    - ad = current_user.pick_ad(current_priority_ids)
+    - ad = current_user.pick_ad(current_idea_ids)
     - if ad
       #encouragements
         #notification_show

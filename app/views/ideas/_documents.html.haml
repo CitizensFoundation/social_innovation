@@ -1,0 +1,22 @@
+- if documents and documents.any?
+  - @document_value = document_value
+  %p
+  .heading_table
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+      %tr
+        %td
+          .heading
+            - if document_value == 0
+              = tr("Documents", "view/ideas/_documents")
+            - elsif document_value == 1
+              = tr("Documents helpful to endorsers", "view/ideas/_documents")
+            - elsif document_value == -1
+              = tr("Documents helpful to opposers", "view/ideas/_documents")
+            - elsif document_value == 2
+              = tr("Documents helpful to undeclared", "view/ideas/_documents")
+        %td{:align => "right"}
+          .heading_link
+            = link_to tr("Add a document", "view/ideas/_documents"), new_idea_document_path(@idea)
+  - for document in documents
+    .document_inline{:id => "document_#{document.id}"}
+      = render :partial => "documents/show", :locals => {:document => document, :idea => @idea }

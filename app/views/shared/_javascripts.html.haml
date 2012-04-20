@@ -3,14 +3,14 @@
 = javascript_include_tag "application"
 - if ["portal","news"].include?(controller_name)
   = javascript_include_tag "endless_scrolling_activity.js"
-- elsif ["priorities"].include?(controller_name) and action_name.include?("show")
-  = javascript_include_tag "endless_scrolling_activity_priority_show.js"
+- elsif ["ideas"].include?(controller_name) and action_name.include?("show")
+  = javascript_include_tag "endless_scrolling_activity_idea_show.js"
 :javascript
   jQuery(document).ready(function() {
-    jQuery("input#priority_name").DefaultValue("#{escape_javascript(current_instance.prompt)}");
+    jQuery("input#idea_name").DefaultValue("#{escape_javascript(current_instance.prompt)}");
     jQuery("input#q_top").DefaultValue("#{tr("Search", "view/shared/_javascripts")}");
   	jQuery("input#user_login_search").DefaultValue("#{tr("Find a member", "view/shared/_javascripts")}");
-  	jQuery("input#right_priority_box").DefaultValue("#{tr("Add a priority to your list", "view/shared/_javascripts").html_safe}") 
+  	jQuery("input#right_idea_box").DefaultValue("#{tr("Add a idea to your list", "view/shared/_javascripts").html_safe}")
   	jQuery(".comment_content").truncate({max_length: 1000, more: "#{tr("show full comment", "view/shared/_javascripts")}", less: "#{tr("hide full comment", "view/shared/_javascripts")}"});
   	#{render :partial => "shared/javascripts_reloadable"}
   jQuery('div.ui-widget-content').corner();

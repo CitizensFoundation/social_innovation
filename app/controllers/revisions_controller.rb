@@ -14,7 +14,7 @@ class RevisionsController < ApplicationController
   def show
     if @point.is_deleted?
       flash[:error] = tr("That point was deleted", "controller/revisions")
-      redirect_to @point.priority
+      redirect_to @point.idea
       return
     end    
     @revision = @point.revisions.find(params[:id])
@@ -40,7 +40,7 @@ class RevisionsController < ApplicationController
     @revision.content = @point.content
     @revision.website = @point.website
     @revision.value = @point.value
-    @revision.other_priority = @point.other_priority
+    @revision.other_idea = @point.other_idea
     @page_title = tr("Revise {point_name}", "controller/revisions", :point_name => @point.name)    
     respond_to do |format|
       format.html # new.html.erb
@@ -67,9 +67,9 @@ class RevisionsController < ApplicationController
             @comment = activity.comments.new(params[:comment])
             @comment.user = current_user
             @comment.request = request
-            if activity.priority
-              # if this is related to a priority, check to see if they endorse it
-              e = activity.priority.endorsements.active_and_inactive.find_by_user_id(@comment.user.id)
+            if activity.idea
+              # if this is related to a idea, check to see if they endorse it
+              e = activity.idea.endorsements.active_and_inactive.find_by_user_id(@comment.user.id)
               @comment.is_endorser = true if e and e.is_up?
               @comment.is_opposer = true if e and e.is_down?
             end
@@ -112,7 +112,7 @@ class RevisionsController < ApplicationController
   protected
   def get_point
     @point = Point.find(params[:point_id])
-    @priority = @point.priority
+    @idea = @point.idea
   end
   
 end

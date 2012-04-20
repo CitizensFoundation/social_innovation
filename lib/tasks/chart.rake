@@ -1,10 +1,10 @@
 namespace :chart do  
   
-  desc "priority past update"
-  task :past_priorities => :environment do
+  desc "idea past update"
+  task :past_ideas => :environment do
     Instance.current = Instance.all.last
-    priorities = Priority.published.find(:all)
-    for p in priorities
+    ideas = Idea.published.find(:all)
+    for p in ideas
       date = p.created_at-4.hours-1.day
       previous = nil
       while date < Time.now
@@ -16,7 +16,7 @@ namespace :chart do
         if r.any?
           c = p.charts.find_by_date_year_and_date_month_and_date_day(date.year,date.month,date.day)
           if not c
-            c = PriorityChart.new(:priority => p, :date_year => date.year, :date_month => date.month, :date_day => date.day)
+            c = IdeaChart.new(:idea => p, :date_year => date.year, :date_month => date.month, :date_day => date.day)
           end
           c.position = r[0].position
           c.up_count = p.endorsements.active.endorsing.count(:conditions => ["endorsements.created_at between ? and ?",start_date,end_date])
@@ -30,18 +30,18 @@ namespace :chart do
           previous = c
         end
       end
-      Rails.cache.delete('views/priority_chart-' + p.id.to_s)  
+      Rails.cache.delete('views/idea_chart-' + p.id.to_s)
     end
   end  
   
-  desc "priority past change update"
-  task :past_priority_changes => :environment do
+  desc "idea past change update"
+  task :past_idea_changes => :environment do
     Instance.current = Instance.all.last
-    charts = PriorityChart.find(:all, :order => "priority_id")
+    charts = IdeaChart.find(:all, :order => "idea_id")
     current = 0
     for chart in charts
-      if current != chart.priority_id
-        current = chart.priority_id
+      if current != chart.idea_id
+        current = chart.idea_id
         previous = nil
       end
       if previous

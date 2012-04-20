@@ -8,7 +8,7 @@
       - @row += 1
       %tr
         %td{:valign => "top"}
-          .priority_position= @row
+          .idea_position= @row
         %td.ambassadors_images{:valign => "top", :width => "26"}
           = render :partial => "users/pic", :locals => {:user => user}
         %td{:style => "padding: 5px 5px 4px 0px;", :valign => "top"}
@@ -22,12 +22,12 @@
             \&middot;
           - if user.contacts_invited_count > 0
             = tr("Invited {count} people", "view/network/ambassadors", :count => user.contacts_invited_count)
-          - if user.has_top_priority?
+          - if user.has_top_idea?
             %br/
-            = tr("#1 priority:", "view/network/ambassadors")
+            = tr("#1 idea:", "view/network/ambassadors")
             - if user.top_endorsement.is_down?
               %span.opposed= tr("Opposing", "view/network/ambassadors")
-            = link_to user.top_endorsement.priority.name, user.top_endorsement.priority
+            = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
             \.
   %p
     = will_paginate(@users)

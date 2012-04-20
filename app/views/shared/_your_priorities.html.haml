@@ -3,6 +3,6 @@
     %tr
       %td{:style => "padding-left: 5px;", :valign => "top"}
         .user_name
-          = link_to tr("Your Priorities", "view/shared/_your_priorities", :user_name => current_user.name), yours_priorities_url
-#your_priorities_container
-  = render :partial => "priorities/yours"
+          = link_to tr("Your Ideas", "view/shared/_your_ideas", :user_name => current_user.name), yours_ideas_url
+#your_ideas_container
+  = render :partial => "ideas/yours"

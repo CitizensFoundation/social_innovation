@@ -9,7 +9,7 @@
         %td.table_header= tr("Opposers", "view/charts/issues")
         %td.table_header{:align => "center"}= tr("falling/rising", "view/charts/issues")
       - row = 0
-      - for tag in Tag.find(:all, :conditions => "priorities_count > 4", :order => "tags.up_endorsers_count desc")
+      - for tag in Tag.find(:all, :conditions => "ideas_count > 4", :order => "tags.up_endorsers_count desc")
         - row += 1
         %tr
           %td{:align => "right"}

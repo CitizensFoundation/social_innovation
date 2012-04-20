@@ -7,11 +7,11 @@
         %td{:style => "padding-top: 10px;"}
           .field
             .field_box
-              = f.select :tag_id, options_for_select_simple(Tag.with_priorities.alphabetical.all.collect{|t|[t.name, t.id]}), :include_blank => tr("All categories", "view/widgets/priorities")
+              = f.select :tag_id, options_for_select_simple(Tag.with_ideas.alphabetical.all.collect{|t|[t.name, t.id]}), :include_blank => tr("All categories", "view/widgets/ideas")
       %td{:style => "padding-left:10px; padding-top: 10px;"}
         .field
           .field_box
-            = f.select :action_name, options_for_select_simple(@widget.priorities_available.collect{|s|[s[1],s[0]]})
+            = f.select :action_name, options_for_select_simple(@widget.ideas_available.collect{|s|[s[1],s[0]]})
       %td{:style => "padding-left:10px; padding-top: 10px;"}
         .field
           .field_box
@@ -19,7 +19,7 @@
 :javascript
   //
   function sendForm() {
-    jQuery.ajax({type:'post', data: jQuery('form.new_widget').serialize(), url:'#{preview_widgets_url(@priority)}'})  
+    jQuery.ajax({type:'post', data: jQuery('form.new_widget').serialize(), url:'#{preview_widgets_url(@idea)}'})
   }
   
   

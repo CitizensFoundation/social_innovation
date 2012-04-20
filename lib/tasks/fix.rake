@@ -17,10 +17,10 @@ def remove_all_endorsements_except
   # Check if any endorsements in ids
   total = 0
   ids.each.each do |id|
-    puts total+=Endorsement.find_all_by_priority_id(id).count
+    puts total+=Endorsement.find_all_by_idea_id(id).count
   end
   puts total
-  Endorsement.delete_all(["endorsements.priority_id NOT IN (?)",ids])
+  Endorsement.delete_all(["endorsements.idea_id NOT IN (?)",ids])
   Endorsement.all.each_with_index do |e,i|
     puts i
     e.status = "finished"
@@ -31,10 +31,10 @@ end
 
 namespace :fix do
 
-  desc "Update priority change logs"
+  desc "Update idea change logs"
   task :update_change_logs => :environment do
-    PriorityStatusChangeLog.transaction do
-      PriorityStatusChangeLog.all.each do |status|
+    IdeaStatusChangeLog.transaction do
+      IdeaStatusChangeLog.all.each do |status|
         new_subject = help.strip_tags(status.content)
         if new_subject.empty?
           status.destroy
@@ -111,10 +111,10 @@ namespace :fix do
     connection.execute("DELETE FROM pictures;")
     connection.execute("DELETE FROM point_qualities;")
     connection.execute("DELETE FROM points;")
-    connection.execute("DELETE FROM priorities;")
-    connection.execute("DELETE FROM priority_charts;")
+    connection.execute("DELETE FROM ideas;")
+    connection.execute("DELETE FROM idea_charts;")
     puts "3"
-    connection.execute("DELETE FROM priority_status_change_logs;")
+    connection.execute("DELETE FROM idea_status_change_logs;")
     connection.execute("DELETE FROM process_discussions;")
     connection.execute("DELETE FROM process_document_elements;")
     connection.execute("DELETE FROM process_document_states;")
@@ -170,9 +170,9 @@ namespace :fix do
     connection.execute("OPTIMIZE TABLE point_qualities;")
     puts "7"
     connection.execute("OPTIMIZE TABLE points;")
-    connection.execute("OPTIMIZE TABLE priorities;")
-    connection.execute("OPTIMIZE TABLE priority_charts;")
-    connection.execute("OPTIMIZE TABLE priority_status_change_logs;")
+    connection.execute("OPTIMIZE TABLE ideas;")
+    connection.execute("OPTIMIZE TABLE idea_charts;")
+    connection.execute("OPTIMIZE TABLE idea_status_change_logs;")
     connection.execute("OPTIMIZE TABLE process_types;")
     puts "8"
     connection.execute("OPTIMIZE TABLE profiles;")
@@ -273,7 +273,7 @@ namespace :fix do
   desc "fix endorsement counts"
   task :endorsement_counts => :environment do
     Instance.current = Instance.all.last
-    for p in Priority.find(:all)
+    for p in Idea.find(:all)
       p.endorsements_count = p.endorsements.active_and_inactive.size
       p.up_endorsements_count = p.endorsements.endorsing.active_and_inactive.size
       p.down_endorsements_count = p.endorsements.opposing.active_and_inactive.size
@@ -312,15 +312,15 @@ namespace :fix do
     Instance.current = Instance.all.last
     # get users with duplicate endorsements
     endorsements = Endorsement.find_by_sql("
-        select user_id, priority_id, count(*) as num_times
+        select user_id, idea_id, count(*) as num_times
         from endorsements
-        group by user_id,priority_id
+        group by user_id,idea_id
   	    having count(*) > 1
     ")
     for e in endorsements
       user = e.user
-      priority = e.priority
-      multiple_endorsements = user.endorsements.active.find(:all, :conditions => ["priority_id = ?",priority.id], :order => "endorsements.position")
+      idea = e.idea
+      multiple_endorsements = user.endorsements.active.find(:all, :conditions => ["idea_id = ?",idea.id], :order => "endorsements.position")
       if multiple_endorsements.length > 1
         for c in 1..multiple_endorsements.length-1
           multiple_endorsements[c].destroy
@@ -329,18 +329,18 @@ namespace :fix do
     end
   end  
   
-  desc "fix duplicate top priority activities"
-  task :duplicate_priority1_activities => :environment do
+  desc "fix duplicate top idea activities"
+  task :duplicate_idea1_activities => :environment do
     Instance.current = Instance.all.last
-    models = [ActivityPriority1,ActivityPriority1Opposed]
+    models = [ActivityIdea1,ActivityIdea1Opposed]
     for model in models
-      dupes = Activity.find_by_sql("select user_id, priority_id, count(*) as number from activities
+      dupes = Activity.find_by_sql("select user_id, idea_id, count(*) as number from activities
       where type = '#{model}'
-      group by user_id, priority_id
+      group by user_id, idea_id
       order by count(*) desc")
       for a in dupes
         if a.number.to_i > 1
-          activities = model.find(:all, :conditions => ["user_id = ? and priority_id = ?",a.user_id,a.priority_id], :order => "changed_at desc")
+          activities = model.find(:all, :conditions => ["user_id = ? and idea_id = ?",a.user_id,a.idea_id], :order => "changed_at desc")
           for c in 1..activities.length-1
             activities[c].destroy
           end
@@ -352,8 +352,8 @@ namespace :fix do
   desc "fix discussion counts"
   task :discussion_counts => :environment do
     Instance.current = Instance.all.last
-    priorities = Priority.find(:all)
-    for p in priorities
+    ideas = Idea.find(:all)
+    for p in ideas
       p.update_attribute(:discussions_count,p.activities.discussions.for_all_users.active.size) if p.activities.discussions.for_all_users.active.size != p.discussions_count
     end
     points = Point.find(:all)
@@ -407,7 +407,7 @@ namespace :fix do
   task :helpful_counts => :environment do
     Instance.current = Instance.all.last
     endorser_helpful_points = Point.find_by_sql("SELECT points.id, points.endorser_helpful_count, count(*) as number
-    FROM points INNER JOIN endorsements ON points.priority_id = endorsements.priority_id
+    FROM points INNER JOIN endorsements ON points.idea_id = endorsements.idea_id
     	 INNER JOIN point_qualities ON point_qualities.user_id = endorsements.user_id AND point_qualities.point_id = points.id
     where endorsements.value  =1
     and point_qualities.value = true
@@ -418,7 +418,7 @@ namespace :fix do
     end
 
     endorser_helpful_points = Document.find_by_sql("SELECT documents.id, documents.endorser_helpful_count, count(*) as number
-    FROM documents INNER JOIN endorsements ON documents.priority_id = endorsements.priority_id
+    FROM documents INNER JOIN endorsements ON documents.idea_id = endorsements.idea_id
     	 INNER JOIN document_qualities ON document_qualities.user_id = endorsements.user_id AND document_qualities.document_id = documents.id
     where endorsements.value  =1
     and document_qualities.value = 1
@@ -429,7 +429,7 @@ namespace :fix do
     end    
 
     opposer_helpful_points = Point.find_by_sql("SELECT points.id, points.opposer_helpful_count, count(*) as number
-    FROM points INNER JOIN endorsements ON points.priority_id = endorsements.priority_id
+    FROM points INNER JOIN endorsements ON points.idea_id = endorsements.idea_id
     	 INNER JOIN point_qualities ON point_qualities.user_id = endorsements.user_id AND point_qualities.point_id = points.id
     where endorsements.value = -1
     and point_qualities.value = true
@@ -440,7 +440,7 @@ namespace :fix do
     end  
 
     opposer_helpful_points = Document.find_by_sql("SELECT documents.id, documents.opposer_helpful_count, count(*) as number
-    FROM documents INNER JOIN endorsements ON documents.priority_id = endorsements.priority_id
+    FROM documents INNER JOIN endorsements ON documents.idea_id = endorsements.idea_id
     	 INNER JOIN document_qualities ON document_qualities.user_id = endorsements.user_id AND document_qualities.document_id = documents.id
     where endorsements.value = -1
     and document_qualities.value = 1
@@ -451,7 +451,7 @@ namespace :fix do
     end    
 
     endorser_unhelpful_points = Point.find_by_sql("SELECT points.id, points.endorser_unhelpful_count, count(*) as number
-    FROM points INNER JOIN endorsements ON points.priority_id = endorsements.priority_id
+    FROM points INNER JOIN endorsements ON points.idea_id = endorsements.idea_id
     	 INNER JOIN point_qualities ON point_qualities.user_id = endorsements.user_id AND point_qualities.point_id = points.id
     where endorsements.value = 1
     and point_qualities.value = false
@@ -462,7 +462,7 @@ namespace :fix do
     end  
 
     endorser_unhelpful_points = Document.find_by_sql("SELECT documents.id, documents.endorser_unhelpful_count, count(*) as number
-    FROM documents INNER JOIN endorsements ON documents.priority_id = endorsements.priority_id
+    FROM documents INNER JOIN endorsements ON documents.idea_id = endorsements.idea_id
     	 INNER JOIN document_qualities ON document_qualities.user_id = endorsements.user_id AND document_qualities.document_id = documents.id
     where endorsements.value  =1
     and document_qualities.value = 0
@@ -473,7 +473,7 @@ namespace :fix do
     end    
 
     opposer_unhelpful_points = Point.find_by_sql("SELECT points.id, points.opposer_unhelpful_count, count(*) as number
-    FROM points INNER JOIN endorsements ON points.priority_id = endorsements.priority_id
+    FROM points INNER JOIN endorsements ON points.idea_id = endorsements.idea_id
     	 INNER JOIN point_qualities ON point_qualities.user_id = endorsements.user_id AND point_qualities.point_id = points.id
     where endorsements.value = -1
     and point_qualities.value = false
@@ -484,7 +484,7 @@ namespace :fix do
     end      
 
     opposer_unhelpful_points = Document.find_by_sql("SELECT documents.id, documents.opposer_unhelpful_count, count(*) as number
-    FROM documents INNER JOIN endorsements ON documents.priority_id = endorsements.priority_id
+    FROM documents INNER JOIN endorsements ON documents.idea_id = endorsements.idea_id
     	 INNER JOIN document_qualities ON document_qualities.user_id = endorsements.user_id AND document_qualities.document_id = documents.id
     where endorsements.value = -1
     and document_qualities.value = 0
@@ -513,16 +513,16 @@ namespace :fix do
     end
   end
   
-  desc "update official_status on priorities"
+  desc "update official_status on ideas"
   task :official_status => :environment do
     Instance.current = Instance.all.last
     if Instance.current.has_official?
-      Priority.connection.execute("update priorities set official_value = 1
-      where official_value <> 1 and id in (select priority_id from endorsements where user_id = #{govt.official_user_id} and value > 0 and status = 'active')")
-      Priority.connection.execute("update priorities set official_value = -1
-      where official_value <> -1 and id in (select priority_id from endorsements where user_id = #{govt.official_user_id} and value < 0 and status = 'active')")
-      Priority.connection.execute("update priorities set official_value = 0
-      where official_value <> 0 and id not in (select priority_id from endorsements where user_id = #{govt.official_user_id} and status = 'active')")
+      Idea.connection.execute("update ideas set official_value = 1
+      where official_value <> 1 and id in (select idea_id from endorsements where user_id = #{govt.official_user_id} and value > 0 and status = 'active')")
+      Idea.connection.execute("update ideas set official_value = -1
+      where official_value <> -1 and id in (select idea_id from endorsements where user_id = #{govt.official_user_id} and value < 0 and status = 'active')")
+      Idea.connection.execute("update ideas set official_value = 0
+      where official_value <> 0 and id not in (select idea_id from endorsements where user_id = #{govt.official_user_id} and status = 'active')")
     end
   end  
   
@@ -586,36 +586,36 @@ namespace :fix do
     Instance.current = Instance.all.last
     for branch in Branch.all
       endorsement_scores = Endorsement.active.find(:all, 
-        :select => "endorsements.priority_id, sum((#{Endorsement.max_position+1}-endorsements.position)*endorsements.value) as score, count(*) as endorsements_number", 
-        :joins => "endorsements INNER JOIN priorities ON priorities.id = endorsements.priority_id", 
+        :select => "endorsements.idea_id, sum((#{Endorsement.max_position+1}-endorsements.position)*endorsements.value) as score, count(*) as endorsements_number",
+        :joins => "endorsements INNER JOIN ideas ON ideas.id = endorsements.idea_id",
         :conditions => ["endorsements.user_id in (?) and endorsements.position <= #{Endorsement.max_position}",branch.user_ids], 
-        :group => "endorsements.priority_id",       
+        :group => "endorsements.idea_id",
         :order => "score desc")
       down_endorsement_counts = Endorsement.active.find(:all, 
-        :select => "endorsements.priority_id, count(*) as endorsements_number", 
-        :joins => "endorsements INNER JOIN priorities ON priorities.id = endorsements.priority_id", 
+        :select => "endorsements.idea_id, count(*) as endorsements_number",
+        :joins => "endorsements INNER JOIN ideas ON ideas.id = endorsements.idea_id",
         :conditions => ["endorsements.value = -1 and endorsements.user_id in (?)",branch.user_ids], 
-        :group => "endorsements.priority_id")    
+        :group => "endorsements.idea_id")
       up_endorsement_counts = Endorsement.active.find(:all, 
-        :select => "endorsements.priority_id, count(*) as endorsements_number", 
-        :joins => "endorsements INNER JOIN priorities ON priorities.id = endorsements.priority_id", 
+        :select => "endorsements.idea_id, count(*) as endorsements_number",
+        :joins => "endorsements INNER JOIN ideas ON ideas.id = endorsements.idea_id",
         :conditions => ["endorsements.value = 1 and endorsements.user_id in (?)",branch.user_ids], 
-        :group => "endorsements.priority_id")      
+        :group => "endorsements.idea_id")
       
       row = 0
       for e in endorsement_scores
         row += 1
-        be = branch.endorsements.find_or_create_by_priority_id(e.priority_id.to_i)
+        be = branch.endorsements.find_or_create_by_idea_id(e.idea_id.to_i)
         be.score = e.score.to_i
         be.endorsements_count = e.endorsements_number.to_i
         be.position = row
-        down = down_endorsement_counts.detect {|d| d.priority_id == e.priority_id.to_i }
+        down = down_endorsement_counts.detect {|d| d.idea_id == e.idea_id.to_i }
         if down
           be.down_endorsements_count = down.endorsements_number.to_i
         else
           be.down_endorsements_count = 0
         end
-        up = up_endorsement_counts.detect {|d| d.priority_id == e.priority_id.to_i }
+        up = up_endorsement_counts.detect {|d| d.idea_id == e.idea_id.to_i }
         if up
           be.up_endorsements_count = up.endorsements_number.to_i
         else
@@ -626,8 +626,8 @@ namespace :fix do
     end
   end
   
-  desc "priority charts"
-  task :priority_charts => :environment do
+  desc "idea charts"
+  task :idea_charts => :environment do
     [14,13,12,11,10,9,8,7,6,5,4,3,2,1].each do |daysminus|
       date = (Time.now-daysminus.days)-4.hours-1.day
       last_week_date = (Time.now-daysminus.days)-4.hours-8.day
@@ -636,12 +636,12 @@ namespace :fix do
       start_date = date.year.to_s + "-" + date.month.to_s + "-" + date.day.to_s
       start_date_last_week = last_week_date.year.to_s + "-" + last_week_date.month.to_s + "-" + last_week_date.day.to_s
       end_date = (date+1.day).year.to_s + "-" + (date+1.day).month.to_s + "-" + (date+1.day).day.to_s
-      if true or PriorityChart.count(:conditions => ["date_year = ? and date_month = ? and date_day = ?", date.year, date.month, date.day]) == 0  # check to see if it's already been done for yesterday
+      if true or IdeaChart.count(:conditions => ["date_year = ? and date_month = ? and date_day = ?", date.year, date.month, date.day]) == 0  # check to see if it's already been done for yesterday
         puts "Doing chart"
-        priorities = Priority.published.find(:all)
-        for p in priorities
+        ideas = Idea.published.find(:all)
+        for p in ideas
           # find the ranking
-          puts "Priority id: #{p.id}"
+          puts "Idea id: #{p.id}"
           r = p.rankings.find(:all, :conditions => ["rankings.created_at between ? and ?",start_date,end_date], :order => "created_at desc",:limit => 1)
           unless r.any?
             puts "Using last 8 days"
@@ -651,7 +651,7 @@ namespace :fix do
             puts "#{date} - Processing chart position #{r[0].position}!"
             c = p.charts.find_by_date_year_and_date_month_and_date_day(date.year,date.month,date.day)
             if not c
-              c = PriorityChart.new(:priority => p, :date_year => date.year, :date_month => date.month, :date_day => date.day)
+              c = IdeaChart.new(:idea => p, :date_year => date.year, :date_month => date.month, :date_day => date.day)
               puts "Creating new chart"
             end
             c.position = r[0].position
@@ -665,10 +665,10 @@ namespace :fix do
             end
             c.save
             if p.created_at+2.days > Time.now # within last two days, check to see if we've given them their priroity debut activity
-              ActivityPriorityDebut.create(:user => p.user, :priority => p, :position => p.position) unless ActivityPriorityDebut.find_by_priority_id(p.id)
+              ActivityIdeaDebut.create(:user => p.user, :idea => p, :position => p.position) unless ActivityIdeaDebut.find_by_idea_id(p.id)
             end        
           end
-          Rails.cache.delete('views/priority_chart-' + p.id.to_s)      
+          Rails.cache.delete('views/idea_chart-' + p.id.to_s)
         end
         Rails.cache.delete('views/total_volume_chart') # reset the daily volume chart
 #        for u in User.active.at_least_one_endorsement.all

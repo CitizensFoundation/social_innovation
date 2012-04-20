@@ -16,8 +16,8 @@ class UserMailer < ActionMailer::Base
          end
   end
 
-  def priority_status_update(priority, status, status_date, status_subject, status_message, user, position)
-    @priority = priority
+  def idea_status_update(idea, status, status_date, status_subject, status_message, user, position)
+    @idea = idea
     @instance = Instance.current
     @status = status
     @date = status_date
@@ -31,8 +31,8 @@ class UserMailer < ActionMailer::Base
     mail to:       recipient,
          reply_to: Instance.current.admin_email,
          from:     "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
-         subject:  tr('The status of the priority "{priority}" has been changed', "email", :priority => priority.name) do |format|
-      format.text { render text: convert_to_text(render_to_string("priority_status_update.html")) }
+         subject:  tr('The status of the idea "{idea}" has been changed', "email", :idea => idea.name) do |format|
+      format.text { render text: convert_to_text(render_to_string("idea_status_update.html")) }
       format.html
     end
   end
@@ -114,14 +114,14 @@ class UserMailer < ActionMailer::Base
     end
   end
   
-  def report(user,priorities,questions,documents,treaty_documents)
+  def report(user,ideas,questions,documents,treaty_documents)
     @instance = Instance.current
     @recipients  = "#{user.login} <#{user.email}>"
     @from        = "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.email}>"
     headers        "Reply-to" => Instance.current.email
     @sent_on     = Time.now
     @content_type = "text/html"
-    @priorities = priorities
+    @ideas = ideas
     @questions = questions
     @documents = documents
     @treaty_documents = treaty_documents
@@ -130,7 +130,7 @@ class UserMailer < ActionMailer::Base
   
 #   def new_change_vote(sender,recipient,vote)
 #     setup_notification(recipient)
-#     @subject = "Your " + Instance.current.name + " vote is needed: " + vote.change.priority.name
+#     @subject = "Your " + Instance.current.name + " vote is needed: " + vote.change.idea.name
 #     @body[:vote] = vote
 #     @body[:change] = vote.change
 #     @body[:recipient] = recipient
@@ -154,8 +154,8 @@ class UserMailer < ActionMailer::Base
         File.read(Rails.root.join("app/assets/images/logos/BR_email.png"))
       elsif Instance.first.layout.include?("better_iceland")
         File.read(Rails.root.join("app/assets/images/logos/betraIsland-merki.png"))
-      elsif Instance.first.layout.include?("your_priorities")
-        File.read(Rails.root.join("app/assets/images/logos/YourPriorities_large.png"))
+      elsif Instance.first.layout.include?("your_ideas")
+        File.read(Rails.root.join("app/assets/images/logos/YourIdeas_large.png"))
       else
         File.read(Rails.root.join("app/assets/images/logos/default.gif"))
       end

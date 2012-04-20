@@ -1,9 +1,9 @@
-#priority_nav
-  %div{:id => "priority_nav<haml:silent> if ['index'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['points'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['documents'].include?(params[:action]) </haml:silent><haml:block>3</haml:block>"}
-    %ul#priority_menu
+#idea_nav
+  %div{:id => "idea_nav<haml:silent> if ['index'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['points'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['documents'].include?(params[:action]) </haml:silent><haml:block>3</haml:block>"}
+    %ul#idea_menu
       %li.tab1
         %span.tab_header
-          = link_to tr("{count} priorities", "view/searches/_nav", :count => @priority_results.total_hits), searches_path(:q => params[:q])
+          = link_to tr("{count} ideas", "view/searches/_nav", :count => @idea_results.total_hits), searches_path(:q => params[:q])
       %li.tab2
         %span.tab_header
           = link_to tr("{count} points", "view/searches/_nav", :count => @point_results.total_hits), points_searches_path(:q => params[:q])

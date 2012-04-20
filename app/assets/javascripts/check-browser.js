@@ -10,7 +10,7 @@ $(function(){
 				 
     var opera = navigator.userAgent.toLowerCase().indexOf('opera') > -1;
     if (opera) {
-        jQuery("a.priority_add_link2 ").css("margin-left",5);
+        jQuery("a.idea_add_link2 ").css("margin-left",5);
     }
 				 
     var safari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
@@ -42,36 +42,36 @@ $(function(){
 
     var ie8com = document.documentMode && document.documentMode == 8;
     if (ie8com) {
-        jQuery("a.priority_add_link2").css("margin-left",5);
-				jQuery("priority_tag").css("margin-left",-40);
+        jQuery("a.idea_add_link2").css("margin-left",5);
+				jQuery("idea_tag").css("margin-left",-40);
 				jQuery(".Chapter_name").css("top",-3);
-				jQuery("#priority_category input, #point_supports input, #point_opposes input").css("margin-bottom",5);
+				jQuery("#idea_category input, #point_supports input, #point_opposes input").css("margin-bottom",5);
 				jQuery(".point_supports_label, .point_opposes_label").css("top",-3);
-				jQuery("#priority_category").css("width",650);
-				jQuery("#priority_category2").css("width",670);
+				jQuery("#idea_category").css("width",650);
+				jQuery("#idea_category2").css("width",670);
 				jQuery(".Chapter_name_2").css("top",-2);
 				jQuery(".Chapter_name_2").css("left",-2);
-				jQuery("#priority_category2 input").css("margin-bottom",5);
+				jQuery("#idea_category2 input").css("margin-bottom",5);
 				/*jQuery(".test").css("margin-left",60);*/
     }
 
 		var ie7com = document.documentMode && document.documentMode == 7;
     if (ie7com) {
-        jQuery("a.priority_add_link2").css("float","left");
-				jQuery("a.priority_add_link2").css("margin-left",5);
+        jQuery("a.idea_add_link2").css("float","left");
+				jQuery("a.idea_add_link2").css("margin-left",5);
 				jQuery(".fblike").css("margin-top",-15);
 				jQuery("#user_info_box").css("z-index",-1);
 				jQuery("#user_info_box").css("position","relative");
 				jQuery(".test").css("z-index",100);
 				jQuery(".tag_button").css("margin-top",-15);
 				jQuery(".Chapter_name").css("top",-8);
-				jQuery("#priority_category input, #point_supports input").css("margin-bottom",5);
+				jQuery("#idea_category input, #point_supports input").css("margin-bottom",5);
 				jQuery(".point_supports_label, .point_opposes_label").css("top",-8);
 				jQuery(".white_line").css("margin-top",-10);
-				jQuery("#priority_category input").css("margin-left",-3);
-				jQuery("#priority_category input").css("margin-right",-3);
+				jQuery("#idea_category input").css("margin-left",-3);
+				jQuery("#idea_category input").css("margin-right",-3);
 				jQuery(".Chapter_name_2").css("top",-11);
-				jQuery("#priority_category2").css("width",600);
+				jQuery("#idea_category2").css("width",600);
 				jQuery("div.column .portlet-header select").css("margin-top",-15);
 				jQuery(".gt_text").css("margin-top",0);
 				jQuery(".cb").css("margin-top",-2);
@@ -98,12 +98,12 @@ $(function(){
 				jQuery(".cb").css("padding-left",3);
 				jQuery(".Chapter_name").css("top",-3);
 				jQuery(".Chapter_name").css("left",-3);
-				jQuery("#priority_category input, #point_supports input").css("margin-bottom",3);
-				jQuery("#priority_category").css("width",670);
+				jQuery("#idea_category input, #point_supports input").css("margin-bottom",3);
+				jQuery("#idea_category").css("width",670);
 				jQuery(".Chapter_name_2").css("top",-2);
 				jQuery(".Chapter_name_2").css("left",-2);
-				jQuery("#priority_category2").css("width",670);
-				jQuery("#priority_category2 input").css("margin-bottom",5);
+				jQuery("#idea_category2").css("width",670);
+				jQuery("#idea_category2 input").css("margin-bottom",5);
 				/*jQuery(".test").css("margin-left",63);*/
     }
     

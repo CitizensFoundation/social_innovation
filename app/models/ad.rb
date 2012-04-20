@@ -11,7 +11,7 @@ class Ad < ActiveRecord::Base
   scope :by_random, :order=>"rand()"
   
   belongs_to :user
-  belongs_to :priority
+  belongs_to :idea
   
   has_many :shown_ads, :dependent => :destroy
   has_many :activities
@@ -25,11 +25,11 @@ class Ad < ActiveRecord::Base
       errors.add("cost",tr("is more social points than you have.",""))
     end    
     errors.on("cost")
-#    if priority.position < 26
-#      errors.add(:base, "You can not purchase ads for priorities in the top 25 already.")
+#    if idea.position < 26
+#      errors.add(:base, "You can not purchase ads for ideas in the top 25 already.")
 #    end
-    if priority.is_buried?
-      errors.add(:base, tr("You can not purchase ads for priorities that have been buried."))
+    if idea.is_buried?
+      errors.add(:base, tr("You can not purchase ads for ideas that have been buried."))
     end    
   end
   
@@ -100,14 +100,14 @@ class Ad < ActiveRecord::Base
   
   def log_activity
     user.increment(:ads_count)
-    @activity = ActivityCapitalAdNew.create(:user => user, :priority => priority, :ad => self, :capital => CapitalAdNew.create(:sender => user, :amount => self.cost))
+    @activity = ActivityCapitalAdNew.create(:user => user, :idea => idea, :ad => self, :capital => CapitalAdNew.create(:sender => user, :amount => self.cost))
     if self.attribute_present?("content")
       @comment = @activity.comments.new
       @comment.content = content
       @comment.user = user
-      if priority
-        # if this is related to a priority, check to see if they endorse it
-        e = priority.endorsements.active_and_inactive.find_by_user_id(user.id)
+      if idea
+        # if this is related to a idea, check to see if they endorse it
+        e = idea.endorsements.active_and_inactive.find_by_user_id(user.id)
         @comment.is_endorser = true if e and e.is_up?
         @comment.is_opposer = true if e and e.is_down?
       end
@@ -115,12 +115,12 @@ class Ad < ActiveRecord::Base
     end
   end
 
-  def priority_name
-    priority.name if priority
+  def idea_name
+    idea.name if idea
   end
   
-  def priority_name=(n)
-    self.priority = Priority.find_by_name(n) unless n.blank?
+  def idea_name=(n)
+    self.idea = Idea.find_by_name(n) unless n.blank?
   end
   
   def no_response_count
@@ -157,12 +157,12 @@ class Ad < ActiveRecord::Base
       sa = shown_ads.create(:user => u, :value => v, :request => r)
     end
     if sa and sa.value == 1
-      priority.endorse(u,r,nil,self.user)
-      @activity = ActivityEndorsementNew.find_by_priority_id_and_user_id(@priority.id,u.id, :order => "created_at desc")
+      idea.endorse(u,r,nil,self.user)
+      @activity = ActivityEndorsementNew.find_by_idea_id_and_user_id(@idea.id,u.id, :order => "created_at desc")
       @activity.update_attribute(:ad_id,self.id) if @activity
     elsif sa and sa.value == -1
-      priority.oppose(u,r,nil,self.user)
-      @activity = ActivityOppositionNew.find_by_priority_id_and_user_id(@priority.id,u.id, :order => "created_at desc")
+      idea.oppose(u,r,nil,self.user)
+      @activity = ActivityOppositionNew.find_by_idea_id_and_user_id(@idea.id,u.id, :order => "created_at desc")
       @activity.update_attribute(:ad_id,self.id) if @activity
     end
   end

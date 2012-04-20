@@ -1,20 +1,20 @@
 Hæ #{h(@recipient.real_name)},
 
-\#{@sender.name} lagði til að "#{@change.new_priority.name}" með
+\#{@sender.name} lagði til að "#{@change.new_idea.name}" með
 - if @change.is_endorsers?
-  = pluralize(@change.new_priority.up_endorsements_count,"stuðningsmann")
+  = pluralize(@change.new_idea.up_endorsements_count,"stuðningsmann")
 - if @change.is_endorsers? and @change.is_opposers?
   og
 - if @change.is_opposers?
-  = pluralize(@change.new_priority.down_endorsements_count,"andstæðing")
+  = pluralize(@change.new_idea.down_endorsements_count,"andstæðing")
 taki yfir
 - if @change.is_active?
   - if @change.is_endorsers?
-    = pluralize(@change.priority.up_endorsements_count,"stuðningsmann")
+    = pluralize(@change.idea.up_endorsements_count,"stuðningsmann")
   - if @change.is_endorsers? and @change.is_opposers?
     og
   - if @change.is_opposers?
-    = pluralize(@change.priority.down_endorsements_count,"andstæðing")
+    = pluralize(@change.idea.down_endorsements_count,"andstæðing")
 - else
   - if @change.is_endorsers?
     stuðningsmönnum
@@ -22,7 +22,7 @@ taki yfir
     og
   - if @change.is_opposers?
     andstæðingum
-frá "#{h(@change.priority.name)}"
+frá "#{h(@change.idea.name)}"
 - if @change.is_flip?
   breyti
   - if @change.is_endorsers?
@@ -41,7 +41,7 @@ JÁ, ég
   er meðmæltur
 - else
   er á móti
-nýju hugmyndinni: "#{@change.new_priority.name}."
+nýju hugmyndinni: "#{@change.new_idea.name}."
 Smelltu hér til að samþykkja samrunann: #{@root_url}vote/yes/#{@vote.code}?utm_source=vote&utm_medium=email
 
 NEI, ég vil halda áfram að
@@ -49,7 +49,7 @@ NEI, ég vil halda áfram að
   vera á móti
 - else
   meðmæltur
-upprunalegu hugmyndinni: "#{@change.priority.name}."
+upprunalegu hugmyndinni: "#{@change.idea.name}."
 Smelltu hér til að segja nei við samruna þessara hugmynda: #{@root_url}vote/no/#{@vote.code}?utm_source=vote&utm_medium=email
 
 Ef þú vilt ræða þessa tillögu og sjá stöðuna í kosningunni farðu þá á:

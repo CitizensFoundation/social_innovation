@@ -1,15 +1,15 @@
-- if @point or @priority or @user
+- if @point or @idea or @user
   #bulletin_form.bulletin_form
     .happening_heading
       - if @point and params[:action].include?("discussions")
         = tr("Start a discussion on this point", "view/bulletins/_form")
       - elsif @user and @user != current_user
         = tr("Post a bulletin to {user_name} profile", "view/bulletins/_form", :user_name => @user.login)
-      - elsif @priority
+      - elsif @idea
         - if params[:action].include?("discussions")
-          = tr("Start a discussion on this priority", "view/bulletins/_form")
+          = tr("Start a discussion on this idea", "view/bulletins/_form")
         - else
-          = tr("What's happening on this priority?", "view/bulletins/_form")
+          = tr("What's happening on this idea?", "view/bulletins/_form")
       - elsif params[:action].include?("discussions")
         = tr("Start a discussion", "view/bulletins/_form")
       - elsif controller_name=="users"
@@ -31,8 +31,8 @@
           %td{:valign => "top"}
             #bulletin_error.comment_error
           <td valign="top" class="left_scale"" align="right">
-          - if @priority
-            %input{:name => "activity[priority_id]", :type => "hidden", :value => @priority.id}/
+          - if @idea
+            %input{:name => "activity[idea_id]", :type => "hidden", :value => @idea.id}/
           - if @point
             %input{:name => "activity[point_id]", :type => "hidden", :value => @point.id}/
           - if @user and @user != current_user

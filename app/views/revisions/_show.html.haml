@@ -2,9 +2,9 @@
   - if revision.is_down?
     %span.opposed= tr("opposed", "view/revisions/_show")
   = link_to_unless_current h(point.name), point
-- if point.has_other_priority?
+- if point.has_other_idea?
   .point_other
-    = tr("Supporting {priority_name}", "view/revisions/_show", :priority_name => link_to(point.other_priority.name, point.other_priority))
+    = tr("Supporting {idea_name}", "view/revisions/_show", :idea_name => link_to(point.other_idea.name, point.other_idea))
 .point_content
   = auto_link(revision.content_diff)
 - if revision.has_website?

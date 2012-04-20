@@ -6,7 +6,7 @@ class Tagging < ActiveRecord::Base
   
   validates_presence_of :context
   
-  belongs_to :priority, :class_name => "Priority", :foreign_key => "taggable_id"
+  belongs_to :idea, :class_name => "Idea", :foreign_key => "taggable_id"
   belongs_to :feed, :class_name => "Feed", :foreign_key => "taggable_id"
       
   after_create :increment_tag
@@ -14,8 +14,8 @@ class Tagging < ActiveRecord::Base
   
   def increment_tag
     return unless tag
-    if taggable.class == Priority
-      tag.increment!(:priorities_count)
+    if taggable.class == Idea
+      tag.increment!(:ideas_count)
       tag.update_counts # recalculate the discussions/points
       tag.save(:validate => false)
     elsif taggable.class == Feed
@@ -25,8 +25,8 @@ class Tagging < ActiveRecord::Base
   
   def decrement_tag
     return unless tag
-    if taggable.class == Priority
-      tag.decrement!(:priorities_count)
+    if taggable.class == Idea
+      tag.decrement!(:ideas_count)
       tag.update_counts # recalculate the discussions/points
       tag.save(:validate => false)
     elsif taggable.class == Feed

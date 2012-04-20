@@ -30,11 +30,11 @@ class AboutController < ApplicationController
       @page_title = tr("Choose a sub_instance", "controller/about")
       render :action => 'choose_sub_instance'
     elsif params[:id] == 'sub_instance_what_kind'
-      @page_title = tr("What kind of priorities", "controller/about")
+      @page_title = tr("What kind of ideas", "controller/about")
       render :action => 'sub_instance_what_kind'
-    elsif params[:id] == 'sub_instance_from_priorities_to_action'
-      @page_title = tr("From priorities to action", "controller/about")
-      render :action => 'sub_instance_from_priorities_to_action'
+    elsif params[:id] == 'sub_instance_from_ideas_to_action'
+      @page_title = tr("From ideas to action", "controller/about")
+      render :action => 'sub_instance_from_ideas_to_action'
     elsif @page = Page.find_by_short_name(params[:id])
       @page_title = @page.name
     else

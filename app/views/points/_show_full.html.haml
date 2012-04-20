@@ -6,17 +6,17 @@
           = render :partial => "users/pic", :locals => {:user => point.user}
       %td{:style => "padding-bottom: 5px;"}
         .point_other
-          = official_status(point.priority)
+          = official_status(point.idea)
           - if point.is_down?
             %span.opposed= tr("opposed", "view/points/_show_full")
-          = link_to point.priority.name, point.priority
+          = link_to point.idea.name, point.idea
         .point_name
           = link_to_unless_current h(point.name), point
           = render :partial=>"points/report_content", :locals=>{:point=>point}
           = render :partial=>"points/flagged", :locals=>{:point=>point}
-        - if point.has_other_priority?
+        - if point.has_other_idea?
           .point_other
-            = tr("Supporting {priority_name}", "view/points/_show_full", :priority_name => link_to(point.other_priority.name, point.other_priority))
+            = tr("Supporting {idea_name}", "view/points/_show_full", :idea_name => link_to(point.other_idea.name, point.other_idea))
         .point_byline
           = tr("by {author_sentence}", "view/points/_show_full", :author_sentence => point.author_sentence)
           \&middot; #{tr("added {time_ago}", "view/points/_show_full", :time_ago => time_ago(point.created_at))}

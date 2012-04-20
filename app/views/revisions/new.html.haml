@@ -13,7 +13,7 @@
             %br/
             = f.text_field :name, :size => 50, :maxlength => 60
           %p
-            = tr("Is this point {support_radio} in support or {oppose_radio} in opposition to {priority_name}?", "view/revisions/new", :priority_name => link_to(@priority.name, @priority), :support_radio => f.radio_button(:value, 1), :oppose_radio => f.radio_button(:value, -1), :neutral_radio => f.radio_button(:value, 0))
+            = tr("Is this point {support_radio} in support or {oppose_radio} in opposition to {idea_name}?", "view/revisions/new", :idea_name => link_to(@idea.name, @idea), :support_radio => f.radio_button(:value, 1), :oppose_radio => f.radio_button(:value, -1), :neutral_radio => f.radio_button(:value, 0))
           %p
             = tr("Explain your point.", "view/revisions/new")
             %span#revisionContentDown
@@ -24,9 +24,9 @@
             %br/
             = f.text_field :website, :size => 50
           %p
-            = tr("Link this to another priority <span class='small'>Just start typing the name</span>", "view/revisions/new")
-            = f.text_field :other_priority_name, :size => 50, :autocomplete => "off"
-          %p= tr("Linking to another priority is optional. If your point is in opposition, you can link to a better priority. OR, if your point is supportive or neutral, you can highlight a more specific or related priority.", "view/revisions/new")
+            = tr("Link this to another idea <span class='small'>Just start typing the name</span>", "view/revisions/new")
+            = f.text_field :other_idea_name, :size => 50, :autocomplete => "off"
+          %p= tr("Linking to another idea is optional. If your point is in opposition, you can link to a better idea. OR, if your point is supportive or neutral, you can highlight a more specific or related idea.", "view/revisions/new")
           %br/
           %p
             = tr("Why did you make this change?", "view/revisions/new")

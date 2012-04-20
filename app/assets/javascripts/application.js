@@ -63,12 +63,12 @@ jQuery(document).ready(function() {
 	if(!isChrome & jQuery.support.opacity) {
 		//jQuery(".tab_header a, div.tab_body").corners(); 
 	}
-	//jQuery("#priority_column, #intro, #buzz_box, #content_text, #notification_show, .bulletin_form").corners();
+	//jQuery("#idea_column, #intro, #buzz_box, #content_text, #notification_show, .bulletin_form").corners();
 	//jQuery("#top_right_column, #toolbar").corners("bottom");
 	
 	jQuery("abbr[class*=timeago]").timeago();	
 	jQuery("#pointContent").NobleCount('#pointContentDown',{ on_negative: 'go_red', on_positive: 'go_green', max_chars: 500 });
-	jQuery("input#priority_name, input#change_new_priority_name, input#point_other_priority_name, input#revision_other_priority_name, input#right_priority_box").autocomplete("/priorities.js");
+	jQuery("input#idea_name, input#change_new_idea_name, input#point_other_idea_name, input#revision_other_idea_name, input#right_idea_box").autocomplete("/ideas.js");
 	jQuery("input#user_login_search").autocomplete("/users.js");
 	jQuery('#bulletin_content, #blurb_content, #message_content, #document_content, #email_template_content, #page_content').autoResize({extraSpace : 20})
 	

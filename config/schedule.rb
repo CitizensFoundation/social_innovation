@@ -36,7 +36,7 @@ every :reboot do
 end
 
 every 50.minutes do
-  rake "schedule:priority_ranker"
+  rake "schedule:idea_ranker"
 end
 
 every 55.minutes do

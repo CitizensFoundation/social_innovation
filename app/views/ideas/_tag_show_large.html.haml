@@ -1,0 +1,14 @@
+.idea_tags{:id => "idea_#{idea.id}_tags"}
+  - if logged_in? and (current_user.is_tagger? or current_user.is_admin?)
+    - for tag in idea.issues
+      %span.tag_name= link_to tr(tag.title,"model/category"), :controller => "issues", :slug => tag.slug
+      %span.tag_count= tag.ideas_count
+  - elsif idea.attribute_present?("cached_issue_list")
+    = tags_sentence(idea.cached_issue_list)
+  - if logged_in? and (current_user.is_tagger? or current_user.is_admin?)
+    %span.tag_button
+      = link_to "tag", tag_idea_path(idea), |
+        :method => :post,                           |
+        :remote=>true,                              |
+        'data-disable-with' => "",                  |
+        'data-loader-name' => "horizontal_small"    |

@@ -1,2 +1,2 @@
 %img.icon{:border => "0", :height => "16", :src => "/assets/icons/delete.png", :width => "16"}/
-= raw tr("Opposed {new_priority_name} instead of {priority_name}", "view/activities/_activityoppositionreplaced_nouser", :priority_name => link_to(activity.priority.name, activity.priority), :new_priority_name => link_to(activity.change.new_priority.name, activity.change.new_priority))
+= raw tr("Opposed {new_idea_name} instead of {idea_name}", "view/activities/_activityoppositionreplaced_nouser", :idea_name => link_to(activity.idea.name, activity.idea), :new_idea_name => link_to(activity.change.new_idea.name, activity.change.new_idea))

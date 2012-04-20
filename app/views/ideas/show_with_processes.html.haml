@@ -1,0 +1,63 @@
+= render :partial => "header"
+- if @idea.replaced?
+  #hp_subhead
+    = tr("This idea was replaced by {idea_name}", "view/ideas/show_with_processes", :idea_name => link_to(@idea.change.new_idea.name, @idea.change.new_idea))
+- else
+  = render :partial => "nav"
+%table.show-with-processes-table.single3
+  %tr
+    %td.add_note{:valign => "top"}
+      %p.top_p
+        - if false and @idea.has_change?
+          = render :partial => "changes/show", :locals => {:change => @idea.change}
+          %p
+            = render :partial => "changes/status", :locals => {:change => @idea.change}
+          %p
+        - if @idea.points_count == 0
+          %br/
+        = render :partial=>"top_points"
+      %div{:style => "clear:both"}
+      %table{:width => "100%"}
+        %tr
+          %td
+          %td
+      - if @idea_process
+        = render :partial => "process_speech_master_videos/latest_video_discussions_medium"
+      - if logged_in?
+        = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new}
+      %p
+        - if @relationships.any?
+          %p
+          .heading
+            - if current_instance.is_tags? and @idea.attribute_present?("cached_issue_list")
+              = relationship_tags_sentence(@idea.cached_issue_list)
+            - else
+              = tr("Other ideas to consider", "view/ideas/show_with_processes")
+          - num_shown = 0
+          - @relationships.each do |other_idea, relationships|
+            - num_shown += 1
+            - next if num_shown > 3
+            - if @endorsements
+              - endorsement = @endorsements.detect { |e| e.idea_id == other_idea.id }
+            .related_idea{:id => "idea_#{other_idea.id}"}
+              .idea_name_related{:id => "idea_#{other_idea.id}_name"}
+                = link_to_unless_current h(other_idea.name), other_idea, :class => "idea_name_link"
+              .idea_related_intro
+                = relationship_sentence(relationships)
+              .idea_actions
+                = render :partial => "ideas/action_show", :locals => {:idea => other_idea, :endorsement => endorsement}
+      %p
+        - unless @activities.blank?
+          %ul#endless_scroll_ul_idea_show.list{:last => @activities.to_a.last.changed_at, :idea_id => @idea.id}
+            = render :template => 'news/activity_list_simple'
+          #infinite-scroll
+          .endless_scroll_inner_wrap
+        - else
+          #activities.single
+    %td.extras{:valign => "top", :width => "150"}
+      .ideas_adjustments
+        - if ['published', 'draft'].include?(@idea.status)
+          %div{:id => "idea_#{@idea.id.to_s}_position"}
+            = render :partial => "endorsements/position", :locals => {:endorsement => @endorsement}
+      .content_left_nav
+        = render :partial => "left_nav"

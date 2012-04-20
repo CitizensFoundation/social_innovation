@@ -1,5 +1,5 @@
 class Category < ActiveRecord::Base
-  has_many :priorities
+  has_many :ideas
   has_many :blog_posts
   has_attached_file :icon, :styles => { :icon_32 => "32x32#", :icon_25 => "25x25#", :icon_50  => "50x50#", :icon_100 => "100x100#" }
 

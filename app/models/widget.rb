@@ -3,19 +3,19 @@ class Widget < ActiveRecord::Base
   belongs_to :user
   belongs_to :tag
 
-  def priorities_available
+  def ideas_available
     a = Array.new
-    a << [ "top", tr("Top priorities", "model/widget") ]
-    a << [ "rising", tr("Rising priorities", "model/widget") ]
-    a << [ "falling", tr("Falling priorities", "model/widget") ]
-    a << [ "random", tr("Random priorities", "model/widget") ]
-    a << [ "newest", tr("New priorities", "model/widget") ]
-    a << [ "controversial", tr("Controversial priorities", "model/widget") ]
-    a << [ "finished", tr("Finished priorities", "model/widget") ]
+    a << [ "top", tr("Top ideas", "model/widget") ]
+    a << [ "rising", tr("Rising ideas", "model/widget") ]
+    a << [ "falling", tr("Falling ideas", "model/widget") ]
+    a << [ "random", tr("Random ideas", "model/widget") ]
+    a << [ "newest", tr("New ideas", "model/widget") ]
+    a << [ "controversial", tr("Controversial ideas", "model/widget") ]
+    a << [ "finished", tr("Finished ideas", "model/widget") ]
     if Instance.current.has_official?
-      a << [ "official", tr("{official_user_name} priorities", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
-      a << [ "not_official", tr("Priorities NOT on {official_user_name} agenda", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
-      a << [ "official_opposed", tr("Priorities {official_user_name} opposes", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
+      a << [ "official", tr("{official_user_name} ideas", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
+      a << [ "not_official", tr("Ideas NOT on {official_user_name} agenda", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
+      a << [ "official_opposed", tr("Ideas {official_user_name} opposes", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
     end
     a
   end
@@ -25,8 +25,8 @@ class Widget < ActiveRecord::Base
     if false and user
       a << [ "your_discussions", tr("Your discussions", "model/widget") ]
       a << [ "your_network_discussions", tr("Discussions in your network", "model/widget") ]
-      a << [ "your_priorities_discussions", tr("Discussions on your priorities", "model/widget") ]
-      a << [ "your_priorities_created_discussions", tr("Discussions on priorities you created", "model/widget") ]
+      a << [ "your_ideas_discussions", tr("Discussions on your ideas", "model/widget") ]
+      a << [ "your_ideas_created_discussions", tr("Discussions on ideas you created", "model/widget") ]
     end
     a << [ "discussions", tr("Active discussions", "model/widget") ]
   end
@@ -34,15 +34,15 @@ class Widget < ActiveRecord::Base
   def points_available
     [
       [ "index", tr("Your points", "model/widget") ],
-      [ "your_priorities", tr("Points on your priorities", "model/widget")  ],                         
+      [ "your_ideas", tr("Points on your ideas", "model/widget")  ],
       [ "newest", tr("Newest points", "model/widget")  ]
     ]
   end
   
   def charts_available
     [
-      [ "charts_priority", tr("Chart Priority", "model/widget") ],
-      [ "charts_user", tr("Your priorities", "model/widget") ]
+      [ "charts_idea", tr("Chart Idea", "model/widget") ],
+      [ "charts_user", tr("Your ideas", "model/widget") ]
     ]
   end
 

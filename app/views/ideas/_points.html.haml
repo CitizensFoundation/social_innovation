@@ -1,0 +1,24 @@
+- if points and points.any?
+  - @point_value = point_value
+  .heading_table
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+      %tr
+        %td
+          .heading
+            - if point_value == 0
+              = tr("Points", "view/ideas/_points")
+            - elsif point_value == 1
+              = tr("Points helpful to endorsers", "view/ideas/_points")
+            - elsif point_value == -1
+              = tr("Points helpful to opposers", "view/ideas/_points")
+            - elsif point_value == 2
+              = tr("Points helpful to undeclared", "view/ideas/_points")
+        %td{:align => "right"}
+          .heading_link
+            = link_to tr("Add a point", "view/ideas/_points"), new_idea_point_path(@idea), :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_points"), :class => "qtip_left"
+  - for point in points
+    - quality = nil
+    - if qualities
+      - quality = qualities.detect {|e| e.point_id == point.id }
+    .point_inline{:id => "point_#{point.id}"}
+      = render :partial => "points/show", :locals => {:point => point, :quality => quality }

@@ -6,18 +6,18 @@ class Relationship < ActiveRecord::Base
   scope :undecideds_endorsed, :conditions => "relationships.type = 'RelationshipUndecidedEndorsed'"    
   scope :by_highest_percentage, :order => "relationships.percentage desc"
 
-  belongs_to :priority
-  belongs_to :other_priority, :class_name => "Priority"
+  belongs_to :idea
+  belongs_to :other_idea, :class_name => "Idea"
   
   after_create :add_counts
   before_destroy :remove_counts
   
   def add_counts
-    Priority.update_all("relationships_count = relationships_count + 1", "id = #{self.priority_id}")
+    Idea.update_all("relationships_count = relationships_count + 1", "id = #{self.idea_id}")
   end
   
   def remove_counts
-    Priority.update_all("relationships_count = relationships_count - 1", "id = #{self.priority_id}")
+    Idea.update_all("relationships_count = relationships_count - 1", "id = #{self.idea_id}")
   end
   
 end

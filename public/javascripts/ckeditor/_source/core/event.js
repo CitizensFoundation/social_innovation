@@ -90,8 +90,8 @@ if ( !CKEDITOR.event )
 			 * @param {Object} [listenerData] Data to be sent as the
 			 *		{@link CKEDITOR.eventInfo#listenerData} when calling the
 			 *		listener.
-			 * @param {Number} [priority] The listener priority. Lower priority
-			 *		listeners are called first. Listeners with the same priority
+			 * @param {Number} [idea] The listener idea. Lower idea
+			 *		listeners are called first. Listeners with the same idea
 			 *		value are called in registration order. Defaults to 10.
 			 * @example
 			 * someObject.on( 'someEvent', function()
@@ -115,7 +115,7 @@ if ( !CKEDITOR.event )
 			 * someObject.on( 'someEvent', function() { ... }, null, null, 100 );  // 3rd called
 			 * someObject.on( 'someEvent', function() { ... }, null, null, 1 );    // 1st called
 			 */
-			on : function( eventName, listenerFunction, scopeObj, listenerData, priority )
+			on : function( eventName, listenerFunction, scopeObj, listenerData, idea )
 			{
 				// Get the event entry (create it if needed).
 				var events = getPrivate( this ),
@@ -130,9 +130,9 @@ if ( !CKEDITOR.event )
 					if ( !scopeObj )
 						scopeObj = this;
 
-					// Default the priority, if needed.
-					if ( isNaN( priority ) )
-						priority = 10;
+					// Default the idea, if needed.
+					if ( isNaN( idea ) )
+						idea = 10;
 
 					var me = this;
 
@@ -159,14 +159,14 @@ if ( !CKEDITOR.event )
 						return ev.data;
 					};
 					listenerFirer.fn = listenerFunction;
-					listenerFirer.priority = priority;
+					listenerFirer.idea = idea;
 
 					// Search for the right position for this new listener, based on its
-					// priority.
+					// idea.
 					for ( var i = listeners.length - 1 ; i >= 0 ; i-- )
 					{
 						// Find the item which should be before the new one.
-						if ( listeners[ i ].priority <= priority )
+						if ( listeners[ i ].idea <= idea )
 						{
 							// Insert the listener in the array.
 							listeners.splice( i + 1, 0, listenerFirer );

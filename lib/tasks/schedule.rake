@@ -1,5 +1,5 @@
 require 'fix_top_endorsements'
-require 'priority_ranker'
+require 'idea_ranker'
 require 'user_ranker'
 
 namespace :schedule do
@@ -21,9 +21,9 @@ namespace :schedule do
     o.perform
   end
 
-  desc "Priority Ranker"
-  task :priority_ranker => :environment do
-    o = PriorityRanker.new
+  desc "Idea Ranker"
+  task :idea_ranker => :environment do
+    o = IdeaRanker.new
     o.perform
   end
 
@@ -36,8 +36,8 @@ namespace :schedule do
   desc "Fix counts"
   task :fix_counts => :environment do
     Instance.current = Instance.all.last
-    puts "Fixing priorities endorsements count"    
-    for p in Priority.find(:all)
+    puts "Fixing ideas endorsements count"
+    for p in Idea.find(:all)
       p.endorsements_count = p.endorsements.active_and_inactive.size
       p.up_endorsements_count = p.endorsements.endorsing.active_and_inactive.size
       p.down_endorsements_count = p.endorsements.opposing.active_and_inactive.size
@@ -54,7 +54,7 @@ namespace :schedule do
       end
     end
 
-#    puts "Fixing priorities endorsements count"    
+#    puts "Fixing ideas endorsements count"
 #    Endorsement.active.find_in_batches(:include => :user) do |endorsement_group|
 #      for e in endorsement_group
 #        current_score = e.score
@@ -65,15 +65,15 @@ namespace :schedule do
 
     puts "Fixing endorsements dups"    
     endorsements = Endorsement.find_by_sql("
-        select user_id, priority_id, count(*) as num_times
+        select user_id, idea_id, count(*) as num_times
         from endorsements
-        group by user_id,priority_id
+        group by user_id,idea_id
         having count(*) > 1
     ")
     for e in endorsements
       user = e.user
-      priority = e.priority
-      multiple_endorsements = user.endorsements.active.find(:all, :conditions => ["priority_id = ?",priority.id], :order => "endorsements.position")
+      idea = e.idea
+      multiple_endorsements = user.endorsements.active.find(:all, :conditions => ["idea_id = ?",idea.id], :order => "endorsements.position")
       if multiple_endorsements.length > 1
         for c in 1..multiple_endorsements.length-1
           puts "Destroying endorsement #{multiple_endorsements[c]}"
@@ -83,8 +83,8 @@ namespace :schedule do
     end
 
     puts "Fixing discussions count"
-    priorities = Priority.find(:all)
-    for p in priorities
+    ideas = Idea.find(:all)
+    for p in ideas
       p.update_attribute(:discussions_count,p.activities.discussions.for_all_users.active.size) if p.activities.discussions.for_all_users.active.size != p.discussions_count
     end
     points = Point.find(:all)

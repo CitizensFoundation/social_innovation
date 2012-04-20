@@ -8,7 +8,7 @@ class ChartsController < ApplicationController
   end
 
   def gainers_24hr
-    @page_title = tr("People with the fastest rising priorities in the last 24 hours", "controller/charts")
+    @page_title = tr("People with the fastest rising ideas in the last 24 hours", "controller/charts")
     @users = User.active.by_24hr_gainers.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html
@@ -18,7 +18,7 @@ class ChartsController < ApplicationController
   end  
   
   def gainers_7days
-    @page_title = tr("People with the fastest rising priorities this week", "controller/charts")
+    @page_title = tr("People with the fastest rising ideas this week", "controller/charts")
     @users = User.active.by_7days_gainers.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html
@@ -28,7 +28,7 @@ class ChartsController < ApplicationController
   end
   
   def gainers_30days
-    @page_title = tr("People with the fastest rising priorities this month", "controller/charts")
+    @page_title = tr("People with the fastest rising ideas this month", "controller/charts")
     @users = User.active.by_30days_gainers.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html
@@ -38,7 +38,7 @@ class ChartsController < ApplicationController
   end    
   
   def losers_24hr
-    @page_title = tr("People with the fastest falling priorities in the last 24 hours", "controller/charts")
+    @page_title = tr("People with the fastest falling ideas in the last 24 hours", "controller/charts")
     @users = User.active.by_24hr_losers.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html 
@@ -48,7 +48,7 @@ class ChartsController < ApplicationController
   end  
   
   def losers_7days
-    @page_title = tr("People with the fastest falling priorities this week", "controller/charts")
+    @page_title = tr("People with the fastest falling ideas this week", "controller/charts")
     @users = User.active.by_7days_losers.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html
@@ -58,7 +58,7 @@ class ChartsController < ApplicationController
   end
 
   def losers_30days
-    @page_title = tr("People with the fastest falling priorities this month", "controller/charts")
+    @page_title = tr("People with the fastest falling ideas this month", "controller/charts")
     @users = User.active.by_30days_losers.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format| 
       format.html 

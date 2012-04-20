@@ -8,22 +8,22 @@ class Endorsement < ActiveRecord::Base
   scope :active_and_inactive, :conditions => "endorsements.status in ('active','inactive','finished')" 
   scope :opposing, :conditions => "endorsements.value < 0"
   scope :endorsing, :conditions => "endorsements.value > 0"
-  scope :official_endorsed, :conditions => "priorities.official_value = 1", :include => :priority
-  scope :not_official, :conditions => "priorities.official_value = 0", :include => :priority
-  scope :official_opposed, :conditions => "priorities.official_value = -1", :include => :priority
-  scope :not_official_or_opposed, :conditions => "priorities.official_value < 1", :include => :priority
-  scope :finished, :conditions => "endorsements.status in ('inactive','finished') and priorities.status = 'inactive'", :include => :priority
+  scope :official_endorsed, :conditions => "ideas.official_value = 1", :include => :idea
+  scope :not_official, :conditions => "ideas.official_value = 0", :include => :idea
+  scope :official_opposed, :conditions => "ideas.official_value = -1", :include => :idea
+  scope :not_official_or_opposed, :conditions => "ideas.official_value < 1", :include => :idea
+  scope :finished, :conditions => "endorsements.status in ('inactive','finished') and ideas.status = 'inactive'", :include => :idea
   scope :top10, :order => "endorsements.position asc", :limit => 10
   
   scope :by_position, :order => "endorsements.position asc"
-  scope :by_priority_position, :order => "priorities.position asc"
-  scope :by_priority_lowest_position, :order => "priorities.position desc"  
+  scope :by_idea_position, :order => "ideas.position asc"
+  scope :by_idea_lowest_position, :order => "ideas.position desc"
   scope :by_recently_created, :order => "endorsements.created_at desc"
   scope :by_recently_updated, :order => "endorsements.updated_at desc"  
   
   belongs_to :sub_instance
   belongs_to :user
-  belongs_to :priority
+  belongs_to :idea
   belongs_to :referral, :class_name => "User", :foreign_key => "referral_id"
   
   belongs_to :tagging
@@ -71,7 +71,7 @@ class Endorsement < ActiveRecord::Base
 
   def on_finished_entry(new_state, event)
     remove_from_list
-    #notifications << NotificationPriorityFinished.new(:recipient => self.user)
+    #notifications << NotificationIdeaFinished.new(:recipient => self.user)
   end
 
   def on_replaced_entry(new_state, event)
@@ -80,9 +80,9 @@ class Endorsement < ActiveRecord::Base
 
   def on_active_entry(new_state = nil, event = nil)
     if self.is_up?
-      ActivityEndorsementNew.create(:user => user, :sub_instance => sub_instance, :priority => priority, :position => self.position)
+      ActivityEndorsementNew.create(:user => user, :sub_instance => sub_instance, :idea => idea, :position => self.position)
     else
-      ActivityOppositionNew.create(:user => user, :sub_instance => sub_instance, :priority => priority, :position => self.position)
+      ActivityOppositionNew.create(:user => user, :sub_instance => sub_instance, :idea => idea, :position => self.position)
     end
     move_to_bottom
     add_update_counts
@@ -94,21 +94,21 @@ class Endorsement < ActiveRecord::Base
   end
 
   before_create :calculate_score
-  after_save :check_for_top_priority
+  after_save :check_for_top_idea
   after_save :check_official
   before_destroy :remove
-  after_destroy :check_for_top_priority
+  after_destroy :check_for_top_idea
   
-  # check to see if they've added a new #1 priority, and create the activity
-  def check_for_top_priority
+  # check to see if they've added a new #1 idea, and create the activity
+  def check_for_top_idea
     if self.position == 1
       if self.id != user.top_endorsement_id
         user.top_endorsement = self
         user.save(:validate => false)
         if self.is_up?
-          ActivityPriority1.find_or_create_by_user_id_and_priority_id(user.id, self.priority_id)
+          ActivityIdea1.find_or_create_by_user_id_and_idea_id(user.id, self.idea_id)
         elsif self.is_down?
-          ActivityPriority1Opposed.find_or_create_by_user_id_and_priority_id(user.id, self.priority_id)
+          ActivityIdea1Opposed.find_or_create_by_user_id_and_idea_id(user.id, self.idea_id)
         end
       end
     elsif user.top_endorsement_id.nil?
@@ -117,9 +117,9 @@ class Endorsement < ActiveRecord::Base
       user.save(:validate => false)
       if e
         if e.is_up?
-          ActivityPriority1.find_or_create_by_user_id_and_priority_id(user.id, e.priority_id)
+          ActivityIdea1.find_or_create_by_user_id_and_idea_id(user.id, e.idea_id)
         elsif e.is_down?
-          ActivityPriority1Opposed.find_or_create_by_user_id_and_priority_id(user.id, e.priority_id)
+          ActivityIdea1Opposed.find_or_create_by_user_id_and_idea_id(user.id, e.idea_id)
         end      
       end
     end
@@ -127,22 +127,22 @@ class Endorsement < ActiveRecord::Base
   
   def check_official
 #    return unless user_id == Instance.current.official_user_id
-#    Priority.update_all("official_value = 1", ["id = ?",priority_id]) if is_up? and status == 'active'
-#    Priority.update_all("official_value = -1", ["id = ?",priority_id]) if is_down? and status == 'active'
-#    Priority.update_all("official_value = 0", ["id = ?",priority_id]) if status == 'deleted'
+#    Idea.update_all("official_value = 1", ["id = ?",idea_id]) if is_up? and status == 'active'
+#    Idea.update_all("official_value = -1", ["id = ?",idea_id]) if is_down? and status == 'active'
+#    Idea.update_all("official_value = 0", ["id = ?",idea_id]) if status == 'deleted'
   end
   
-  def priority_name
-    priority.name if priority
+  def idea_name
+    idea.name if idea
   end
-  memoize :priority_name
+  memoize :idea_name
   
-  def priority_name=(n)
-    self.priority = Priority.find_by_name(n) unless n.blank?
+  def idea_name=(n)
+    self.idea = Idea.find_by_name(n) unless n.blank?
   end
   
   def calculate_score
-    if position > @@max_position  # this ignores any of a user's priorities below 100
+    if position > @@max_position  # this ignores any of a user's ideas below 100
       self.score = 0 
     else
       self.score = user.score*value*(@@max_position-position)
@@ -245,23 +245,23 @@ class Endorsement < ActiveRecord::Base
   
   def remove
     if self.status == 'active'
-#      if user_id == Instance.current.official_user_id and priority.official_value != 0
-#        Priority.update_all("official_value = 0", ["id = ?",priority_id]) 
+#      if user_id == Instance.current.official_user_id and idea.official_value != 0
+#        Idea.update_all("official_value = 0", ["id = ?",idea_id])
 #      end
       delete_update_counts
       if self.is_up?
-        ActivityEndorsementDelete.create(:user => user, :sub_instance => sub_instance, :priority => priority)
+        ActivityEndorsementDelete.create(:user => user, :sub_instance => sub_instance, :idea => idea)
       else
-        ActivityOppositionDelete.create(:user => user, :sub_instance => sub_instance, :priority => priority)
+        ActivityOppositionDelete.create(:user => user, :sub_instance => sub_instance, :idea => idea)
       end
     end
   end
   
   def delete_update_counts
 #    if self.is_up?
-#      Priority.update_all("endorsements_count = endorsements_count - 1, up_endorsements_count = up_endorsements_count - 1", "id = #{self.priority_id}")
+#      Idea.update_all("endorsements_count = endorsements_count - 1, up_endorsements_count = up_endorsements_count - 1", "id = #{self.idea_id}")
 #    else
-#      Priority.update_all("endorsements_count = endorsements_count - 1, down_endorsements_count = down_endorsements_count - 1", "id = #{self.priority_id}")
+#      Idea.update_all("endorsements_count = endorsements_count - 1, down_endorsements_count = down_endorsements_count - 1", "id = #{self.idea_id}")
 #    end
     user.endorsements_count += -1
     if self.is_up?
@@ -270,8 +270,8 @@ class Endorsement < ActiveRecord::Base
       user.down_endorsements_count += -1
     end  
     user.save(:validate => false)
-    if user.qualities_count > 0 and priority.points_count > 0
-      for p in priority.points.published.all
+    if user.qualities_count > 0 and idea.points_count > 0
+      for p in idea.points.published.all
         p.calculate_score(true,self)
       end
     end
@@ -279,9 +279,9 @@ class Endorsement < ActiveRecord::Base
   
   def add_update_counts
 #    if self.is_up?
-#      Priority.update_all("endorsements_count = endorsements_count + 1, up_endorsements_count = up_endorsements_count + 1", "id = #{self.priority_id}")
+#      Idea.update_all("endorsements_count = endorsements_count + 1, up_endorsements_count = up_endorsements_count + 1", "id = #{self.idea_id}")
 #    else
-#      Priority.update_all("endorsements_count = endorsements_count + 1, down_endorsements_count = down_endorsements_count + 1", "id = #{self.priority_id}")
+#      Idea.update_all("endorsements_count = endorsements_count + 1, down_endorsements_count = down_endorsements_count + 1", "id = #{self.idea_id}")
 #    end
     user.endorsements_count += 1
     if self.is_up?
@@ -290,8 +290,8 @@ class Endorsement < ActiveRecord::Base
       user.down_endorsements_count += 1
     end  
     user.save(:validate => false) 
-    if user.qualities_count > 0 and priority.points_count > 0
-      for p in priority.points.published.all
+    if user.qualities_count > 0 and idea.points_count > 0
+      for p in idea.points.published.all
         p.calculate_score(true,self)
       end
     end

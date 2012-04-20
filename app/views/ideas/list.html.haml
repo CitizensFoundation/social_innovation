@@ -1,0 +1,22 @@
+- if action_name == "finished" and Instance.current.message_for_finished and Instance.current.message_for_finished!=""
+  = render :partial=>"/shared/top_message_box", :locals=> {:message_text => Instance.current.message_for_finished.html_safe }
+%div{:style => "width:auto;"}
+  %ul
+    %li.list_left
+      #hp_intro{:style => "border-bottom:none;"}= @page_title
+    %li.list_right
+      = rss_url(@rss_url)
+  %ul
+.clear
+.white_line
+%p
+  - if params[:action] == 'yours_created'
+    = tr("This is where ideas you've created go, so you can easily reference them and track their progress.", "view/ideas/list")
+    %p
+  - if @ideas.any?
+    = render :partial=>"ideas/top_level_listing", :locals=>{:ideas=>@ideas, :endorsements=>@endorsements}
+    %p
+      = will_paginate @ideas
+      - if params[:action] == 'yours_created'
+        %p
+          = tr("You can also follow all the <a href='/news/your_ideas_created_activities'>activity</a> and <a href='/news/your_ideas_created_discussions'>discussions</a> on ideas you created.", "view/ideas/list")

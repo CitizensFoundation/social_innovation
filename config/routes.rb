@@ -5,9 +5,9 @@ SocialInnovation::Application.routes.draw do
 
   resources :categories
 
-  match '/priorites/flag/:id' => 'priorities#flag'
-  match '/priorites/abusive/:id' => 'priorities#abusive'
-  match '/priorites/not_abusive/:id' => 'priorities#not_abusive'
+  match '/priorites/flag/:id' => 'ideas#flag'
+  match '/priorites/abusive/:id' => 'ideas#abusive'
+  match '/priorites/not_abusive/:id' => 'ideas#not_abusive'
   match '/questions/flag/:id' => 'questions#flag'
   match '/documents/flag/:id' => 'documents#flag'
   match '/admin/all_flagged' => 'admin#all_flagged'
@@ -48,7 +48,7 @@ SocialInnovation::Application.routes.draw do
   	  post :unfollow
   	  put :make_admin
   	  get :ads
-  	  get :priorities
+  	  get :ideas
   	  get :signups
   	  post :endorse
   	  get :reset_password
@@ -82,7 +82,7 @@ SocialInnovation::Application.routes.draw do
     end
   end
 
-  resources :priorities do
+  resources :ideas do
   	member do
       put :flag_inappropriate
       get :flag
@@ -197,7 +197,7 @@ SocialInnovation::Application.routes.draw do
     collection do
       get :newest
       get :revised
-      get :your_priorities
+      get :your_ideas
       get :your_index
     end
     resources :revisions do
@@ -218,7 +218,7 @@ SocialInnovation::Application.routes.draw do
     collection do
       get :newest
       get :revised
-      get :your_priorities
+      get :your_ideas
     end
     resources :document_revisions, :as=>"revisions" do
       member do
@@ -241,7 +241,7 @@ SocialInnovation::Application.routes.draw do
 
   resources :widgets do
     collection do
-      get :priorities
+      get :ideas
       get :discussions
       get :points
       get :preview_iframe
@@ -285,11 +285,11 @@ SocialInnovation::Application.routes.draw do
   match '/login' => 'sessions#new', :as => :login
   match '/logout' => 'sessions#destroy', :as => :logout
   match '/unsubscribe' => 'unsubscribes#new', :as => :unsubscribe
-  match '/yours' => 'priorities#yours'
-  match '/hot' => 'priorities#hot'
-  match '/cold' => 'priorities#cold'
-  match '/new' => 'priorities#new'
-  match '/controversial' => 'priorities#controversial'
+  match '/yours' => 'ideas#yours'
+  match '/hot' => 'ideas#hot'
+  match '/cold' => 'ideas#cold'
+  match '/new' => 'ideas#new'
+  match '/controversial' => 'ideas#controversial'
   match '/vote/:action/:code' => 'vote#index'
   match '/welcome' => 'home#index'
   match '/search' => 'searches#index'
@@ -307,8 +307,8 @@ SocialInnovation::Application.routes.draw do
   match ':controller/:action.:format' => '#index'
   match '/:controller(/:action(/:id))'
 end
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
+  # The idea is based upon order of creation:
+  # first created -> highest idea.
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'

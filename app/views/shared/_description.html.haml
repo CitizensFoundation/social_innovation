@@ -1,10 +1,10 @@
-- if params[:controller] == 'priorities' and @priority
-  %meta{:content => "#{tr("{prompt} {priority_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :priority_name => @priority.name)} ", :name => "description"}/
-  %meta{:content => tr("{priority_name}", "view/shared/_description", :priority_name => @priority.name), :itemprop => "name"}/
-  %meta{:content => tr("{prompt} {priority_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :priority_name => @priority.name), :itemprop => "description"}/
+- if params[:controller] == 'ideas' and @idea
+  %meta{:content => "#{tr("{prompt} {idea_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :idea_name => @idea.name)} ", :name => "description"}/
+  %meta{:content => tr("{idea_name}", "view/shared/_description", :idea_name => @idea.name), :itemprop => "name"}/
+  %meta{:content => tr("{prompt} {idea_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :idea_name => @idea.name), :itemprop => "description"}/
   %meta{:content => "http://#{request.host_with_port+current_instance.logo.url}", :itemprop => "image"}/
-- elsif params[:controller] == 'users' and @user and @user.has_top_priority?
-  %meta{:content => tr("{user_name} top priority for: {priority_name}", "view/shared/_description", :user_name => @user.name, :priority_name => @user.top_endorsement.priority.name), :name => "description"}/
+- elsif params[:controller] == 'users' and @user and @user.has_top_idea?
+  %meta{:content => tr("{user_name} top idea for: {idea_name}", "view/shared/_description", :user_name => @user.name, :idea_name => @user.top_endorsement.idea.name), :name => "description"}/
 - else
   %meta{:content => tr(current_instance.description,"Description from database"), :name => "description"}/
   %meta{:content => tr(current_instance.name,"Name from database"), :itemprop => "name"}/

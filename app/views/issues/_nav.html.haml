@@ -6,12 +6,12 @@
           #issue_nav_name
             = tr(@tag_names, "model/category").titleize
           %span.tab_header
-            = link_to tr("{count} priorities", "view/issues/_nav", :count => @priorities_count), :action => "show"
+            = link_to tr("{count} ideas", "view/issues/_nav", :count => @ideas_count), :action => "show"
         - if @tag.points_count > 0
           %li.tab3
             %span.tab_header
               = link_to tr("{count} points", "view/issues/_nav", :count => @points_count), :action => "points"
-        - if @tag.discussions_count > 0 or @tag.priorities_count > 0
+        - if @tag.discussions_count > 0 or @tag.ideas_count > 0
           %li.tab5
             %span.tab_header
               - if @tag.discussions_count > 0

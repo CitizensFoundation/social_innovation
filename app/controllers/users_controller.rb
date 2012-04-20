@@ -153,11 +153,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     redirect_to '/' and return if check_for_suspension
     @page_title = tr("{user_name} at {instance_name}", "controller/users", :user_name => @user.name, :instance_name => tr(current_instance.name,"Name from database"))
-    @priorities = @user.endorsements.active.by_position.find(:all, :include => :priority, :limit => 5)
+    @ideas = @user.endorsements.active.by_position.find(:all, :include => :idea, :limit => 5)
     @endorsements = nil
     get_following
-    if logged_in? # pull all their endorsements on the priorities shown
-      @endorsements = Endorsement.find(:all, :conditions => ["priority_id in (?) and user_id = ? and status='active'", @priorities.collect {|c| c.priority_id},current_user.id])
+    if logged_in? # pull all their endorsements on the ideas shown
+      @endorsements = Endorsement.find(:all, :conditions => ["idea_id in (?) and user_id = ? and status='active'", @ideas.collect {|c| c.idea_id},current_user.id])
     end    
     @activities = @user.activities.active.by_recently_created.paginate :include => :user, :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
@@ -167,20 +167,20 @@ class UsersController < ApplicationController
     end
   end
   
-  def priorities
+  def ideas
     @user = User.find(params[:id])    
     redirect_to '/' and return if check_for_suspension
-    @page_title = tr("{user_name} priorities at {instance_name}", "controller/users", :user_name => @user.name.possessive, :instance_name => tr(current_instance.name,"Name from database"))
-    @priorities = @user.endorsements.active.by_position.paginate :include => :priority, :page => params[:page], :per_page => params[:per_page]  
+    @page_title = tr("{user_name} ideas at {instance_name}", "controller/users", :user_name => @user.name.possessive, :instance_name => tr(current_instance.name,"Name from database"))
+    @ideas = @user.endorsements.active.by_position.paginate :include => :idea, :page => params[:page], :per_page => params[:per_page]
     @endorsements = nil
     get_following
-    if logged_in? # pull all their endorsements on the priorities shown
-      @endorsements = Endorsement.find(:all, :conditions => ["priority_id in (?) and user_id = ? and status='active'", @priorities.collect {|c| c.priority_id},current_user.id])
+    if logged_in? # pull all their endorsements on the ideas shown
+      @endorsements = Endorsement.find(:all, :conditions => ["idea_id in (?) and user_id = ? and status='active'", @ideas.collect {|c| c.idea_id},current_user.id])
     end    
     respond_to do |format|
       format.html
-      format.xml { render :xml => @priorities.to_xml(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @priorities.to_json(:include => [:priority], :except => NB_CONFIG['api_exclude_fields']) }
+      format.xml { render :xml => @ideas.to_xml(:include => [:idea], :except => NB_CONFIG['api_exclude_fields']) }
+      format.json { render :json => @ideas.to_json(:include => [:idea], :except => NB_CONFIG['api_exclude_fields']) }
     end    
   end
   
@@ -231,8 +231,8 @@ class UsersController < ApplicationController
     @ads = @user.ads.active_first.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html # show.html.erb
-      format.xml { render :xml => @ads.to_xml(:include => :priority, :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @ads.to_json(:include => :priority, :except => NB_CONFIG['api_exclude_fields']) }
+      format.xml { render :xml => @ads.to_xml(:include => :idea, :except => NB_CONFIG['api_exclude_fields']) }
+      format.json { render :json => @ads.to_json(:include => :idea, :except => NB_CONFIG['api_exclude_fields']) }
     end    
   end
   
@@ -262,14 +262,14 @@ class UsersController < ApplicationController
     end    
     respond_to do |format|
       format.html
-      format.xml { render :xml => @points.to_xml(:include => [:priority,:other_priority], :except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @points.to_json(:include => [:priority,:other_priority], :except => NB_CONFIG['api_exclude_fields']) }
+      format.xml { render :xml => @points.to_xml(:include => [:idea,:other_idea], :except => NB_CONFIG['api_exclude_fields']) }
+      format.json { render :json => @points.to_json(:include => [:idea,:other_idea], :except => NB_CONFIG['api_exclude_fields']) }
     end    
   end
   
   def stratml
     @user = User.find(params[:id])
-    @page_title = tr("{user_name} priorities at {instance_name}", "controller/users", :user_name => @user.name.possessive, :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("{user_name} ideas at {instance_name}", "controller/users", :user_name => @user.name.possessive, :instance_name => tr(current_instance.name,"Name from database"))
     @tags = @user.issues(500)
     respond_to do |format|
       format.xml # show.html.erb
@@ -452,30 +452,30 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.js {
         render :update do |page|
-          page.replace_html 'your_priorities_container', :partial => "priorities/yours"  
+          page.replace_html 'your_ideas_container', :partial => "ideas/yours"
         end
       }
     end
   end
 
   def order
-    order = params[:your_priorities]
-    endorsements = Endorsement.find(:all, :conditions => ["id in (?)", params[:your_priorities]], :order => "position asc")
+    order = params[:your_ideas]
+    endorsements = Endorsement.find(:all, :conditions => ["id in (?)", params[:your_ideas]], :order => "position asc")
     order.each_with_index do |id, position|
       if id
         endorsement = endorsements.detect {|e| e.id == id.to_i }
         new_position = (((session[:endorsement_page]||1)*25)-25)+position + 1
         if endorsement and endorsement.position != new_position
           endorsement.insert_at(new_position)
-          endorsements = Endorsement.find(:all, :conditions => ["id in (?)", params[:your_priorities]], :order => "position asc")
+          endorsements = Endorsement.find(:all, :conditions => ["id in (?)", params[:your_ideas]], :order => "position asc")
         end
       end
     end
     respond_to do |format|
       format.js {
         render :update do |page|
-          page.replace_html 'your_priorities_container', :partial => "priorities/yours"  
-          #page.replace_html 'your_priorities_container', order.inspect
+          page.replace_html 'your_ideas_container', :partial => "ideas/yours"
+          #page.replace_html 'your_ideas_container', order.inspect
         end
       }
     end
@@ -507,7 +507,7 @@ class UsersController < ApplicationController
     redirect_to request.referer
   end
 
-  # this isn't actually used, but the current_user will endorse ALL of this user's priorities
+  # this isn't actually used, but the current_user will endorse ALL of this user's ideas
   def endorse
     if not logged_in?
       session[:endorse_user] = params[:id]
@@ -516,8 +516,8 @@ class UsersController < ApplicationController
     end
     @user = User.find(params[:id])
     for e in @user.endorsements.active
-      e.priority.endorse(current_user,request,current_sub_instance,@referral) if e.is_up?
-      e.priority.oppose(current_user,request,current_sub_instance,@referral) if e.is_down?
+      e.idea.endorse(current_user,request,current_sub_instance,@referral) if e.is_up?
+      e.idea.oppose(current_user,request,current_sub_instance,@referral) if e.is_down?
     end
     respond_to do |format|
       format.js { redirect_from_facebox(user_path(@user)) }        

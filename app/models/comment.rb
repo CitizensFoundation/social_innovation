@@ -47,10 +47,10 @@ class Comment < ActiveRecord::Base
   after_create :set_category
   
   def set_category
-    if self.activity.priority_id
-      self.category_name = self.activity.priority.category.name if self.activity.priority.category
+    if self.activity.idea_id
+      self.category_name = self.activity.idea.category.name if self.activity.idea.category
     elsif self.activity.point_id
-      self.category_name = self.activity.point.priority.category.name if self.activity.point.priority.category
+      self.category_name = self.activity.point.idea.category.name if self.activity.point.idea.category
     else
       self.category_name = tr('No category','search')
     end
@@ -70,10 +70,10 @@ class Comment < ActiveRecord::Base
       if self.activity.has_point? 
         Point.update_all("discussions_count = discussions_count + 1", "id=#{self.activity.point_id}")
       end
-      if self.activity.has_priority?
-        Priority.update_all("discussions_count = discussions_count + 1", "id=#{self.activity.priority_id}")
-        if self.activity.priority.attribute_present?("cached_issue_list")
-          for issue in self.activity.priority.issues
+      if self.activity.has_idea?
+        Idea.update_all("discussions_count = discussions_count + 1", "id=#{self.activity.idea_id}")
+        if self.activity.idea.attribute_present?("cached_issue_list")
+          for issue in self.activity.idea.issues
             issue.increment!(:discussions_count)
           end
         end        
@@ -102,10 +102,10 @@ class Comment < ActiveRecord::Base
       if self.activity.has_point? and self.activity.point
         self.activity.point.decrement!(:discussions_count)
       end
-      if self.activity.has_priority? and self.activity.priority
-        self.activity.priority.decrement!(:discussions_count)
-        if self.activity.priority.attribute_present?("cached_issue_list")
-          for issue in self.activity.priority.issues
+      if self.activity.has_idea? and self.activity.idea
+        self.activity.idea.decrement!(:discussions_count)
+        if self.activity.idea.attribute_present?("cached_issue_list")
+          for issue in self.activity.idea.issues
             issue.decrement!(:discussions_count)
           end
         end
@@ -139,8 +139,8 @@ class Comment < ActiveRecord::Base
   def parent_name 
     if activity.has_point?
       user.login + ' commented on ' + activity.point.name
-    elsif activity.has_priority?
-      user.login + ' commented on ' + activity.priority.name
+    elsif activity.has_idea?
+      user.login + ' commented on ' + activity.idea.name
     else
       user.login + ' posted a bulletin'
     end    
