@@ -47,8 +47,6 @@ class Instance < ActiveRecord::Base
 
   validates_presence_of     :tags_name
   validates_length_of       :tags_name, :maximum => 20
-#  validates_presence_of     :briefing_name
-#  validates_length_of       :briefing_name, :maximum => 20
   validates_presence_of     :currency_name
   validates_length_of       :currency_name, :maximum => 30
   validates_presence_of     :currency_short_name
