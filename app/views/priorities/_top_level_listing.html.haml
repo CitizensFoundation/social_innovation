@@ -9,26 +9,26 @@
             %td{:width => "20"}
               = image_tag("new/plus.png", :id=>"plus_for_#{priority.id}", :alt => "plus-icon", :class => "plus_sign")
               :javascript
-            jQuery("#plus_for_#{priority.id}").click(function () {
-                  var slide = jQuery("#points_overview_for_#{priority.id}");
-                  if (!slide.data("loaded")) {
-                      slide.load('#{points_overview_priority_url(priority)}');
-                      slide.data("loaded", true);
-											$('.border').css('border-bottom','none');
-                  } else {
-                      slide.slideToggle("slow");
-											$('.border').css('border-bottom','none');
-                  };
-              });
-            jQuery("#plus_for_#{priority.id}").toggle(
-              function () {
-                jQuery("#plus_for_#{priority.id}").attr("src", "#{image_path("new/minus.png")}");
-              },
-              function () {
-                jQuery("#plus_for_#{priority.id}").attr("src", "#{image_path("new/plus.png")}");
-              }
-            );
-                      - if defined? timeago
+                jQuery("#plus_for_#{priority.id}").click(function () {
+                      var slide = jQuery("#points_overview_for_#{priority.id}");
+                      if (!slide.data("loaded")) {
+                          slide.load('#{points_overview_priority_url(priority)}');
+                          slide.data("loaded", true);
+                                                $('.border').css('border-bottom','none');
+                      } else {
+                          slide.slideToggle("slow");
+                                                $('.border').css('border-bottom','none');
+                      };
+                  });
+                jQuery("#plus_for_#{priority.id}").toggle(
+                  function () {
+                    jQuery("#plus_for_#{priority.id}").attr("src", "#{image_path("new/minus.png")}");
+                  },
+                  function () {
+                    jQuery("#plus_for_#{priority.id}").attr("src", "#{image_path("new/plus.png")}");
+                  }
+                );
+            - if defined? timeago
               %td{:style => "width:50px"}
                 %table
                   %tr

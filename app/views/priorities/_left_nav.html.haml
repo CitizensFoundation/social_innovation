@@ -74,8 +74,12 @@
             %td{:align => "right", :style => "padding-top: 2px;"}= @charts.first.date_show
             %td
 .rss_feed
-  %a{:href => url_for activities_priority_url(@priority, :format => "rss")}= image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
-  %a{:href => url_for activities_priority_url(@priority, :format => "rss")}= tr("Activity feed", "view/priorities/_left_nav")
+  %a{:href => url_for(activities_priority_url(@priority, :format => "rss"))}
+    = image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
+  %a{:href => url_for(activities_priority_url(@priority, :format => "rss"))}
+    = tr("Activity feed", "view/priorities/_left_nav")
 .rss_feed
-  %a{:href => url_for comments_priority_url(@priority, :format => "rss")}= image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
-  %a{:href => url_for comments_priority_url(@priority, :format => "rss")}= tr("Discussions feed", "view/priorities/_left_nav")
+  %a{:href => url_for(comments_priority_url(@priority, :format => "rss"))}
+    = image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
+  %a{:href => url_for(comments_priority_url(@priority, :format => "rss"))}
+    = tr("Discussions feed", "view/priorities/_left_nav")

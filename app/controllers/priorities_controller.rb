@@ -9,6 +9,8 @@ class PrioritiesController < ApplicationController
                                              :opposed_top_points, :endorsed_top_points, :points_overview, :top_points, :discussions, :everyone_points ]
   before_filter :check_for_user, :only => [:yours, :network, :yours_finished, :yours_created]
 
+  before_filter :setup_filter_dropdown
+
   caches_action :index, :top, :top_24hr, :top_7days, :top_30days,
                 :ads, :controversial, :rising, :newest, :finished, :show,
                 :top_points, :discussions, :endorsers, :opposers, :activities,
@@ -96,19 +98,6 @@ class PrioritiesController < ApplicationController
       format.json { render :json => @priorities.to_json(:except => NB_CONFIG['api_exclude_fields']) }
     end
   end  
-
-  def by_priority_processes
-    @page_title = tr("Priorities at {instance_name}", "controller/priorities", :instance_name => tr(current_instance.name,"Name from database"))
-    @priorities = Priority.find(:all, :order=>"count(priority_processes)", :include=>:priority_process).paginate :page => params[:page], :per_page => params[:per_page]
-    get_endorsements
-    respond_to do |format|
-      format.html { render :action => "list" }
-      format.rss { render :action => "list" }
-      format.js { render :layout => false, :text => "document.write('" + js_help.escape_javascript(render_to_string(:layout => false, :template => 'priorities/list_widget_small')) + "');" }
-      format.xml { render :xml => @priorities.to_xml(:except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @priorities.to_json(:except => NB_CONFIG['api_exclude_fields']) }
-    end
-  end
 
   # GET /priorities/network
   def network
@@ -404,7 +393,6 @@ class PrioritiesController < ApplicationController
   # GET /priorities/1
   def show
     @page_title = @priority.name
-    @priority_process = @priority.priority_process_root_node
     @show_only_last_process = false
     @point_value = 0
     @points_top_up = @priority.points.published.by_helpfulness.up_value.five
@@ -1106,5 +1094,24 @@ class PrioritiesController < ApplicationController
         access_denied and return
       end
     end
-    
+
+  def setup_menu_items
+    @items = Hash.new
+    @items[1]=[tr("Top All", "view/priorities/_browse_nav"), top_priorities_url]
+    @items[2]=[tr("Top Active 24 hours", "view/priorities/_browse_nav"), top_24hr_priorities_url]
+    @items[3]=[tr("Top Active 7 days", "view/priorities/_browse_nav"), top_7days_priorities_url]
+    @items[4]=[tr("Top Active 30 days", "view/priorities/_browse_nav"), top_30days_priorities_url]
+    @items[6]=[tr("New", "view/priorities/_browse_nav"), newest_priorities_url]
+    @items[8]=[tr("Random", "view/priorities/_browse_nav"), random_priorities_url]
+    @items[9]=[tr("In Progress", "view/priorities/_browse_nav"), finished_priorities_url]
+    @items[10]=[tr("Controversial", "view/priorities/_browse_nav"), controversial_priorities_url]
+    @items[11]=[tr("Ads", "view/priorities/_browse_nav"), ads_priorities_url]
+    @items[12]=[tr("Rising", "view/priorities/_browse_nav"), rising_priorities_url]
+    @items[13]=[tr("Falling", "view/priorities/_browse_nav"), rising_priorities_url]
+    if logged_in?
+      @items[14]=[tr("Your network", "view/priorities/_browse_nav"), network_priorities_url]
+      @items[15]=[tr("Yours", "view/priorities/_browse_nav"), yours_priorities_url]
+    end
+    @items
+  end
 end

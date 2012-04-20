@@ -32,11 +32,14 @@ require 'activity_classes'
 
 Instance.current = i
 
+require 'activity'
+
 u = User.new
 u.login="admin"
 u.password="admin"
 u.first_name="Administrator"
 u.last_name="Admin"
+u.is_admin = true
 u.password_confirmation="admin"
 u.email="youremail@yourdomain.com"
 u.save(:validation=>false)

@@ -79,4 +79,6 @@ module SocialInnovation
 
   require 'load_windows_contacts'
   require 'load_yahoo_contacts'
+
+  require 'diff'
 end

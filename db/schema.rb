@@ -357,6 +357,22 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.string   "logo_content_type",          :limit => 30
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.string   "top_banner_file_name"
+    t.string   "top_banner_content_type",          :limit => 30
+    t.integer  "top_banner_file_size"
+    t.datetime "top_banner_updated_at"
+    t.string   "menu_strip_file_name"
+    t.string   "menu_strip_content_type",          :limit => 30
+    t.integer  "menu_strip_file_size"
+    t.datetime "menu_strip_updated_at"
+    t.string   "menu_strip_side_file_name"
+    t.string   "menu_strip_side_content_type",          :limit => 30
+    t.integer  "menu_strip_side_file_size"
+    t.datetime "menu_strip_side_updated_at"
+    t.string   "add_priority_button_file_name"
+    t.string   "add_priority_button_content_type",          :limit => 30
+    t.integer  "add_priority_button_file_size"
+    t.datetime "add_priority_button_updated_at"
     t.string   "default_tags"
     t.string   "custom_tag_checkbox"
     t.string   "custom_tag_dropdown_1"
@@ -497,6 +513,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.integer  "position",                                :default => 0,     :null => false
     t.integer  "user_id"
     t.string   "name",                     :limit => 250
+    t.text     "description"
     t.integer  "endorsements_count",                      :default => 0,     :null => false
     t.string   "status",                   :limit => 50
     t.string   "ip_address",               :limit => 16

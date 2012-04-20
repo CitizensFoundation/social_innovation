@@ -8,10 +8,7 @@
   = render :partial => "comments/show", :locals => {:comment => comments_without_abuse.first} if comments_without_abuse.first
   - if comments_without_abuse.length > 10
     .comment_more
-  - # if activity.priority and activity.priority.class==Priority
-  - #Rails.logger.info activity.priority
     = link_to tr("More", "view/activities/_comments")+" (#{(comments_without_abuse.length-2).to_s})", activity_comments_url(activity), :class => "priority_name_link"
-  - # end
   - elsif comments_without_abuse.length > 2
     .comment_more
       = link_to tr("More", "view/activities/_comments")+" (#{(comments_without_abuse.length-2).to_s})", more_activity_comments_url(activity), |

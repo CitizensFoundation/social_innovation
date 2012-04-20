@@ -19,6 +19,16 @@
     = f.text_field :name, :size => 60, :maxlength => 60, :autocomplete =>"off"
   %br/
   %br/
+  .field
+    .field_label.form_header
+      = tr("Explain your point.", "view/priorities/_form")
+      %span.characters
+        %span#pointContentDown
+        = tr("characters left", "view/priorities/_form")
+      %span.red *
+    .field_box
+      = f.text_area :description, :id => 'pointContent', :button => 'submit', :rows => 5, :cols => 60, :maxLength => 500
+  %br/
   - if current_sub_instance and current_sub_instance.required_tags
     #priority_category
       .form_header

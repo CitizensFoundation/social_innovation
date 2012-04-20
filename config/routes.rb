@@ -279,16 +279,6 @@ SocialInnovation::Application.routes.draw do
 
   resource :open_id
 
-  resources :priority_processes
-  resources :process_speech_master_videos
-  resources :process_speech_videos
-  resources :process_discussions
-  resources :process_documents
-  resources :process_types
-  resources :process_document_elements
-  resources :process_documents
-  resources :process_document_types
-  resources :process_document_states
   match '/' => 'portal#index'
   match '/activate/:activation_code' => 'users#activate', :as => :activate, :activation_code => nil
   match '/signup' => 'users#new', :as => :signup

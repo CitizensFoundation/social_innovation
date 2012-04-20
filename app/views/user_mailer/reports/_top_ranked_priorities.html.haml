@@ -15,6 +15,4 @@
           \&middot; #{link_to tr("New point", "view/priorities/_endorsement_count").downcase, new_priority_point_path(priority)+"?support=1" , :title => tr("Can you make a compelling point for or against this priority in less than 500 characters?", "view/priorities/_endorsement_count")}
         - if priority.discussions_count > 0
           \&middot; #{link_to tr("{count} discussions", "view/priorities/_endorsement_count", :count => priority.discussions_count), priority.show_discussion_url}
-        - if priority.priority_processes.count > 0
-          \&middot; #{priority.latest_priority_process_at}
   %br/

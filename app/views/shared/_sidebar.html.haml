@@ -6,7 +6,7 @@
     - else
       .reykjavik_icon
         %a{:href => "http://www.reykjavik.is"}= image_tag("/assets/new/reykjavik_icon.png", :alt => "www.reykjavik.is")
-  - else
+  - elsif  Instance.current.layout == "your_priorities"
     .yrpri_icon
       %a{:href => "http://yrpri.org"}= image_tag("/assets/logos/default.gif", :alt => "Your Priorities Worldwide")
   = render :partial => "shared/sub_instance_large_flag"

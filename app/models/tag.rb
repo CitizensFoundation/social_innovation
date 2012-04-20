@@ -11,8 +11,7 @@ class Tag < ActiveRecord::Base
   scope :with_priorities, :conditions => "tags.priorities_count > 0"
   
   scope :most_priorities, :conditions => "tags.priorities_count > 0", :order => "tags.priorities_count desc"
-  scope :most_webpages, :conditions => "tags.webpages_count > 0", :order => "tags.webpages_count desc"  
-  scope :most_feeds, :conditions => "tags.feeds_count > 0", :order => "tags.feeds_count desc"   
+  scope :most_feeds, :conditions => "tags.feeds_count > 0", :order => "tags.feeds_count desc"
 
   scope :item_limit, lambda{|limit| {:limit=>limit}}
 
@@ -21,7 +20,6 @@ class Tag < ActiveRecord::Base
   has_many :activities, :dependent => :destroy
   has_many :taggings
   has_many :priorities, :through => :taggings, :source => :priority, :conditions => "taggings.taggable_type = 'Priority'"
-  has_many :webpages, :through => :taggings, :source => :webpage, :conditions => "taggings.taggable_type = 'Webpage'"
   has_many :feeds, :through => :taggings, :source => :feed, :conditions => "taggings.taggable_type = 'Feed'"
                             
   belongs_to :top_priority, :class_name => "Priority", :foreign_key => "top_priority_id"

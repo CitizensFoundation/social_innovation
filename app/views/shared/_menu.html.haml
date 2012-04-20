@@ -27,23 +27,23 @@
       %li.tab0
         %span.tab_header= link_to tr("Home","Menu system"), :controller => "portal"
       %li.tab2
-        %span.tab_header= link_to tr("Priorities", "view/shared/_menu"), :controller => "priorities", :action=>"top_24hr"
+        %span.tab_header= link_to tr("Ideas", "view/shared/_menu"), :controller => "priorities", :action=>"index"
       %li.tab3
-        %span.tab_header= link_to tr("Points", "view/shared/_menu"), :controller => "points"
+        %span.tab_header= link_to tr("Debate", "view/shared/_menu"), :controller => "points"
       - if logged_in?
+        %li.tab4
+          %span.tab_header= link_to tr("News", "view/shared/_menu"), :controller => "news", :action=>"top"
+        %li.tab1
+          %span.tab_header= link_to tr("Categories","Menu system"), :controller => "issues"
         %li.tab5
           %span.tab_header= link_to tr("People", "view/shared/_menu"), following_user_contacts_path(current_user)
-        %li.tab1
-          %span.tab_header= link_to tr("Categories","Menu system"), :controller => "issues"
+      - else
         %li.tab4
           %span.tab_header= link_to tr("News", "view/shared/_menu"), :controller => "news", :action=>"top"
-      - else
+        %li.tab1
+          %span.tab_header= link_to tr("Categories","Menu system"), :controller => "issues"
         %li.tab5
           %span.tab_header= link_to tr("People", "view/shared/_menu"), :controller => "network"
-        %li.tab1
-          %span.tab_header= link_to tr("Categories","Menu system"), :controller => "issues"
-        %li.tab4
-          %span.tab_header= link_to tr("News", "view/shared/_menu"), :controller => "news", :action=>"top"
       - if logged_in? and current_user.is_admin?
         %li.tab6.mega
           %span.tab_header
@@ -81,8 +81,7 @@
                 \&middot; #{link_to tr("Colors", "view/shared/_menu"), color_schemes_url}
 - if nav == 1
   = render :partial => "issues/nav"
-- elsif nav == 2 and not ["show","discussions","endorsers","opposers",
-- "top_points","activities","new"].include?(action_name)
+- elsif nav == 2 and not ["show","discussions","endorsers","opposers","top_points","activities","new"].include?(action_name)
   = render :partial => "priorities/browse_nav"
 - elsif nav == 3 and not ["new"].include?(action_name)
   = render :partial => "briefing/nav"

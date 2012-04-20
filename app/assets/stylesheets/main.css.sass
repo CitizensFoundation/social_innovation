@@ -2909,3 +2909,67 @@ span.priority_add a,span.priority_add a:hover
 ul#menu li.tab1 .tab_header,body.news-top ul#menu_sub li.tab5 .tab_header,ul#menu_sub li.tab10 .tab_header,body.briefing-contributors ul#menu_sub li.tab4 .tab_header,body.Cpoints ul#menu_sub li.tab4 .tab_header,body.briefing-points ul#menu_sub li.tab4 .tab_header,ul#menu_sub li.tab7 .tab_header,body.news-capital ul#menu_third li.tab2 .tab_header,body.briefing-points ul#menu_third li.tab1 .tab_header,ul#menu_third li.tab4 .tab_header,ul#menu_third li.tab7 .tab_header,ul#menu_third li.tab6 .tab_header,ul#menu li.mega .tab_header
   background-image: none
 
+ul, li
+  margin: 0
+  border: 0
+  padding: 0
+  list-style: none
+
+#nav_sub
+  font-size: 11px
+  color: #3b5d14
+  background: #90b557
+  font-weight: bold
+  padding: 4px
+  height: 30px
+  .menu li
+    background: url(lm.png) left top no-repeat
+    height: 30px
+    float: left
+    margin-right: 10px
+    a
+      color: #3b5d14
+      text-decoration: none
+      padding: 0 10px
+      height: 30px
+      line-height: 30px
+      display: block
+      float: left
+      padding: 0 26px 0 10px
+      background: url(rm.png) right top no-repeat
+      &:hover
+        color: #666666
+
+#nav_sub
+  ul .submenu
+    border: solid 1px #c9dea1
+    border-top: none
+    background: #FFFFFF
+    position: relative
+    top: 4px
+    width: 150px
+    padding: 6px 0
+    clear: both
+    z-index: 2
+    display: none
+    li
+      background: none
+      display: block
+      float: right
+      margin: 0 6px
+      border: 0
+      height: auto
+      line-height: normal
+      border-top: solid 1px #DEDEDE
+  .submenu li a
+    background: none
+    display: block
+    float: right
+    padding: 6px 6px
+    margin: 0
+    border: 0
+    height: auto
+    color: #105cbe
+    line-height: normal
+    &:hover
+      background: #e3edef

@@ -94,8 +94,6 @@ class Priority < ActiveRecord::Base
   has_many :changes_with_deleted, :class_name => "Change", :order => "updated_at desc", :dependent => :destroy
   has_many :priority_status_change_logs, dependent: :destroy
 
-  has_many :priority_processes
-
   attr_accessor :priority_type
 
   belongs_to :change # if there is currently a pending change, it will be attached
@@ -159,16 +157,9 @@ class Priority < ActiveRecord::Base
     state :abusive
   end
 
-  cattr_reader :per_page
-  @@per_page = 25
-  
   def to_param
     "#{id}-#{name.parameterize_full}"
   end  
-  
-  def priority_process_root_node
-    PriorityProcess.find :first, :conditions=>"root_node = 1 AND priority_id = #{self.id}"
-  end
   
   def content
     self.name

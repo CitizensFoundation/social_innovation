@@ -446,8 +446,6 @@ class ActivityBulletinNew < Activity
   def name
     if point
       tr("{user_name} posted a bulletin to {discussion_name}", "model/activity", :user_name => user.name, :discussion_name => point.name)
-    elsif document
-      tr("{user_name} posted a bulletin to {discussion_name}", "model/activity", :user_name => user.name, :discussion_name => document.name)
     elsif priority
       tr("{user_name} posted a bulletin to {discussion_name}", "model/activity", :user_name => user.name, :discussion_name => priority.name)
     else
@@ -842,120 +840,6 @@ end
 class ActivityPriorityStatusUpdate < Activity
   def name
     tr("{priority_name}'s status was updated", "model/activity", priority_name: priority.name)
-  end
-end
-
-class ActivityDocumentNew < Activity
-
-  def name
-    tr("{user_name} added {point_name} to {priority_name}", "model/activity", :user_name => user.name, :point_name => document.name, :priority_name => priority.name)
-  end
-
-end
-
-class ActivityDocumentDeleted < Activity
-  def name
-    tr("{user_name} deleted {point_name}", "model/activity", :user_name => user.name, :point_name => document.name)
-  end
-end
-
-class ActivityDocumentRevisionContent < Activity
-  def name
-    tr("{user_name} revised {point_name}", "model/activity", :user_name => user.name, :point_name => document.name)
-  end
-end
-
-class ActivityDocumentRevisionName < Activity
-  def name
-    tr("{user_name} changed the point's title to {point_name}", "model/activity", :user_name => user.name, :point_name => document.name)
-  end
-end
-
-class ActivityDocumentRevisionSupportive < Activity
-  def name
-    tr("{user_name} revised {point_name} to indicate it's supportive of {priority_name}", "model/activity", :user_name => user.name, :point_name => document.name, :priority_name => priority.name)
-  end
-end
-
-class ActivityDocumentRevisionNeutral < Activity
-  def name
-    tr("{user_name} revised {point_name} to indicate it's neutral on {priority_name}", "model/activity", :user_name => user.name, :point_name => document.name, :priority_name => priority.name)
-  end
-end
-
-class ActivityDocumentRevisionOpposition < Activity
-  def name
-    tr("{user_name} revised {point_name} to indicate it's opposed to {priority_name}", "model/activity", :user_name => user.name, :point_name => document.name, :priority_name => priority.name)
-  end
-end
-
-class ActivityDocumentHelpful < Activity
-  def name
-    tr("{user_name} marked {point_name} helpful", "model/activity", :user_name => user.name, :point_name => document.name)
-  end
-end
-
-class ActivityDocumentUnhelpful < Activity
-  def name
-    tr("{user_name} marked {point_name} unhelpful", "model/activity", :user_name => user.name, :point_name => document.name)
-  end
-end
-
-class ActivityDocumentHelpfulDelete < Activity
-  def name
-    tr("{user_name} no longer finds {point_name} helpful", "model/activity", :user_name => user.name, :point_name => document.name)
-  end
-end
-
-class ActivityDocumentUnhelpfulDelete < Activity
-  def name
-    tr("{user_name} no longer finds {point_name} unhelpful", "model/activity", :user_name => user.name, :point_name => document.name)
-  end
-end
-
-class ActivityCapitalDocumentHelpfulEveryone < Activity
-  def name
-    if capital.amount > 0
-      tr("{user_name} earned {capital}{currency_short_name} because both endorsers and opposers found {point_name} helpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
-    elsif capital.amount < 0
-      tr("{user_name} lost {capital}{currency_short_name} because both endorsers and opposers found {point_name} unhelpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
-    end
-  end
-end
-
-class ActivityCapitalDocumentHelpfulEndorsers < Activity
-  def name
-    if capital.amount > 0
-      tr("{user_name} earned {capital}{currency_short_name} because endorsers found {point_name} helpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
-    elsif capital.amount < 0
-      tr("{user_name} lost {capital}{currency_short_name} because endorsers found {point_name} unhelpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
-    end
-  end
-end
-
-class ActivityCapitalDocumentHelpfulOpposers < Activity
-  def name
-    if capital.amount > 0
-      tr("{user_name} earned {capital}{currency_short_name} because opposers found {point_name} helpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
-    elsif capital.amount < 0
-      tr("{user_name} lost {capital}{currency_short_name} because opposers found {point_name} unelpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
-    end
-  end
-end
-
-class ActivityCapitalDocumentHelpfulUndeclareds < Activity
-  def name
-    if capital.amount > 0
-      tr("{user_name} earned {capital}{currency_short_name} because undeclareds found {point_name} helpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
-    elsif capital.amount < 0
-      tr("{user_name} lost {capital}{currency_short_name} because undeclares found {point_name} unhelpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
-    end
-  end
-end
-
-class ActivityCapitalDocumentHelpfulDeleted < Activity
-  def name
-    tr("{user_name} lost {capital}{currency_short_name} for deleting {point_name} because people found it helpful", "model/activity", :user_name => user.name, :point_name => document.name, :capital => capital.amount.abs, :currency_short_name => Instance.current.currency_short_name)
   end
 end
 

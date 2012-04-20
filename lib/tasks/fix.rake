@@ -113,7 +113,6 @@ namespace :fix do
     connection.execute("DELETE FROM points;")
     connection.execute("DELETE FROM priorities;")
     connection.execute("DELETE FROM priority_charts;")
-    connection.execute("DELETE FROM priority_processes;")
     puts "3"
     connection.execute("DELETE FROM priority_status_change_logs;")
     connection.execute("DELETE FROM process_discussions;")
@@ -173,15 +172,7 @@ namespace :fix do
     connection.execute("OPTIMIZE TABLE points;")
     connection.execute("OPTIMIZE TABLE priorities;")
     connection.execute("OPTIMIZE TABLE priority_charts;")
-    connection.execute("OPTIMIZE TABLE priority_processes;")
     connection.execute("OPTIMIZE TABLE priority_status_change_logs;")
-    connection.execute("OPTIMIZE TABLE process_discussions;")
-    connection.execute("OPTIMIZE TABLE process_document_elements;")
-    connection.execute("OPTIMIZE TABLE process_document_states;")
-    connection.execute("OPTIMIZE TABLE process_document_types;")
-    connection.execute("OPTIMIZE TABLE process_documents;")
-    connection.execute("OPTIMIZE TABLE process_speech_master_videos;")
-    connection.execute("OPTIMIZE TABLE process_speech_videos;")
     connection.execute("OPTIMIZE TABLE process_types;")
     puts "8"
     connection.execute("OPTIMIZE TABLE profiles;")

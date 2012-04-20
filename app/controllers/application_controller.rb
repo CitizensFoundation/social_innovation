@@ -172,65 +172,23 @@ class ApplicationController < ActionController::Base
         end
       end
     end
-    if request.host.include?("betraisland")
-      if request.subdomains.size == 0 or request.host.include?(current_instance.domain_name) or request.subdomains.first == 'www'
-        if (controller_name=="home" and action_name=="index") or
-           Rails.env.development? or
-           request.host.include?("betraisland") or
-           self.class.name.downcase.include?("tr8n") or
-           ["endorse","oppose","authorise_google","windows","yahoo"].include?(action_name)
-          @current_sub_instance = nil
-          SubInstance.current = @current_sub_instance
-          Rails.logger.info("No sub_instance")
-          return nil
-        else
-          redirect_to "/welcome"
-        end
-      else
-        @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
+    if request.subdomains.size == 0 or request.host == current_instance.base_url or request.subdomains.first == 'www'
+      if (controller_name=="home" and action_name=="index") or
+         Rails.env.development? or
+         self.class.name.downcase.include?("tr8n") or
+         ["endorse","oppose","authorise_google","windows","yahoo"].include?(action_name)
+        @current_sub_instance = nil
         SubInstance.current = @current_sub_instance
-        Rails.logger.info("SubInstance: #{@current_sub_instance.short_name}")
-        return @current_sub_instance
-      end
-    elsif request.host.include?("betrireykjavik")
-      if request.subdomains.size == 0 or request.subdomains.first == 'www'
-        if (controller_name=="home" and action_name=="index") or
-           Rails.env.development? or
-           request.host.include?("betrireykjavik") or
-           self.class.name.downcase.include?("tr8n") or
-           ["endorse","oppose","authorise_google","windows","yahoo"].include?(action_name)
-          @current_sub_instance = nil
-          SubInstance.current = @current_sub_instance
-          Rails.logger.info("No sub_instance")
-          return nil
-        else
-          redirect_to "/welcome"
-        end
+        Rails.logger.info("No sub_instance")
+        return nil
       else
-        @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
-        SubInstance.current = @current_sub_instance
-        Rails.logger.info("SubInstance: #{@current_sub_instance.short_name}")
-        return @current_sub_instance
+        redirect_to "/welcome"
       end
     else
-       if request.subdomains.size == 0 or request.host == current_instance.base_url or request.subdomains.first == 'www'
-        if (controller_name=="home" and action_name=="index") or
-           Rails.env.development? or
-           self.class.name.downcase.include?("tr8n") or
-           ["endorse","oppose","authorise_google","windows","yahoo"].include?(action_name)
-          @current_sub_instance = nil
-          SubInstance.current = @current_sub_instance
-          Rails.logger.info("No sub_instance")
-          return nil
-        else
-          redirect_to "/welcome"
-        end
-      else
-        @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
-        SubInstance.current = @current_sub_instance
-        Rails.logger.info("SubInstance: #{@current_sub_instance.short_name}")
-        return @current_sub_instance
-      end
+      @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
+      SubInstance.current = @current_sub_instance
+      Rails.logger.info("SubInstance: #{@current_sub_instance.short_name}")
+      return @current_sub_instance
     end
   end
   
@@ -503,7 +461,41 @@ class ApplicationController < ActionController::Base
   class JavaScriptHelper
     include Singleton
     include ActionView::Helpers::JavaScriptHelper
-  end  
+  end
+
+  def setup_filter_dropdown
+    setup_menu_items
+    @sub_menu_items = @items
+    Rails.logger.debug action_name
+
+    if action_name == "index"
+      Rails.logger.debug "index"
+      Rails.logger.debug "cookie #{cookies["selected_#{controller_name}_filter_id"]}"
+      if cookies["selected_#{controller_name}_filter_id"] and @sub_menu_items[cookies["selected_#{controller_name}_filter_id"]]
+        Rails.logger.debug "cookie"
+        redirect_to @sub_menu_items[cookies["selected_#{controller_name}_filter_id"]][1]
+        return false
+      else
+        Rails.logger.debug "no cookie"
+        redirect_to @sub_menu_items[1][1]
+        return false
+      end
+    end
+
+    selected_sub_menu_item_id, selected_sub_menu_item = find_menu_item_by_url(request.url)
+    @selected_sub_menu_name = selected_sub_menu_item[0]
+    Rails.logger.debug "Saved submenu id #{selected_sub_menu_item_id}"
+    @selected_menu_item_id = cookies.permanent["selected_#{controller_name}_filter_id"] = selected_sub_menu_item_id
+  end
+
+  def find_menu_item_by_url(url)
+    @items.each do |id,item|
+      if item[1]==url
+        return id,item
+        break
+      end
+    end
+  end
 end
 
 module FaceboxRender

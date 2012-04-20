@@ -54,9 +54,6 @@
             = relationship_sentence(relationships)
           .priority_actions
             = render :partial => "priorities/action_show", :locals => {:priority => other_priority, :endorsement => endorsement }
-    - if @priority_process
-      / <haml:loud> render :partial =&amp;gt; &amp;quot;process_speech_master_videos/latest_video_discussions&amp;quot; </haml:loud>
-      = render :partial => "priority_processes/templates/#{@priority_process.process_type.template_name}"
     - if logged_in?
       = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
     - else

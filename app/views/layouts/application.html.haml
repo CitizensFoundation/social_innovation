@@ -7,7 +7,6 @@
     = render :partial => "shared/head"
     = render :partial => "shared/javascripts"
     = render :partial => "shared/css"
-    = render :partial => "shared/priority_processes_head" if controller_name.index("process")
     - if controller_name == "users"
       = stylesheet_link_tag "fb_invite_hack"
     - if ["users","sessions"].include?(controller_name)
@@ -22,7 +21,7 @@
       #header
         %table
           %tr
-            %td= render :partial => "shared/branding/your_priorities"
+            %td= render :partial => "shared/branding/dynamic"
             %td= render :partial => "ads/pick"
       #contentwrap
         = render :partial => "shared/menu"
@@ -35,4 +34,3 @@
     = render :partial => "shared/analytics"
     = render :partial => "shared/facebook_footer"
     = render :partial => "shared/google_translate"
-    / <haml:loud> h(controller.controller_name) </haml:loud> <haml:loud> h(controller.action_name) </haml:loud>
