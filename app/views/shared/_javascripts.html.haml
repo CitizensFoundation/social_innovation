@@ -5,6 +5,7 @@
   = javascript_include_tag "endless_scrolling_activity.js"
 - elsif ["ideas"].include?(controller_name) and action_name.include?("show")
   = javascript_include_tag "endless_scrolling_activity_idea_show.js"
+= javascript_include_tag "/javascripts/ckeditor/ckeditor.js"
 :javascript
   jQuery(document).ready(function() {
     jQuery("input#idea_name").DefaultValue("#{escape_javascript(current_instance.prompt)}");

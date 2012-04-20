@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/aaronchi/jquery-rjs.git
-  revision: d4dfdba6ede29e2092af3f4cb9065b2e3520891e
-  specs:
-    jquery-rjs (0.1.1)
-      jquery-rails
-      rails (~> 3.1)
-
-GIT
   remote: git://github.com/benders/twitter-auth.git
   revision: 2e2327d460800e4dd59c8618d3db727336937306
   branch: rails_3
@@ -14,6 +6,14 @@ GIT
     twitter-auth (0.1.22)
       ezcrypto (>= 0.7.2)
       oauth (>= 0.3.1)
+
+GIT
+  remote: git://github.com/bikeexchange/jquery-rjs.git
+  revision: d30b959e133f4457cad6452885638cc55b2b70f7
+  specs:
+    jquery-rjs (0.1.1)
+      jquery-rails
+      rails (~> 3.2)
 
 GIT
   remote: git://github.com/freelancing-god/thinking-sphinx.git
