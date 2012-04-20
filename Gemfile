@@ -40,7 +40,7 @@ gem 'will_filter'
 gem 'tr8n', :git => "git://github.com/rbjarnason/tr8n.git"
 gem 'workflow'
 gem "airbrake"
-gem 'jquery-rjs', :git => "git://github.com/aaronchi/jquery-rjs.git"
+gem 'jquery-rjs', :git => "git://github.com/bikeexchange/jquery-rjs.git"
 gem 'pry-rails'
 gem 'awesome_print'
 
@@ -81,7 +81,6 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
 end
 
-gem 'jquery-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
