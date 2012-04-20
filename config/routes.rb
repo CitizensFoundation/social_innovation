@@ -279,7 +279,7 @@ SocialInnovation::Application.routes.draw do
 
   resource :open_id
 
-  match '/' => 'portal#index'
+  match '/' => 'ideas#index'
   match '/activate/:activation_code' => 'users#activate', :as => :activate, :activation_code => nil
   match '/signup' => 'users#new', :as => :signup
   match '/login' => 'sessions#new', :as => :login

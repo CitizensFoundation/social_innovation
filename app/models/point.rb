@@ -83,7 +83,7 @@ class Point < ActiveRecord::Base
                                                :too_short => tr("please enter more than 5 characters", "model/point")
     #validates_uniqueness_of :name
   # this is actually just supposed to be 500, but bumping it to 520 because the javascript counter doesn't include carriage returns in the count, whereas this does.
-  validates_length_of :content, :within => 5..520, :too_long => tr("has a maximum of 500 characters", "model/point"), 
+  validates_length_of :content, :within => 5..1000, :too_long => tr("has a maximum of 500 characters", "model/point"),
                                                    :too_short => tr("please enter more than 5 characters", "model/point")
 
   after_create :on_published_entry

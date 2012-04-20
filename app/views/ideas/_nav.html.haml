@@ -31,10 +31,6 @@
         %li.tab8
           %span.tab_header
             = link_to tr("Buy an ad", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
-      - unless @idea.idea_processes.empty?
-        %li.tab9
-          %span.tab_header
-            = link_to tr("Processes", "view/ideas/_nav"), :controller=>"idea_processes", :action=>"show_all_for_idea", :id=>@idea
       %li.tab12.mega
         %span.tab_header.action
           = link_to tr("Action", "view/ideas/_nav"), new_idea_point_path(@idea)

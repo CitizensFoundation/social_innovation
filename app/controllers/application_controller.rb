@@ -483,9 +483,11 @@ class ApplicationController < ActionController::Base
     end
 
     selected_sub_menu_item_id, selected_sub_menu_item = find_menu_item_by_url(request.url)
-    @selected_sub_menu_name = selected_sub_menu_item[0]
-    Rails.logger.debug "Saved submenu id #{selected_sub_menu_item_id}"
-    @selected_menu_item_id = cookies.permanent["selected_#{controller_name}_filter_id"] = selected_sub_menu_item_id
+    if selected_sub_menu_item
+      @selected_sub_menu_name = selected_sub_menu_item[0]
+      Rails.logger.debug "Saved submenu id #{selected_sub_menu_item_id}"
+      @selected_menu_item_id = cookies.permanent["selected_#{controller_name}_filter_id"] = selected_sub_menu_item_id
+    end
   end
 
   def find_menu_item_by_url(url)

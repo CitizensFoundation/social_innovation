@@ -116,8 +116,12 @@ class Idea < ActiveRecord::Base
     end
   end
     
-  validates_length_of :name, :within => 5..60, :too_long => tr("has a maximum of 60 characters", "model/point"), 
-                                               :too_short => tr("please enter more than 5 characters", "model/point")
+  validates_length_of :name, :within => 5..60, :too_long => tr("has a maximum of 60 characters", "model/idea"),
+                                               :too_short => tr("please enter more than 5 characters", "model/idea")
+
+  validates_length_of :description, :within => 5..300, :too_long => tr("has a maximum of 300 characters", "model/idea"),
+                                                       :too_short => tr("please enter more than 5 characters", "model/idea")
+
   validates_uniqueness_of :name, :if => Proc.new { |idea| idea.status == 'published' }
   validates :category_id, :presence => true
 

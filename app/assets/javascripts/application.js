@@ -68,6 +68,7 @@ jQuery(document).ready(function() {
 	
 	jQuery("abbr[class*=timeago]").timeago();	
 	jQuery("#pointContent").NobleCount('#pointContentDown',{ on_negative: 'go_red', on_positive: 'go_green', max_chars: 500 });
+    jQuery("#ideaContent").NobleCount('#ideaContentDown',{ on_negative: 'go_red', on_positive: 'go_green', max_chars: 300 });
 	jQuery("input#idea_name, input#change_new_idea_name, input#point_other_idea_name, input#revision_other_idea_name, input#right_idea_box").autocomplete("/ideas.js");
 	jQuery("input#user_login_search").autocomplete("/users.js");
 	jQuery('#bulletin_content, #blurb_content, #message_content, #document_content, #email_template_content, #page_content').autoResize({extraSpace : 20})

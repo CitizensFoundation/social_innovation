@@ -21,13 +21,13 @@
   %br/
   .field
     .field_label.form_header
-      = tr("Explain your point.", "view/ideas/_form")
+      = tr("Explain your idea.", "view/ideas/_form")
       %span.characters
-        %span#pointContentDown
+        %span#ideaContentDown
         = tr("characters left", "view/ideas/_form")
       %span.red *
     .field_box
-      = f.text_area :description, :id => 'pointContent', :button => 'submit', :rows => 5, :cols => 60, :maxLength => 500
+      = f.text_area :description, :id => 'ideaContent', :button => 'submit', :rows => 5, :cols => 60, :maxLength => 300
   %br/
   - if current_sub_instance and current_sub_instance.required_tags
     #idea_category
@@ -69,12 +69,6 @@
         - Instance.current.default_tags_checkbox.split(",").each_with_index do |special_tag, i|
           = check_box_tag "special_checkbox_tag_#{i}", special_tag
           %span.Chapter_name_2= special_tag
-    %br/
-    .form_header
-      = tr("Write your own categories, seperated by comma", "views/ideas/form")
-    %span.custom_tag
-      = text_field_tag :custom_tags, "", :maxlength => 200
-    %br/
     %br/
   %br/
   .form_header
