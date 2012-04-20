@@ -4,7 +4,7 @@ class UserMailer < ActionMailer::Base
 
   # so DelayedJob will know how to make absolute urls
   def url_options
-    { host: Government.current.domain_name }.merge(super)
+    { host: Instance.current.domain_name }.merge(super)
   end
 
   def welcome(user)
@@ -22,7 +22,7 @@ class UserMailer < ActionMailer::Base
   end
 
   def lost_or_gained_capital(user, activity, point_difference)
-    @government = Government.current
+    @instance = Instance.current
     @user = user
     @activity = activity
     @point_difference = point_difference
@@ -31,14 +31,14 @@ class UserMailer < ActionMailer::Base
     attachments.inline['logo.png'] = get_conditional_logo
 
     if point_difference > 0
-      subject = tr('You just gained {points} social point(s) at {government_name}', "email", points: point_difference.abs, :government_name => tr(Government.current.name,"Name from database"))
+      subject = tr('You just gained {points} social point(s) at {instance_name}', "email", points: point_difference.abs, :instance_name => tr(Instance.current.name,"Name from database"))
     else
-      subject = tr('You just lost {points} social point(s) at {government_name}', "email", points: point_difference.abs, :government_name => tr(Government.current.name,"Name from database"))
+      subject = tr('You just lost {points} social point(s) at {instance_name}', "email", points: point_difference.abs, :instance_name => tr(Instance.current.name,"Name from database"))
     end
 
     mail to:       recipient,
-         reply_to: Government.current.admin_email,
-         from:     "#{tr(Government.current.name,"Name from database")} <#{Government.current.admin_email}>",
+         reply_to: Instance.current.admin_email,
+         from:     "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          subject:  subject do |format|
       format.text { render text: convert_to_text(render_to_string("lost_or_gained_capital.html")) }
       format.html
