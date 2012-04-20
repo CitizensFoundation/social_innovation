@@ -9,24 +9,28 @@
     = render :partial => "shared/css"
     - if controller_name == "users"
       = stylesheet_link_tag "fb_invite_hack"
+    - if ["users","sessions"].include?(controller_name)
+      = stylesheet_link_tag "jquery.keypad.css"
+      = javascript_include_tag "jquery.keypad.min.js"
     - if controller_name == "ideas" and action_name == "show"
       = render :partial=>"ideas/fb_og_tags"
     = tr8n_scripts_tag
   %body{:class => "#{h(controller.controller_name)}-#{h(controller.action_name)}"}
     = csrf_meta_tag
-    %div.container
-      #div.row
-        #div.twelvecol.fixed
-          = render :partial => "shared/branding/dynamic"
-      #div.row
-        #div.onecol.fixed
-          = render :partial => "shared/menu"
-          = #render :partial => "shared/sidebar"
-        #div.elevencol.last
-          = flash_div :warning, :notice, :error
-          = render :partial => "ads/pick"
+    #backgroundwrap
+      #header
+        %table
+          %tr
+            %td= render :partial => "shared/branding/dynamic"
+            %td= render :partial => "ads/pick"
+      #contentwrap
+        = render :partial => "shared/menu"
+        = flash_div :warning, :notice, :error
+        #content_text
           = yield :layout
-      = render :partial => "shared/footer"
-      = render :partial => "shared/analytics"
-      = render :partial => "shared/facebook_footer"
-      = render :partial => "shared/google_translate"
+      = render :partial => "shared/sidebar"
+      .push
+    = render :partial => "shared/footer"
+    = render :partial => "shared/analytics"
+    = render :partial => "shared/facebook_footer"
+    = render :partial => "shared/google_translate"

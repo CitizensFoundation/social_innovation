@@ -1,0 +1,20 @@
+:javascript
+  jQuery("#debate_button_#{idea.id}").click(function () {
+        var slide = jQuery("#points_overview_for_#{idea.id}");
+        if (!slide.data("loaded")) {
+            slide.load('#{points_overview_idea_url(idea)}');
+            slide.data("loaded", true);
+                                  $('.border').css('border-bottom','none');
+        } else {
+            slide.slideToggle("slow");
+                                  $('.border').css('border-bottom','none');
+        };
+    });
+  jQuery("#debate_button_#{idea.id}").toggle(
+    function () {
+      jQuery("#debate_button_#{idea.id}").attr("src", "#{image_path("new/minus.png")}");
+    },
+    function () {
+      jQuery("#debate_button_#{idea.id}").attr("src", "#{image_path("new/plus.png")}");
+    }
+  );

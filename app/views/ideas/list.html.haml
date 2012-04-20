@@ -2,7 +2,14 @@
   = render :partial=>"/shared/top_message_box", :locals=> {:message_text => Instance.current.message_for_finished.html_safe }
 %p
   - if @ideas.any?
-    = render :partial=>"ideas/top_level_listing", :locals=>{:ideas=>@ideas, :endorsements=>@endorsements}
+    %table.top-level-table.top_level.single2
+      - for idea in @ideas
+        %tr.border
+          %td.top_listing
+            = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
+        %tr
+          %td
+            %div{:id => "points_overview_for_#{idea.id}"}
     %p
       = will_paginate @ideas
   - else

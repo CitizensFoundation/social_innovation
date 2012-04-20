@@ -1,53 +1,26 @@
-%table.top-level-table.top_level.single2
-  - for idea in ideas
-    - if endorsements
-      - endorsement = endorsements.detect {|e| e.idea_id == idea.id }
-    %tr.border
-      %td.top_listing
+- if endorsements
+  - endorsement = endorsements.detect {|e| e.idea_id == idea.id }
+= render :partial => "ideas/debate_button_javascript", :locals => { :idea => idea }
+%table
+  %tr
+    %td{:width => "20"}
+    - if defined? timeago
+      %td{:style => "width:50px"}
         %table
           %tr
-            %td{:width => "20"}
-              = image_tag("new/plus.png", :id=>"plus_for_#{idea.id}", :alt => "plus-icon", :class => "plus_sign")
-              :javascript
-                jQuery("#plus_for_#{idea.id}").click(function () {
-                      var slide = jQuery("#points_overview_for_#{idea.id}");
-                      if (!slide.data("loaded")) {
-                          slide.load('#{points_overview_idea_url(idea)}');
-                          slide.data("loaded", true);
-                                                $('.border').css('border-bottom','none');
-                      } else {
-                          slide.slideToggle("slow");
-                                                $('.border').css('border-bottom','none');
-                      };
-                  });
-                jQuery("#plus_for_#{idea.id}").toggle(
-                  function () {
-                    jQuery("#plus_for_#{idea.id}").attr("src", "#{image_path("new/minus.png")}");
-                  },
-                  function () {
-                    jQuery("#plus_for_#{idea.id}").attr("src", "#{image_path("new/plus.png")}");
-                  }
-                );
-            - if defined? timeago
-              %td{:style => "width:50px"}
-                %table
-                  %tr
-                    %td.category_icon
-                      - if idea.category and idea.category.icon
-                        = image_tag idea.category.icon.url(:icon_50), :size => "50x50", :border => 0
-                  %tr
-                    %td
-                      %span.idea_added
-                        = time_ago(idea.created_at)
-            - else
-              %td.category_icon
-                - if idea.category and idea.category.icon
-                  = image_tag idea.category.icon.url(:icon_50), :size => "50x50", :border => 0
-            %td{:width => "5"}
-              = render :partial => "ideas/rank_week_month", :locals => {:idea => idea }
-            %td.left_scale{:colspan => "3", :valign => "top"}
-              .top_level_idea_listing{:id => "idea_#{idea.id}"}
-                = render :partial => "ideas/listing", :locals => {:idea => idea, :endorsement => endorsement, :value => 0}
-    %tr
-      %td
-        %div{:id => "points_overview_for_#{idea.id}"}
+            %td.category_icon
+              - if idea.category and idea.category.icon
+                = image_tag idea.category.icon.url(:icon_50), :size => "50x50", :border => 0
+          %tr
+            %td
+              %span.idea_added
+                = time_ago(idea.created_at)
+    - else
+      %td.category_icon
+        - if idea.category and idea.category.icon
+          = image_tag idea.category.icon.url(:icon_50), :size => "50x50", :border => 0
+    %td{:width => "5"}
+      = render :partial => "ideas/rank_week_month", :locals => {:idea => idea }
+    %td.left_scale{:colspan => "3", :valign => "top"}
+      .top_level_idea_listing{:id => "idea_#{idea.id}"}
+        = render :partial => "ideas/listing", :locals => {:idea => idea, :endorsement => endorsement, :value => 0}

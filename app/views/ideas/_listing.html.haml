@@ -7,7 +7,7 @@
       = render :partial=>"ideas/flagged", :locals=>{:idea=>idea}
       :javascript
         $(function(){
-        	$('#test2').replaceWith($('#idea_flag_#{idea.id.to_s}'));
+        	$('#action_insert').replaceWith($('#idea_flag_#{idea.id.to_s}'));
         });
   %li.list_right
     .category
@@ -20,4 +20,4 @@
       = tr("This idea was replaced by {idea_name}", "view/ideas/_listing", :idea_name => link_to(idea.change.new_idea.name, idea.change.new_idea))
 = render :partial => "ideas/tag_show", :locals => { :idea => idea }
 - if action_name != "show" and status = idea.idea_status_change_logs.last
-  = render partial: "ideas/latest_status_update", locals: { status: status }
+  = render :partial => "ideas/latest_status_update", :locals => { status=> status }
