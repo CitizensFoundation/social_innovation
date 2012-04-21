@@ -1,7 +1,6 @@
 require 'date'
 
 class IdeasController < ApplicationController
-
   before_filter :login_required, :only => [:yours_finished, :yours_ads, :yours_top, :yours_lowest, :consider, :flag_inappropriate, :comment, :edit, :update, 
                                            :tag, :tag_save, :opposed, :endorsed, :destroy, :new]
   before_filter :admin_required, :only => [:bury, :successful, :compromised, :intheworks, :failed]
@@ -23,16 +22,20 @@ class IdeasController < ApplicationController
   # GET /ideas
   def index
     if params[:term] and request.xhr?
-      @idea_names = Idea.published.filtered.find(:all, :select => "ideas.name", :conditions => ["name LIKE ?", "%#{params[:q]}%"], :order => "endorsements_count desc").map{|p|p.name}
+      ideas = Idea.published.filtered.find(:all, :select => "ideas.name", :conditions => ["name LIKE ?", "%#{params[:term]}%"], :order => "endorsements_count desc")
+      idea_links = []
+      ideas.each do |idea|
+        idea_links << view_context.link_to(idea.name, idea_path(idea))
+      end
     end
 
     respond_to do |format|
       format.html
       format.js { 
-        if not @idea_names
+        if not idea_links
           render :nothing => true
         else
-          render :json => @idea_names
+          render :json => idea_links
         end
       }
     end
