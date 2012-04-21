@@ -2,7 +2,7 @@
   #container
     #topnav.topnav
       - if logged_in?
-        %a.notifications{:href => "notifications"}
+        %a.signin.notifications{:href => "notifications"}
           %span Notifications
         = render :partial => "shared/notifications"
       %a.signin{:href => "login"}
@@ -20,7 +20,7 @@
             $(".signin").toggleClass("menu-open");
         });
 
-        $("fieldset#signin_menu").mouseup(function() {
+        $("#login_form").mouseup(function() {
             return false
         });
         $(document).mouseup(function(e) {
