@@ -70,21 +70,6 @@ jQuery(document).ready(function() {
 	jQuery("abbr[class*=timeago]").timeago();	
 	jQuery("#pointContent").NobleCount('#pointContentDown',{ on_negative: 'go_red', on_positive: 'go_green', max_chars: 500 });
     jQuery("#ideaContent").NobleCount('#ideaContentDown',{ on_negative: 'go_red', on_positive: 'go_green', max_chars: 300 });
-        // http://stackoverflow.com/questions/7941280/how-to-return-jquery-autocomplete-result-to-the-separate-div
-	jQuery("input#idea_name, input#change_new_idea_name, input#point_other_idea_name, input#revision_other_idea_name, input#right_idea_box").autocomplete({
-            minLength: 10,
-            source: "/ideas.js",
-            search: function(event, ui) {
-                $('#idea_suggestions ul').empty();
-            },
-            open: function(event, ui) { $('#idea_suggestions').show(); },
-            close: function(event, ui) { $('#idea_suggestions').hide(); },
-        }).data('autocomplete')._renderItem = function (ul, item) {
-            return $('<li/>')
-            .data('item.autocomplete', item)
-            .append(item.value)
-            .appendTo($('#idea_suggestions ul'));
-        };
 	jQuery("input#user_login_search").autocomplete({ source: "/users.js" });
 	jQuery('#bulletin_content, #blurb_content, #message_content, #document_content, #email_template_content, #page_content').autoResize({extraSpace : 20})
 	

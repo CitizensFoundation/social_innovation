@@ -114,18 +114,17 @@
   %br/
   %b= submit_tag tr("Create idea", "view/ideas/_form"), :class => "submit_button"
 :javascript
-  $(function() {
-      $('.Chapter_name').each(
-              function() {
-                  var category_id = $(this).attr("id");
-                  var tooltip_text = $('#' + category_id + '_text').html();
-                  if (tooltip_text) {
-                      $(this).qtip({
-                          content: tooltip_text,
-                          show: { delay: 300 },
-                          hide: { delay: 500, fixed: true }
-                      })
-                  }
-              }
-      )
-  });
+  jQuery("input#idea_name").autocomplete({
+          minLength: 10,
+          source: "/ideas.js",
+          search: function(event, ui) {
+              $('#idea_suggestions ul').empty();
+          },
+          open: function(event, ui) { $('#idea_suggestions').show(); },
+          close: function(event, ui) { $('#idea_suggestions').hide(); },
+      }).data('autocomplete')._renderItem = function (ul, item) {
+          return $('<li/>')
+          .data('item.autocomplete', item)
+          .append(item.value)
+          .appendTo($('#idea_suggestions ul'));
+      };

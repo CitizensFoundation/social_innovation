@@ -15,33 +15,55 @@
     - nav = 7
   - else
     - nav = 0
-#nav
-  .clearfix{:id => "nav#{nav}"}
-    %ul
-      %li
-        = link_to :controller => "ideas" do
+  %ul#sib_left_nav
+    %li
+      = link_to :controller => "ideas" do
+        %div.sprite_clipwrapper
           = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="home" ? "home_pos_selected" : "home_pos"}"
-          = tr("Home","Menu system")
-      %li
-        = link_to :controller => "ideas", :action=>"index" do
+        = tr("Home","Menu system")
+    %li
+      = link_to :controller => "ideas", :action=>"index" do
+        %div.sprite_clipwrapper
           = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="ideas" ? "ideas_pos_selected" : "ideas_pos"}"
-          = tr("Ideas", "view/shared/_menu")
-      %li
-        = link_to :controller => "points" do
+        = tr("Ideas", "view/shared/_menu")
+    %li
+      = link_to :controller => "points" do
+        %div.sprite_clipwrapper
           = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="points" ? "points_pos_selected" : "points_pos"}"
-          = tr("Debate", "view/shared/_menu")
-      %li
-        = link_to :controller => "news", :action=>"top" do
+        = tr("Debate", "view/shared/_menu")
+    %li
+      = link_to :controller => "news", :action=>"top" do
+        %div.sprite_clipwrapper
           = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="news" ? "feed_pos_selected" : "feed_pos"}"
-          = tr("Feed", "view/shared/_menu")
-      %li
-        = link_to :controller => "users", :action=>"network" do
-          = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="users" ? "people_pos_selected" : "people_pos"}"
-          = tr("People", "view/shared/_menu")
-      %li
-        = link_to :controller => "issues" do
+        = tr("Feed", "view/shared/_menu")
+    %li
+      = link_to :controller => "users" do
+        %div.sprite_clipwrapper
+          = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{["users","network"].include?(controller_name) ? "people_pos_selected" : "people_pos"}"
+        = tr("People", "view/shared/_menu")
+    %li
+      = link_to :controller => "issues" do
+        %div.sprite_clipwrapper
           = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="issues" ? "categories_pos_selected" : "categories_pos"}"
-          = tr("Categories", "view/shared/_menu")
+        = tr("Categories", "view/shared/_menu")
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
+    %br
     %ul#menu
       - if logged_in? and current_user.is_admin?
         %li.tab6.mega
