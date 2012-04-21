@@ -76,7 +76,6 @@ jQuery(document).ready(function() {
 	jQuery('#bulletin_content, #blurb_content, #message_content, #document_content, #email_template_content, #page_content').autoResize({extraSpace : 20})
 	
 	function addMega(){
-        alert("MEGA")
 	  jQuery(this).addClass("hovering"); 
 	} 
 
@@ -92,10 +91,7 @@ jQuery(document).ready(function() {
 	};
 	jQuery(".mega").hoverIntent(megaConfig);
 
-	jQuery('a#login_link').click(function() {
-	  jQuery('#login_form').show('fast');
-	  return false;
-	});
+
 });
 
 function toggleAll(name)

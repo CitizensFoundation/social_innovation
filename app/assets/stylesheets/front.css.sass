@@ -79,6 +79,10 @@ a
     *background-position: 0 3px!important
   a.notifications
     @extend .signin
+  a.new_idea
+    @extend .signin
+  a.help
+    @extend .signin
 a.signin
   position: relative
   margin-left: 3px
@@ -87,9 +91,15 @@ a.signin
     background-repeat: no-repeat
     background-position: 100% 50%
     padding: 4px 16px 6px 0
+
 a.notifications
   @extend .signin
 
+a.new_idea
+  @extend .signin
+
+a.help
+  @extend .signin
 
 #topnav a.menu-open
   background: #ddeef6!important
@@ -103,11 +113,66 @@ a.notifications
   margin: 25px 0 0
   width: 170px
 
+#general_form
+  -moz-border-radius-topleft: 5px
+  -moz-border-radius-bottomleft: 5px
+  -moz-border-radius-bottomright: 5px
+  -webkit-border-top-left-radius: 5px
+  -webkit-border-bottom-left-radius: 5px
+  -webkit-border-bottom-right-radius: 5px
+  display: none
+  background-color: #ddeef6
+  position: absolute
+  width: 210px
+  z-index: 100
+  border: 1px transparent
+  text-align: left
+  padding: 10px
+  margin-left: -8px
+  *margin-left: -15px
+  margin-top: 5px
+  color: #789
+  font-size: 11px
+  input
+    &[type=text], &[type=password]
+      display: block
+      -moz-border-radius: 4px
+      -webkit-border-radius: 4px
+      border: 1px solid #ACE
+      font-size: 13px
+      margin: 0 0 5px
+      padding: 5px
+      width: 203px
+  p
+    margin: 0
+  a
+    color: #6AC
+  label
+    font-weight: normal
+  p
+    &.remember
+      padding: 10px 0
+    &.forgot, &.complete
+      clear: both
+      margin: 5px 0
+    a
+      color: #27B!important
+
+#sib_notifications
+  @extend #general_form
+  display: none
+
+#sib_login_form
+  @extend #general_form
+  display: none
+  background: #fff
+
+
 a.signin.menu-open a.notifications.menu-open span
   background-image: url("/assets/top_navigation/toggle_up_dark.png")
   color: #789
 
-#signin_menu
+#general_form
   -moz-border-radius-topleft: 5px
   -moz-border-radius-bottomleft: 5px
   -moz-border-radius-bottomright: 5px

@@ -1,52 +1,56 @@
 #sib_top_navigation
-  #container
-    #topnav.topnav
-      - if logged_in?
-        %a.notifications{:href => "notifications"}
-          %span Notifications
-        = render :partial => "shared/notifications"
-      %a.signin{:href => "login"}
-        %span Sign in
-      = render :partial => "shared/login"
-      %a.signin.new_idea{:href => "new_idea"}
-      = link_to tr("New idea"), "/ideas/new"
+  #topnav.topnav
+    - if logged_in?
+      %a.notifications{:href => "notifications"}
+        %span
+          = tr("Notification")
+    %a.new_idea{:href => "/ideas/new"}
+      %span
+        = tr("New idea")
+    %a.signin{:href => "login"}
+      %span
+        = tr("Sign in")
+    %a.help{:href => "help"}
+      %span
+        = tr("Help")
+    = render :partial => "shared/login"
+    = render :partial => "shared/notifications" if logged_in?
+:javascript
+  $(document).ready(function() {
 
-  :javascript
-    $(document).ready(function() {
+      $(".signin").click(function(e) {
+          e.preventDefault();
+          $("#sib_login_form").toggle();
+          $(".signin").toggleClass("menu-open");
+      });
 
-        $(".signin").click(function(e) {
-            e.preventDefault();
-            $("#login_form").toggle();
-            $(".signin").toggleClass("menu-open");
-        });
+      $("#sib_login_form").mouseup(function() {
+          return false
+      });
+      $(document).mouseup(function(e) {
+          if($(e.target).parent("a.signin").length==0) {
+              $(".signin").removeClass("menu-open");
+              $("#sib_login_form").hide();
+          }
+      });
 
-        $("#login_form").mouseup(function() {
-            return false
-        });
-        $(document).mouseup(function(e) {
-            if($(e.target).parent("a.signin").length==0) {
-                $(".signin").removeClass("menu-open");
-                $("#login_form").hide();
-            }
-        });
+      $(".notifications").click(function(e) {
+          e.preventDefault();
+          $("#sib_notifications").toggle();
+          $(".notifications").toggleClass("menu-open");
+      });
 
-        $(".notifications").click(function(e) {
-            e.preventDefault();
-            $("#sib_notifications").toggle();
-            $(".notifications").toggleClass("menu-open");
-        });
+      $("#sib_notifications_box").mouseup(function() {
+          return false
+      });
+      $(document).mouseup(function(e) {
+          if($(e.target).parent("a.notifications").length==0) {
+              $(".notifications").removeClass("menu-open");
+              $("#sib_notifications").hide();
+          }
+      });
 
-        $("#login_form").mouseup(function() {
-            return false
-        });
-        $(document).mouseup(function(e) {
-            if($(e.target).parent("a.notifications").length==0) {
-                $(".notifications").removeClass("menu-open");
-                $("#sib_notifications").hide();
-            }
-        });
-
-    });
+  });
 :javascript
   $(function() {
     $('#forgot_username_link').tipsy({gravity: 'w'});

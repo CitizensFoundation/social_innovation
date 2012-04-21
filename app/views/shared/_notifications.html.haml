@@ -1,11 +1,11 @@
-#sib_notifications_box
+#sib_notifications
   - if current_user.unread_notifications_count > 0
     - @unread = current_user.received_notifications.unread.count(:group => [:type], :order => "count_all desc")
     - if @unread.any?
       #notification_box
         %span.notification_sentence
           = notifications_sentence(@unread)
-  - if current_user.endorsements_count > 1
+  - if current_user.endorsements_count > 0
     - display_box = false
     #next_steps_box
       %h4= tr("There's a lot you can do at {instance_name}. Here's how to get started:", "view/shared/_notifications", :instance_name => tr(current_instance.name,"Name from database"))
