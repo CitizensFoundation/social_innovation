@@ -77,7 +77,8 @@ a
       *padding: 4px 12px 6px
       *background-position: 0 3px!important
     *background-position: 0 3px!important
-
+  a.notifications
+    @extend .signin
 a.signin
   position: relative
   margin-left: 3px
@@ -86,6 +87,9 @@ a.signin
     background-repeat: no-repeat
     background-position: 100% 50%
     padding: 4px 16px 6px 0
+a.notifications
+  @extend .signin
+
 
 #topnav a.menu-open
   background: #ddeef6!important
@@ -99,7 +103,7 @@ a.signin
   margin: 25px 0 0
   width: 170px
 
-a.signin.menu-open span
+a.signin.menu-open a.notifications.menu-open span
   background-image: url("/assets/top_navigation/toggle_up_dark.png")
   color: #789
 

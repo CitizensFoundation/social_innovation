@@ -2,7 +2,7 @@
   #container
     #topnav.topnav
       - if logged_in?
-        %a.signin.notifications{:href => "notifications"}
+        %a.notifications{:href => "notifications"}
           %span Notifications
         = render :partial => "shared/notifications"
       %a.signin{:href => "login"}
@@ -27,6 +27,22 @@
             if($(e.target).parent("a.signin").length==0) {
                 $(".signin").removeClass("menu-open");
                 $("#login_form").hide();
+            }
+        });
+
+        $(".notifications").click(function(e) {
+            e.preventDefault();
+            $("#sib_notifications").toggle();
+            $(".notifications").toggleClass("menu-open");
+        });
+
+        $("#login_form").mouseup(function() {
+            return false
+        });
+        $(document).mouseup(function(e) {
+            if($(e.target).parent("a.notifications").length==0) {
+                $(".notifications").removeClass("menu-open");
+                $("#sib_notifications").hide();
             }
         });
 
