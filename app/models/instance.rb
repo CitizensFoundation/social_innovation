@@ -1,6 +1,5 @@
 class Instance < ActiveRecord::Base
 
-  extend ActiveSupport::Memoizable
   require 'paperclip'
   
   scope :active, :conditions => "status = 'active'"

@@ -1,4 +1,4 @@
-= render :partial=>"user_mailer/header.html"
+= render :partial=>"user_mailer/header", formats: [:html]
 %p
   = tr("Hi","email")
   = @recipient.first_name.capitalize
@@ -10,4 +10,4 @@
 %p
   = tr("You can answer here","email")
   \: #{link_to @sender.profile_url+'/messages', @sender.profile_url+'/messages'}
-= render :partial=>"user_mailer/footer.html"
+= render :partial=>"user_mailer/footer", formats: [:html]

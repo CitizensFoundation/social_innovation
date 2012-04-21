@@ -17,6 +17,9 @@
     %span.red *
   %span.idea_name
     = f.text_field :name, :size => 60, :maxlength => 60, :autocomplete =>"off"
+  #idea_suggestions{ style: "display: none;" }
+    = tr("Some ideas already exist with similar names", "view/ideas/_form")
+    %ul
   %br/
   %br/
   .field

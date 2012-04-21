@@ -29,28 +29,22 @@ class CreateIdea < ActionController::IntegrationTest
     @headless.destroy if ENV['HEADLESS']
   end
 
-  test "create a idea" do
-    @browser.goto "http://localhost:3000"
-    @browser.text_field(:name => "instance[name]").set "foobar"
-    @browser.text_field(:name => "instance[description]").set "foobar"
-    @browser.text_field(:name => "instance[target]").set "foobar"
-    @browser.text_field(:name => "instance[domain_name]").set "localhost"
-    @browser.text_field(:name => "instance[admin_name]").set "foo"
-    @browser.text_field(:name => "instance[admin_email]").set "foo@bar.com"
-    @browser.button(:name => "commit").click
+  test "create an idea" do
+    @browser.goto "http://localhost:3000/ideas/new"
     @browser.text_field(:name => "user[first_name]").set "foo"
     @browser.text_field(:name => "user[last_name]").set "foo"
     @browser.text_field(:name => "user[email]").set "foo@bar.com"
     @browser.text_field(:name => "user[password]").set "foobar"
     @browser.text_field(:name => "user[password_confirmation]").set "foobar"
     @browser.text_field(:name => "user[login]").set "foo"
-    @browser.button(:name => "commit").click
-    @browser.goto "http://localhost:3000/ideas/new"
+    @browser.checkbox(:id => "user_terms").set
+    @browser.button(value: "Signup").click
     @browser.text_field(:name => "idea[name]").set "Test idea"
+    @browser.text_field(:name => "idea[description]").set "Test description"
     @browser.radio(:value => "7").set
     @browser.text_field(:name => "idea[points_attributes][0][name]").set "This is a fake headline"
     @browser.text_field(:name => "idea[points_attributes][0][content]").set "This is a fake point"
-    @browser.button.click
-    @browser.div(:class => "flash_notice").wait_until_present
+    @browser.form(id: "new_idea").submit
+    #@browser.div(:class => "flash_notice").wait_until_present
   end
 end

@@ -1,4 +1,4 @@
-= render :partial=>"user_mailer/header.html"
+= render :partial=>"user_mailer/header", formats: [:html]
 %p
   = tr("Hi", "email")
   = @recipient.first_name.capitalize
@@ -9,4 +9,4 @@
     :notifiable_name => @notifiable.name,                                                                    |
     :flags_count => @notifiable.flags_count)                                                                 |
   %p= link_to @notifiable.show_url, @notifiable.show_url
-  = render :partial=>"user_mailer/footer.html"
+  = render :partial=>"user_mailer/footer", formats: [:html]

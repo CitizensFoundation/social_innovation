@@ -1,4 +1,4 @@
-= render :partial=>"user_mailer/header.html"
+= render :partial=>"user_mailer/header", formats: [:html]
 %p
   = tr("Hi","email")
   = @user.first_name
@@ -19,4 +19,4 @@
   = tr("More here","email")
   \: #{link_to @user.root_url+'about/faq#pc', @user.root_url+'about/faq#pc'}
   %p
-    = render :partial=>"footer.html"
+    = render :partial=>"footer", formats: [:html]

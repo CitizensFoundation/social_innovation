@@ -1,7 +1,4 @@
 class Idea < ActiveRecord::Base
-  
-  extend ActiveSupport::Memoizable
-  
   include ActionView::Helpers::DateHelper
 
   acts_as_set_sub_instance :table_name=>"ideas"
@@ -468,31 +465,34 @@ class Idea < ActiveRecord::Base
   end
   
   def up_endorser_ids
-    endorsements.active_and_inactive.endorsing.collect{|e|e.user_id.to_i}.uniq.compact
+    @up_endorser_ids ||= endorsements.active_and_inactive.endorsing.collect{|e|e.user_id.to_i}.uniq.compact
   end  
   def down_endorser_ids
-    endorsements.active_and_inactive.opposing.collect{|e|e.user_id.to_i}.uniq.compact
+    @down_endorser_ids ||= endorsements.active_and_inactive.opposing.collect{|e|e.user_id.to_i}.uniq.compact
   end
   def endorser_ids
-    endorsements.active_and_inactive.collect{|e|e.user_id.to_i}.uniq.compact
+    @endoreser_ids ||= endorsements.active_and_inactive.collect{|e|e.user_id.to_i}.uniq.compact
   end
   def all_idea_ids_in_same_tags
-    ts = Tagging.find(:all, :conditions => ["tag_id in (?) and taggable_type = 'Idea'",taggings.collect{|t|t.tag_id}.uniq.compact])
-    return ts.collect{|t|t.taggable_id}.uniq.compact
+    all_idea_ids_in_same_tags ||= begin
+      ts = Tagging.find(:all, :conditions => ["tag_id in (?) and taggable_type = 'Idea'",taggings.collect{|t|t.tag_id}.uniq.compact])
+      ts.collect{|t|t.taggable_id}.uniq.compact
+    end
   end
   
   def undecideds
     return [] unless has_tags? and endorsements_count > 2    
-    User.find_by_sql("
-    select distinct users.* 
-    from users, endorsements
-    where endorsements.user_id = users.id
-    and endorsements.status = 'active'
-    and endorsements.idea_id in (#{all_idea_ids_in_same_tags.join(',')})
-    and endorsements.user_id not in (#{endorser_ids.join(',')})
-    ")
+    @undecideds ||= begin
+      User.find_by_sql("
+      select distinct users.* 
+      from users, endorsements
+      where endorsements.user_id = users.id
+      and endorsements.status = 'active'
+      and endorsements.idea_id in (#{all_idea_ids_in_same_tags.join(',')})
+      and endorsements.user_id not in (#{endorser_ids.join(',')})
+      ")
+    end
   end
-  memoize :up_endorser_ids, :down_endorser_ids, :endorser_ids, :all_idea_ids_in_same_tags, :undecideds
   
   def related(limit=10)
     Idea.find_by_sql(["SELECT ideas.*, count(*) as num_tags
