@@ -1,7 +1,4 @@
 #login
-  - if current_instance.has_facebook_enabled?
-    %div{:style => "margin-bottom: 10px; margin-top: 7px;"}
-      = fb_login_and_redirect "/", :text=>tr("Sign in with Facebook","views/shared/_login"), :size=>"small", :title=>tr("Sign in with Facebook","views/shared/_login"), :scope=>"email"
   %p
     - if current_instance.has_twitter_enabled?
       %div{:style => "margin-bottom: 5px;"}

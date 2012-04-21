@@ -3,27 +3,13 @@
     Have an account?
     %a.signin{:href => "login"}
       %span Sign in
-  %fieldset#signin_menu
-    %form#signin{:action => "https://twitter.com/sessions", :method => "post"}
-      %label{:for => "username"} Username or email
-      %input#username{:name => "username", :tabindex => "4", :title => "username", :type => "text", :value => ""}
-        %p
-          %label{:for => "password"} Password
-          %input#password{:name => "password", :tabindex => "5", :title => "password", :type => "password", :value => ""}
-        %p.remember
-          %input#signin_submit{:tabindex => "6", :type => "submit", :value => "Sign in"}
-            %input#remember{:name => "remember_me", :tabindex => "7", :type => "checkbox", :value => "1"}
-              %label{:for => "remember"} Remember me
-        %p.forgot
-          %a#resend_password_link{:href => "#"} Forgot your password?
-        %p.forgot-username
-          %A#forgot_username_link{:href => "#", :title => "If you remember your password, try logging in with your email"} Forgot your username?
+    = render :partial => "shared/login"
 :javascript
     $(document).ready(function() {
 
         $(".signin").click(function(e) {
             e.preventDefault();
-            $("fieldset#signin_menu").toggle();
+            $("#login_form").toggle();
             $(".signin").toggleClass("menu-open");
         });
 
@@ -33,7 +19,7 @@
         $(document).mouseup(function(e) {
             if($(e.target).parent("a.signin").length==0) {
                 $(".signin").removeClass("menu-open");
-                $("fieldset#signin_menu").hide();
+                $("#login_form").hide();
             }
         });
 
@@ -50,7 +36,6 @@ SIGN IN
 = link_to tr("Sign in", "view/top_navigation"), "/"
 .tab_body
   .box_style
-    = render :partial => "shared/login"
 %li
 %span
   = link_to tr("Notifications", "view/top_navigation"), "#"
