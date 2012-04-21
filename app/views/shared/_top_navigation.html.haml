@@ -1,10 +1,17 @@
-#container
-  #topnav.topnav
-    Have an account?
-    %a.signin{:href => "login"}
-      %span Sign in
-    = render :partial => "shared/login"
-:javascript
+#sib_top_navigation
+  #container
+    #topnav.topnav
+      - if logged_in?
+        %a.notifications{:href => "notifications"}
+          %span Notifications
+        = render :partial => "shared/notifications"
+      %a.signin{:href => "login"}
+        %span Sign in
+      = render :partial => "shared/login"
+      %a.signin.new_idea{:href => "new_idea"}
+      = link_to tr("New idea"), "/ideas/new"
+
+  :javascript
     $(document).ready(function() {
 
         $(".signin").click(function(e) {
@@ -29,16 +36,3 @@
     $('#forgot_username_link').tipsy({gravity: 'w'});
   });
 
-%ul#sib_top_navigation
-%li
-SIGN IN
-%li.mega
-= link_to tr("Sign in", "view/top_navigation"), "/"
-.tab_body
-  .box_style
-%li
-%span
-  = link_to tr("Notifications", "view/top_navigation"), "#"
-%li
-%span
-= link_to tr("Help", "view/top_navigation"), "#"
