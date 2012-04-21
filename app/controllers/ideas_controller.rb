@@ -22,16 +22,17 @@ class IdeasController < ApplicationController
 
   # GET /ideas
   def index
-    if params[:q] and request.xhr?
-      @ideas = Idea.published.filtered.find(:all, :select => "ideas.name", :conditions => ["name LIKE ?", "%#{params[:q]}%"], :order => "endorsements_count desc")
+    if params[:term] and request.xhr?
+      @idea_names = Idea.published.filtered.find(:all, :select => "ideas.name", :conditions => ["name LIKE ?", "%#{params[:q]}%"], :order => "endorsements_count desc").map{|p|p.name}
     end
+
     respond_to do |format|
       format.html
       format.js { 
-        if not @ideas
+        if not @idea_names
           render :nothing => true
         else
-          render :text => @ideas.collect{|p|p.name}.join("\n")
+          render :json => @idea_names
         end
       }
     end

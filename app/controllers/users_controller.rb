@@ -10,8 +10,8 @@ class UsersController < ApplicationController
                 :expires_in => 5.minutes
 
   def index
-    if params[:q]
-      @users = User.active.find(:all, :conditions => ["login LIKE ?", "#{h(params[:q])}%"], :order => "users.login asc")
+    if params[:term]
+      @users = User.active.find(:all, :conditions => ["login LIKE ?", "#{h(params[:term])}%"], :order => "users.login asc")
     else
       @users = User.active.by_ranking.paginate :page => params[:page], :per_page => params[:per_page]  
     end
