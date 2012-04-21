@@ -100,3 +100,23 @@ Finally, start the rails server:
 ````bash
 $ rails server
 ````
+
+Testing social-innovation
+-------------------------
+
+First set up the test database and start the test server
+
+````bash
+$ RAILS_ENV=test bundle exec rake db:create db:schema:load tr8n:init tr8n:import_and_setup_iso_3166
+$ bundle exec rails server -e test
+````
+
+Then run the tests
+
+````bash
+# run all tests
+$ bundle exec rake test
+
+# run one test
+$ bundle exec ruby -Ilib:test test/integration/navigation.rb
+````

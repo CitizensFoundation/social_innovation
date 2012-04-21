@@ -290,7 +290,9 @@ class UsersController < ApplicationController
     @user.sub_instance_referral = current_sub_instance
 
     begin
-      if verify_recaptcha(:model => @user, :message => tr("Please try reCAPTCHA again","users")) and @user.save! #save first
+      if Rails.env.test? && @user.save!
+        @valid = true
+      elsif verify_recaptcha(:model => @user, :message => tr("Please try reCAPTCHA again","users")) and @user.save! #save first
         @valid = true
       else
         @valid = false
