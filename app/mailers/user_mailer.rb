@@ -16,7 +16,7 @@ class UserMailer < ActionMailer::Base
          :reply_to => Instance.current.admin_email,
          :from => "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          :subject=>tr("Thank you for registering at {instance_name}","email", :instance_name => tr(Instance.current.name,"Name from database")) do |format|
-           format.text { render :text=>convert_to_text(render_to_string("welcome.html")) }
+           format.text { render :text=>convert_to_text(render_to_string("welcome", formats: [:html])) }
            format.html
          end
   end
@@ -40,7 +40,7 @@ class UserMailer < ActionMailer::Base
          reply_to: Instance.current.admin_email,
          from:     "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          subject:  subject do |format|
-      format.text { render text: convert_to_text(render_to_string("lost_or_gained_capital.html")) }
+      format.text { render text: convert_to_text(render_to_string("lost_or_gained_capital", formats: [:html])) }
       format.html
     end
   end
@@ -61,7 +61,7 @@ class UserMailer < ActionMailer::Base
          reply_to: Instance.current.admin_email,
          from:     "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          subject:  tr('The status of the idea "{idea}" has been changed', "email", :idea => idea.name) do |format|
-      format.text { render text: convert_to_text(render_to_string("idea_status_update.html")) }
+      format.text { render text: convert_to_text(render_to_string("idea_status_update", formats: [:html])) }
       format.html
     end
   end
@@ -84,7 +84,7 @@ class UserMailer < ActionMailer::Base
          reply_to: Instance.current.admin_email,
          from:     "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          subject:  subject do |format|
-      format.text { render text: convert_to_text(render_to_string("user_report.html")) }
+      format.text { render text: convert_to_text(render_to_string("user_report", formats: [:html])) }
       format.html
     end
 
@@ -104,7 +104,7 @@ class UserMailer < ActionMailer::Base
          :reply_to => Instance.current.admin_email,
          :from => "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          :subject => tr("Invitation from {sender_name} to join {instance_name}","email", :sender_name=>sender_name, :instance_name => tr(Instance.current.name,"Name from database")) do |format|
-           format.text { render :text=>convert_to_text(render_to_string("invitation.html")) }
+           format.text { render :text=>convert_to_text(render_to_string("invitation", formats: [:html])) }
            format.html
          end
   end  
@@ -119,7 +119,7 @@ class UserMailer < ActionMailer::Base
          :reply_to => Instance.current.admin_email,
          :from => "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          :subject => tr("Your new temporary password","email") do |format|
-           format.text { render :text=>convert_to_text(render_to_string("new_password.html")) }
+           format.text { render :text=>convert_to_text(render_to_string("new_password"), formats: [:html]) }
            format.html
          end
   end
@@ -138,7 +138,7 @@ class UserMailer < ActionMailer::Base
          :reply_to => Instance.current.admin_email,
          :from => "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          :subject => @notification.name do |format|
-      format.text { render :text=>convert_to_text(render_to_string("user_mailer/notifications/#{@n.class.to_s.underscore}.html")) }      
+      format.text { render :text=>convert_to_text(render_to_string("user_mailer/notifications/#{@n.class.to_s.underscore}", formats: [:html])) }      
       format.html { render "user_mailer/notifications/#{@n.class.to_s.underscore}" }
     end
   end

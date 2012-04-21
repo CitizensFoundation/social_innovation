@@ -1,4 +1,4 @@
-= render :partial=>"user_mailer/header.html"
+= render :partial=>"user_mailer/header", formats: [:html]
 - Rails.logger.info("WHAT IS IT: #{@notifiable.inspect}")
 %p
   = tr("Hi", "email")
@@ -9,4 +9,4 @@
 %p
   = tr("Reply here", "email")
   \: #{link_to @notifiable.first_comment.show_url, @notifiable.first_comment.show_url}
-= render :partial=>"user_mailer/footer.html"
+= render :partial=>"user_mailer/footer", formats: [:html]

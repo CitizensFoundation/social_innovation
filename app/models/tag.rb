@@ -1,7 +1,5 @@
 class Tag < ActiveRecord::Base
 
-  extend ActiveSupport::Memoizable
-  
   acts_as_set_sub_instance :table_name=>"tags"
   
   scope :by_endorsers_count, :order => "tags.up_endorsers_count desc"
@@ -100,9 +98,8 @@ class Tag < ActiveRecord::Base
   end
   
   def published_idea_ids
-    Idea.published.filtered.tagged_with(self.name, :on => :issues).collect{|p| p.id}
+    @published_idea_ids ||= Idea.published.filtered.tagged_with(self.name, :on => :issues).collect{|p| p.id}
   end
-  memoize :published_idea_ids
   
   def calculate_discussions_count
     Activity.active.filtered.discussions.for_all_users.by_recently_updated.count(:conditions => ["idea_id in (?)",published_idea_ids])
@@ -171,7 +168,7 @@ class Tag < ActiveRecord::Base
   end  
   
   def subscribers
-    User.find_by_sql(["
+    @subscribers ||= User.find_by_sql(["
     select distinct users.*
     from users, endorsements, taggings
     where 
@@ -185,7 +182,7 @@ class Tag < ActiveRecord::Base
   end
   
   def endorsers
-    User.find_by_sql(["
+    @endorsers ||= User.find_by_sql(["
     select distinct users.*
     from users, endorsements, taggings
     where 
@@ -199,7 +196,7 @@ class Tag < ActiveRecord::Base
   end  
   
   def opposers
-    User.find_by_sql(["
+    @opposers ||= User.find_by_sql(["
     select distinct users.*
     from users, endorsements, taggings
     where 
@@ -211,6 +208,4 @@ class Tag < ActiveRecord::Base
     and endorsements.user_id = users.id
     and users.status in ('active','pending')",id])
   end  
-  memoize :subscribers, :endorsers, :opposers
-    
 end

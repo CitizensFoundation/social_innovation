@@ -1,4 +1,4 @@
-= render :partial=>"header.html"
+= render :partial=>"header", formats: [:html]
 %p
   = tr("Hi","email")
   = @user.first_name
@@ -11,4 +11,4 @@
     instance_name: tr(Instance.current.name, "Name from database"))                                                                               |
 %p= @date.strftime("%d.%m.%Y")
 = my_simple_format(@message)
-= render :partial=>"footer.html"
+= render :partial=>"footer", formats: [:html]

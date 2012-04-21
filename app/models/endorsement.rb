@@ -1,7 +1,5 @@
 class Endorsement < ActiveRecord::Base
 
-  extend ActiveSupport::Memoizable
-  
   scope :active, :conditions => "endorsements.status = 'active'"
   scope :deleted, :conditions => "endorsements.status = 'deleted'" 
   scope :suspended, :conditions => "endorsements.status = 'suspended'"
@@ -133,9 +131,8 @@ class Endorsement < ActiveRecord::Base
   end
   
   def idea_name
-    idea.name if idea
+    @idea_name ||= idea.name if idea
   end
-  memoize :idea_name
   
   def idea_name=(n)
     self.idea = Idea.find_by_name(n) unless n.blank?

@@ -1,7 +1,5 @@
 class PointQuality < ActiveRecord::Base
 
-  extend ActiveSupport::Memoizable
-
   belongs_to :user
   belongs_to :point
   
@@ -104,9 +102,8 @@ class PointQuality < ActiveRecord::Base
   end  
   
   def endorsement
-    user.endorsements.active_and_inactive.find_by_idea_id(point.idea_id)
+    @endoresement ||= user.endorsements.active_and_inactive.find_by_idea_id(point.idea_id)
   end 
-  memoize :endorsement
   
   def is_endorser?
     endorsement and endorsement.is_up?

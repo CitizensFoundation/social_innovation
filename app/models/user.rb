@@ -3,7 +3,6 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  extend ActiveSupport::Memoizable
   require 'paperclip'
 
   scope :active, :conditions => "users.status in ('pending','active')"
@@ -439,20 +438,20 @@ class User < ActiveRecord::Base
   end
 
   def most_recent_activity
-    activities.active.by_recently_created.find(:all, :limit => 1)[0]
+    @most_recent_activity ||= activities.active.by_recently_created.find(:all, :limit => 1)[0]
   end  
-  memoize :most_recent_activity
 
   def idea_list
-    s = tr("My top ideas","user")
-    row = 0
-    for e in endorsements
-      row=row+1
-      s += "\r\n" + row.to_s + ". " + e.idea.name if row < 11
+    @idea_list ||= begin
+      s = tr("My top ideas","user")
+      row = 0
+      for e in endorsements
+        row=row+1
+        s += "\r\n" + row.to_s + ". " + e.idea.name if row < 11
+      end
+      s
     end
-    return s
   end
-  memoize :idea_list
     
   # ranking metrics
   def up_issue_diversity
@@ -491,7 +490,6 @@ class User < ActiveRecord::Base
     return 1 if i > 1
     return i
   end
-  memoize :quality_factor
   
   def address_full
     a = ""
@@ -503,9 +501,8 @@ class User < ActiveRecord::Base
   end
    
   def revisions_count
-    point_revisions_count-points_count
+    @revision_count ||= point_revisions_count-points_count
   end
-  memoize :revisions_count
   
   def pick_ad(current_idea_ids)
   	shown = 0
@@ -525,14 +522,12 @@ class User < ActiveRecord::Base
   end
   
   def following_user_ids
-    followings.collect{|f|f.other_user_id}
+    @following_user_ids ||= followings.collect{|f|f.other_user_id}
   end
-  memoize :following_user_ids
   
   def follower_user_ids
-    followers.collect{|f|f.user_id}
+    @follower_user_ids ||= followers.collect{|f|f.user_id}
   end
-  memoize :follower_user_ids
   
   def calculate_contacts_count
     self.contacts_members_count = contacts.active.members.not_following.size
@@ -548,29 +543,30 @@ class User < ActiveRecord::Base
   
   def recommend(limit=10)
     return [] unless self.endorsements_count > 0
-    sql = "select relationships.percentage, ideas.id
-    from relationships,ideas
-    where relationships.other_idea_id = ideas.id and ("
-    if up_endorsements_count > 0
-      sql += "(relationships.idea_id in (#{endorsements.active_and_inactive.endorsing.collect{|e|e.idea_id}.join(',')}) and relationships.type = 'RelationshipEndorserEndorsed')"
+    @recommend ||= begin
+      sql = "select relationships.percentage, ideas.id
+      from relationships,ideas
+      where relationships.other_idea_id = ideas.id and ("
+      if up_endorsements_count > 0
+        sql += "(relationships.idea_id in (#{endorsements.active_and_inactive.endorsing.collect{|e|e.idea_id}.join(',')}) and relationships.type = 'RelationshipEndorserEndorsed')"
+      end
+      if up_endorsements_count > 0 and down_endorsements_count > 0
+        sql += " or "
+      end
+      if down_endorsements_count > 0
+        sql += "(relationships.idea_id in (#{endorsements.active_and_inactive.opposing.collect{|e|e.idea_id}.join(',')}) and relationships.type = 'RelationshipOpposerEndorsed')"
+      end
+      sql += ") and relationships.other_idea_id not in (select idea_id from endorsements where user_id = " + self.id.to_s + ")
+      and ideas.position > 25
+      and ideas.status = 'published'
+      group by ideas.id, relationships.percentage
+      order by relationships.percentage desc"
+      sql += " limit " + limit.to_s
+      
+      idea_ids = Idea.find_by_sql(sql).collect{|p|p.id}
+      Idea.find(idea_ids).paginate :per_page => limit, :page => 1
     end
-    if up_endorsements_count > 0 and down_endorsements_count > 0
-      sql += " or "
-    end
-    if down_endorsements_count > 0
-      sql += "(relationships.idea_id in (#{endorsements.active_and_inactive.opposing.collect{|e|e.idea_id}.join(',')}) and relationships.type = 'RelationshipOpposerEndorsed')"
-    end
-    sql += ") and relationships.other_idea_id not in (select idea_id from endorsements where user_id = " + self.id.to_s + ")
-    and ideas.position > 25
-    and ideas.status = 'published'
-    group by ideas.id, relationships.percentage
-    order by relationships.percentage desc"
-    sql += " limit " + limit.to_s
-    
-    idea_ids = Idea.find_by_sql(sql).collect{|p|p.id}
-    Idea.find(idea_ids).paginate :per_page => limit, :page => 1
   end
-  memoize :recommend
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(email, password)
@@ -792,7 +788,7 @@ class User < ActiveRecord::Base
   end
   
   def index_charts(limit=30)
-    IdeaChart.find_by_sql(["select idea_charts.date_year,idea_charts.date_month,idea_charts.date_day,
+    @index_charts ||= IdeaChart.find_by_sql(["select idea_charts.date_year,idea_charts.date_month,idea_charts.date_day,
     sum(idea_charts.volume_count) as volume_count,
     sum((idea_charts.down_count*(endorsements.value*-1))+(idea_charts.up_count*endorsements.value)) as down_count,
     avg(endorsements.value*idea_charts.change_percent) as percentage
@@ -802,7 +798,6 @@ class User < ActiveRecord::Base
     group by endorsements.user_id, idea_charts.date_year, idea_charts.date_month, idea_charts.date_day
     order by idea_charts.date_year desc, idea_charts.date_month desc, idea_charts.date_day desc limit ?",id,limit])
   end
-  memoize :index_charts
   
   # computes the change in percentage of all their ideas over the last [limit] days.
   def index_change_percent(limit=7)
