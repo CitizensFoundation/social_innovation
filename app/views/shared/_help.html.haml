@@ -1,0 +1,29 @@
+#sib_help
+  .tab_subhead
+    = link_to tr("About the site", "view/shared/_menu"), :controller => "about"
+  .tab_sublinks
+    \&middot; #{link_to tr("About", "view/shared/_menu"), :controller => "about"}
+    %br/
+    \&middot; #{link_to tr("FAQ", "view/shared/_menu"), :controller => "about", :action => "faq"}
+    %br/
+    \&middot; #{link_to tr("Rules", "view/shared/_menu"), :controller => "about", :action => "rules"}
+    %br/
+    \&middot; #{link_to tr("Privacy policy", "view/shared/_menu"), :controller => "about", :action => "privacy"}
+    %br/
+    \&middot; #{link_to tr("Contributors", "view/shared/_menu"), :controller => "about", :action => "contributors"}
+    %br/
+  .tab_subhead
+    = link_to tr("Charts and stats", "view/shared/_menu"), :controller => "charts", :action => "gainers_24hr"
+  .tab_sublinks
+    - if current_instance.is_tags?
+      \&middot; #{link_to tr("Active categories","view/shared/_menu"), :controller => "charts", :action => "issues"}
+      %br/
+    \&middot; #{link_to tr("Rising agendas", "view/shared/_menu"), :controller => "charts", :action => "gainers_24hr"}
+    %br/
+    \&middot; #{link_to tr("Falling agendas", "view/shared/_menu"), :controller => "charts", :action => "losers_24hr"}
+  .tab_subhead
+    = link_to tr("Widgets for your site", "view/shared/_menu"), :controller => "widgets", :action => "ideas"
+  .tab_sublinks
+    \&middot; #{link_to tr("Ideas", "view/shared/_menu"), :controller => "widgets", :action => "ideas"}
+    %br/
+    \&middot; #{link_to tr("Discussions", "view/shared/_menu"), :controller => "widgets", :action => "discussions"}

@@ -1,9 +1,10 @@
 #profile_header
   .profile_picture96
     - if @user.has_picture?
-      %a{:href => url_for @user}= image_tag @user.buddy_icon.url(:icon_96), :size => "96x96", :border => 0
+      %a{:href => url_for(@user)}
+        = image_tag @user.buddy_icon.url(:icon_96), :size => "96x96", :border => 0
     - elsif current_facebook_user_if_on_facebook and @user.has_facebook?
-      %a{:href => url_for @user}
+      %a{:href => url_for(@user)}
         %fb:profile-pic{:border => "0", :linked => "false", :size => "small", :uid => @user.facebook_uid, :width => "96px"}/
     - elsif logged_in? and @user.id == current_user.id
       = link_to image_tag("upload_pic.gif", :size => "96x96", :border => 0), picture_settings_url

@@ -43,6 +43,11 @@
   = f.file_field :top_banner
   %br/
 %p
+  %label{:for => "menu_strip_side_image"}= tr("Menu Strip Side Image", "view/sub_instances/_form")
+  %br/
+  = f.file_field :menu_strip_side
+  %br/
+%p
   %label{:for => "default_tags"}= tr("Default category", "view/sub_instances/_form")
   %br/
   = f.text_field :default_tags

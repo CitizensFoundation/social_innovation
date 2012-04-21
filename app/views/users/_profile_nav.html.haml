@@ -39,12 +39,12 @@
           = link_to tr("All activity", "view/users/_profile_nav"), activities_user_url(@user)
           %p
           .rss_feed
-            %a{:href => url_for activities_user_url(@user, :format => "rss")}= image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
-            %a{:href => url_for activities_user_url(@user, :format => "rss")}= tr("Activity feed", "view/users/_profile_nav")
+            %a{:href => url_for(activities_user_url(@user, :format => "rss"))}= image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
+            %a{:href => url_for(activities_user_url(@user, :format => "rss"))}= tr("Activity feed", "view/users/_profile_nav")
           - if @user.comments_count > 0
             .rss_feed
-              %a{:href => url_for comments_user_url(@user, :format => "rss")}= image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
-              %a{:href => url_for comments_user_url(@user, :format => "rss")}= tr("Discussions feed", "view/users/_profile_nav")
+              %a{:href => url_for(comments_user_url(@user, :format => "rss"))}= image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
+              %a{:href => url_for(comments_user_url(@user, :format => "rss"))}= tr("Discussions feed", "view/users/_profile_nav")
           %p
       - if logged_in? and current_user.is_admin?
         %li.tab7.mega

@@ -1,19 +1,27 @@
-#user_info_box
-  %table{:width => "100%"}
-    %tr
-      %td
-        #user_info_box_name_and_menu
-          %span.profile_name= current_user.name
+#sib_profile
+  #user_info_box
+    = render :partial => "shared/language_selection_master"
+    %table{:width => "100%"}
+      %tr
+        %td
+          #user_info_box_name_and_menu
+            %span.profile_name= current_user.name
+            %br/
+            = link_to tr("My Wall","views/shares/_user_info"), current_user
+            |
+            \#{link_to tr("Settings","views/shares/_user_info"), :controller=>"settings"} |
+            - if current_facebook_user_if_on_facebook and current_user.facebook_uid
+              = fb_logout_link(tr("Logout","view/shared/_user_info"), 'http://'+request.host+"/sessions/destroy")
+            - else
+              = link_to tr("Logout", "view/shared/_user_info"), "/sessions/destroy"
           %br/
-          = link_to tr("My Wall","views/shares/_user_info"), current_user
-          |
-          \#{link_to tr("Settings","views/shares/_user_info"), :controller=>"settings"} |
-          - if current_facebook_user_if_on_facebook and current_user.facebook_uid
-            = fb_logout_link(tr("Logout","view/shared/_user_info"), 'http://'+request.host+"/sessions/destroy")
-          - else
-            = link_to tr("Logout", "view/shared/_user_info"), "/sessions/destroy"
-        %br/
-      %td
-        #user_info_box_picture
-          = link_to :controller=>"settings", :action=>"picture" do
-            = render :partial => "users/pic_48", :locals => {:user => current_user}
+        %td
+          #user_info_box_picture
+            = link_to :controller=>"settings", :action=>"picture" do
+              = render :partial => "users/pic_48", :locals => {:user => current_user}
+    - if current_user.warnings_count > 0
+      #warning
+        - if current_user.warnings_count > 1
+          = tr("{count} warnings", "view/layouts/basic", :count => current_user.warnings_count)
+        - else
+          = tr("{count} warning", "view/layouts/basic", :count => current_user.warnings_count)

@@ -83,6 +83,9 @@ a
     @extend .signin
   a.help
     @extend .signin
+  a.profile
+    @extend .signin
+
 a.signin
   position: relative
   margin-left: 3px
@@ -99,6 +102,9 @@ a.new_idea
   @extend .signin
 
 a.help
+  @extend .signin
+
+a.profile
   @extend .signin
 
 #topnav a.menu-open
@@ -165,8 +171,14 @@ a.help
 #sib_login_form
   @extend #general_form
   display: none
-  background: #fff
 
+#sib_profile
+  @extend #general_form
+  display: none
+
+#sib_help
+  @extend #general_form
+  display: none
 
 a.signin.menu-open a.notifications.menu-open span
   background-image: url("/assets/top_navigation/toggle_up_dark.png")
