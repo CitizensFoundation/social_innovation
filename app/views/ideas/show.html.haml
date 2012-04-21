@@ -4,64 +4,58 @@
     = tr("This idea was replaced by {idea_name}", "view/ideas/show", :idea_name => link_to(@idea.change.new_idea.name, @idea.change.new_idea))
 - else
   = render :partial => "nav"
-%p
-  #ideas_container
-    - if @idea.has_change?
-      = render :partial => "changes/show", :locals => {:change => @idea.change}
+%table.show-table.single3
+  %tr
+    %td.add_note{:valign => "top"}
+      %p.top_p
+        - if false and @idea.has_change?
+          = render :partial => "changes/show", :locals => {:change => @idea.change}
+          %p
+            = render :partial => "changes/status", :locals => {:change => @idea.change}
+          %p
+        - if @idea.points_count == 0
+          %br/
+        = render :partial=>"top_points"
+      %div{:style => "clear:both"}
+      %table{:width => "100%"}
+        %tr
+          %td
+          %td
+      - if logged_in?
+        = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new}
       %p
-        = render :partial => "changes/status", :locals => {:change => @idea.change}
+        - if @relationships.any?
+          %p
+          .heading
+            - if current_instance.is_tags? and @idea.attribute_present?("cached_issue_list")
+              = relationship_tags_sentence(@idea.cached_issue_list)
+            - else
+              = tr("Other ideas to consider", "view/ideas/show")
+          - num_shown = 0
+          - @relationships.each do |other_idea, relationships|
+            - num_shown += 1
+            - next if num_shown > 3
+            - if @endorsements
+              - endorsement = @endorsements.detect { |e| e.idea_id == other_idea.id }
+            .related_idea{:id => "idea_#{other_idea.id}"}
+              .idea_name_related{:id => "idea_#{other_idea.id}_name"}
+                = link_to_unless_current h(other_idea.name), other_idea, :class => "idea_name_link"
+              .idea_related_intro
+                = relationship_sentence(relationships)
+              .idea_actions
+                = render :partial => "ideas/action_show", :locals => {:idea => other_idea, :endorsement => endorsement}
       %p
-    - if @idea.points_count == 0
-      = tr("Please tell us why we should endorse or oppose this idea by <a href='{new_point_url}'>adding a point</a>. You can even suggest a different idea instead.", "view/ideas/show", :new_point_url => new_idea_point_path(@idea))
-    - else
-      - if @endorsement and @endorsement.is_down?
-        - if @idea.down_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @opposer_points, :point_value => -1, :qualities => @qualities}
-        - if @idea.neutral_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @neutral_points, :point_value => 2, :qualities => @qualities}
-        - if @idea.up_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @endorser_points, :point_value => 1, :qualities => @qualities}
-      - elsif @endorsement and @endorsement.is_up?
-        - if @idea.up_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @endorser_points, :point_value => 1, :qualities => @qualities}
-        - if @idea.neutral_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @neutral_points, :point_value => 2, :qualities => @qualities}
-        - if @idea.down_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @opposer_points, :point_value => -1, :qualities => @qualities}
-      - else
-        - if @idea.up_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @endorser_points, :point_value => 1, :qualities => @qualities}
-        - if @idea.down_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @opposer_points, :point_value => -1, :qualities => @qualities}
-        - if @idea.neutral_points_count > 0
-          = render :partial => "ideas/points", :locals => {:points => @neutral_points, :point_value => 2, :qualities => @qualities}
-    - if @relationships.any?
-      .heading
-        - if current_instance.is_tags? and @idea.attribute_present?("cached_issue_list")
-          = relationship_tags_sentence(@idea.cached_issue_list)
+        - unless @activities.blank?
+          %ul#endless_scroll_ul_idea_show.list{:last => @activities.to_a.last.changed_at, :idea_id => @idea.id}
+            = render :template => 'news/activity_list_simple'
+          #infinite-scroll
+          .endless_scroll_inner_wrap
         - else
-          = tr("Other ideas to consider", "view/ideas/show")
-      - num_shown = 0
-      - @relationships.each do |other_idea, relationships|
-        - num_shown += 1
-        - next if num_shown > 3
-        - if @endorsements
-          - endorsement = @endorsements.detect {|e| e.idea_id == other_idea.id }
-        .related_idea{:id => "idea_#{other_idea.id}"}
-          .idea_name_related{:id => "idea_#{other_idea.id}_name"}
-            = link_to_unless_current h(other_idea.name), other_idea, :class => "idea_name_link"
-          .idea_related_intro
-            = relationship_sentence(relationships)
-          .idea_actions
-            = render :partial => "ideas/action_show", :locals => {:idea => other_idea, :endorsement => endorsement }
-    - if logged_in?
-      = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
-    - else
-      .heading= tr("What's happening on this idea", "view/ideas/show")
-    #activities
-      - for activity in @activities
-        = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_noself"}
-  #ideas_sidebar
-    - if @activities.total_pages > 1
-      = will_paginate(@activities, :params => {:action => "activities"} )
-    = render :partial => "left_nav"
+          #activities.single
+    %td.extras{:valign => "top", :width => "150"}
+      .ideas_adjustments
+        - if ['published', 'draft'].include?(@idea.status)
+          %div{:id => "idea_#{@idea.id.to_s}_position"}
+            = render :partial => "endorsements/position", :locals => {:endorsement => @endorsement}
+      .content_left_nav
+        = render :partial => "left_nav"

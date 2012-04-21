@@ -1,5 +1,6 @@
 - if action_name == "finished" and Instance.current.message_for_finished and Instance.current.message_for_finished!=""
   = render :partial=>"/shared/top_message_box", :locals=> {:message_text => Instance.current.message_for_finished.html_safe }
+= render :partial => "ideas/browse_nav"
 %p
   - if @ideas.any?
     %table.top-level-table.top_level.single2

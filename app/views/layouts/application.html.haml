@@ -14,19 +14,16 @@
     = tr8n_scripts_tag
   %body{:class => "#{h(controller.controller_name)}-#{h(controller.action_name)}"}
     = csrf_meta_tag
-    %div.container
-      #div.row
-        #div.sixteencol.si_header_container
-          = "fkdljfklsdjfklsdjfklsdjfkldsjfkdlsj"
-          = render :partial => "shared/branding/dynamic"
-      #div.row
-        #div.twocol.si_left_menu_container
-          = render :partial => "shared/menu"
-        #div.fourteencol.last.si_main_content
-          = render :partial => "shared/sidebar"
-          = flash_div :warning, :notice, :error
-          = render :partial => "ads/pick"
-          = yield :layout
+    #sib_container
+      #sib_header
+        = render :partial => "shared/branding/dynamic"
+      #sib_left_menu
+        = render :partial => "shared/menu"
+      #sib_main_content
+        = flash_div :warning, :notice, :error
+        = render :partial => "ads/pick"
+        = yield :layout
+        = #render :partial => "shared/sidebar"
       = render :partial => "shared/footer"
       = render :partial => "shared/analytics"
       = render :partial => "shared/facebook_footer"

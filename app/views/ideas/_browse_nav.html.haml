@@ -5,16 +5,16 @@
     %li
       %a{:href => "#", :onclick => "javascript:showlayer('sm_1')"}
         = @selected_sub_menu_name
-    %ul#sm_1.submenu
-      - @sub_menu_items.each do |menu_item_id, menu_item|
-        - if menu_item_id==@selected_menu_item_id
-          %li
-            %a{:href => menu_item[1]}
-              = menu_item[0]
-        - else
-          %li.selected
-            %a{:href => menu_item[1]}
-              = menu_item[0]
+      %ul#sm_1.submenu
+        - @sub_menu_items.each do |menu_item_id, menu_item|
+          - if menu_item_id==@selected_menu_item_id
+            %li
+              %a{:href => menu_item[1]}
+                = menu_item[0]
+          - else
+            %li.selected
+              %a{:href => menu_item[1]}
+                = menu_item[0]
 
 :javascript
   function showlayer(layer){

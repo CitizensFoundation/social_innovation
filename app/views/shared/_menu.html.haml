@@ -81,8 +81,6 @@
                 \&middot; #{link_to tr("Colors", "view/shared/_menu"), color_schemes_url}
 - if nav == 1
   = render :partial => "issues/nav"
-- elsif nav == 2 and not ["show","discussions","endorsers","opposers","top_points","activities","new"].include?(action_name)
-  = render :partial => "ideas/browse_nav"
 - elsif nav == 3 and not ["new"].include?(action_name)
   = render :partial => "points/nav"
 - elsif nav == 4

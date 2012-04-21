@@ -64,7 +64,7 @@ class EndorsementsController < ApplicationController
       format.js {
         render :update do |page|
           if params[:region] == 'idea_left'
-            page.replace_html 'idea_' + @idea.id.to_s + "_button",render(:partial => "ideas/button", :locals => {:idea => @idea, :endorsement => nil})
+            page.replace_html 'idea_' + @idea.id.to_s + "_button",render(:partial => "ideas/debate_buttons", :locals => {:idea => @idea, :endorsement => nil, :region=>"idea_left"})
             page.replace_html 'idea_' + @idea.id.to_s + "_position",render(:partial => "endorsements/position", :locals => {:endorsement => nil})
             page.replace 'endorser_link', render(:partial => "ideas/endorser_link")
             page.replace 'opposer_link', render(:partial => "ideas/opposer_link")
@@ -79,7 +79,7 @@ class EndorsementsController < ApplicationController
             page.replace 'endorser_link', render(:partial => "ideas/endorser_link")
             page.replace 'opposer_link', render(:partial => "ideas/opposer_link")
           elsif ['idea_inline'].include?(params[:region])
-            page<<"$('.idea_#{@idea.id.to_s}_button_small').replaceWith('#{escape_javascript(render(:partial => "ideas/button_small", :locals => {:idea => @idea, :endorsement => nil, :region => params[:region]}))}')"
+            page<<"$('.idea_#{@idea.id.to_s}_button_small').replaceWith('#{escape_javascript(render(:partial => "ideas/debate_buttons", :locals => {:idea => @idea, :endorsement => nil, :region => params[:region]}))}')"
             page<<"$('.idea_#{@idea.id.to_s}_endorsement_count').replaceWith('#{escape_javascript(render(:partial => "ideas/endorsement_count", :locals => {:idea => @idea}))}')"
           elsif params[:region] == 'your_ideas'
             # page.visual_effect :fade, 'endorsement_' + eid.to_s, :duration => 0.5

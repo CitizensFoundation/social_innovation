@@ -378,7 +378,7 @@ class IdeasController < ApplicationController
       @endorsements = Endorsement.find(:all, :conditions => ["idea_id in (?) and user_id = ? and status='active'", @relationships.collect {|other_idea, relationship| other_idea.id},current_user.id])
     end    
     respond_to do |format|
-      format.html { render :action => "show_with_processes" }
+      format.html { render :action => "show" }
       format.xml { render :xml => @idea.to_xml(:except => NB_CONFIG['api_exclude_fields']) }
       format.json { render :json => @idea.to_json(:except => NB_CONFIG['api_exclude_fields']) }
     end
@@ -701,7 +701,7 @@ class IdeasController < ApplicationController
       format.js {
         render :update do |page|
           if params[:region] == 'idea_left'
-            page.replace_html 'idea_' + @idea.id.to_s + "_button",render(:partial => "ideas/button", :locals => {:idea => @idea, :endorsement => @endorsement})
+            page.replace_html 'idea_' + @idea.id.to_s + "_button",render(:partial => "ideas/debate_buttons", :locals => {:idea => @idea, :endorsement => @endorsement, :region=>"idea_left"})
             page.replace_html 'idea_' + @idea.id.to_s + "_position",render(:partial => "endorsements/position", :locals => {:endorsement => @endorsement})
             page.replace 'endorser_link', render(:partial => "ideas/endorser_link")
             page.replace 'opposer_link', render(:partial => "ideas/opposer_link")
