@@ -11,7 +11,6 @@
 .idea_listing{:id => "idea_#{@idea.id}"}
   = render :partial => "ideas/idea_container", :locals => {:idea => @idea, :endorsement => @endorsement, :value => 0, :noaction=>true}
 .replace_notice
-= render :partial => "ideas/action_show", :locals => {:idea => @idea, :endorsement => @endorsement, :noaction=> defined?(noaction) ? true : false }
-= render :partial => "ideas/tag_show", :locals => { :idea => @idea }
+= render :partial => "ideas/endorsement_count", :locals => {:idea => @idea, :endorsement => @endorsement, :noaction=> defined?(noaction) ? true : false }
 - if @idea.status == "inactive" and [-1,-2,2].include?(@idea.official_status)
   = render :partial => "ideas/idea_status_changelogs"

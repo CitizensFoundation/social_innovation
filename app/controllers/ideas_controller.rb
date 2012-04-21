@@ -718,7 +718,7 @@ class IdeasController < ApplicationController
             page.replace 'endorser_link', render(:partial => "ideas/endorser_link")
             page.replace 'opposer_link', render(:partial => "ideas/opposer_link")
           elsif params[:region] == 'idea_inline'
-            page<<"$('.idea_#{@idea.id.to_s}_button_small').replaceWith('#{escape_javascript(render(:partial => "ideas/button_small", :locals => {:idea => @idea, :endorsement => @endorsement, :region => params[:region]}))}')"
+            page<<"$('.idea_#{@idea.id.to_s}_button_small').replaceWith('#{escape_javascript(render(:partial => "ideas/debate_buttons", :locals => {:idea => @idea, :endorsement => @endorsement, :region => params[:region]}))}')"
             page<<"$('.idea_#{@idea.id.to_s}_endorsement_count').replaceWith('#{escape_javascript(render(:partial => "ideas/endorsement_count", :locals => {:idea => @idea}))}')"
           elsif params[:region] == 'ad_top' and @ad
             page.replace 'encouragements', render(:partial => "ads/pick")

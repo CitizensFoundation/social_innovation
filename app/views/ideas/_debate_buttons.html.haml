@@ -20,7 +20,6 @@
               'data-loader-name' => "spinner",                                                   |
               :class => "idea_remove_link",                                                  |
               :title => tr("Remove from my list of ideas", "view/ideas/_button_small") |
-      = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
     - else
       %div{:style => "overflow:hidden;"}
         %span.idea_add{:id => "idea_add_endorse_#{idea.id.to_s}"}
@@ -38,4 +37,4 @@
               'data-loader-name' => "no_loader",                                                                                                                       |
               'data-disable-with' => '<span class="idea_add_link2 idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
               :class => "idea_add_link2", :title =>  tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas/_button_small")      |
-        = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
+  = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")

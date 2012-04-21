@@ -1,6 +1,17 @@
 - if action_name == "finished" and Instance.current.message_for_finished and Instance.current.message_for_finished!=""
   = render :partial=>"/shared/top_message_box", :locals=> {:message_text => Instance.current.message_for_finished.html_safe }
 = render :partial => "ideas/browse_nav"
+:javascript
+  $(function(){
+  	$('.move_test').replaceWith($('.category'));
+  	$('.replace_fblike').replaceWith($('.fblike'));
+  	$('.replace_report').replaceWith($('.report1'));
+  	$('.replace_notice').replaceWith($('.single .warning_inline2'));
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  });
+
 %p
   - if @ideas.any?
     %table.top-level-table.top_level.single2

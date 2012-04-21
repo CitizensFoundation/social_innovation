@@ -8,7 +8,6 @@
     \&middot; #{link_to tr("New point", "view/ideas/_endorsement_count").downcase, new_idea_point_path(idea)+"?support=1" , :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_endorsement_count"), :class => "qtip_left"}
   - if idea.discussions_count > 0
     \&middot; #{link_to tr("{count} discussions", "view/ideas/_endorsement_count", :count => idea.discussions_count), idea.show_discussion_url}
-    %span.endorsed= tr("endorses", "view/ideas/_endorsement_count")
   - elsif idea.is_official_opposed?
     \&middot; #{current_instance.official_user_short_name}
     %span.opposed= tr("opposes", "view/ideas/_endorsement_count")
