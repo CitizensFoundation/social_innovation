@@ -7,7 +7,12 @@ class SubInstance < ActiveRecord::Base
   scope :with_logo, :conditions => "logo_file_name is not null"
   
   belongs_to :picture
-  
+
+  has_attached_file :top_banner, :styles => { :icon_full => "980x90#" }
+
+  validates_attachment_size :top_banner, :less_than => 5.megabytes
+  validates_attachment_content_type :top_banner, :content_type => ['image/jpeg', 'image/png', 'image/gif']
+
   has_attached_file :logo, :styles => { :icon_96 => "96x96#", :icon_140 => "140x140#", :icon_340_74 => "340x74#", :icon_214_32 => "214x32#", :icon_107_16 => "107x16#", :icon_53_8 => "53x8#", :icon_180 => "180x180#", :medium  => "450x" }
     
   validates_attachment_size :logo, :less_than => 5.megabytes

@@ -38,6 +38,13 @@
   = f.text_field :geoblocking_open_countries
   %br/
 %p
+  %label{:for => "top_banner_image"}= tr("Top Banner Image", "view/sub_instances/_form")
+  %br/
+  = f.file_field :top_banner
+  %br/
+
+    = f.file_field :logo
+%p
   %label{:for => "default_tags"}= tr("Default category", "view/sub_instances/_form")
   %br/
   = f.text_field :default_tags

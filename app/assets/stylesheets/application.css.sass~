@@ -3,8 +3,9 @@
  *= require main
  *= require grid_layout
  *= require ideas
- *= require tipsy
- *= require front
+ *= tipsy
+ *= front
  *= require navigation
+
  */
 
