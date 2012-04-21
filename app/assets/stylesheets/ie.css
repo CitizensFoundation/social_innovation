@@ -1,43 +1,63 @@
 .onecol {
-width: 4.7%;
+width: 3.95%;
 }
 
 .twocol {
-width: 13.2%;
+width: 10.3%;
 }
 
 .threecol {
-width: 22.05%;
+width: 16.6%;
 }
 
 .fourcol {
-width: 30.6%;
+width: 22.9%;
 }
 
 .fivecol {
-width: 39%;
+width: 29.25%;
 }
 
 .sixcol {
-width: 48%;
+width: 35.55%;
 }
 
 .sevencol {
-width: 56.75%;
+width: 41.85%;
 }
 
 .eightcol {
-width: 61.6%;
+width: 48.2%;
 }
 
 .ninecol {
-width: 74.05%;
+width: 54.5%;
 }
 
 .tencol {
-width: 82%;
+width: 60.8%;
 }
 
 .elevencol {
-width: 91.35%;
+width: 67.1%;
+}
+
+.twelvecol {
+width: 73.45%;
+}
+
+.thirteencol {
+width: 79.75%;
+}
+
+.fourteencol {
+width: 86.05%;
+}
+
+.fifteencol {
+width: 92.4%;
+}
+
+.sixteencol {
+width:98.7%;
 }

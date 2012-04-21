@@ -16,13 +16,14 @@
     = csrf_meta_tag
     %div.container
       #div.row
-        #div.twelvecol.fixed
+        #div.sixteencol.si_header_container
+          = "fkdljfklsdjfklsdjfklsdjfkldsjfkdlsj"
           = render :partial => "shared/branding/dynamic"
       #div.row
-        #div.onecol.fixed
+        #div.twocol.si_left_menu_container
           = render :partial => "shared/menu"
-          = #render :partial => "shared/sidebar"
-        #div.elevencol.last
+        #div.fourteencol.last.si_main_content
+          = render :partial => "shared/sidebar"
           = flash_div :warning, :notice, :error
           = render :partial => "ads/pick"
           = yield :layout
