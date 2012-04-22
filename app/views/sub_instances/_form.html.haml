@@ -43,6 +43,11 @@
   = f.file_field :top_banner
   %br/
 %p
+  %label{:for => "menu_strip_image"}= tr("Menu Strip Image Thin", "view/sub_instances/_form")
+  %br/
+  = f.file_field :menu_strip
+  %br/
+%p
   %label{:for => "menu_strip_side_image"}= tr("Menu Strip Side Image", "view/sub_instances/_form")
   %br/
   = f.file_field :menu_strip_side

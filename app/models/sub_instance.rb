@@ -12,6 +12,10 @@ class SubInstance < ActiveRecord::Base
   validates_attachment_size :top_banner, :less_than => 5.megabytes
   validates_attachment_content_type :top_banner, :content_type => ['image/jpeg', 'image/png', 'image/gif']
 
+  has_attached_file :menu_strip, :styles => { :icon_full => "5x50#" }
+  validates_attachment_size :menu_strip, :less_than => 5.megabytes
+  validates_attachment_content_type :menu_strip, :content_type => ['image/jpeg', 'image/png', 'image/gif']
+
   has_attached_file :menu_strip_side, :styles => { :icon_full => "100x300#" }
   validates_attachment_size :menu_strip_side, :less_than => 5.megabytes
   validates_attachment_content_type :menu_strip_side, :content_type => ['image/jpeg', 'image/png', 'image/gif']
