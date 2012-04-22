@@ -76,7 +76,7 @@ jQuery(document).ready(function() {
 	function addMega(){
 	  jQuery(this).addClass("hovering"); 
 	} 
-
+                                          77
 	function removeMega(){ 
 	  jQuery(this).removeClass("hovering"); 
 	}
@@ -106,4 +106,13 @@ function setAll(name,state)
   for (i = 0; i < boxes.length; i++)
     if (!boxes[i].disabled)
    		{	boxes[i].checked = state ; }
+}
+
+function showSubNavLayer(layer) {
+    var myLayer = document.getElementById(layer);
+    if(myLayer.style.display=="none" || myLayer.style.display==""){
+      myLayer.style.display="block";
+    } else {
+      myLayer.style.display="none";
+    }
 }

@@ -1059,20 +1059,20 @@ class IdeasController < ApplicationController
 
   def setup_menu_items
     @items = Hash.new
-    @items[1]=[tr("Top All", "view/ideas/_browse_nav"), top_ideas_url]
-    @items[2]=[tr("Top Active 24 hours", "view/ideas/_browse_nav"), top_24hr_ideas_url]
-    @items[3]=[tr("Top Active 7 days", "view/ideas/_browse_nav"), top_7days_ideas_url]
-    @items[4]=[tr("Top Active 30 days", "view/ideas/_browse_nav"), top_30days_ideas_url]
-    @items[6]=[tr("New", "view/ideas/_browse_nav"), newest_ideas_url]
-    @items[8]=[tr("Random", "view/ideas/_browse_nav"), random_ideas_url]
-    @items[9]=[tr("In Progress", "view/ideas/_browse_nav"), finished_ideas_url]
-    @items[10]=[tr("Controversial", "view/ideas/_browse_nav"), controversial_ideas_url]
-    @items[11]=[tr("Ads", "view/ideas/_browse_nav"), ads_ideas_url]
-    @items[12]=[tr("Rising", "view/ideas/_browse_nav"), rising_ideas_url]
-    @items[13]=[tr("Falling", "view/ideas/_browse_nav"), rising_ideas_url]
+    @items[1]=[tr("Top All", "view/ideas"), top_ideas_url]
+    @items[2]=[tr("Top Active 24 hours", "view/ideas"), top_24hr_ideas_url]
+    @items[3]=[tr("Top Active 7 days", "view/ideas"), top_7days_ideas_url]
+    @items[4]=[tr("Top Active 30 days", "view/ideas"), top_30days_ideas_url]
+    @items[6]=[tr("New", "view/ideas"), newest_ideas_url]
+    @items[8]=[tr("Random", "view/ideas"), random_ideas_url]
+    @items[9]=[tr("In Progress", "view/ideas"), finished_ideas_url]
+    @items[10]=[tr("Controversial", "view/ideas"), controversial_ideas_url]
+    @items[11]=[tr("Ads", "view/ideas"), ads_ideas_url]
+    @items[12]=[tr("Rising", "view/ideas"), rising_ideas_url]
+    @items[13]=[tr("Falling", "view/ideas"), rising_ideas_url]
     if logged_in?
-      @items[14]=[tr("Your network", "view/ideas/_browse_nav"), network_ideas_url]
-      @items[15]=[tr("Yours", "view/ideas/_browse_nav"), yours_ideas_url]
+      @items[14]=[tr("Your network", "view/ideas"), network_ideas_url]
+      @items[15]=[tr("Yours", "view/ideas"), yours_ideas_url]
     end
     @items
   end
