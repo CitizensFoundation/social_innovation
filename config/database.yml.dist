@@ -17,7 +17,7 @@ test:
   collation: utf8_general_ci
   git_branch: master
   reconnect: true
-  database: oad_test
+  database: your_db_test_name
   pool: 5
   username: your_db_user_name
   password: your_db_user_password
