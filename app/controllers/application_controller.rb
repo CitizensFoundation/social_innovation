@@ -452,10 +452,11 @@ class ApplicationController < ActionController::Base
 
     if action_name == "index" and @items and not request.xhr?
       Rails.logger.debug "index"
-      Rails.logger.debug "cookie #{cookies["selected_#{controller_name}_filter_id"]}"
-      if cookies["selected_#{controller_name}_filter_id"] and @sub_menu_items[cookies["selected_#{controller_name}_filter_id"]]
+      selected = cookies["selected_#{controller_name}_filter_id"].to_i
+      Rails.logger.debug "cookie #{selected}"
+      if selected and @sub_menu_items[selected]
         Rails.logger.debug "cookie"
-        redirect_to @sub_menu_items[cookies["selected_#{controller_name}_filter_id"]][1]
+        redirect_to @sub_menu_items[selected][1]
         return false
       else
         Rails.logger.debug "no cookie"
