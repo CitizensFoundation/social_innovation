@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
 
 
   create_table "delayed_jobs", :force => true do |t|
-    t.integer  "idea",   :default => 0
+    t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
     t.text     "handler"
     t.text     "last_error"
@@ -188,6 +188,8 @@ ActiveRecord::Schema.define(:version => 20120321185510) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index :delayed_jobs, [:priority, :run_at], :name => 'delayed_jobs_priority'
 
   create_table "endorsements", :force => true do |t|
     t.string   "status",      :limit => 50
