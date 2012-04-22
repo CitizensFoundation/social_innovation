@@ -2,7 +2,7 @@
   %ul
     %li
       = tr(controller_name.camelize,"sub_nav")
-    %li
+    %li.pulldown
       - if @selected_sub_nav_name
         %a{:href => "#", :onclick => "javascript:showSubNavLayer('sub_menu')"}
           = @selected_sub_nav_name
