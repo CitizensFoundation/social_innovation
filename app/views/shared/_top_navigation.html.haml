@@ -2,13 +2,13 @@
   #topnav.topnav
     %div
       = render :partial => "shared/search"
+    %a.new_idea{:href => "/ideas/new"}
+      %span
+        = tr("New idea")
     - if logged_in? and
       %a.notifications{:href => "notifications"}
         %span
           = tr("Notification")
-    %a.new_idea{:href => "/ideas/new"}
-      %span
-        = tr("New idea")
     - unless logged_in?
       %a.signin{:href => "login"}
         %span
@@ -24,7 +24,7 @@
       = render :partial => "shared/user_info"
       = render :partial => "shared/notifications"
     - else
-      = render :partial => "shared/login"
+      = render :partial => "users/login"
     = render :partial => "shared/help"
 
 :javascript

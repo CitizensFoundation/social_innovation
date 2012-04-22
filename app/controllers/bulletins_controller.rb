@@ -47,7 +47,7 @@ class BulletinsController < ApplicationController
             if @activity.idea
               redirect_to @activity.idea
             else
-              redirect_to :controller => "news", :action => "your_network_activities"
+              redirect_to :controller => "feed", :action => "your_network_activities"
             end
           }
         format.js {

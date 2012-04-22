@@ -29,7 +29,7 @@
     = tr("None of your Facebook friends are {instance_name} members yet.", "view/facebook/invite", :instance_name => tr(current_instance.name,"Name from database"))
   - else
     %br/
-    = tr("There are {count} of your Facebook friends members of {instance_name}, and have been added to <a href='{network_url}'>your network</a>.<br/>You can <a href='{news_url}'>follow their updates in the news section</a>.".html_safe, "view/facebook/invite", :count => @users.size, :instance_name => tr(current_instance.name,"Name from database"), :network_url => following_user_contacts_path(current_user), :news_url => url_for(:controller => "news", :action => "your_network_activities")).html_safe
+    = tr("There are {count} of your Facebook friends members of {instance_name}, and have been added to <a href='{network_url}'>your network</a>.<br/>You can <a href='{news_url}'>follow their updates in the feed section</a>.".html_safe, "view/facebook/invite", :count => @users.size, :instance_name => tr(current_instance.name,"Name from database"), :network_url => following_user_contacts_path(current_user), :news_url => url_for(:controller => "feed", :action => "your_network_activities")).html_safe
     #contacts_small
       %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
         - for user in @users

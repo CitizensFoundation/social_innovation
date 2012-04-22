@@ -1,7 +1,7 @@
 #hp_intro= @page_title
 %p
   - if @changes.empty?
-    = tr("No acquisition proposals", "view/news/change_list")
+    = tr("No acquisition proposals", "view/feed/change_list")
   - else
     = will_paginate(@changes)
     %p

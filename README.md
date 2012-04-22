@@ -76,20 +76,14 @@ $ $EDITOR config/database.yml
 Then create and seed the database
 
 ````bash
-
-bundle exec rake db:drop
-bundle exec rake db:create
-bundle exec rake db:schema:load
-bundle exec rake tr8n:import_db
-bundle exec rake db:seed --trace
+bundle exec rake db:drop db:create db:schema:load tr8n:import_db db:seed --trace
 ````
 
 Recreate tr8n from scratch
 
 ````bash
 
-rake tr8n:init
-rake tr8n:import_and_setup_iso_3166
+rake tr8n:init tr8n:import_and_setup_iso_3166
 ````
 
 Run social-innovation

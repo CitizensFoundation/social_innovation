@@ -381,11 +381,11 @@ class IdeaRanker
       end
     end
 
-    not_in_range_priorites = @@all_ideas[sub_instance_sql]-ideas
+    not_in_range_ideas = @@all_ideas[sub_instance_sql]-ideas
 
-    puts "Found #{not_in_range_priorites.count} NOT in range"
+    puts "Found #{not_in_range_ideas.count} NOT in range"
     Idea.transaction do
-      not_in_range_priorites.each do |idea|
+      not_in_range_ideas.each do |idea|
         idea.reload
         eval "idea.#{position_db_name} = nil"
         idea.save

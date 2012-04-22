@@ -22,9 +22,9 @@ class WidgetsController < ApplicationController
   def discussions
     @page_title = tr("Put discussions on your website", "controller/widgets", :instance_name => tr(current_instance.name,"Name from database"))
     if logged_in?
-      @widget = Widget.new(:controller_name => "news", :user => current_user, :action_name => "your_discussions")
+      @widget = Widget.new(:controller_name => "feed", :user => current_user, :action_name => "your_discussions")
     else
-      @widget = Widget.new(:controller_name => "news", :action_name => "discussions")
+      @widget = Widget.new(:controller_name => "feed", :action_name => "discussions")
     end
     respond_to do |format|
       format.html

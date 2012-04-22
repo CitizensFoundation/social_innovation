@@ -26,7 +26,7 @@
             = link_to tr("M&A", "view/ideas/_nav"), idea_changes_url(@idea)
       %li.tab8
         %span.tab_header
-          = link_to tr("News", "view/ideas/_nav"), activities_idea_url(@idea)
+          = link_to tr("Feed", "view/ideas/_nav"), activities_idea_url(@idea)
       - if current_user and current_user.capitals_count>0 and @idea.status == 'published'
         %li.tab8
           %span.tab_header

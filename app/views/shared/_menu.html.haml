@@ -1,6 +1,6 @@
 - if ['ideas','changes','ads','prioritizer'].include?(params[:controller])
   - nav = 2
-- elsif ['news','comments'].include?(params[:controller])
+- elsif ['feed','comments'].include?(params[:controller])
   - nav = 4
 - elsif ['issues'].include?(params[:controller])
   - nav = 1
@@ -31,9 +31,9 @@
         = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="points" ? "points_pos_selected" : "points_pos"}"
       = tr("Debate", "view/shared/_menu")
   %li
-    = link_to :controller => "news", :action=>"top" do
+    = link_to :controller => "feed", :action=>"top" do
       %div.sprite_clipwrapper
-        = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="news" ? "feed_pos_selected" : "feed_pos"}"
+        = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="feed" ? "feed_pos_selected" : "feed_pos"}"
       = tr("Feed", "view/shared/_menu")
   %li
     = link_to :controller => "users" do
@@ -102,9 +102,9 @@
 - if nav == 1
   = render :partial => "issues/nav"
 - elsif nav == 3 and not ["new"].include?(action_name)
-  = render :partial => "points/nav"
+  = #render :partial => "points/nav"
 - elsif nav == 4
-  = render :partial => "news/nav"
+  = render :partial => "feed/nav"
 - elsif nav == 5
   - if ['user_contacts','facebook','import'].include?(params[:controller])
     = render :partial => "network/nav"

@@ -1,7 +1,7 @@
 - if ['color_schemes'].include?(params[:controller])
   = javascript_include_tag "colorpicker.js"
 = javascript_include_tag "application"
-- if ["portal","news"].include?(controller_name)
+- if ["portal","feed"].include?(controller_name)
   = javascript_include_tag "endless_scrolling_activity.js"
 - elsif ["ideas"].include?(controller_name) and action_name.include?("show")
   = javascript_include_tag "endless_scrolling_activity_idea_show.js"

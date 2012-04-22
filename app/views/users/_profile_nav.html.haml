@@ -28,7 +28,7 @@
             %p
       %li.tab6.mega
         %span.tab_header
-          = link_to tr("News", "view/users/_profile_nav"), activities_user_url(@user)
+          = link_to tr("Feed", "view/users/_profile_nav"), activities_user_url(@user)
         .tab_body
           = link_to tr("{count} discussions", "view/users/_profile_nav", :count => @user.points_count), discussions_user_url(@user)
           %br/

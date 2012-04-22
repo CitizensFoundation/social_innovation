@@ -48,7 +48,7 @@ gem 'awesome_print'
 
 group :development do
   gem 'rails-dev-boost'
-  gem 'rails_view_annotator'
+  gem 'rails_view_annotator', :git => "git://github.com/duncanbeevers/rails_view_annotator.git"
 end
 
 group :production do

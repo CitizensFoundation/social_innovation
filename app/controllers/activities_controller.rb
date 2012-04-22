@@ -8,7 +8,7 @@ class ActivitiesController < ApplicationController
       @activities = Activity.active.filtered.by_recently_created.paginate :page => params[:page], :per_page => params[:per_page]
     end
     respond_to do |format|
-      format.html { redirect_to :controller => "news", :action => "activities" } # redirect to all activity
+      format.html { redirect_to :controller => "feed", :action => "activities" } # redirect to all activity
       format.xml { render :xml => @activities.to_xml(:include => [:user, :comments], :except => NB_CONFIG['api_exclude_fields']) }
       format.json { render :json => @activities.to_json(:include => [:user, :comments], :except => NB_CONFIG['api_exclude_fields']) }      
     end    

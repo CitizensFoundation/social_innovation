@@ -34,7 +34,8 @@
             = submit_tag tr("Sign in", "view/shared/_login"), :class => "submit_button"
       #login_message
       = link_to tr("I forgot my password", "view/shared/_login"), new_password_path
-  - if current_instance.has_facebook_enabled? or current_instance.has_twitter_enabled? or current_instance.google_login_enabled
-    %p
-  - if @geoblocked
-    = render :partial=>"shared/geoblocking_info"
+    - if current_instance.has_facebook_enabled? or current_instance.has_twitter_enabled? or current_instance.google_login_enabled
+      %p
+    = render :partial => "shared/language_selection_master"
+    - if @geoblocked
+      = render :partial=>"shared/geoblocking_info"

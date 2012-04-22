@@ -126,7 +126,7 @@ module ApplicationHelper
       elsif u[0] == 'NotificationPointFlagged'
         r << link_to(tr('{count} point flag(s)', "notifications", :count => u[1]), :controller => "inbox", :action => "notifications")       
       elsif u[0] == 'NotificationComment' 
-        r << link_to(tr('{count} new comment(s)', "notifications", :count => u[1]), :controller => "news", :action => "your_discussions") 
+        r << link_to(tr('{count} new comment(s)', "notifications", :count => u[1]), :controller => "feed", :action => "your_discussions")
       elsif u[0] == 'NotificationProfileBulletin'
         r << link_to(tr('{count} new bulletin(s)', "notifications", :count => u[1]), current_user)
       elsif u[0] == 'NotificationFollower' 
@@ -142,9 +142,9 @@ module ApplicationHelper
       elsif u[0] == 'NotificationIdeaFinished'
         r << link_to(tr('{count} prioritie(s) finished', "notifications", :count => u[1]), yours_finished_ideas_url)
       elsif false and u[0] == 'NotificationChangeVote' 
-        r << link_to(tr('{count} merger vote(s)', "notifications",:count => u[1]), :controller => "news", :action => "changes_voting")
+        r << link_to(tr('{count} merger vote(s)', "notifications",:count => u[1]), :controller => "feed", :action => "changes_voting")
       elsif false and u[0] == 'NotificationChangeProposed' 
-        r << link_to(tr('{count} merger(s) proposed', "notifications", :count => u[1]), :controller => "news", :action => "changes_voting")
+        r << link_to(tr('{count} merger(s) proposed', "notifications", :count => u[1]), :controller => "feed", :action => "changes_voting")
       end 
     end     
     return "" if r.empty?
