@@ -39,7 +39,7 @@
     = link_to :controller => "users" do
       %div.sprite_clipwrapper
         = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{["users","network"].include?(controller_name) ? "people_pos_selected" : "people_pos"}"
-      = tr("People", "view/shared/_menu")
+      = tr("Network", "view/shared/_menu")
   %li
     = link_to :controller => "issues" do
       %div.sprite_clipwrapper
@@ -99,19 +99,18 @@
               %br/
               = link_to tr("Graphics", "view/shared/_menu"), :controller => "admin", :action => "picture"
               \&middot; #{link_to tr("Colors", "view/shared/_menu"), color_schemes_url}
+              %br/
+              = link_to tr("Unverified users", "view/network/_nav"), :controller => "network", :action => "unverified"
+              %br/
+              = link_to tr("Warnings users", "view/network/_nav"), :controller => "network", :action => "warnings"
+              %br/
+              = link_to tr("Suspended users", "view/network/_nav"), :controller => "network", :action => "suspended"
+              %br/
+              = link_to tr("Probation users", "view/network/_nav"), :controller => "network", :action => "probation"
+              %br/
+              = link_to tr("Deleted users", "view/network/_nav"), :controller => "network", :action => "deleted"
+
 - if nav == 1
-  = render :partial => "issues/nav"
-- elsif nav == 3 and not ["new"].include?(action_name)
-  = #render :partial => "points/nav"
-- elsif nav == 4
-  = #render :partial => "feed/nav"
-- elsif nav == 5
-  - if ['user_contacts','facebook','import'].include?(params[:controller])
-    = render :partial => "network/nav"
-  - elsif ['inbox'].include?(params[:controller])
-    = render :partial => "inbox/nav"
-  - else
-    = render :partial => "network/nav"
 - elsif nav == 6
   - if ['instances','color_schemes','admin','pages','tags'].include?(params[:controller])
     = render :partial => "admin/nav"

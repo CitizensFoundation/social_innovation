@@ -8,8 +8,14 @@ class NetworkController < ApplicationController
                 :if => proc {|c| c.do_action_cache? },
                 :cache_path => proc {|c| c.action_cache_path},
                 :expires_in => 5.minutes
-  
+
+  before_filter :setup_filter_dropdown
+
   def index
+    redirect_to :action=>"influential"
+  end
+
+  def influential
     @page_title = tr("Meet the most influential people at {instance_name}", "controller/network", :instance_name => tr(current_instance.name,"Name from database"))
     if current_instance.users_count < 100
       @users = User.active.at_least_one_endorsement.by_capital.paginate :page => params[:page], :per_page => params[:per_page]
@@ -149,5 +155,19 @@ class NetworkController < ApplicationController
     @row = 0 if params[:page].to_i <= 1
   end 
 
+  def setup_menu_items
+     @items = Hash.new
+     @items[1]=[tr("Influential", "view/network/_nav"), url_for(:controller => "network", :action => "influential")]
+     @items[2]=[tr("Talkative", "view/network/_nav"), url_for(:controller => "network", :action => "talkative")]
+     @items[3]=[tr("New members", "view/network/_nav"), url_for(:controller => "network", :action => "newest")]
+     @items[4]=[tr("Ambassadors", "view/network/_nav"), url_for(:controller => "network", :action => "ambassadors")]
+     if logged_in?
+       @items[5]=[tr("Your network", "view/user_contacts/_nav"), following_user_contacts_path(current_user)]
+       if current_instance.has_twitter_enabled?
+         @items[6]=[tr("Twitterers", "view/network/_nav"), url_for(:controller => "network", :action => "twitterers")]
+       end
+     end
+     @items
+   end
 end
 
