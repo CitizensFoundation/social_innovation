@@ -383,15 +383,24 @@ a.signin.menu-open a.notifications.menu-open span
     clear: both
     z-index: 2
     display: none
+  ul
     li
-      background: none
+      float: left
+      margin: 10px 0 8px 14px
+      padding: 4px 4px 2px 3px
       display: block
-      float: right
-      margin: 0 6px
-      border: 0
-      height: auto
-      line-height: normal
-      border-top: solid 1px #DEDEDE
+      font-size: 14px
+      font-weight: bold
+      a
+        &:link, &:visited
+          color: #fff !important
+          text-decoration: none
+        &:hover
+          background: #e3edef
+    li.pulldown
+      border: 1px solid #999
+      padding: 4px 4px 4px 3px
+      margin: 10px 0 8px 10px
   .submenu li a
     background: none
     display: block
@@ -405,9 +414,3 @@ a.signin.menu-open a.notifications.menu-open span
     &:hover
       background: #e3edef
 
-#sib_sub_nav ul li a
-  &:link, &:visited
-    color: #0ff !important
-    text-decoration: none
-  &:hover
-    background: #e3edef
