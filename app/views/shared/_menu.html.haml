@@ -1,105 +1,104 @@
-#toolbar.clearfix
-  - if ['ideas','changes','ads','prioritizer'].include?(params[:controller])
-    - nav = 2
-  - elsif ['news','comments'].include?(params[:controller])
-    - nav = 4
-  - elsif ['issues'].include?(params[:controller])
-    - nav = 1
-  - elsif ['network','users','user_contacts','import','messages','inbox','facebook'].include?(params[:controller]) or (params[:controller] == 'sub_instances' and not logged_in?)
-    - nav = 5
-  - elsif ['points','revisions'].include?(params[:controller])
-    - nav = 3
-  - elsif ['settings','profiles','instances','color_schemes','admin','passwords','pages','sub_instances','tags'].include?(params[:controller])
-    - nav = 6
-  - elsif ['about','charts','widgets'].include?(params[:controller])
-    - nav = 7
-  - else
-    - nav = 0
-  %ul#sib_left_nav
-    %li
-      = link_to :controller => "ideas" do
-        %div.sprite_clipwrapper
-          = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="home" ? "home_pos_selected" : "home_pos"}"
-        = tr("Home","Menu system")
-    %li
-      = link_to :controller => "ideas", :action=>"index" do
-        %div.sprite_clipwrapper
-          = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="ideas" ? "ideas_pos_selected" : "ideas_pos"}"
-        = tr("Ideas", "view/shared/_menu")
-    %li
-      = link_to :controller => "points" do
-        %div.sprite_clipwrapper
-          = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="points" ? "points_pos_selected" : "points_pos"}"
-        = tr("Debate", "view/shared/_menu")
-    %li
-      = link_to :controller => "news", :action=>"top" do
-        %div.sprite_clipwrapper
-          = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="news" ? "feed_pos_selected" : "feed_pos"}"
-        = tr("Feed", "view/shared/_menu")
-    %li
-      = link_to :controller => "users" do
-        %div.sprite_clipwrapper
-          = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{["users","network"].include?(controller_name) ? "people_pos_selected" : "people_pos"}"
-        = tr("People", "view/shared/_menu")
-    %li
-      = link_to :controller => "issues" do
-        %div.sprite_clipwrapper
-          = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="issues" ? "categories_pos_selected" : "categories_pos"}"
-        = tr("Categories", "view/shared/_menu")
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %br
-    %ul#menu
-      - if logged_in? and current_user.is_admin?
-        %li.tab6.mega
-          %span.tab_header
-            = link_to tr("Settings", "view/shared/_menu"), "#"
-          .tab_body
-            - if logged_in? and current_user.is_admin?
-              .tab_subhead
-                = link_to tr("Setup a sub_instance", "view/shared/_menu"), sub_instances_url
+- if ['ideas','changes','ads','prioritizer'].include?(params[:controller])
+  - nav = 2
+- elsif ['news','comments'].include?(params[:controller])
+  - nav = 4
+- elsif ['issues'].include?(params[:controller])
+  - nav = 1
+- elsif ['network','users','user_contacts','import','messages','inbox','facebook'].include?(params[:controller]) or (params[:controller] == 'sub_instances' and not logged_in?)
+  - nav = 5
+- elsif ['points','revisions'].include?(params[:controller])
+  - nav = 3
+- elsif ['settings','profiles','instances','color_schemes','admin','passwords','pages','sub_instances','tags'].include?(params[:controller])
+  - nav = 6
+- elsif ['about','charts','widgets'].include?(params[:controller])
+  - nav = 7
+- else
+  - nav = 0
+%ul#sib_side_nav
+  %li
+    = link_to :controller => "ideas" do
+      %div.sprite_clipwrapper
+        = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="home" ? "home_pos_selected" : "home_pos"}"
+      = tr("Home","Menu system")
+  %li
+    = link_to :controller => "ideas", :action=>"index" do
+      %div.sprite_clipwrapper
+        = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="ideas" ? "ideas_pos_selected" : "ideas_pos"}"
+      = tr("Ideas", "view/shared/_menu")
+  %li
+    = link_to :controller => "points" do
+      %div.sprite_clipwrapper
+        = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="points" ? "points_pos_selected" : "points_pos"}"
+      = tr("Debate", "view/shared/_menu")
+  %li
+    = link_to :controller => "news", :action=>"top" do
+      %div.sprite_clipwrapper
+        = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="news" ? "feed_pos_selected" : "feed_pos"}"
+      = tr("Feed", "view/shared/_menu")
+  %li
+    = link_to :controller => "users" do
+      %div.sprite_clipwrapper
+        = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{["users","network"].include?(controller_name) ? "people_pos_selected" : "people_pos"}"
+      = tr("People", "view/shared/_menu")
+  %li
+    = link_to :controller => "issues" do
+      %div.sprite_clipwrapper
+        = image_tag SubInstance.current.menu_strip_side.url(:icon_full), :border => 0, :class=>"sprite_clip #{controller_name=="issues" ? "categories_pos_selected" : "categories_pos"}"
+      = tr("Categories", "view/shared/_menu")
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %br
+  %ul#menu
+    - if logged_in? and current_user.is_admin?
+      %li.tab6.mega
+        %span.tab_header
+          = link_to tr("Settings", "view/shared/_menu"), "#"
+        .tab_body
+          - if logged_in? and current_user.is_admin?
+            .tab_subhead
+              = link_to tr("Setup a sub_instance", "view/shared/_menu"), sub_instances_url
+          - if logged_in? and current_user.is_admin? and SubInstance.current
+            .tab_subhead
+              = link_to tr("SubInstance settings", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+          .tab_sublinks
             - if logged_in? and current_user.is_admin? and SubInstance.current
-              .tab_subhead
-                = link_to tr("SubInstance settings", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+              = link_to tr("SubInstance account", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+              \&middot; #{link_to tr("Logo", "view/shared/_menu"), picture_sub_instance_path(SubInstance.current)}
+              \&middot; #{link_to tr("Email list", "view/shared/_menu"), email_sub_instance_path(SubInstance.current)}
+          - if current_user.is_admin?
+            .tab_subhead
+              = link_to tr("Nation settings", "view/shared/_menu"), edit_instance_url(current_instance)
             .tab_sublinks
-              - if logged_in? and current_user.is_admin? and SubInstance.current
-                = link_to tr("SubInstance account", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
-                \&middot; #{link_to tr("Logo", "view/shared/_menu"), picture_sub_instance_path(SubInstance.current)}
-                \&middot; #{link_to tr("Email list", "view/shared/_menu"), email_sub_instance_path(SubInstance.current)}
-            - if current_user.is_admin?
-              .tab_subhead
-                = link_to tr("Nation settings", "view/shared/_menu"), edit_instance_url(current_instance)
-              .tab_sublinks
-                = link_to tr("Categories", "view/shared/_menu"), "/categories"
-                \&middot;
-                \#{link_to tr("Settings", "view/shared/_menu"), edit_instance_url(current_instance)}
-                \&middot;
-                \#{link_to tr("All Flagged", "view/shared/_menu"), "/admin/all_flagged"}
-                \&middot;
-                - if current_instance.is_tags?
-                  \&middot; #{link_to current_instance.tags_name.pluralize.titleize, tags_url}
-                \&middot; #{link_to tr("API keys", "view/shared/_menu"), apis_instance_url(current_instance)}
-                %br/
-                = link_to tr("Pages", "view/shared/_menu"), pages_url
-                \&middot;
-                %br/
-                = link_to tr("Graphics", "view/shared/_menu"), :controller => "admin", :action => "picture"
-                \&middot; #{link_to tr("Colors", "view/shared/_menu"), color_schemes_url}
+              = link_to tr("Categories", "view/shared/_menu"), "/categories"
+              \&middot;
+              \#{link_to tr("Settings", "view/shared/_menu"), edit_instance_url(current_instance)}
+              \&middot;
+              \#{link_to tr("All Flagged", "view/shared/_menu"), "/admin/all_flagged"}
+              \&middot;
+              - if current_instance.is_tags?
+                \&middot; #{link_to current_instance.tags_name.pluralize.titleize, tags_url}
+              \&middot; #{link_to tr("API keys", "view/shared/_menu"), apis_instance_url(current_instance)}
+              %br/
+              = link_to tr("Pages", "view/shared/_menu"), pages_url
+              \&middot;
+              %br/
+              = link_to tr("Graphics", "view/shared/_menu"), :controller => "admin", :action => "picture"
+              \&middot; #{link_to tr("Colors", "view/shared/_menu"), color_schemes_url}
 - if nav == 1
   = render :partial => "issues/nav"
 - elsif nav == 3 and not ["new"].include?(action_name)

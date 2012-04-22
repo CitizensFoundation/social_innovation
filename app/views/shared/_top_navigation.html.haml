@@ -1,5 +1,7 @@
 #sib_top_navigation
   #topnav.topnav
+    %div
+      = render :partial => "shared/search"
     - if logged_in? and
       %a.notifications{:href => "notifications"}
         %span
@@ -18,9 +20,6 @@
     %a.help{:href => "help"}
       %span
         = tr("Help")
-    %div
-      = render :partial => "shared/search"
-
     - if logged_in?
       = render :partial => "shared/user_info"
       = render :partial => "shared/notifications"

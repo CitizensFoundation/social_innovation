@@ -22,6 +22,7 @@
       #sib_main_content
         = flash_div :warning, :notice, :error
         = render :partial => "ads/pick"
+        = #render :partial => "#{controller_name}/_top_controller_nav"
         = yield :layout
         = #render :partial => "shared/sidebar"
       = render :partial => "shared/footer"

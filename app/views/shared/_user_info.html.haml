@@ -1,6 +1,5 @@
 #sib_profile
   #user_info_box
-    = render :partial => "shared/language_selection_master"
     %table{:width => "100%"}
       %tr
         %td
@@ -25,3 +24,4 @@
           = tr("{count} warnings", "view/layouts/basic", :count => current_user.warnings_count)
         - else
           = tr("{count} warning", "view/layouts/basic", :count => current_user.warnings_count)
+    = render :partial => "shared/language_selection_master"
