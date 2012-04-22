@@ -1,12 +1,14 @@
 class FeedController < ApplicationController
 
-  before_filter :login_required, :except => [:index, :top, :top_feed, :discussions, :points, :activities, :social_points, :official, :changes, :changes_voting, :changes_activity, :ads, :videos, :comments, :your_discussions, :your_idea_discussions, :your_network_discussions, :your_ideas_created_discussions]
+  before_filter :login_required, :except => [:index, :top, :top_feed, :discussions, :points, :activities, :capitals, :official, :changes, :changes_voting, :changes_activity, :ads, :videos, :comments, :your_discussions, :your_idea_discussions, :your_network_discussions, :your_ideas_created_discussions]
   before_filter :check_for_user, :only => [:your_discussions, :your_idea_discussions, :your_network_discussions, :your_ideas_created_discussions]
 
   caches_action :top, :discussions, :activities, :points,
                 :if => proc {|c| c.do_action_cache? },
                 :cache_path => proc {|c| c.action_cache_path},
                 :expires_in => 2.minutes
+
+  before_filter :setup_filter_dropdown
 
   def index
     redirect_to :action => "discussions"
@@ -98,9 +100,9 @@ class FeedController < ApplicationController
     end
   end
 
-  def social_points
+  def capital
     @page_title = tr("{currency_name} at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => current_instance.currency_name.titleize)
-    @activities = Activity.active.filtered.for_all_users.social_points.by_recently_created.paginate :page => params[:page]
+    @activities = Activity.active.filtered.for_all_users.capital.by_recently_created.paginate :page => params[:page]
     @rss_url = url_for(:only_path => false, :format => "rss")
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -152,9 +154,9 @@ class FeedController < ApplicationController
     end
   end
 
-  def your_social_points
+  def your_capital
     @page_title = tr("Your {currency_name} at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database"))
-    @activities = current_user.activities.active.social_points.for_all_users.by_recently_created.paginate :page => params[:page]
+    @activities = current_user.activities.active.capital.for_all_users.by_recently_created.paginate :page => params[:page]
     respond_to do |format|
       format.html { render :action => "activity_list" }
       format.xml { render :xml => @activities.to_xml(:include => [:user, :comments], :except => NB_CONFIG['api_exclude_fields']) }
@@ -232,9 +234,9 @@ class FeedController < ApplicationController
     end
   end
 
-  def your_followers_social_points
+  def your_followers_capital
     @page_title = tr("Your followers' {currency_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database"))
-    @activities = Activity.active.filtered.social_points.by_recently_created.paginate :conditions => ["user_id in (?)",current_user.followers.collect{|e|e.user_id}.uniq.compact], :page => params[:page]
+    @activities = Activity.active.filtered.capital.by_recently_created.paginate :conditions => ["user_id in (?)",current_user.followers.collect{|e|e.user_id}.uniq.compact], :page => params[:page]
     respond_to do |format|
       format.html { render :action => "activity_list" }
       format.xml { render :xml => @activities.to_xml(:include => [:user, :comments], :except => NB_CONFIG['api_exclude_fields']) }
@@ -297,12 +299,12 @@ class FeedController < ApplicationController
     end
   end
 
-  def your_network_social_points
+  def your_network_capital
     @page_title = tr("{currency_name} in your network", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => current_instance.currency_name.titleize)
     if current_following_ids.empty?
-      @activities = Activity.active.filtered.social_points.by_recently_created.paginate :conditions => "user_id = #{current_user.id.to_s}", :page => params[:page]
+      @activities = Activity.active.filtered.capital.by_recently_created.paginate :conditions => "user_id = #{current_user.id.to_s}", :page => params[:page]
     else
-      @activities = Activity.active.filtered.social_points.by_recently_created.paginate :conditions => "user_id in (#{current_user.id.to_s},#{current_following_ids.join(',')})", :page => params[:page]
+      @activities = Activity.active.filtered.capital.by_recently_created.paginate :conditions => "user_id in (#{current_user.id.to_s},#{current_following_ids.join(',')})", :page => params[:page]
     end
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -503,49 +505,28 @@ class FeedController < ApplicationController
     end
   end
 
-
-  #nav_sub
-          = link_to tr("Top", "view/feed/_nav"), :controller => "feed", :action => "top"
-          = link_to tr("Everything", "view/feed/_nav"), :controller => "feed", :action => "activities"
-          = link_to tr("Discussions", "view/feed/_nav"), :controller => "feed", :action => "discussions"
-          = link_to tr("Points", "view/feed/_nav"), :controller => "feed", :action => "points"
-                = link_to tr("All", "view/feed/_nav"), :controller => "feed", :action => "discussions"
-            %li.tab2
-              %span.tab_header
-                = link_to tr("Yours", "view/feed/_nav"), :controller => "feed", :action => "your_discussions"
-            %li.tab3
-              %span.tab_header
-                = link_to tr("Your ideas", "view/feed/_nav"), :controller => "feed", :action => "your_idea_discussions"
-            %li.tab4
-              %span.tab_header
-                = link_to tr("Ideas you created", "view/feed/_nav"), :controller => "feed", :action => "your_ideas_created_discussions"
-            - if current_user.followings_count > 0
-              %li.tab5
-                %span.tab_header
-                  = link_to tr("Your network", "view/feed/_nav"), :controller => "feed", :action => "your_network_discussions"
-            - if current_user.followers_count > 0
-              %li.tab6
-                %span.tab_header
-                  = link_to tr("Your followers", "view/feed/_nav"), :controller => "feed", :action => "your_followers_discussions"
-    - if params[:action].include?("activities")
-      #nav_third
-    - if params[:action].include?("points")
-      #nav_third
-        %div{:id => "nav_third_<haml:silent> if ['points'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['your_points'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['your_idea_points'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['your_ideas_created_points'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['your_network_points'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['your_followers_points'].include?(params[:action]) </haml:silent><haml:block>6</haml:block>"}
-          %ul#menu_third
-            %li.tab1
-              %span.tab_header
-                = link_to tr("All", "view/feed/_nav"), :controller => "feed", :action => "points"
-                = link_to tr("Yours", "view/feed/_nav"), :controller => "feed", :action => "your_points"
-                = link_to tr("Your ideas", "view/feed/_nav"), :controller => "feed", :action => "your_idea_points"
-                = link_to tr("Ideas you created", "view/feed/_nav"), :controller => "feed", :action => "your_ideas_created_points"
-                  = link_to tr("Your network", "view/feed/_nav"), :controller => "feed", :action => "your_network_points"
-                  = link_to tr("Your followers", "view/feed/_nav"), :controller => "feed", :action => "your_followers_points"
-
-                = link_to tr("All Social Points", "view/feed/_nav"), :controller => "feed", :action => "social_points"
-                = link_to tr("Your Social Points", "view/feed/_nav"), :controller => "feed", :action => "your_social_points"
-                  = link_to tr("Your networks Social Points", "view/feed/_nav"), :controller => "feed", :action => "your_network_social_points"
-                  = link_to tr("Your followers Social Points", "view/feed/_nav"), :controller => "feed", :action => "your_followers_social_points"
-
+  def setup_menu_items
+    @items = Hash.new
+    @items[1]=[tr("Top", "view/feed/_nav"), url_for(:controller => "feed", :action => "top")]
+    @items[2]=[tr("Everything", "view/feed/_nav"), url_for(:controller => "feed", :action => "activities")]
+    @items[3]=[tr("Discussions", "view/feed/_nav"), url_for(:controller => "feed", :action => "discussions")]
+    @items[4]=[tr("Points", "view/feed/_nav"), url_for(:controller => "feed", :action => "points")]
+    @items[6]=[tr("All", "view/feed/_nav"), url_for(:controller => "feed", :action => "discussions")]
+    @items[7]=[tr("All Social Points", "view/feed/_nav"), url_for(:controller => "feed", :action => "capital")]
+    if logged_in?
+      @items[8]=[tr("Yours", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_discussions")]
+      @items[9]=[tr("Your ideas", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_idea_discussions")]
+      @items[10]=[tr("Ideas you created", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_ideas_created_discussions")]
+      if current_user.followings_count > 0
+        @items[11]=[tr("Your network", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_network_discussions")]
+      end
+      if current_user.followers_count > 0
+        @items[12]=[tr("Your followers", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_followers_points")]
+      end
+      @items[13]=[tr("Your Social Points", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_capital")]
+      @items[14]=[tr("Yours", "view/ideas"), yours_ideas_url]
+    end
+    @items
+  end
 
 end

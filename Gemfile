@@ -4,7 +4,8 @@ gem 'rails', '3.2.3'
 
 gem 'mysql2'
 gem "recaptcha", :require => "recaptcha/rails"
-gem 'capistrano'
+gem 'capistrano_colors'
+gem 'rvm-capistrano'
 gem 'haml-rails'
 gem 'nokogiri'
 gem 'tidy-ext'
@@ -29,9 +30,7 @@ gem 'mogli', '>= 0.0.33'
 gem 'facebooker2', '>= 0.0.16'
 gem 'dalli'
 gem 'sys-filesystem'
-gem 'thinking-sphinx',
-  :git     => 'git://github.com/freelancing-god/thinking-sphinx.git',
-  :require => 'thinking_sphinx'
+gem 'thinking-sphinx'
 gem 'mongrel', '>= 1.2.0.pre2'
 gem 'jquery-rails'
 gem 'ckeditor', '3.6.3'

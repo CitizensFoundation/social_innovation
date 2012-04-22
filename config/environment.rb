@@ -4,6 +4,8 @@ require File.expand_path('../application', __FILE__)
 # Initialize the rails application
 SocialInnovation::Application.initialize!
 
+require 'action_dispatch/middleware/session/dalli_store'
+
 if defined?(PhusionPassenger)
   PhusionPassenger.on_event(:starting_worker_process) do |forked|
     # Reset Rails's object cache
