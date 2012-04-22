@@ -1,7 +1,7 @@
 #hp_intro= @page_title
 %p
   - if not @activities
-    = tr("No activity here yet.", "view/news/changes_activity")
+    = tr("No activity here yet.", "view/feed/changes_activity")
   - else
     = will_paginate(@activities)
     %p

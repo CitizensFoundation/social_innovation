@@ -1,4 +1,4 @@
-class NewsController < ApplicationController
+class FeedController < ApplicationController
 
   before_filter :login_required, :except => [:index, :top, :top_feed, :discussions, :points, :activities, :capitals, :official, :changes, :changes_voting, :changes_activity, :ads, :videos, :comments, :your_discussions, :your_idea_discussions, :your_network_discussions, :your_ideas_created_discussions]
   before_filter :check_for_user, :only => [:your_discussions, :your_idea_discussions, :your_network_discussions, :your_ideas_created_discussions]
@@ -19,7 +19,7 @@ class NewsController < ApplicationController
   end
   
   def discussions
-    @page_title = tr("What everyone is discussing at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("What everyone is discussing at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @rss_url = url_for(:only_path => false, :action => "comments", :format => "rss")
     if @current_instance.users_count > 5000 # only show the last 7 days worth
       @activities = Activity.active.filtered.discussions.for_all_users.last_seven_days.by_recently_updated.paginate :page => params[:page], :per_page => 15
@@ -35,7 +35,7 @@ class NewsController < ApplicationController
   end 
   
   def comments
-    @page_title = tr("Latest comments at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Latest comments at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @comments = Comment.published.last_three_days.by_recently_created.find(:all, :include => :activity).paginate :page => params[:page]
     respond_to do |format|
       format.rss { render :template => "rss/comments" }
@@ -45,7 +45,7 @@ class NewsController < ApplicationController
   end
   
   def points
-    @page_title = tr("Latest activity for points at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Latest activity for points at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = Activity.active.filtered.points_and_docs.for_all_users.paginate :page => params[:page]
     @rss_url = url_for(:only_path => false, :format => "rss")
     respond_to do |format|
@@ -57,7 +57,7 @@ class NewsController < ApplicationController
   end  
   
   def activities
-    @page_title = tr("Everything happening at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Everything happening at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
 #    if @current_instance.users_count > 5000 # only show the last 7 days worth
 #      @activities = Activity.active.filtered.for_all_users.last_seven_days.by_recently_created.paginate :page => params[:page]
 #    else
@@ -73,7 +73,7 @@ class NewsController < ApplicationController
   end
 
   def top
-    @page_title = tr("Top News at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Top Feed at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = Activity.active.top.filtered.for_all_users.paginate :page => params[:page]
     @rss_url = url_for(:only_path => false, :format => "rss")    
     respond_to do |format|
@@ -85,7 +85,7 @@ class NewsController < ApplicationController
   end
 
   def top_feed
-    @page_title = tr("Top News at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Top Feed at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     last = params[:last].blank? ? Time.now + 1.second : Time.parse(params[:last])
     @activities = Activity.active.top.feed(last).filtered.for_all_users
     @rss_url = url_for(:only_path => false, :format => "rss")
@@ -99,7 +99,7 @@ class NewsController < ApplicationController
   end
 
   def capital
-    @page_title = tr("{currency_name} at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => current_instance.currency_name.titleize)
+    @page_title = tr("{currency_name} at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => current_instance.currency_name.titleize)
     @activities = Activity.active.filtered.for_all_users.capital.by_recently_created.paginate :page => params[:page]
     @rss_url = url_for(:only_path => false, :format => "rss")          
     respond_to do |format|
@@ -111,7 +111,7 @@ class NewsController < ApplicationController
   end  
   
   def changes
-    @page_title = tr("Acquisition proposals", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Acquisition proposals", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @changes = Change.suggested.by_recently_created.paginate :page => params[:page]
     respond_to do |format|
       format.html { render :action => "change_list" }
@@ -121,7 +121,7 @@ class NewsController < ApplicationController
   end  
   
   def changes_voting
-    @page_title = tr("Voting results on acquisition proposals", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Voting results on acquisition proposals", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @changes = Change.voting.by_recently_started.paginate :page => params[:page]
     respond_to do |format|
       format.html { render :action => "change_list" }
@@ -131,7 +131,7 @@ class NewsController < ApplicationController
   end
   
   def changes_activity
-    @page_title = tr("M&A activity at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("M&A activity at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = Activity.active.filtered.for_all_users.changes.by_recently_created.paginate :page => params[:page]
     @rss_url = url_for(:only_path => false, :format => "rss")    
     respond_to do |format|
@@ -143,7 +143,7 @@ class NewsController < ApplicationController
   end  
   
   def your_activities
-    @page_title = tr("What are you doing at {instance_name}?", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("What are you doing at {instance_name}?", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = current_user.activities.active.for_all_users.by_recently_created.paginate :page => params[:page]    
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -153,7 +153,7 @@ class NewsController < ApplicationController
   end
   
   def your_capital
-    @page_title = tr("Your {currency_name} at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database"))
+    @page_title = tr("Your {currency_name} at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database"))
     @activities = current_user.activities.active.capital.for_all_users.by_recently_created.paginate :page => params[:page]    
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -163,7 +163,7 @@ class NewsController < ApplicationController
   end  
   
   def your_changes
-    @page_title = tr("Your M&A activity at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Your M&A activity at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = current_user.activities.active.changes.for_all_users.by_recently_created.paginate :page => params[:page]    
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -173,7 +173,7 @@ class NewsController < ApplicationController
   end  
   
   def your_points
-    @page_title = tr("Your points activity at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Your points activity at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     # this needs some work
     @activities = current_user.activities.active.points_and_docs.by_recently_created.paginate :page => params[:page]    
     respond_to do |format|
@@ -184,7 +184,7 @@ class NewsController < ApplicationController
   end  
   
   def your_discussions
-    @page_title = tr("Discussions you're following at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Discussions you're following at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = @user.following_discussion_activities.active.by_recently_updated.paginate :page => params[:page], :per_page => 15
     @rss_url = url_for(:only_path => false, :controller => "rss", :action => "your_comments", :format => "rss", :c => @user.rss_code)
     respond_to do |format|
@@ -202,7 +202,7 @@ class NewsController < ApplicationController
   
   # doesn't include activities that followers are commenting on
   def your_followers_activities
-    @page_title = tr("Your followers' activity at {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Your followers' activity at {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = Activity.active.filtered.for_all_users.by_recently_created.paginate :conditions => ["user_id in (?)",current_user.followers.collect{|e|e.user_id}.uniq.compact], :page => params[:page]            
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -213,7 +213,7 @@ class NewsController < ApplicationController
   
   # doesn't include activities that followers are commenting on
   def your_followers_discussions
-    @page_title = tr("Discussions your followers are participating in", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Discussions your followers are participating in", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = Activity.active.filtered.discussions.by_recently_created.paginate :conditions => ["user_id in (?)",current_user.followers.collect{|e|e.user_id}.uniq.compact], :page => params[:page], :per_page => 15
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -223,7 +223,7 @@ class NewsController < ApplicationController
   end  
   
   def your_followers_points
-    @page_title = tr("Points from your followers", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Points from your followers", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = Activity.active.filtered.points_and_docs.paginate :conditions => ["user_id in (?)",current_user.followers.collect{|e|e.user_id}.uniq.compact], :page => params[:page]      
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -233,7 +233,7 @@ class NewsController < ApplicationController
   end  
   
   def your_followers_capital
-    @page_title = tr("Your followers' {currency_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database"))
+    @page_title = tr("Your followers' {currency_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database"))
     @activities = Activity.active.filtered.capital.by_recently_created.paginate :conditions => ["user_id in (?)",current_user.followers.collect{|e|e.user_id}.uniq.compact], :page => params[:page]
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -243,7 +243,7 @@ class NewsController < ApplicationController
   end  
   
   def your_followers_changes
-    @page_title = tr("M&A activity from your followers", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("M&A activity from your followers", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = Activity.active.filtered.changes.by_recently_created.paginate :conditions => ["user_id in (?)",current_user.followers.collect{|e|e.user_id}.uniq.compact], :page => params[:page]
     respond_to do |format|
       format.html { render :action => "activity_list" }
@@ -254,7 +254,7 @@ class NewsController < ApplicationController
   
   # doesn't include activities that followers are commenting on
   def your_network_activities
-    @page_title = tr("What's happening in your {instance_name}?", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("What's happening in your {instance_name}?", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     if current_following_ids.empty?
       @activities = Activity.active.filtered.for_all_users.by_recently_created.paginate :conditions => "user_id = #{current_user.id.to_s}", :page => params[:page]      
     else
@@ -269,7 +269,7 @@ class NewsController < ApplicationController
 
   # doesn't include activities that followers are commenting on
   def your_network_discussions
-    @page_title = tr("Discussions in your network", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Discussions in your network", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     if @user.followings_count == 0
       @activities = Activity.active.filtered.discussions.by_recently_created.paginate :conditions => "user_id = #{@user.id.to_s}", :page => params[:page], :per_page => 15
     else
@@ -284,7 +284,7 @@ class NewsController < ApplicationController
   end  
   
   def your_network_points
-    @page_title = tr("Points in your network", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Points in your network", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     if current_following_ids.empty?
       @activities = Activity.active.filtered.points_and_docs.paginate :conditions => "user_id = #{current_user.id.to_s}", :page => params[:page]      
     else
@@ -298,7 +298,7 @@ class NewsController < ApplicationController
   end  
   
   def your_network_capital
-    @page_title = tr("{currency_name} in your network", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => current_instance.currency_name.titleize)
+    @page_title = tr("{currency_name} in your network", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :currency_name => current_instance.currency_name.titleize)
     if current_following_ids.empty?
       @activities = Activity.active.filtered.capital.by_recently_created.paginate :conditions => "user_id = #{current_user.id.to_s}", :page => params[:page]      
     else
@@ -312,7 +312,7 @@ class NewsController < ApplicationController
   end  
   
   def your_network_changes
-    @page_title = tr("M&A activity in your network", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("M&A activity in your network", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     if current_following_ids.empty?
       @activities = Activity.active.filtered.changes.by_recently_created.paginate :conditions => "user_id = #{current_user.id.to_s}", :page => params[:page]      
     else
@@ -326,7 +326,7 @@ class NewsController < ApplicationController
   end  
   
   def your_idea_activities
-    @page_title = tr("What's happening on {instance_name}?", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("What's happening on {instance_name}?", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     if current_idea_ids.any?
       @activities = Activity.active.filtered.last_seven_days.by_recently_created.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
@@ -339,7 +339,7 @@ class NewsController < ApplicationController
   end
   
   def your_idea_official
-    @page_title = tr("What {official_user_name} is doing on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :official_user_name => current_instance.official_user.name)
+    @page_title = tr("What {official_user_name} is doing on {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :official_user_name => current_instance.official_user.name)
     @activities = nil
     if current_idea_ids.any?
       @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["(type like 'ActivityIdeaOfficialStatus%' or user_id = #{current_instance.official_user_id}) and idea_id in (?)",current_idea_ids], :page => params[:page]
@@ -352,7 +352,7 @@ class NewsController < ApplicationController
   end  
   
   def your_idea_changes
-    @page_title = tr("Acquisitions proposed on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Acquisitions proposed on {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @changes = nil
     if current_idea_ids.any?
       @changes = Change.suggested.by_recently_created.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
@@ -365,7 +365,7 @@ class NewsController < ApplicationController
   end  
   
   def your_idea_changes_voting
-    @page_title = tr("Acquisitions to vote on", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Acquisitions to vote on", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @changes = nil
     if current_idea_ids.any?
       @changes = Change.voting.by_recently_started.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
@@ -378,7 +378,7 @@ class NewsController < ApplicationController
   end  
   
   def your_idea_changes_activity
-    @page_title = tr("M&A activity on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("M&A activity on {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     if current_idea_ids.any?
       @activities = Activity.active.filtered.changes.for_all_users.by_recently_created.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
@@ -391,7 +391,7 @@ class NewsController < ApplicationController
   end  
   
   def your_idea_discussions
-    @page_title = tr("Discussions on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Discussions on {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     if @user.endorsements_count > 0
       @activities = Activity.active.filtered.last_seven_days.discussions.for_all_users.by_recently_updated.paginate :conditions => ["idea_id in (?)",@user.endorsements.active_and_inactive.collect{|e|e.idea_id}], :page => params[:page], :per_page => 15
@@ -405,7 +405,7 @@ class NewsController < ApplicationController
   end
   
   def your_idea_points
-    @page_title = tr("Points on {instance_name}", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Points on {instance_name}", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     if current_idea_ids.any?
       @activities = Activity.active.filtered.last_seven_days.points_and_docs.paginate :conditions => ["idea_id in (?)",current_idea_ids], :page => params[:page]
@@ -418,7 +418,7 @@ class NewsController < ApplicationController
   end
   
   def your_ideas_created_activities
-    @page_title = tr("Everything happening on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Everything happening on ideas you created", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     created_idea_ids = current_user.created_ideas.collect{|p|p.id}
     if created_idea_ids.any?
@@ -433,7 +433,7 @@ class NewsController < ApplicationController
   end
   
   def your_ideas_created_official
-    @page_title = tr("What {official_user_name} is doing on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"), :official_user_name => current_instance.official_user.name)
+    @page_title = tr("What {official_user_name} is doing on ideas you created", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"), :official_user_name => current_instance.official_user.name)
     @activities = nil
     created_idea_ids = current_user.created_ideas.collect{|p|p.id}
     if created_idea_ids.any?
@@ -447,7 +447,7 @@ class NewsController < ApplicationController
   end  
   
   def your_ideas_created_changes
-    @page_title = tr("M&A activity on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("M&A activity on ideas you created", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     created_idea_ids = current_user.created_ideas.collect{|p|p.id}
     if created_idea_ids.any?
@@ -461,7 +461,7 @@ class NewsController < ApplicationController
   end  
   
   def your_ideas_created_discussions
-    @page_title = tr("Discussions on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Discussions on ideas you created", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     created_idea_ids = @user.created_ideas.collect{|p|p.id}
     if created_idea_ids.any?
@@ -476,7 +476,7 @@ class NewsController < ApplicationController
   end
   
   def your_ideas_created_points
-    @page_title = tr("Points activity on ideas you created", "controller/news", :instance_name => tr(current_instance.name,"Name from database"))
+    @page_title = tr("Points activity on ideas you created", "controller/feed", :instance_name => tr(current_instance.name,"Name from database"))
     @activities = nil
     created_idea_ids = current_user.created_ideas.collect{|p|p.id}
     if created_idea_ids.any?
@@ -488,8 +488,11 @@ class NewsController < ApplicationController
       format.json { render :json => @activities.to_json(:include => [:user, :comments], :except => NB_CONFIG['api_exclude_fields']) }
     end    
   end
-  
+
+
+
   private
+
   def check_for_user
     if params[:user_id]
       @user = User.find(params[:user_id])

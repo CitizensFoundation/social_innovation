@@ -27,4 +27,4 @@
           - display_box = true
         - if current_user.comments_count < 2 and current_user.endorsements_count > 2
           - display_box = true
-          %li= link_to tr("Join the discussion on your ideas", "view/shared/_notifications"), :controller => "news", :action => "your_idea_discussions"
+          %li= link_to tr("Join the discussion on your ideas", "view/shared/_notifications"), :controller => "feed", :action => "your_idea_discussions"

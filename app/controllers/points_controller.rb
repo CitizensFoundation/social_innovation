@@ -3,6 +3,8 @@ class PointsController < ApplicationController
   before_filter :login_required, :only => [:new, :create, :quality, :unquality, :your_ideas, :your_index, :destroy, :update_importance]
   before_filter :admin_required, :only => [:edit, :update]
 
+  before_filter :setup_filter_dropdown
+
   caches_action :newest, :revised,
                 :if => proc {|c| c.do_action_cache?},
                 :cache_path => proc {|c| c.action_cache_path},
@@ -348,7 +350,7 @@ class PointsController < ApplicationController
       format.html { redirect_to(points_url) }
     end
   end
-  
+
   private
     def load_endorsement
       @idea = Idea.find(params[:idea_id])
@@ -364,5 +366,14 @@ class PointsController < ApplicationController
         @qualities = PointQuality.all(:conditions => ["point_id in (?) and user_id = ? ", @points.collect {|c| c.id},current_user.id])
       end    
     end    
-    
+
+  def setup_menu_items
+      @items = Hash.new
+      @items[1]=[tr("Newest Points", "view/points"), newest_points_url]
+      @items[2]=[tr("Recently revised", "view/points"), revised_points_url]
+      if logged_in?
+        @items[3]=[tr("Your priorities points", "view/ideas"), your_ideas_points_url]
+      end
+      @items
+    end
 end

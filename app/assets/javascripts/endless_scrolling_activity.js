@@ -8,7 +8,7 @@ jQuery(document).ready(function() {
         },
         callback: function(){
           jQuery.ajax({
-              url: '/news/top_feed',
+              url: '/feed/top_feed',
               data: {
                   last: jQuery("#endless_scroll_ul").attr('last')
               },

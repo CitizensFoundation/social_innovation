@@ -5,11 +5,9 @@ SocialInnovation::Application.routes.draw do
 
   resources :categories
 
-  match '/priorites/flag/:id' => 'ideas#flag'
-  match '/priorites/abusive/:id' => 'ideas#abusive'
-  match '/priorites/not_abusive/:id' => 'ideas#not_abusive'
-  match '/questions/flag/:id' => 'questions#flag'
-  match '/documents/flag/:id' => 'documents#flag'
+  match '/ideas/flag/:id' => 'ideas#flag'
+  match '/ideas/abusive/:id' => 'ideas#abusive'
+  match '/ideas/not_abusive/:id' => 'ideas#not_abusive'
   match '/admin/all_flagged' => 'admin#all_flagged'
   match '/admin/all_deleted' => 'admin#all_deleted'
   match '/users/list_suspended' => 'users#list_suspended'
@@ -111,10 +109,6 @@ SocialInnovation::Application.routes.draw do
       get :endorsed_points
       get :opposed_top_points
       get :endorsed_top_points
-      get :opposer_documents
-      get :endorser_documents
-      get :neutral_documents
-      get :everyone_documents
       get :comments
       get :documents
       get :points_overview
@@ -153,7 +147,6 @@ SocialInnovation::Application.routes.draw do
       resources :votes
     end
     resources :points
-    resources :documents
     resources :ads do
       collection do
         post :preview
@@ -201,26 +194,6 @@ SocialInnovation::Application.routes.draw do
       get :your_index
     end
     resources :revisions do
-      member do
-        get :clean
-      end
-    end
-  end
-
-  resources :documents do
-    member do
-      get :activity
-      get :discussions
-      post :quality
-      post :unquality
-      get :unhide
-    end
-    collection do
-      get :newest
-      get :revised
-      get :your_ideas
-    end
-    resources :document_revisions, :as=>"revisions" do
       member do
         get :clean
       end
@@ -300,7 +273,6 @@ SocialInnovation::Application.routes.draw do
   match '/issues/:slug.:format' => 'issues#show'
   match '/issues/:slug/:action' => 'issues#index'
   match '/issues/:slug/:action.:format' => 'issues#index'
-  match '/portal' => 'portal#index'
   match '/pictures/:short_name/:action/:id' => 'pictures#index'
   match ':controller' => '#index'
   match ':controller/:action' => '#index'

@@ -11,7 +11,7 @@
           :class => "quality_unhelpful_link", :title => tr("Issue warning", "view/ideas/_flagged") |
       %span.or= tr("OR", "view/ideas/_flagged")
       %span.tag_button
-        = link_to tr("NO", "view/ideas/_flagged"), "/priorites/not_abusive/#{idea.id}",     |
+        = link_to tr("NO", "view/ideas/_flagged"), "/ideas/not_abusive/#{idea.id}",     |
           :remote=>true,                                                                             |
           'data-disable-with' => escape_t(tr("Clearing warning","Ajax")),                            |
           'data-loader-name' => "horizontal_small",                                                  |

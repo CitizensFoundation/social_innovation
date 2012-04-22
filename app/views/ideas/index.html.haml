@@ -47,4 +47,4 @@
           = tr("See all <a href='{url}'>finished ideas</a>", "view/ideas/index", :url => finished_ideas_url)
           \&rarr;
 - if @issues.current_page == 1 and @issues.size > 0
-  = tr("<p>You can also <a href=\"/issues\">browse all {instance.tags_name_plural | downcase}</a>, see the <a href=\"/ideas/top\">top ranked priorites</a>, <a href=\"/ideas/random\">random ideas</a>, or the <a href=\"/ideas/rising\">fastest rising ideas</a>.</p>", "view/ideas/index")
+  = tr("<p>You can also <a href=\"/issues\">browse all {instance.tags_name_plural | downcase}</a>, see the <a href=\"/ideas/top\">top ranked ideas</a>, <a href=\"/ideas/random\">random ideas</a>, or the <a href=\"/ideas/rising\">fastest rising ideas</a>.</p>", "view/ideas/index")

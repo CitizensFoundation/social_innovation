@@ -65,7 +65,7 @@
     - if logged_in?
       = render :partial => "shared/notifications"
     - else
-      = render :partial => "shared/login"
+      = render :partial => "users/login"
   - if logged_in?
     #idea_column.userwrap
       = render :partial => "shared/your_ideas"

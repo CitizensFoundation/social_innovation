@@ -3,8 +3,12 @@
     %li
       = tr(controller_name.camelize,"sub_nav")
     %li
-      %a{:href => "#", :onclick => "javascript:showSubNavLayer('sub_menu')"}
-        = @selected_sub_nav_name
+      - if @selected_sub_nav_name
+        %a{:href => "#", :onclick => "javascript:showSubNavLayer('sub_menu')"}
+          = @selected_sub_nav_name
+      -else
+        %a{:href => "#"}
+          = tr(action_name.camelize,"sub_nav")
       - if @sub_menu_items and not @sub_menu_items.empty?
         %ul#sub_menu.submenu
           - @sub_menu_items.each do |menu_item_id, menu_item|

@@ -446,7 +446,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 											[ 'http://\u200E', 'http://' ],
 											[ 'https://\u200E', 'https://' ],
 											[ 'ftp://\u200E', 'ftp://' ],
-											[ 'news://\u200E', 'news://' ],
+											[ 'feed://\u200E', 'feed://' ],
 											[ linkLang.other , '' ]
 										],
 										setup : function( data )
