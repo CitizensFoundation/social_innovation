@@ -16,6 +16,12 @@ GIT
       rails (~> 3.2)
 
 GIT
+  remote: git://github.com/duncanbeevers/rails_view_annotator.git
+  revision: e4e6661fc0957b78f7e2536297c2e3b1e826894b
+  specs:
+    rails_view_annotator (0.0.6)
+
+GIT
   remote: git://github.com/freelancing-god/thinking-sphinx.git
   revision: 01156d44abfd5adb40b6f3f58bd0bbbcfb3764bd
   specs:
@@ -214,7 +220,6 @@ GEM
       bundler (~> 1.0)
       railties (= 3.2.3)
     rails-dev-boost (0.1.1)
-    rails_view_annotator (0.0.6)
     railties (3.2.3)
       actionpack (= 3.2.3)
       activesupport (= 3.2.3)
@@ -321,7 +326,7 @@ DEPENDENCIES
   rack-openid
   rails (= 3.2.3)
   rails-dev-boost
-  rails_view_annotator
+  rails_view_annotator!
   recaptcha
   rmagick (= 2.12.2)
   ruby-openid
