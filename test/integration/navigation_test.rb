@@ -32,7 +32,7 @@ class Navigation < ActionController::IntegrationTest
   test "navigate the site" do
     host, port = "localhost", 3000
     @browser.goto "http://#{host}:#{port}"
-    @browser.ul(id: 'menu').links.map { |l| l.href }.each do |link|
+    @browser.ul(id: 'sib_side_nav').links.map { |l| l.href }.each do |link|
       @browser.goto link
     end
   end
