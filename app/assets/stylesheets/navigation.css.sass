@@ -22,10 +22,11 @@
 .sprite_clip
   position: absolute
   z-index: 100
+  left: 30px
 
 .home_pos
   clip: rect(0 44px 44px 0)
-  left: 0px
+//  left: 0px
 
 .home_pos_selected
   clip: rect(0 94px 44px 50px)
@@ -36,7 +37,7 @@
 
 .ideas_pos_selected
   clip: rect(50px 94px 94px 50px)
-  left: -50px
+  left: -20px
 
 .points_pos
   clip: rect(100px 50px 150px 0px)
@@ -124,12 +125,13 @@ a
     border-width: 0
 
 #topnav
-  padding: 10px 25px 12px
+  padding: 0
+  position: relative
+  top: 60px
   font-size: 11px
   line-height: 23px
   text-align: right
   a.signin_button
-    background: #88bbd4
     padding: 4px 6px 6px
     text-decoration: none
     font-weight: bold
@@ -160,9 +162,6 @@ a.signin_arrow
   position: relative
   margin-left: 3px
   span
-    background-image: url("/assets/top_navigation/toggle_down_light.png")
-    background-repeat: no-repeat
-    background-position: 100% 50%
     padding: 4px 16px 6px 0
 
 a.signin
@@ -399,13 +398,11 @@ a.signin.menu-open a.notifications.menu-open span
     li.pulldown_trigger
       border: 1px solid #999
       padding: 4px 4px 4px 3px
-      margin: 10px 0 8px 10px
+      margin: 10px 0 8px 65px
       background-image: url(/assets/white_arrow_down.png)
-      background-color: #eee
       background-repeat: no-repeat
       background-position: 95% 55%
       position: absolute
-      margin-left: 55px
       z-index: 500
       ul
         border: none !important
