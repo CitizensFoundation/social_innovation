@@ -62,8 +62,12 @@ a
     @extend .signin_button
   a.new_idea
     @extend .signin_button
-    padding: 25px 0px 0px 0px
-    background: url("/assets/top_navigation/idea_bulb.png") no-repeat 16px 0px
+    padding: 25px 0px 4px 4px
+    background: url("/assets/top_navigation/idea_bulb.png") no-repeat 20px 0px
+    &:hover
+      background: url("/assets/top_navigation/idea_bulb.png") no-repeat 20px 0px #ccc
+
+
   a.help
     @extend .signin_button
   a.profile
