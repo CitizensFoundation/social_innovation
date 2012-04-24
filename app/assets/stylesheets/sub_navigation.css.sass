@@ -1,75 +1,63 @@
-#nav_sub
-  font-size: 11px
-  color: #3b5d14
-  background: #90b557
-  font-weight: bold
-  padding: 4px
-  height: 30px
-  .menu li
-    background: url(lm.png) left top no-repeat
-    height: 30px
-    float: left
-    margin-right: 10px
-    a
-      color: #3b5d14
-      text-decoration: none
-      padding: 0 10px
-      height: 30px
-      line-height: 30px
-      display: block
-      float: left
-      padding: 0 26px 0 10px
-      background: url(rm.png) right top no-repeat
-      &:hover
-        color: #666666
-
 #sib_sub_nav
   background: #1931b9
   height: 50px
   color: white
   margin-bottom: 20px
-  ul .submenu
-    border: solid 1px #c9dea1
-    border-top: none
-    background: #FFFFFF
-    position: relative
-    top: 4px
-    width: 150px
-    padding: 6px 0
-    clear: both
-    z-index: 2
-    display: none
-  ul
-    li
-      float: left
-      margin: 15px 0 8px 14px
+  a.pulldown_trigger
+    border: 1px solid #999
+    padding: 4px 4px 4px 3px
+    margin: 10px 0 8px 65px
+    background-image: url(/assets/white_arrow_down.png)
+    background-repeat: no-repeat
+    background-position: 95% 55%
+    z-index: 500
+
+#general_form
+  -moz-border-radius-topleft: 5px
+  -moz-border-radius-bottomleft: 5px
+  -moz-border-radius-bottomright: 5px
+  -webkit-border-top-left-radius: 5px
+  -webkit-border-bottom-left-radius: 5px
+  -webkit-border-bottom-right-radius: 5px
+  display: none
+  background-color: #ddeef6
+  position: absolute
+  width: 100px
+  z-index: 100
+  border: 1px transparent
+  text-align: left
+  padding: 0px
+  margin-top: 0px
+  color: #789
+  font-size: 11px
+  input
+    &[type=text], &[type=password]
       display: block
-      font-size: 14px
-      font-weight: bold
-      a
-        padding: 4px 24px 2px 3px
-        &:link, &:visited
-          color: #999 !important
-          text-decoration: none
-        &:hover
-          background: #e3edef
-    li.pulldown_trigger
-      border: 1px solid #999
-      padding: 4px 4px 4px 3px
-      margin: 10px 0 8px 65px
-      background-image: url(/assets/white_arrow_down.png)
-      background-repeat: no-repeat
-      background-position: 95% 55%
-      position: absolute
-      z-index: 500
-      ul
-        border: none !important
-        padding: 4px 4px 4px 3px
-        margin: 10px 0 8px 10px
-  .submenu li a
-    display: block
-    float: left
-    padding: 6px 6px
+      -moz-border-radius: 4px
+      -webkit-border-radius: 4px
+      border: 1px solid #ACE
+      font-size: 13px
+      margin: 0 0 5px
+      padding: 5px
+      width: 203px
+  p
     margin: 0
-    border: 0
-    color: #999 !important
+  a
+    color: #6AC
+  label
+    font-weight: normal
+  p
+    &.remember
+      padding: 10px 0
+    &.forgot, &.complete
+      clear: both
+      margin: 5px 0
+    a
+      color: #27B!important
+
+#sub_menu
+  @extend #general_form
+  margin-left: 63px
+  margin-top: 10px
+  display: none
+

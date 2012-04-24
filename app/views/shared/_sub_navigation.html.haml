@@ -1,22 +1,45 @@
 #sib_sub_nav
-  %ul
-    %li
+  %div
+    %span
       = tr(controller_name.camelize,"sub_nav")
-    %li.pulldown_trigger
-      - if @selected_sub_nav_name
-        %a{:href => "#", :onclick => "javascript:showSubNavLayer('sub_menu')"}
-          = @selected_sub_nav_name
-      -else
-        %a{:href => "#"}
-          = tr(action_name.camelize,"sub_nav")
-      - if @sub_menu_items and not @sub_menu_items.empty?
-        %ul#sub_menu.submenu
-          - @sub_menu_items.each do |menu_item_id, menu_item|
-            - if menu_item_id==@selected_sub_nav_item_id
-              %li.pulldown
-                %a{:href => menu_item[1]}
-                  = menu_item[0]
-            - else
-              %li.selected
-                %a{:href => menu_item[1]}
-                  = menu_item[0]
+  - if @selected_sub_nav_name
+    %a.subnav.pulldown_trigger{:href => "subnav"}
+      %span
+        = @selected_sub_nav_name
+  -else
+    %a{:href => "#"}
+      %span
+        = @selected_sub_nav_name
+  - if @sub_menu_items and not @sub_menu_items.empty?
+    %div#sub_menu.submenu
+      %ul
+      - @sub_menu_items.each do |menu_item_id, menu_item|
+        - if menu_item_id==@selected_sub_nav_item_id
+          %li.pulldown
+            %a{:href => menu_item[1]}
+              = menu_item[0]
+        - else
+          %li.selected
+            %a{:href => menu_item[1]}
+              = menu_item[0]
+
+:javascript
+  $(document).ready(function() {
+
+      $(".subnav").click(function(e) {
+          e.preventDefault();
+          $("#sub_menu").toggle();
+          $(".preventDefault").toggleClass("menu-open");
+      });
+
+      $("#sub_menu").mouseup(function() {
+          return false
+      });
+
+      $(document).mouseup(function(e) {
+          if($(e.target).parent("a.preventDefault").length==0) {
+              $(".preventDefault").removeClass("menu-open");
+              $("#sub_menu").hide();
+          }
+      });
+  });
