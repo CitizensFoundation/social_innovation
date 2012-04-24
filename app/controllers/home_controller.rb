@@ -21,5 +21,7 @@ class HomeController < ApplicationController
       @endorsements = current_user.endorsements.active.find(:all, :conditions => ["idea_id in (?)", all_ideas.collect {|c| c.id}])
     end
 
+    last = params[:last].blank? ? Time.now + 1.second : Time.parse(params[:last])
+    @activities = Activity.active.top.feed(last).filtered.for_all_users.with_20
   end
 end
