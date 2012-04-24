@@ -53,6 +53,12 @@ Install Bundler
 $ gem install bundler
 ````
 
+Install thinking-sphinx
+
+````bash
+$ sudo aptitude install sphinxsearch
+````
+
 Set up social-innovation
 ----------------------------
 
@@ -113,4 +119,29 @@ $ bundle exec rake test
 
 # run one test
 $ bundle exec ruby -Ilib:test test/integration/navigation.rb
+````
+
+Deploying social-innovation
+---------------------------
+
+Install RVM, Ruby, Bundler, and thinking-sphinx on your server(s) as described
+above.
+
+Set up Phusion Passenger as described by http://www.modrails.com/install.html.
+
+Edit config/deploy.rb to fit your server configuration.
+
+Setup the deployment environment:
+
+````bash
+$ bundle exec cap deploy:setup
+````
+
+Then copy `config/database.yml`, `config/newrelic.yml`, and `config/facebooker.yml`
+to `sites/social-innovation/shared/` on the app server(s)
+
+Then deploy the application:
+
+````bash
+$ bundle exec cap deploy
 ````
