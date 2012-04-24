@@ -19,7 +19,7 @@
     %li
       = link_to :controller => "ideas" do
         = raw "<div class='sprite_clip #{controller_name=="home" ? "home_pos_selected" : "home_pos"}'></div>"
-        %span.left_nav_text
+        %span
           = tr("Home","Menu system")
     %li
       = link_to :controller => "ideas", :action=>"index" do
