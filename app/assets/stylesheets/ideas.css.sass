@@ -25,12 +25,7 @@
     float: left
 
 #sib_idea_detail
-  .sib_left
-    float: left
-    width: 85px
-    min-height: 70px
-  .sib_right
-    float: right
+  @extend #sib_idea_container
 
 .idea_name,.idea_name_add
   font-weight: bold
@@ -163,3 +158,5 @@ div.oppose-wrap
 .idea_detail_right
   float: right
   width: 400px !important
+
+#sib_idea_detail
