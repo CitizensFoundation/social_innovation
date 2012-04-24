@@ -12,11 +12,6 @@ class Widget < ActiveRecord::Base
     a << [ "newest", tr("New ideas", "model/widget") ]
     a << [ "controversial", tr("Controversial ideas", "model/widget") ]
     a << [ "finished", tr("Finished ideas", "model/widget") ]
-    if Instance.current.has_official?
-      a << [ "official", tr("{official_user_name} ideas", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
-      a << [ "not_official", tr("Ideas NOT on {official_user_name} agenda", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
-      a << [ "official_opposed", tr("Ideas {official_user_name} opposes", "model/widget", :official_user_name => Instance.current.official_user_short_name) ]
-    end
     a
   end
 

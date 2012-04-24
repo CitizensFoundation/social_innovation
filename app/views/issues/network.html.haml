@@ -33,11 +33,5 @@
                       = tr("{count} people in your network", "view/issues/network", :count => e.endorsements_number.to_i)
                       - if e.idea.discussions_count > 0
                         \&middot; #{link_to tr("{count} discussions", "view/issues/network", :count => e.idea.discussions_count), discussions_idea_url(e.idea)}
-                      - if e.idea.is_official_endorsed?
-                        \&middot; #{current_instance.official_user_short_name}
-                        %span.endorsed= tr("endorses", "view/issues/network")
-                      - elsif e.idea.is_official_opposed?
-                        \&middot; #{current_instance.official_user_short_name}
-                        %span.opposed= tr("opposes", "view/issues/network")
         %p
           = will_paginate @ideas
