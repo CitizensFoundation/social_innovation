@@ -91,7 +91,7 @@ namespace :fix do
     connection.execute("DELETE FROM generated_proposal_elements;")
     connection.execute("DELETE FROM generated_proposals;")
     connection.execute("DELETE FROM comments;")
-    connection.execute("DELETE FROM constituents;")
+    #connection.execute("DELETE FROM constituents;")
     connection.execute("DELETE FROM delayed_jobs;")
     connection.execute("DELETE FROM document_qualities;")
     connection.execute("DELETE FROM document_revisions;")
@@ -149,7 +149,7 @@ namespace :fix do
     connection.execute("OPTIMIZE TABLE capitals;")
     connection.execute("OPTIMIZE TABLE changes;")
     connection.execute("OPTIMIZE TABLE comments;")
-    connection.execute("OPTIMIZE TABLE constituents;")
+    #connection.execute("OPTIMIZE TABLE constituents;")
     connection.execute("OPTIMIZE TABLE delayed_jobs;")
     connection.execute("OPTIMIZE TABLE document_qualities;")
     connection.execute("OPTIMIZE TABLE document_revisions;")
@@ -245,7 +245,7 @@ namespace :fix do
     u.unread_notifications_count = 0
     u.point_revisions_count = 0
     u.qualities_count = 0
-    u.constituents_count = 0
+    #u.constituents_count = 0
     u.warnings_count = 0
     u.referrals_count = 0
     u.imported_contacts_count = 0

@@ -470,7 +470,7 @@ class User < ActiveRecord::Base
     count += 3 if recent_login?
     count += 0.5 if points_count > 0
     count += up_issue_diversity
-    count += 0.6 if constituents_count > 1
+    #count += 0.6 if constituents_count > 1
     count = count/6
     count = 1 if count > 1
     count = 0.1 if count < 0.1
