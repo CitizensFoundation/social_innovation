@@ -1,7 +1,7 @@
 #sib_idea_detail
-  .div.sib_left
-    = render :partial => "ideas/endorsement_count", :locals => {:idea => @idea, :endorsement => @endorsement, :noaction=> defined?(noaction) ? true : false }
-  .div.sib_right
+  %div.idea_detail_left
+    = render :partial => "ideas/nav", :locals => {:idea => @idea, :endorsement => @endorsement, :noaction=> defined?(noaction) ? true : false }
+  %div.idea_detail_right
     %table.show-table.single3
       %tr
         %td.add_note{:valign => "top"}

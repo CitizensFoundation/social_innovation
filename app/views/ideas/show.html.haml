@@ -1,9 +1,5 @@
 = render :partial => "header"
-- if @idea.replaced?
-  #hp_subhead
-    = tr("This idea was replaced by {idea_name}", "view/ideas/show", :idea_name => link_to(@idea.change.new_idea.name, @idea.change.new_idea))
-- else
-  = render :partial => "nav"
+= render :partial => "idea_detail"
 %table.show-table.single3
   %tr
     %td.add_note{:valign => "top"}
