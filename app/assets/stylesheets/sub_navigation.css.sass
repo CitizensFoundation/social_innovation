@@ -4,25 +4,15 @@
   color: white
   font-weight: bold
   margin-bottom: 20px
+  img
+    margin-left: 50px
   a.pulldown_trigger
-    -moz-border-radius-topleft: 3px
-    -moz-border-radius-topright: 3px
-    -moz-border-radius-bottomleft: 3px
-    -moz-border-radius-bottomleft: 3px
-    -moz-border-radius-bottomright: 3px
-    -webkit-border-top-left-radius: 3px
-    -webkit-border-top-right-radius: 3px
-    -webkit-border-bottom-left-radius: 3px
-    -webkit-border-bottom-right-radius: 3px
-    border: 1px solid #666
     padding: 4px 4px 4px 5px
-    margin: 0px 0 8px 75px
-    background-image: url(/assets/filter_bg_grey.png)
-    background-color: #fff
-    background-repeat: repeat-x
-    background-position: 0 0
+    margin: 0px 0 8px 0px
     z-index: 500
-
+    background-image: url(/assets/white_arrow_down.png)
+    background-repeat: no-repeat
+    background-position: 95% 55%
 
 
 #general_form
@@ -45,20 +35,10 @@
   margin-top: 0px
   color: #789
   font-size: 11px
-  input
-    &[type=text], &[type=password]
-      display: block
-      -moz-border-radius: 4px
-      -webkit-border-radius: 4px
-      border: 1px solid #ACE
-      font-size: 13px
-      margin: 0 0 5px
-      padding: 5px
-      width: 203px
   p
     margin: 0
   a
-    color: #6AC
+    color: #fff
   label
     font-weight: normal
   p
@@ -72,7 +52,7 @@
 
 #sub_menu
   @extend #general_form
-  margin-left: 75px
+  margin-left: 70px
   margin-top: 6px
   display: none
   width: 150px
@@ -83,3 +63,5 @@
   color: #fff
   font-size: 18px
   padding: 12px 0px 0px 10px
+  a
+    color: #fff !important
