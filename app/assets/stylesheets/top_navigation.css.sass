@@ -34,7 +34,8 @@ a
 #topnav
   padding: 0
   position: relative
-  top: 60px
+  top: 50px
+  right: 15px
   font-size: 11px
   line-height: 23px
   text-align: right
@@ -50,7 +51,7 @@ a
     *background: transparent url("/assets/top_navigation/signin-nav-bg-ie.png") no-repeat 0 0
     *padding: 4px 12px 6px
     &:hover
-      background: #59B
+      background: #ccc
       *background: transparent url("/assets/top_navigation/signin-nav-bg-hover-ie.png") no-repeat 0 0
       *padding: 4px 12px 6px
       *background-position: 0 3px!important
@@ -61,6 +62,8 @@ a
     @extend .signin_button
   a.new_idea
     @extend .signin_button
+    padding: 25px 0px 0px 0px
+    background: url("/assets/top_navigation/idea_bulb.png") no-repeat 16px 0px
   a.help
     @extend .signin_button
   a.profile
