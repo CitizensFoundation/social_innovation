@@ -477,21 +477,13 @@ class IdeasController < ApplicationController
   end
 
   def idea_detail
+    setup_top_points
     render :partial=>"ideas/idea_detail", :layout=>false
   end
 
   def top_points
     @page_title = tr("Top points", "controller/ideas", :idea_name => @idea.name)
-    @point_value = 0 
-    @points_top_up = @idea.points.published.by_helpfulness.up_value.five
-    @points_top_down = @idea.points.published.by_helpfulness.down_value.five
-    @points_new_up = @idea.points.published.by_recently_created.up_value.five.reject {|p| @points_top_up.include?(p)}
-    @points_new_down = @idea.points.published.by_recently_created.down_value.five.reject {|p| @points_top_down.include?(p)}
-    @total_up_points = @idea.points.published.up_value.count
-    @total_down_points = @idea.points.published.down_value.count
-    @total_up_points_new = [0,@total_up_points-@points_top_up.length].max
-    @total_down_points_new = [0,@total_down_points-@points_top_down.length].max
-    get_qualities([@points_new_up,@points_new_down,@points_top_up,@points_top_down])
+    setup_top_points
     respond_to do |format|
       format.html { render :action => "top_points" }
       format.xml { render :xml => @points.to_xml(:include => [:idea, :other_idea], :except => NB_CONFIG['api_exclude_fields']) }
@@ -1046,7 +1038,20 @@ class IdeasController < ApplicationController
         end      
       end      
     end
-    
+
+    def setup_top_points
+      @point_value = 0
+      @points_top_up = @idea.points.published.by_helpfulness.up_value.five
+      @points_top_down = @idea.points.published.by_helpfulness.down_value.five
+      @points_new_up = @idea.points.published.by_recently_created.up_value.five.reject {|p| @points_top_up.include?(p)}
+      @points_new_down = @idea.points.published.by_recently_created.down_value.five.reject {|p| @points_top_down.include?(p)}
+      @total_up_points = @idea.points.published.up_value.count
+      @total_down_points = @idea.points.published.down_value.count
+      @total_up_points_new = [0,@total_up_points-@points_top_up.length].max
+      @total_down_points_new = [0,@total_down_points-@points_top_down.length].max
+      get_qualities([@points_new_up,@points_new_down,@points_top_up,@points_top_down])
+    end
+
     def check_for_user
       if params[:user_id]
         @user = User.find(params[:user_id])
@@ -1057,23 +1062,23 @@ class IdeasController < ApplicationController
       end
     end
 
-  def setup_menu_items
-    @items = Hash.new
-    @items[1]=[tr("Top All", "view/ideas"), top_ideas_url]
-    @items[2]=[tr("Top Active 24 hours", "view/ideas"), top_24hr_ideas_url]
-    @items[3]=[tr("Top Active 7 days", "view/ideas"), top_7days_ideas_url]
-    @items[4]=[tr("Top Active 30 days", "view/ideas"), top_30days_ideas_url]
-    @items[6]=[tr("New", "view/ideas"), newest_ideas_url]
-    @items[8]=[tr("Random", "view/ideas"), random_ideas_url]
-    @items[9]=[tr("In Progress", "view/ideas"), finished_ideas_url]
-    @items[10]=[tr("Controversial", "view/ideas"), controversial_ideas_url]
-    @items[11]=[tr("Ads", "view/ideas"), ads_ideas_url]
-    @items[12]=[tr("Rising", "view/ideas"), rising_ideas_url]
-    @items[13]=[tr("Falling", "view/ideas"), rising_ideas_url]
-    if logged_in?
-      @items[14]=[tr("Your network", "view/ideas"), network_ideas_url]
-      @items[15]=[tr("Yours", "view/ideas"), yours_ideas_url]
+    def setup_menu_items
+      @items = Hash.new
+      @items[1]=[tr("Top All", "view/ideas"), top_ideas_url]
+      @items[2]=[tr("Top Active 24 hours", "view/ideas"), top_24hr_ideas_url]
+      @items[3]=[tr("Top Active 7 days", "view/ideas"), top_7days_ideas_url]
+      @items[4]=[tr("Top Active 30 days", "view/ideas"), top_30days_ideas_url]
+      @items[6]=[tr("New", "view/ideas"), newest_ideas_url]
+      @items[8]=[tr("Random", "view/ideas"), random_ideas_url]
+      @items[9]=[tr("In Progress", "view/ideas"), finished_ideas_url]
+      @items[10]=[tr("Controversial", "view/ideas"), controversial_ideas_url]
+      @items[11]=[tr("Ads", "view/ideas"), ads_ideas_url]
+      @items[12]=[tr("Rising", "view/ideas"), rising_ideas_url]
+      @items[13]=[tr("Falling", "view/ideas"), rising_ideas_url]
+      if logged_in?
+        @items[14]=[tr("Your network", "view/ideas"), network_ideas_url]
+        @items[15]=[tr("Yours", "view/ideas"), yours_ideas_url]
+      end
+      @items
     end
-    @items
-  end
 end
