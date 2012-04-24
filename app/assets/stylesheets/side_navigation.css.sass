@@ -1,59 +1,56 @@
 #sib_side_nav
+  text-align: center
+  ul
+    margin-left: 17px
+    margin-right: 0px
   li
-    margin-left: 30px
-  span
-    margin-left: 10px
-    margin-top: 30px
-
-.sprite_clipwrapper
-  position: relative
-  img
-    margin-top: 0px
+    padding-bottom: 10px
+    width: 70px
+    span
+      padding-right: 3px
 
 .sprite_clip
-  position: absolute
-  z-index: 100
+  background: no-repeat
+  height: 44px
+  width: 44px
+  margin-left: auto
+  margin-right: auto
 
 
 .home_pos
-  clip: rect(0 44px 44px 0)
+  background-position: 0px 0px
 //  left: 0px
 
-.home_pos_selected
-  clip: rect(0 94px 44px 50px)
-  left: -50px
+.home_pos_selected a.hover
+  background-position: -50px 0px
+
 // Top, Right, Bottom, Left
 .ideas_pos
-  clip: rect(50px 44px 94px 0px)
+  background-position: 0px -50px
 
 .ideas_pos_selected
-  clip: rect(50px 94px 94px 50px)
-  left: -50px
+  background-position: -50px -50px
 
 .points_pos
-  clip: rect(100px 50px 150px 0px)
+  background-position: 0px -100px
 
 .points_pos_selected
-  clip: rect(100px 100px 150px 50px)
-  left: -50px
+  background-position: -50px -100px
 
 .feed_pos
-  clip: rect(150px 50px 200px 0px)
+  background-position: 0px -150px
 
 .feed_pos_selected
-  clip: rect(150px 100px 200px 50px)
-  left: -50px
+  background-position: -50px -150px
 
 .people_pos
-  clip: rect(200px 50px 250px 0px)
+  background-position: 0px -200px
 
 .people_pos_selected
-  clip: rect(200px 100px 250px 50px)
-  left: -50px
+  background-position: -50px -200px
 
 .categories_pos
-  clip: rect(250px 50px 300px 0px)
+  background-position: 0px -250px
 
 .categories_pos_selected
-  clip: rect(250px 100px 300px 50px)
-  left: -50px
+  background-position: -50px -250px
