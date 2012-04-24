@@ -605,7 +605,6 @@ class IdeasController < ApplicationController
 
     @idea = Idea.new(params[:idea])
     tags = []
-    tags << "Betri hverfi" if current_sub_instance and Instance.current.layout=="better_reykjavik"
     tags << @idea.category.name if @idea.category
     params.each do |p,v|
       tags << v if p.include?("special_checkbox_tag_")
@@ -614,13 +613,6 @@ class IdeasController < ApplicationController
       tags << b if a.include?("sub_tag_")
     end
     tags += params[:custom_tags].split(",").collect {|t| t.strip} if params[:custom_tags] and params[:custom_tags]!=""
-
-    if current_sub_instance
-      tags << current_sub_instance.name
-      if current_sub_instance.required_tags
-        tags << params[:idea][:idea_type]
-      end
-    end
 
     unless tags.empty?
       @idea.issue_list = tags.join(",")

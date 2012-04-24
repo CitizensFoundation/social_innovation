@@ -8,7 +8,8 @@
         = tr("These are our members' {tag_name} ideas NOT on {official_user_name} agenda", "view/issues/list", :tag_name => tr(@tag_names, "model/category").titleize, :official_user_name => current_instance.official_user.name)
       - elsif params[:action] == 'official_opposed'
         = tr("These are our members' {tag_name} ideas that {official_user_name} opposes", "view/issues/list", :tag_name => tr(@tag_names, "model/category").titleize, :official_user_name => current_instance.official_user.name)
-      = render :partial => "ideas/top_level_listing", :locals=>{:ideas=>@ideas, :endorsements=>@endorsements}
+      - @ideas.each do |idea|
+        = render :partial => "ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
       %p= will_paginate @ideas
     - else
       = tr("No ideas for {tag_name} yet", "view/issues/list", :tag_name => tr(@tag_names, "model/category").titleize)
