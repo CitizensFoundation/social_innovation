@@ -12,15 +12,12 @@
   });
 %p
   - if @ideas.any?
-    %table.top-level-table.top_level.single2
+    %div.top-level-table.top_level.single2
       - for idea in @ideas
-        %tr.border
-          %td.top_listing
-            = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
-        %tr
-          %td
+        %div.top_listing
+          = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
+          %div
             %div{:id => "points_overview_for_#{idea.id}"}
-    %p
       = will_paginate @ideas
   - else
     = tr("No ideas here yet.","ideas")
