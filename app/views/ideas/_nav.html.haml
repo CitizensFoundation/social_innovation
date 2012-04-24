@@ -39,17 +39,7 @@
             = link_to tr("Add a point", "view/ideas/_nav"), new_idea_point_path(@idea), :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_nav"), :class => "qtip_left"
             %br/
             - if @idea.status == 'published'
-              - if 1==2 and (@idea.position < 26 and @idea.position > 0) or @idea.is_buried?
-                %span.greyed_out= tr("Buy an ad for this idea", "view/ideas/_nav")
-                %br/
-              - else
-                = link_to tr("Buy an ad for this idea", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
-                %br/
-            - if false and @idea.has_change?
-              %span.greyed_out= tr("Propose an acquisition", "view/ideas/_nav")
-              %br/
-            - elsif false
-              = link_to tr("Propose an acquisition", "view/ideas/_nav"), new_idea_change_url(@idea), :title => tr("Is there another idea this one should merge with?", "view/ideas/_nav"), :class => "qtip_left"
+              = link_to tr("Buy an ad for this idea", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
               %br/
             - if logged_in?
               - if (current_user.id == @idea.user_id and @idea.endorsements_count < 2) or current_user.is_admin?

@@ -105,13 +105,13 @@ SocialInnovation::Application.routes.draw do
       get :neutral_points
       get :everyone_points
       get :top_points
-      get :points_overview
+      get :idea_detail
       get :endorsed_points
       get :opposed_top_points
       get :endorsed_top_points
       get :comments
       get :documents
-      get :points_overview
+      get :idea_detail
       get :update_status
   	end
   	collection do

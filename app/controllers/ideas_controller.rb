@@ -5,7 +5,7 @@ class IdeasController < ApplicationController
                                            :tag, :tag_save, :opposed, :endorsed, :destroy, :new]
   before_filter :admin_required, :only => [:bury, :successful, :compromised, :intheworks, :failed]
   before_filter :load_endorsement, :only => [:show, :show_feed, :activities, :endorsers, :opposers, :opposer_points, :endorser_points, :neutral_points, :everyone_points,
-                                             :opposed_top_points, :endorsed_top_points, :points_overview, :top_points, :discussions, :everyone_points ]
+                                             :opposed_top_points, :endorsed_top_points, :idea_detail, :top_points, :discussions, :everyone_points ]
   before_filter :check_for_user, :only => [:yours, :network, :yours_finished, :yours_created]
 
   before_filter :setup_filter_dropdown
@@ -476,8 +476,8 @@ class IdeasController < ApplicationController
     end
   end
 
-  def points_overview
-    render :partial=>"ideas/points_overview_for", :layout=>false
+  def idea_detail
+    render :partial=>"ideas/idea_detail", :layout=>false
   end
 
   def top_points
