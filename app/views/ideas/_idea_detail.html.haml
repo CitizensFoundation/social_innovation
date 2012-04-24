@@ -1,5 +1,5 @@
 #sib_idea_detail
-  %div.sib_left
+  %div.sib_left_debate
     = render :partial => "ideas/nav", :locals => {:idea => @idea, :endorsement => @endorsement, :noaction=> defined?(noaction) ? true : false }
-  %div.sib_right
+  %div.sib_right_debate
     = render :partial=>"top_points"
