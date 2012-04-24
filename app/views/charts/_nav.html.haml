@@ -1,38 +1,29 @@
 #nav_sub
   %div{:id => "nav_sub_<haml:silent> if ['issues'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['gainers_24hr','gainers_7days','gainers_30days'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['losers_24hr','losers_7days','losers_30days'].include?(params[:action]) </haml:silent><haml:block>3</haml:block>"}
     %ul#menu_sub
-      %li.tab1
-        %span.tab_header
-          = link_to tr("Most active {tags_name}", "view/charts/_nav", :tags_name => current_instance.tags_name.pluralize.downcase), :controller => "charts", :action => "issues"
-      %li.tab2
-        %span.tab_header
-          = link_to tr("Rising agendas", "view/charts/_nav"), :controller => "charts", :action => "gainers_24hr"
-      %li.tab3
-        %span.tab_header
-          = link_to tr("Falling agendas", "view/charts/_nav"), :controller => "charts", :action => "losers_24hr"
+      %li
+        = link_to tr("Most active {tags_name}", "view/charts/_nav", :tags_name => current_instance.tags_name.pluralize.downcase), :controller => "charts", :action => "issues"
+      %li
+        = link_to tr("Rising agendas", "view/charts/_nav"), :controller => "charts", :action => "gainers_24hr"
+      %li
+        = link_to tr("Falling agendas", "view/charts/_nav"), :controller => "charts", :action => "losers_24hr"
 - if params[:action].include?('gainers')
   #nav_third
     %div{:id => "nav_third_<haml:silent> if ['gainers_24hr'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['gainers_7days'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['gainers_30days'].include?(params[:action]) </haml:silent><haml:block>3</haml:block>"}
       %ul#menu_third
-        %li.tab1
-          %span.tab_header
-            = link_to tr("24 hours", "view/charts/_nav"), :action => "gainers_24hr"
-        %li.tab2
-          %span.tab_header
-            = link_to tr("Last 7 days", "view/charts/_nav"), :action => "gainers_7days"
-        %li.tab3
-          %span.tab_header
-            = link_to tr("Last 30 days", "view/charts/_nav"), :action => "gainers_30days"
+        %li
+          = link_to tr("24 hours", "view/charts/_nav"), :action => "gainers_24hr"
+        %li
+          = link_to tr("Last 7 days", "view/charts/_nav"), :action => "gainers_7days"
+        %li
+          = link_to tr("Last 30 days", "view/charts/_nav"), :action => "gainers_30days"
 - if params[:action].include?('losers')
   #nav_third
     %div{:id => "nav_third_<haml:silent> if ['losers_24hr'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['losers_7days'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['losers_30days'].include?(params[:action]) </haml:silent><haml:block>3</haml:block>"}
       %ul#menu_third
-        %li.tab1
-          %span.tab_header
-            = link_to tr("24 hours", "view/charts/_nav"), :action => "losers_24hr"
-        %li.tab2
-          %span.tab_header
-            = link_to tr("Last 7 days", "view/charts/_nav"), :action => "losers_7days"
-        %li.tab3
-          %span.tab_header
-            = link_to tr("Last 30 days", "view/charts/_nav"), :action => "losers_30days"
+        %li
+          = link_to tr("24 hours", "view/charts/_nav"), :action => "losers_24hr"
+        %li
+          = link_to tr("Last 7 days", "view/charts/_nav"), :action => "losers_7days"
+        %li
+          = link_to tr("Last 30 days", "view/charts/_nav"), :action => "losers_30days"
