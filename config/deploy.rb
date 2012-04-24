@@ -32,14 +32,14 @@ namespace :deploy do
   end
 end
 
-#before 'deploy:update_code' do
-#  thinking_sphinx.stop
-#end
+before 'deploy:update_code' do
+  thinking_sphinx.stop
+end
 
-#after 'deploy:update_code' do
-#  thinking_sphinx.configure
-#  thinking_sphinx.rebuild
-#end
+after 'deploy:update_code' do
+  thinking_sphinx.configure
+  thinking_sphinx.rebuild
+end
 
 after 'deploy:finalize_update' do
   run "ln -nfs #{deploy_to}/#{shared_dir}/config/* #{current_release}/config/"
