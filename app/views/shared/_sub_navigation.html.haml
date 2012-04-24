@@ -7,10 +7,14 @@
       %a.subnav.pulldown_trigger{:href => "subnav"}
         %span
           = @selected_sub_nav_name
-    -else
+    -elsif @selected_sub_nav_name
       %a{:href => "#"}
         %span
           = @selected_sub_nav_name
+    -else
+      %a{:href => "#"}
+        %span
+          = @page_title
   - if @sub_menu_items and not @sub_menu_items.empty?
     %div#sub_menu.submenu
       %ul
