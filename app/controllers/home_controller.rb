@@ -8,8 +8,8 @@ class HomeController < ApplicationController
   def index
     @page_title = tr("Overview","home")
     @new_ideas = Idea.filtered.published.newest.limit(3)
-    @top_ideas = Idea.filtered.published.top_rank.limit(3)
-    @random_ideas = Idea.filtered.published.by_random.limit(3)
+    @top_ideas = Idea.filtered.published.top_rank.limit(3).reject{|idea| @new_ideas.include?(idea)}
+    @random_ideas = Idea.filtered.published.by_random.limit(3).reject{|idea| @new_ideas.include?(idea) or @top_ideas.include?(idea)}
 
     all_ideas = []
     all_ideas += @new_ideas if @new_ideas
