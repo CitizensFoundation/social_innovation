@@ -2,29 +2,44 @@
   background: #1931b9
   height: 50px
   color: white
+  font-weight: bold
   margin-bottom: 20px
   a.pulldown_trigger
-    border: 1px solid #999
-    padding: 4px 4px 4px 3px
-    margin: 10px 0 8px 65px
-    background-image: url(/assets/white_arrow_down.png)
-    background-repeat: no-repeat
-    background-position: 95% 55%
+    -moz-border-radius-topleft: 3px
+    -moz-border-radius-topright: 3px
+    -moz-border-radius-bottomleft: 3px
+    -moz-border-radius-bottomleft: 3px
+    -moz-border-radius-bottomright: 3px
+    -webkit-border-top-left-radius: 3px
+    -webkit-border-top-right-radius: 3px
+    -webkit-border-bottom-left-radius: 3px
+    -webkit-border-bottom-right-radius: 3px
+    border: 1px solid #666
+    padding: 4px 4px 4px 5px
+    margin: 0px 0 8px 75px
+    background-image: url(/assets/filter_bg_grey.png)
+    background-color: #fff
+    background-repeat: repeat-x
+    background-position: 0 0
     z-index: 500
 
+
+
 #general_form
-  -moz-border-radius-topleft: 5px
-  -moz-border-radius-bottomleft: 5px
-  -moz-border-radius-bottomright: 5px
-  -webkit-border-top-left-radius: 5px
-  -webkit-border-bottom-left-radius: 5px
-  -webkit-border-bottom-right-radius: 5px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
   display: none
-  background-color: #ddeef6
+  background-color: #fff
   position: absolute
   width: 100px
   z-index: 100
-  border: 1px transparent
+  border: 1px solid #666
   text-align: left
   padding: 0px
   margin-top: 0px
@@ -57,7 +72,14 @@
 
 #sub_menu
   @extend #general_form
-  margin-left: 63px
-  margin-top: 10px
+  margin-left: 75px
+  margin-top: 6px
   display: none
+  width: 150px
+  li
+    margin: 5px 5px 5px 5px
 
+#section_title
+  color: #fff
+  font-size: 18px
+  padding: 12px 0px 0px 10px
