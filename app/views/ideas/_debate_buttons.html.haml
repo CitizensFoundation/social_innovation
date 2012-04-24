@@ -3,13 +3,17 @@
     - if endorsement and endorsement.status == 'active'
       - if endorsement.is_up?
         %span.idea_remove{:id => "idea_remove_endorse_#{idea.id.to_s}"}
-          = tr("YOU ENDORSED", "view/ideas/_button_small")
+          = tr("ENDORSED", "view/ideas/_button_small")
           = link_to "&nbsp;x".html_safe, endorsement_path(endorsement, :region => region),                                       |
               :method => :delete,                                                                                                  |
               :remote=>true,                                                                                                       |
               'data-disable-with' => "",                                                                                           |
               'data-loader-name' => "spinner",                                                                                     |
               :class => "idea_remove_link", :title => tr("Remove from my list of ideas", "view/ideas/_button_small") |
+        %span.debate_button
+          = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
+        %span.debate_button
+          = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
       - else
         %span.idea_remove_oppose{:id => "idea_remove_oppose#{idea.id.to_s}"}
           = tr("YOU OPPOSED", "view/ideas/_button_small")

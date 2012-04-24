@@ -37,7 +37,7 @@
                   = link_to_unless_current h(e.idea.name), e.idea, :class => "idea_name_link"
                 = render :partial => "ideas/tag_show", :locals => { :idea => e.idea }
                 .idea_actions
-                  = render :partial => "ideas/button_small", :locals => {:idea => e.idea, :endorsement => endorsement, :region => "idea_inline"}
+                  = render :partial => "ideas/debate_buttons", :locals => {:idea => e.idea, :endorsement => endorsement, :region => "idea_inline"}
                   %span.idea_endorsement_count{:id => "network_#{e.idea_id.to_s}_endorsement_count"}
                     = tr("{count} people in your network", "view/ideas/network", :count => e.endorsements_number.to_i)
                     - if e.idea.discussions_count > 0
