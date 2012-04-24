@@ -1,6 +1,7 @@
 - if user.has_picture?
   .border_miss_avatar
-    %a{:href => url_for(user image_tag user.buddy_icon.url(:icon_24), :border => 0, :alt => "", :size => "35x35")}
+    %a{:href => url_for(user)}
+      = image_tag user.buddy_icon.url(:icon_24), :border => 0, :alt => "", :size => "35x35"
 - elsif user.facebook_id and not request.xhr?
   = fb_profile_pic user,:facebook_logo=>false, :linked=>false, :size=>"square", :height=>"35",:width=>"35"
 - else
