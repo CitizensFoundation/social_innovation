@@ -76,7 +76,7 @@ a
 a.signin_arrow
   position: relative
   span
-    padding: 4px 0px 4px 0
+    padding: 4px 2px 4px 0
 
 a.signin
   @extend .signin_arrow
@@ -91,7 +91,7 @@ a.profile
   @extend .signin_arrow
 
 #topnav a.menu-open
-  background: #ddeef6!important
+  background: #ccc!important
   color: #666!important
   outline: none
 
@@ -103,18 +103,20 @@ a.profile
   width: 170px
 
 #general_form
-  -moz-border-radius-topleft: 5px
-  -moz-border-radius-bottomleft: 5px
-  -moz-border-radius-bottomright: 5px
-  -webkit-border-top-left-radius: 5px
-  -webkit-border-bottom-left-radius: 5px
-  -webkit-border-bottom-right-radius: 5px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
   display: none
-  background-color: #ddeef6
+  background-color: #fff
   position: absolute
-  width: 210px
+  width: 225px
   z-index: 100
-  border: 1px transparent
+  border: 1px solid #666
   text-align: left
   padding: 0px
   margin-left: -8px
@@ -150,6 +152,7 @@ a.profile
 #sib_notifications
   @extend #general_form
   display: none
+  border: 0
 
 #sib_login_form
   @extend #general_form
@@ -159,13 +162,14 @@ a.profile
 #sib_profile
   @extend #general_form
   display: none
-  margin-left: 180px !important
-  margin-top: 10px !important
+  margin-left: 248px !important
+  margin-top: 3px !important
 
 #sib_help
   @extend #general_form
   display: none
-  margin-left: 241px !important
+  margin-left: 346px !important
+  margin-top: 3px !important
 
 .magnifier_wrap
   height: 20px
