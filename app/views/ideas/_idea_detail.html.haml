@@ -1,29 +1,5 @@
 #sib_idea_detail
-  %div.idea_detail_left
+  %div.sib_left
     = render :partial => "ideas/nav", :locals => {:idea => @idea, :endorsement => @endorsement, :noaction=> defined?(noaction) ? true : false }
-  %div.idea_detail_right
-    %table.show-table.single3
-      %tr
-        %td.add_note{:valign => "top"}
-          - if @idea.points_count == 0
-            = tr("Please tell us why we should endorse or oppose this idea by <a href='{new_point_url}'>adding a point</a>. You can even suggest a different idea instead.", "view/ideas/show", :new_point_url => new_idea_point_path(@idea))
-          - else
-            .endorse-wrap
-              .header-add
-                = render partial: "points_header", locals: { idea: @idea, support: true }
-              .sub_header
-                = tr("Best points for endorse", "view/ideas/show")
-                %span.separator |
-                = link_to(tr("All best points", "view/ideas/show"), top_points_idea_url(@idea))
-              #pro_top
-                = render :partial => "points/long_list", :locals => {:id => "pro_top", :point=>@idea.points.published.by_helpfulness.up_value.first }
-            .oppose-wrap
-              .header-add
-                = render partial: "points_header", locals: { idea: @idea, support: false }
-              .sub_header
-                = tr("Best points for oppose", "view/ideas/show")
-                %span.separator |
-                = link_to(tr("All best points", "view/ideas/show"), top_points_idea_url(@idea))
-              #con_top
-                = render :partial => "points/long_list", :locals => {:id => "con_top", :point => @idea.points.published.by_helpfulness.down_value.first |
-                  }                                                                                                                                         |
+  %div.sib_right
+    = render :partial=>"top_points"

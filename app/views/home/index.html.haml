@@ -1,74 +1,35 @@
-:css
-  .top_level_idea_listing {width: 560px !important;}
-  .idea_tags {padding-right: 35px !important;}
-  .plus_sign {display: none !important;}
-%table{:width => "960px"}
-  %tr
-    %td{:align => "center"}
-      = image_tag "logos/YourIdeas_large.png"
-      %br/
-  %tr
-    %td{:align => "center"}
-      = render :partial=>"ads/welcome", :locals=>{:show_always=>true}
-      %br/
-      = tr("You can select your country or participate in a discussion about issues that affect the World as a whole.","welcome")
-      %br/
-      %br/
-  %tr
-    %td{:align => "center"}
-      - sub_instance=SubInstance.find_by_iso_country_id(@iso_country.id)
-      = link_to sub_instance.show_url do
-        = image_tag @iso_country.large_flag_image, :border=>0
-        %br/
-        %h2
-          = tr("Top ideas for","welcome")
-          = tr(@iso_country.country_english_name,"welcome")
-      - if @country_sub_instance_ideas.any?
-        = render :partial=>"ideas/top_level_listing", :locals=>{:ideas=>@country_sub_instance_ideas, :endorsements=>@endorsements}
-      - elsif @iso_country
-        - if sub_instance
-          = tr("No idea has been created for your country - be the first by clicking here: ","welcome")
-          = link_to sub_instance.show_url, sub_instance.show_url
-  %tr
-    %td{:align => "center"}
-      %br/
-      %br/
-      - sub_instance=SubInstance.find_by_short_name("world")
-      = link_to sub_instance.show_url do
-        = image_tag "tr8n/flags/64/_united-nations.png", :border=>0
-        %br/
-        %h2= tr("The Worlds Top Ideas","welcome")
-      - if @world_ideas.any?
-        = render :partial=>"ideas/top_level_listing", :locals=>{:ideas=>@world_ideas, :endorsements=>@endorsements}
-      - else
-        - if sub_instance
-          = tr("No idea has been created for the World - be the first by clicking here: ","welcome")
-          = link_to sub_instance.show_url, sub_instance.show_url
-  - if country_in_eu_or_eea?(@country_code)
-    %tr
-      %td{:align => "center"}
-        %br/
-        %br/
-        - sub_instance=SubInstance.find_by_short_name("eu")
-        = link_to sub_instance.show_url do
-          = image_tag "tr8n/flags/64/_european-union.png", :border=>0
-          %br/
-          %h2= tr("European Union and EEA Top Ideas","welcome")
-        - if @eu_eea_ideas.any?
-          = render :partial=>"ideas/top_level_listing", :locals=>{:ideas=>@eu_eea_ideas, :endorsements=>@endorsements}
-        - else
-          - if sub_instance
-            = tr("No idea has been created for the European Union and EEA - be the first by clicking here: ","welcome")
-            = link_to sub_instance.show_url, sub_instance.show_url
-  %tr
-    %td{:align => "center"}
-      %br/
-      %br/
-      = render :partial => "shared/language_selection_master"
-  %tr
-    %td{:align => "center"}
-      %h2= tr("Explore other countries ideas","welcome")
-      = render :partial => "home/country_options"
-      %br/
-      %br/
-      %p
+:javascript
+  $(function(){
+  	$('.move_test').replaceWith($('.category'));
+  	$('.replace_fblike').replaceWith($('.fblike'));
+  	$('.replace_report').replaceWith($('.report1'));
+  	$('.replace_notice').replaceWith($('.single .warning_inline2'));
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  });
+- if @new_ideas.any?
+  %div
+    %h1
+      = tr("New Ideas","home")
+    - @new_ideas.each do |idea|
+      = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
+      %div
+        %div{:id => "idea_detail_#{idea.id}"}
+  %p
+- if @top_ideas.any?
+  %div
+    %h1
+      = tr("Top Ideas","home")
+    - @top_ideas.each do |idea|
+      = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
+      %div
+        %div{:id => "idea_detail_#{idea.id}"}
+- if @random_ideas.any?
+  %div
+    %h1
+      = tr("Random Ideas","home")
+    - @random_ideas.each do |idea|
+      = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
+      %div
+        %div{:id => "idea_detail_#{idea.id}"}
