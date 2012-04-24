@@ -10,14 +10,11 @@
     po.src = 'https://apis.google.com/js/plusone.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
   });
-%p
-  - if @ideas.any?
-    %div.top-level-table.top_level.single2
-      - for idea in @ideas
-        %div.top_listing
-          = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
-          %div
-            %div{:id => "points_overview_for_#{idea.id}"}
-      = will_paginate @ideas
-  - else
-    = tr("No ideas here yet.","ideas")
+- if @ideas.any?
+  - for idea in @ideas
+    = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
+    %div
+      %div{:id => "points_overview_for_#{idea.id}"}
+    = will_paginate @ideas
+- else
+  = tr("No ideas here yet.","ideas")
