@@ -1,8 +1,9 @@
 %span{:class => "idea_#{idea.id.to_s}_button_small", :id => "idea_#{idea.id.to_s}_button_small"}
   - unless @geoblocked
+    %div{:style => "overflow:hidden;"}
     - if endorsement and endorsement.status == 'active'
       - if endorsement.is_up?
-        %span.idea_remove{:id => "idea_remove_endorse_#{idea.id.to_s}"}
+        %span.idea_add{:id => "idea_add_endorse_#{idea.id.to_s}"}
           = tr("ENDORSED", "view/ideas/_button_small")
           = link_to "&nbsp;x".html_safe, endorsement_path(endorsement, :region => region),                                       |
               :method => :delete,                                                                                                  |
@@ -12,10 +13,15 @@
               :class => "idea_remove_link", :title => tr("Remove from my list of ideas", "view/ideas/_button_small") |
         %span.debate_button
           = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
+          = tr("DEBATE", "view/ideas/_button_small")
+        %span.debate_button
+          = image_tag("images/buttons/oppose_gray.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
+      - else
+        %span.debate_button
+          = image_tag("images/buttons/endorse_gray.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
         %span.debate_button
           = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
-      - else
-        %span.idea_remove_oppose{:id => "idea_remove_oppose#{idea.id.to_s}"}
+        %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
           = tr("YOU OPPOSED", "view/ideas/_button_small")
           = link_to "&nbsp;x".html_safe, endorsement_path(endorsement, :region => region),     |
               :method => :delete,                                                                |
@@ -25,21 +31,20 @@
               :class => "idea_remove_link",                                                  |
               :title => tr("Remove from my list of ideas", "view/ideas/_button_small") |
     - else
-      %div{:style => "overflow:hidden;"}
-        %span.idea_add{:id => "idea_add_endorse_#{idea.id.to_s}"}
-          = link_to tr("endorse", "view/ideas/_button_small"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
-              :method => :post,                                                                                                                                        |
-              :remote => true,                                                                                                                                         |
-              'data-loader-name' => "no_loader",                                                                                                                       |
-              'data-disable-with' => '<span class="idea_add_link1 idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
-              :class => "idea_add_link1", :title =>  tr("I support this, add it to my idea list", "view/ideas/_button_small")                             |
-        %span.debate_button
-          = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
-        %span.endorse_or= tr("OR", "view/ideas/_button_small")
-        %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
-          = link_to tr("oppose", "view/ideas/_button_small"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
-              :method => :post,                                                                                                                                        |
-              :remote => true,                                                                                                                                         |
-              'data-loader-name' => "no_loader",                                                                                                                       |
-              'data-disable-with' => '<span class="idea_add_link2 idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
-              :class => "idea_add_link2", :title =>  tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas/_button_small")      |
+      %span.idea_add{:id => "idea_add_endorse_#{idea.id.to_s}"}
+        = link_to tr("endorse", "view/ideas/_button_small"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
+            :method => :post,                                                                                                                                        |
+            :remote => true,                                                                                                                                         |
+            'data-loader-name' => "no_loader",                                                                                                                       |
+            'data-disable-with' => '<span class="idea_add_link1 idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
+            :class => "idea_add_link1", :title =>  tr("I support this, add it to my idea list", "view/ideas/_button_small")                             |
+      %span.debate_button
+        = image_tag("buttons/debate.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
+      %span.endorse_or= tr("OR", "view/ideas/_button_small")
+      %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
+        = link_to tr("oppose", "view/ideas/_button_small"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
+            :method => :post,                                                                                                                                        |
+            :remote => true,                                                                                                                                         |
+            'data-loader-name' => "no_loader",                                                                                                                       |
+            'data-disable-with' => '<span class="idea_add_link2 idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
+            :class => "idea_add_link2", :title =>  tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas/_button_small")      |
