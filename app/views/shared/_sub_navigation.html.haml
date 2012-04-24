@@ -1,15 +1,16 @@
 #sib_sub_nav
   %div#section_title
     %span
-      = tr(controller_name.camelize,"sub_nav")
-  - if @selected_sub_nav_name
-    %a.subnav.pulldown_trigger{:href => "subnav"}
-      %span
-        = @selected_sub_nav_name
-  -else
-    %a{:href => "#"}
-      %span
-        = @selected_sub_nav_name
+      = tr(controller_name.camelize,"sub_nav") + " :"
+    %span
+    - if @selected_sub_nav_name
+      %a.subnav.pulldown_trigger{:href => "subnav"}
+        %span
+          = @selected_sub_nav_name
+    -else
+      %a{:href => "#"}
+        %span
+          = @selected_sub_nav_name
   - if @sub_menu_items and not @sub_menu_items.empty?
     %div#sub_menu.submenu
       %ul
