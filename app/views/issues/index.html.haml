@@ -16,7 +16,6 @@
       %td{:width => "33%"}
     - else
       %td{:width => "50%"}
-    %h3= tr("Standard categories", "views/issues/index")
     = render partial: 'issue_listing', locals: { issues: @categories }
     - if current_sub_instance.required_tags
       %td{:width => "33%"}
@@ -34,9 +33,3 @@
       %td{:width => "33%"}
     - else
       %td{:width => "50%"}
-    %h3= tr("Custom categories", "views/issues/index")
-    - issues = @issues
-    - issues = issues.delete_if { |issue| issue.slug == 'betri-hverfi'} if Instance.current.layout == 'better_reykjavik'
-    = render partial: 'issue_listing', locals: { issues: issues }
-%p
-  = will_paginate(@issues)
