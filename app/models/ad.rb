@@ -158,11 +158,11 @@ class Ad < ActiveRecord::Base
     end
     if sa and sa.value == 1
       idea.endorse(u,r,nil,self.user)
-      @activity = ActivityEndorsementNew.find_by_idea_id_and_user_id(@idea.id,u.id, :order => "created_at desc")
+      @activity = ActivityEndorsementNew.find_by_idea_id_and_user_id(self.idea.id,u.id, :order => "created_at desc")
       @activity.update_attribute(:ad_id,self.id) if @activity
     elsif sa and sa.value == -1
       idea.oppose(u,r,nil,self.user)
-      @activity = ActivityOppositionNew.find_by_idea_id_and_user_id(@idea.id,u.id, :order => "created_at desc")
+      @activity = ActivityOppositionNew.find_by_idea_id_and_user_id(self.idea.id,u.id, :order => "created_at desc")
       @activity.update_attribute(:ad_id,self.id) if @activity
     end
   end
