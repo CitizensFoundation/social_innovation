@@ -18,7 +18,7 @@ SocialInnovation::Application.configure do
   config.assets.compile = false
 
   # Generate digests for assets URLs
-  config.assets.digest = true
+  config.assets.digest = false
 
   # Specifies the header that your server uses for sending files
   config.action_dispatch.x_sendfile_header = "X-Sendfile"
@@ -69,6 +69,6 @@ SocialInnovation::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   config.assets.precompile += ['*.js', '*.css']
 
-  config.cache_store = :dalli_store, '127.0.0.1:11211', { :namespace => "oad_3_#{Rails.env}_#{Rails.application.config.database_configuration[Rails.env]["git_branch"]}",
+  config.cache_store = :dalli_store, '127.0.0.1:11211', { :namespace => "si_3_#{Rails.env}_#{Rails.application.config.database_configuration[Rails.env]["git_branch"]}",
                                                           :compress => true, :compress_threshold => 64*1024 }
 end
