@@ -29,6 +29,8 @@
         %span#ideaContentDown
         = tr("characters left", "view/ideas/_form")
       %span.red *
+      .tiny_info
+        %p= tr("Please describe your idea as neutrally as you can. You have plenty space below to convince others!", "views/ideas/form")
     .field_box
       = f.text_area :description, :id => 'ideaContent', :button => 'submit', :rows => 5, :cols => 60, :maxLength => 300
   %br/
@@ -52,7 +54,7 @@
         %span.red *
         %br/
         .tiny_info
-          %p= tr("It‘s important to choose a category for the idea. If the idea is chosen to appear before the administration of Reykjavík City, the category will decide which divisional committee will discuss it.", "views/ideas/form")
+          %p= tr("It‘s important to choose a category for the idea. It will increase the chances of your idea being realised", "views/ideas/form")
       - Category.for_sub_instance.each do |category|
         = f.radio_button :category_id, category.id
         %span.Chapter_name{:id => "category_#{category.id}"}= category.i18n_name
