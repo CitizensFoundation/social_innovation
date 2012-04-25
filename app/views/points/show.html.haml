@@ -17,4 +17,5 @@
       - for activity in @point.activities.active.by_recently_created.find(:all, :limit => 10)
         = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_noself" }
     %td{:style => "padding-left: 20px;", :valign => "top", :width => "150"}
+      = render :partial => "points/authors", :locals => {:users => @point.authors }
       = render :partial => "points/left_nav"
