@@ -12,7 +12,7 @@ class Idea < ActiveRecord::Base
   scope :published, :conditions => "ideas.status = 'published'"
   scope :unpublished, :conditions => "ideas.status not in ('published','abusive')"
 
-  scope :not_deleted, :conditions => "ideas.status <> 'deleted'"
+  scope :not_removed, :conditions => "ideas.status <> 'removed'"
 
   scope :flagged, :conditions => "flags_count > 0"
 
@@ -84,7 +84,7 @@ class Idea < ActiveRecord::Base
   has_many :ads, :dependent => :destroy
   has_many :notifications, :as => :notifiable, :dependent => :destroy
   
-  has_many :changes, :conditions => "status <> 'deleted'", :order => "updated_at desc"
+  has_many :changes, :conditions => "status <> 'removed'", :order => "updated_at desc"
   has_many :approved_changes, :class_name => "Change", :conditions => "status = 'approved'", :order => "updated_at desc"
   has_many :sent_changes, :class_name => "Change", :conditions => "status = 'sent'", :order => "updated_at desc"
   has_many :declined_changes, :class_name => "Change", :conditions => "status = 'declined'", :order => "updated_at desc"
@@ -128,32 +128,32 @@ class Idea < ActiveRecord::Base
   workflow_column :status
   workflow do
     state :published do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
       event :deactivate, transitions_to: :inactive
       event :abusive, transitions_to: :abusive
     end
     state :passive do
       event :publish, transitions_to: :published
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
     end
     state :draft do
       event :publish, transitions_to: :published
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
       event :deactivate, transitions_to: :inactive
     end
-    state :deleted do
+    state :removed do
       event :bury, transitions_to: :buried
-      event :undelete, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
-      event :undelete, transitions_to: :draft
+      event :unremove, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
+      event :unremove, transitions_to: :draft
     end
     state :buried do
       event :deactivate, transitions_to: :inactive
     end
     state :inactive do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :abusive
   end
@@ -696,21 +696,21 @@ class Idea < ActiveRecord::Base
     ActivityIdeaNew.create(:user => user, :idea => self)
   end
   
-  def on_deleted_entry(new_state, event)
+  def on_removed_entry(new_state, event)
     activities.each do |a|
-      a.delete!
+      a.remove!
     end
     endorsements.each do |e|
       e.destroy
     end
-    self.deleted_at = Time.now
+    self.removed_at = Time.now
     save(:validate => false)
   end
-  
-  def on_delete_entry(new_state, event)
-    self.deleted_at = nil
+
+  def on_unremoved_entry(new_state, event)
+    self.removed_at = nil
     save(:validate => false)
-  end  
+  end
   
   def on_buried_entry(new_state, event)
     # should probably send an email notification to the person who submitted it

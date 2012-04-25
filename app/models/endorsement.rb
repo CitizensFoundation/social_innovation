@@ -1,7 +1,7 @@
 class Endorsement < ActiveRecord::Base
 
   scope :active, :conditions => "endorsements.status = 'active'"
-  scope :deleted, :conditions => "endorsements.status = 'deleted'" 
+  scope :removed, :conditions => "endorsements.status = 'removed'" 
   scope :suspended, :conditions => "endorsements.status = 'suspended'"
   scope :active_and_inactive, :conditions => "endorsements.status in ('active','inactive','finished')" 
   scope :opposing, :conditions => "endorsements.value < 0"
@@ -52,9 +52,9 @@ class Endorsement < ActiveRecord::Base
     state :finished do
       event :deactivate, transitions_to: :inactive
     end
-    state :deleted do
+    state :removed do
       event :activate, transitions_to: :active
-      event :undelete, transitions_to: :active
+      event :unremove, transitions_to: :active
       event :replace, transitions_to: :replaced
     end
     state :suspended do
@@ -63,7 +63,7 @@ class Endorsement < ActiveRecord::Base
     end
     state :replaced do
       event :activate, transitions_to: :active
-      event :undelete, transitions_to: :active
+      event :unremove, transitions_to: :active
     end
   end
 
@@ -127,7 +127,7 @@ class Endorsement < ActiveRecord::Base
 #    return unless user_id == Instance.current.official_user_id
 #    Idea.update_all("official_value = 1", ["id = ?",idea_id]) if is_up? and status == 'active'
 #    Idea.update_all("official_value = -1", ["id = ?",idea_id]) if is_down? and status == 'active'
-#    Idea.update_all("official_value = 0", ["id = ?",idea_id]) if status == 'deleted'
+#    Idea.update_all("official_value = 0", ["id = ?",idea_id]) if status == 'removed'
   end
   
   def idea_name

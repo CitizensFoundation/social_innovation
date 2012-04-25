@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
   # GET /activities/1/comments
   # GET /activities/1/comments.xml
   def index
-    if @activity.status == 'deleted'
+    if @activity.status == 'removed'
       flash[:error] = tr("That comment was deleted", "controller/comments")
       if not (logged_in? and current_user.is_admin?)
         redirect_to @activity.idea and return if @activity.idea
@@ -211,7 +211,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment = @activity.comments.find(params[:id])
     access_denied unless current_user.is_admin? or @comment.user_id == current_user.id
-    @comment.delete!
+    @comment.remove!
     respond_to do |format|
       format.html { redirect_to(comments_url) }
       format.js {

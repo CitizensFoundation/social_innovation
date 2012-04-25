@@ -30,7 +30,7 @@
                 .comment_content_1{:id => "comment_content_#{comment.id.to_s}"}= tg(comment.content_html.html_safe)
               - else
                 .comment_content_2{:id => "comment_content_#{comment.id.to_s}"}= comment.content_html.html_safe
-        - if logged_in? and not comment.deleted? and ((@comments and comment == @comments.last and current_user.id == comment.user_id) or current_user.is_admin?)
+        - if logged_in? and not comment.removed? and ((@comments and comment == @comments.last and current_user.id == comment.user_id) or current_user.is_admin?)
           .delete-comment
             = link_to tr("delete", "view/comments/_show"), activity_comment_url(comment.activity_id,comment),                      |
               :method => :delete,                                                                                                  |

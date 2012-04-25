@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   scope :admins, :conditions => "users.is_admin = true"
   scope :suspended, :conditions => "users.status = 'suspended'"
   scope :probation, :conditions => "users.status = 'probation'"
-  scope :deleted, :conditions => "users.status = 'deleted'"
+  scope :removed, :conditions => "users.status = 'removed'"
   scope :pending, :conditions => "users.status = 'pending'"  
   scope :warnings, :conditions => "warnings_count > 0"
   
@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   scope :by_revisions, :order => "users.point_revisions_count desc"
   scope :by_invites_accepted, :conditions => "users.contacts_invited_count > 0", :order => "users.referrals_count desc"
   scope :by_suspended_at, :order => "users.suspended_at desc"
-  scope :by_deleted_at, :order => "users.deleted_at desc"
+  scope :by_removed_at, :order => "users.removed_at desc"
   scope :by_recently_loggedin, :order => "users.loggedin_at desc"
   scope :by_probation_at, :order => "users.probation_at desc"
   scope :by_oldest_updated_at, :order => "users.updated_at asc"
@@ -277,41 +277,41 @@ class User < ActiveRecord::Base
     state :pending do
       event :activate, transitions_to: :active
       event :suspend, transitions_to: :suspended
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :probation, transitions_to: :probation
     end
     state :passive do
       event :register, transitions_to: :pending, meta: { validates_presence_of: [:crypted_password, :password] }
       event :activate, transitions_to: :active
       event :suspend, transitions_to: :suspended
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :probation, transitions_to: :probation
     end
     state :active do
       event :suspend, transitions_to: :suspended
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :probation, transitions_to: :probation
     end
     state :suspended do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :unsuspend, transitions_to: :active, meta: { validates_presence_of: [:activated_at] }
       event :unsuspend, transitions_to: :pending, meta: { validates_presence_of: [:activation_code] }
       event :unsuspend, transitions_to: :passive
     end
     state :probation do
       event :suspend, transitions_to: :suspended
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :unprobation, transitions_to: :active, meta: { validates_presence_of: [:activated_at] }
       event :unprobation, transitions_to: :pending, meta: { validates_presence_of: [:activation_code] }
       event :unprobation, transitions_to: :passive
     end
-    state :deleted
+    state :removed
   end
 
    def on_pending_entry(new_state = nil, event = nil)
     self.probation_at = nil
     self.suspended_at = nil
-    self.deleted_at = nil
+    self.removed_at = nil
     save(:validate => false) if persisted?
   end
 
@@ -322,7 +322,7 @@ class User < ActiveRecord::Base
     self.activation_code = nil
     self.probation_at = nil
     self.suspended_at = nil
-    self.deleted_at = nil
+    self.removed_at = nil
     for e in endorsements.suspended
       e.unsuspend!
     end
@@ -330,8 +330,8 @@ class User < ActiveRecord::Base
     save(:validate => false)
   end  
   
-  def on_deleted_entry(new_state, event)
-    self.deleted_at = Time.now
+  def on_removed_entry(new_state, event)
+    self.removed_at = Time.now
     for e in endorsements
       e.destroy
     end    

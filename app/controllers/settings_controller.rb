@@ -55,7 +55,7 @@ class SettingsController < ApplicationController
 
   # DELETE /settings
   def destroy
-    @user.delete!
+    @user.remove!
     self.current_user.forget_me
     cookies.delete :auth_token
     reset_session    

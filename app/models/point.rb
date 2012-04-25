@@ -92,22 +92,22 @@ class Point < ActiveRecord::Base
   workflow_column :status
   workflow do
     state :published do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
       event :abusive, transitions_to: :abusive
     end
     state :draft do
       event :publish, transitions_to: :published
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
     end
-    state :deleted do
+    state :removed do
       event :bury, transitions_to: :buried
-      event :undelete, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
-      event :undelete, transitions_to: :draft
+      event :unremove, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
+      event :unremove, transitions_to: :draft
     end
     state :buried do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :unbury, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
       event :unbury, transitions_to: :draft
     end
@@ -133,10 +133,10 @@ class Point < ActiveRecord::Base
     idea.save(:validate => false)
   end
   
-  def on_deleted_entry(new_state, event)
+  def on_removed_entry(new_state, event)
     remove_counts
     activities.each do |a|
-      a.delete!
+      a.remove!
     end
     #capital_earned = capitals.sum(:amount)
     #if capital_earned != 0
@@ -144,7 +144,7 @@ class Point < ActiveRecord::Base
     #end
     idea.save(:validate => false)
     for r in revisions
-      r.delete!
+      r.remove!
     end
   end
 
@@ -225,8 +225,8 @@ class Point < ActiveRecord::Base
     value == 0
   end
   
-  def is_deleted?
-    status == 'deleted'
+  def is_removed?
+    status == 'removed'
   end
 
   def is_published?

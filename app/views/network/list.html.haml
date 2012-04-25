@@ -15,8 +15,8 @@
                     %td{:style => "padding-left: 5px;", :valign => "top"}
                       = link_to user.name, user
                       .small
-                        - if user.status == 'deleted'
-                          = time_ago(user.deleted_at)
+                        - if user.status == 'removed'
+                          = time_ago(user.removed_at)
                         - elsif user.status == 'suspended'
                           = time_ago(user.suspended_at)
                         - elsif user.status == 'probation'
