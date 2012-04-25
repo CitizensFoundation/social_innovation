@@ -466,7 +466,7 @@ class User < ActiveRecord::Base
 
   def calculate_score
     count = 0.1
-    count += 1 if active? 
+    count += 1 #if active?
     count += 3 if recent_login?
     count += 0.5 if points_count > 0
     count += up_issue_diversity
