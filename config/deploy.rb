@@ -9,7 +9,7 @@ set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
 
 ssh_options[:forward_agent] = true
-set :application, "social-innovation"
+set :application, "social_innovation"
 set :domain, "www.idea-synergy.com"
 set :scm, "git"
 set :repository, "git://github.com/rbjarnason/social_innovation.git"
@@ -43,7 +43,6 @@ end
 
 after 'deploy:finalize_update' do
   run "ln -nfs #{deploy_to}/#{shared_dir}/config/* #{current_release}/config/"
-  run "ln -nfs /mnt/shared/system #{current_release}/public/system"
 end
 
 namespace :delayed_job do
