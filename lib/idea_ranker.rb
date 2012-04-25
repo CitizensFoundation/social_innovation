@@ -224,7 +224,6 @@ class IdeaRanker
     i = 0
     puts "ideas.count = #{ideas.count}"
     for p in ideas
-     p.reload
      p.score = p.number
      first_time = false
      i = i + 1
