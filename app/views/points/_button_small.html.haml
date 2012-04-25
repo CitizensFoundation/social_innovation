@@ -38,6 +38,6 @@
         'data-disable-with' => '<span class="quality_unhelpful_link idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>', |
         'data-loader-name' => "no_loader",                                                                                                         |
         :class => "quality_unhelpful_link", :title => tr("This is not helpful", "view/points/_button_small")                                       |
-  - if quality or !logged_in?
+  - if Instance.current.has_facebook_enabled? and (quality or !logged_in?)
     %span.point_fblike
       %fb:like{:action => tr("like","facebook"), :colorscheme => "light", :href => point.show_url, :layout => "button_count", :ref => "idea", "show-faces" => "false", :width => "120"}
