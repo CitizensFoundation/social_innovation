@@ -24,22 +24,23 @@
       - if current_user and current_user.capitals_count>0 and @idea.status == 'published'
         %li
           = link_to tr("Buy an ad", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
-      %li
-        = link_to tr("Action", "view/ideas/_nav"), new_idea_point_path(@idea)
-        .tab_body
-          .box_style
-            = link_to tr("Add a point", "view/ideas/_nav"), new_idea_point_path(@idea), :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_nav"), :class => "qtip_left"
-            %br/
-            - if @idea.status == 'published'
-              = link_to tr("Buy an ad for this idea", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
+      - if current_user and current_user.is_admin?
+        %li.tab2.mega
+          = link_to tr("Action", "view/ideas/_nav"), new_idea_point_path(@idea)
+          .tab_body
+            .box_style
+              = link_to tr("Add a point", "view/ideas/_nav"), new_idea_point_path(@idea), :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_nav"), :class => "qtip_left"
               %br/
-            - if logged_in?
-              - if (current_user.id == @idea.user_id and @idea.endorsements_count < 2) or current_user.is_admin?
-                = link_to tr("Edit this idea", "view/ideas/_nav"), edit_idea_url(@idea), :title => tr("Edit this idea", "view/ideas/_nav"), :class => "qtip_left"
+              - if @idea.status == 'published'
+                = link_to tr("Buy an ad for this idea", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
                 %br/
-              - if current_user.is_admin?
-                = link_to tr("Update this idea's status", "view/ideas/_nav"), update_status_idea_url(@idea), :title => tr("Update this idea's status", "view/ideas/_nav"), :class => "qtip_left"
-                %br/
-                = link_to tr("Delete this idea", "view/ideas/_nav"), @idea, :title => tr("Permanently delete this idea", "view/ideas/_nav"), :confirm => tr("Are you sure you want to permanently delete {idea_name}?", "view/ideas/_nav", :idea_name => @idea.name), :method => :delete
-                %br/
-            %p
+              - if logged_in?
+                - if (current_user.id == @idea.user_id and @idea.endorsements_count < 2) or current_user.is_admin?
+                  = link_to tr("Edit this idea", "view/ideas/_nav"), edit_idea_url(@idea), :title => tr("Edit this idea", "view/ideas/_nav"), :class => "qtip_left"
+                  %br/
+                - if current_user.is_admin?
+                  = link_to tr("Update this idea's status", "view/ideas/_nav"), update_status_idea_url(@idea), :title => tr("Update this idea's status", "view/ideas/_nav"), :class => "qtip_left"
+                  %br/
+                  = link_to tr("Delete this idea", "view/ideas/_nav"), @idea, :title => tr("Permanently delete this idea", "view/ideas/_nav"), :confirm => tr("Are you sure you want to permanently delete {idea_name}?", "view/ideas/_nav", :idea_name => @idea.name), :method => :delete
+                  %br/
+              %p
