@@ -34,8 +34,11 @@
       %div
         %div{:id => "idea_detail_#{idea.id}"}
 - unless @activities.blank?
-  #home_activity_list
-    %ul#endless_scroll_ul.list{:last => @activities.to_a.last.changed_at}
-      = render :template => 'feed/activity_list_simple'
-      #infinite-scroll
-      .endless_scroll_inner_wrap
+  %div{:style=>"float: left;margin-top:5px;"}
+    %h1
+      = tr("Latest Activity","home")
+    #home_activity_list
+      %ul#endless_scroll_ul.list{:last => @activities.to_a.last.changed_at}
+        = render :template => 'feed/activity_list_simple'
+        #infinite-scroll
+        .endless_scroll_inner_wrap
