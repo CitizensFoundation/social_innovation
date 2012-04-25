@@ -33,7 +33,7 @@ namespace :deploy do
 end
 
 before 'deploy:update_code' do
-  thinking_sphinx.stop
+ # thinking_sphinx.stop
 end
 
 after 'deploy:update_code' do
