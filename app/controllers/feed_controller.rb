@@ -511,7 +511,6 @@ class FeedController < ApplicationController
     @items[2]=[tr("Everything", "view/feed/_nav"), url_for(:controller => "feed", :action => "activities")]
     @items[3]=[tr("Discussions", "view/feed/_nav"), url_for(:controller => "feed", :action => "discussions")]
     @items[4]=[tr("Points", "view/feed/_nav"), url_for(:controller => "feed", :action => "points")]
-    @items[6]=[tr("All", "view/feed/_nav"), url_for(:controller => "feed", :action => "discussions")]
     @items[7]=[tr("All Social Points", "view/feed/_nav"), url_for(:controller => "feed", :action => "capital")]
     if logged_in?
       @items[8]=[tr("Yours", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_discussions")]
