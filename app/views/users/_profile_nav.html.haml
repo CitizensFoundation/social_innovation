@@ -4,10 +4,6 @@
       %li.tab1
         %span.tab_header
           = link_to tr("Profile", "view/users/_profile_nav"), @user
-      - if not (logged_in? and current_user == @user)
-        %li.tab2
-          %span.tab_header
-            = link_to tr("Private message", "view/users/_profile_nav"), user_messages_url(@user)
       - if @user.endorsements_count > 5
         %li.tab3
           %span.tab_header
