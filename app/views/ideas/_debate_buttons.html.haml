@@ -5,7 +5,7 @@
       - if endorsement.is_up?
         %table.debate_buttons_table
           %tr
-            %td
+            %td{:width=>245/3}
               %div.idea_add_link1
                 = tr("ENDORSED", "view/ideas/_button_small")
                 = link_to "&nbsp;x".html_safe, endorsement_path(endorsement, :region => region),                                       |
@@ -14,22 +14,22 @@
                     'data-disable-with' => "",                                                                                           |
                     'data-loader-name' => "spinner",                                                                                     |
                     :class => "idea_remove_link", :title => tr("Remove from my list of ideas", "view/ideas/_button_small") |
-            %td
+            %td{:width=>245/3}
               %div.debate_button{:id=>"debate_button_#{idea.id}"}
                 = tr("DEBATE", "view/ideas/_button_small")
-            %td
+            %td{:width=>245/3}
               %div
                 = image_tag("buttons/oppose_grey.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
       - else
         %table.debate_buttons_table
           %tr
-            %td
+            %td{:width=>245/3}
               %div
                 = image_tag("buttons/endorse_grey.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
-            %td
+            %td{:width=>245/3}
               %div.debate_button{:id=>"debate_button_#{idea.id}"}
                 = tr("DEBATE", "view/ideas/_button_small")
-            %td
+            %td{:width=>245/3}
               %span.idea_add_link2
                 = tr("OPPOSED", "view/ideas/_button_small")
                 = link_to "&nbsp;x".html_safe, endorsement_path(endorsement, :region => region),     |
@@ -42,7 +42,7 @@
     - else
       %table.debate_buttons_table
         %tr
-          %td
+          %td{:width=>245/3}
             %span.idea_add{:id => "idea_add_endorse_#{idea.id.to_s}"}
               = link_to tr("endorse", "view/ideas/_button_small"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
                   :method => :post,                                                                                                                                        |
@@ -50,10 +50,10 @@
                   'data-loader-name' => "no_loader",                                                                                                                       |
                   'data-disable-with' => '<span class=""><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
                   :class => "idea_add_link1", :title =>  tr("I support this, add it to my idea list", "view/ideas/_button_small")                             |
-          %td
+          %td{:width=>245/3}
             %div.debate_button{:id=>"debate_button_#{idea.id}"}
               = tr("DEBATE", "view/ideas/_button_small")
-          %td
+          %td{:width=>245/3}
             %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
               = link_to tr("oppose", "view/ideas/_button_small"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
                   :method => :post,                                                                                                                                        |
