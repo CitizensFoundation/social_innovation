@@ -218,6 +218,9 @@ class ApplicationController < ActionController::Base
       elsif Instance.current.layout == "better_iceland"
         session[:locale] = "is"
         Rails.logger.info("Set language from better iceland")
+      elsif Instance.current.layout == "application"
+        session[:locale] = "en"
+        Rails.logger.info("Set language for application to English")
       elsif @iso_country and not @iso_country.languages.empty?
         session[:locale] =  @iso_country.languages.first.locale
         Rails.logger.debug("Set language from geoip")
