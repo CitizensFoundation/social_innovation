@@ -524,7 +524,7 @@ class FeedController < ApplicationController
         @items[12]=[tr("Your followers", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_followers_points")]
       end
       @items[13]=[tr("Your Social Points", "view/feed/_nav"), url_for(:controller => "feed", :action => "your_capital")]
-      @items[14]=[tr("Yours", "view/ideas"), yours_ideas_url]
+      @items[14]=[tr("Your activities", "view/feed_nav"), url_for(controller: 'feed', action: 'your_activities')]
     end
     @items
   end
