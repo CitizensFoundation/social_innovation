@@ -477,13 +477,13 @@ class IdeasController < ApplicationController
   end
 
   def idea_detail
-    setup_top_points
+    setup_top_points(1)
     render :partial=>"ideas/idea_detail", :layout=>false
   end
 
   def top_points
     @page_title = tr("Top points", "controller/ideas", :idea_name => @idea.name)
-    setup_top_points
+    setup_top_points(5)
     respond_to do |format|
       format.html { render :action => "top_points" }
       format.xml { render :xml => @points.to_xml(:include => [:idea, :other_idea], :except => NB_CONFIG['api_exclude_fields']) }
@@ -1031,12 +1031,12 @@ class IdeasController < ApplicationController
       end      
     end
 
-    def setup_top_points
+    def setup_top_points(limit)
       @point_value = 0
-      @points_top_up = @idea.points.published.by_helpfulness.up_value.five
-      @points_top_down = @idea.points.published.by_helpfulness.down_value.five
-      @points_new_up = @idea.points.published.by_recently_created.up_value.five.reject {|p| @points_top_up.include?(p)}
-      @points_new_down = @idea.points.published.by_recently_created.down_value.five.reject {|p| @points_top_down.include?(p)}
+      @points_top_up = @idea.points.published.by_helpfulness.up_value.limit(limit)
+      @points_top_down = @idea.points.published.by_helpfulness.down_value.limit(limit)
+      @points_new_up = @idea.points.published.by_recently_created.up_value.limit(limit).reject {|p| @points_top_up.include?(p)}
+      @points_new_down = @idea.points.published.by_recently_created.down_value.limit(limit).reject {|p| @points_top_down.include?(p)}
       @total_up_points = @idea.points.published.up_value.count
       @total_down_points = @idea.points.published.down_value.count
       @total_up_points_new = [0,@total_up_points-@points_top_up.length].max
