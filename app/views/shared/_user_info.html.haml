@@ -6,7 +6,7 @@
           #user_info_box_name_and_menu
             %span.profile_name= current_user.name
             %br/
-            = link_to tr("My Wall","views/shares/_user_info"), current_user
+            = link_to tr("Profile","views/shares/_user_info"), current_user
             |
             \#{link_to tr("Settings","views/shares/_user_info"), :controller=>"settings"} |
             - if current_facebook_user_if_on_facebook and current_user.facebook_uid

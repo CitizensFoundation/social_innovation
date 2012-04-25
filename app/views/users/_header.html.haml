@@ -37,5 +37,5 @@
     - if @user.attribute_present?("loggedin_at")
       \&middot; #{tr("Last visit {time_ago}", "view/users/_header", :time_ago => time_ago(@user.loggedin_at))}
   .profile-nav
-    = render :partial => "users/profile_nav"
+    = render :partial => "users/profile_nav" if current_user and current_user.is_admin?
   %div{:style => "clear:both;"}
