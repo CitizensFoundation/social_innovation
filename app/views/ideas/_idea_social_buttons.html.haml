@@ -1,11 +1,12 @@
-%ul
-  %li.list_report
-    .replace_report{:style => "margin-left:10px !important;"}
-  %li.list_left
-    .g-plusone{"data-size" => "medium"}
-  %li.list_left
-    .tweet
-      %a.twitter-share-button{"data-count" => "horizontal", :href => "http://twitter.com/share"} Tweet
-      %script{:src => "http://platform.twitter.com/widgets.js", :type => "text/javascript"}
-  %li.list_left
-    .replace_fblike
+- if Instance.current.has_facebook_enabled?
+  %ul
+    %li.list_report
+      .replace_report{:style => "margin-left:10px !important;"}
+    %li.list_left
+      .g-plusone{"data-size" => "medium"}
+    %li.list_left
+      .tweet
+        %a.twitter-share-button{"data-count" => "horizontal", :href => "http://twitter.com/share"} Tweet
+        %script{:src => "http://platform.twitter.com/widgets.js", :type => "text/javascript"}
+    %li.list_left
+      .replace_fblike
