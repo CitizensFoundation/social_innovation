@@ -1,7 +1,7 @@
 #sib_sub_nav
   %div#section_title
     %span
-      = tr(controller_name.camelize,"sub_nav") + " :"
+      = controller_name == "points" ? tr("Debate","sub_nav") + " :" : tr(controller_name.camelize,"sub_nav") + " :"
     %span
     - if @selected_sub_nav_name
       %a.subnav.pulldown_trigger{:href => "subnav"}
