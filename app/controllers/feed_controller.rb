@@ -11,7 +11,7 @@ class FeedController < ApplicationController
   before_filter :setup_filter_dropdown
 
   def index
-    redirect_to :action => "discussions"
+    redirect_to :action => "activities"
     return
   end
 
