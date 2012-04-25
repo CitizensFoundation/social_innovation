@@ -3,7 +3,7 @@
     %div{:style => "width:400px;overflow:hidden;"}
     - if endorsement and endorsement.status == 'active'
       - if endorsement.is_up?
-        %table
+        %table.debate_buttons_table
           %tr
             %td
               %div.idea_add_link1
@@ -21,7 +21,7 @@
               %div
                 = image_tag("buttons/oppose_grey.png", :align => "center", :border => 0, :id=>"debate_button_#{idea.id}")
       - else
-        %table
+        %table.debate_buttons_table
           %tr
             %td
               %div
@@ -40,7 +40,7 @@
                     :class => "idea_remove_link",                                                  |
                     :title => tr("Remove from my list of ideas", "view/ideas/_button_small") |
     - else
-      %table
+      %table.debate_buttons_table
         %tr
           %td
             %span.idea_add{:id => "idea_add_endorse_#{idea.id.to_s}"}
