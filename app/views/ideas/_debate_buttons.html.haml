@@ -71,3 +71,4 @@
                   'data-loader-name' => "no_loader",                                                                                                                       |
                   'data-disable-with' => '<span class="idea_add_link2 idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
                   :class => "idea_add_link2", :title =>  tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas")      |
+    = render :partial => "ideas/debate_button_javascript", :locals => { :idea => idea }
