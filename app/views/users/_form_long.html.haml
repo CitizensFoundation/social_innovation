@@ -52,7 +52,9 @@
                   %span.red *
                 .field_box
                   = f.select :my_gender, options_for_select([tr("Select gender", "model/user"), tr("Male", "model/user"),tr("Female", "model/user")], @user ? @user.my_gender : tr("Select gender", "model/user"))
-          %td{:style => "padding-left: 10px;", :valign => "top"}
+
+        %tr
+          %td{:style => "padding-left: 0px; padding-top: 10px;", :valign => "top"}
             .field
               .field_label
                 = tr("How should you be identified on the site?", "view/users/_form_long")
