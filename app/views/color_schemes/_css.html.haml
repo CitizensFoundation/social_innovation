@@ -3,5 +3,4 @@
     = render :partial => "color_schemes/scheme_css", :locals => {:scheme => @color_scheme }
 - else
   %div{:id => "color_scheme_#{id}"}
-    - cache(["color_scheme",id]) do
-      = render :partial => "color_schemes/scheme_css", :locals => {:scheme => ColorScheme.find(id) }
+    = render :partial => "color_schemes/scheme_css", :locals => {:scheme => ColorScheme.find(id) }
