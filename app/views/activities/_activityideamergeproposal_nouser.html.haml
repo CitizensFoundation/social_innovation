@@ -1,2 +1,2 @@
-%img.icon{:border => "0", :height => "16", :src => "/assets/icons/door_open.png", :width => "16"}/
+/%img.icon{:border => "0", :height => "16", :src => "/assets/icons/door_open.png", :width => "16"}/
 = raw tr("Proposed {new_idea_name} <a href='{proposal_url}'>acquire</a> {idea_name}", "view/activities/_activityideamergeproposal_nouser", :idea_name => link_to(activity.idea.name, activity.idea), :new_idea_name => link_to(activity.change.new_idea.name, activity.change.new_idea), :proposal_url => idea_change_url(activity.idea,activity.change))
