@@ -9,9 +9,6 @@ return false;
 });
 
 jQuery('input[type="text"],input[type="password"],textarea').addClass("idleField");
-jQuery('input[type="text"],input[type="password"],textarea').focus(function() {
-jQuery(this).removeClass("idleField").addClass("focusField");
-});
 jQuery('input[type="text"],input[type="password"],textarea').blur(function(object) {
 jQuery(this).removeClass("focusField").addClass("idleField");
 if (object.value == ''){

@@ -72,7 +72,7 @@ jQuery(document).ready(function() {
     jQuery("#ideaContent").NobleCount('#ideaContentDown',{ on_negative: 'go_red', on_positive: 'go_green', max_chars: 300 });
 	jQuery("input#user_login_search").autocomplete({ source: "/users.js" });
 	jQuery('#bulletin_content, #blurb_content, #message_content, #document_content, #email_template_content, #page_content').autoResize({extraSpace : 20})
-	
+
 	function addMega(){
 	  jQuery(this).addClass("hovering"); 
 	} 
