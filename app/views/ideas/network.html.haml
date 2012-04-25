@@ -17,30 +17,10 @@
   = tr("<p>You can add people to your network by clicking their name, and then the <span class=\"idea_add\">follow</span> button on their profile.  A good way to start your network is to <a href=\"/network/find\">import your Google, Yahoo or Facebook contacts</a> to find people you already know.</p>", "view/ideas/network")
   %p
     - if current_user.followings_count > 0
-      %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
-        %tr
-          %td{:align => "right", :style => "padding-right: 5px;"}
-            %span.table_header= tr("Rank", "view/ideas/network")
-          %td{:style => "padding-left: 3px;"}
-            %span.table_header= tr("Wk", "view/ideas/network")
-          %td{:style => "padding-left: 3px;"}
-            %span.table_header= tr("Mo", "view/ideas/network")
-          %td{:style => "padding-left: 7px; padding-bottom: 2px;"}= will_paginate @ideas
-        - for e in @ideas
-          - if @endorsements
-            - endorsement = @endorsements.detect {|p| p.idea_id == e.idea_id }
-          %tr
-            = render :partial => "ideas/rank_week_month", :locals => {:idea => e.idea }
-            %td{:style => "padding-left: 8px;", :valign => "top"}
-              .idea_listing{:id => "idea_#{e.idea_id}"}
-                .point_name{:id => "idea_#{e.idea_id}_name"}
-                  = link_to_unless_current h(e.idea.name), e.idea, :class => "idea_name_link"
-                = render :partial => "ideas/tag_show", :locals => { :idea => e.idea }
-                .idea_actions
-                  = render :partial => "ideas/debate_buttons", :locals => {:idea => e.idea, :endorsement => endorsement, :region => "idea_inline"}
-                  %span.idea_endorsement_count{:id => "network_#{e.idea_id.to_s}_endorsement_count"}
-                    = tr("{count} people in your network", "view/ideas/network", :count => e.endorsements_number.to_i)
-                    - if e.idea.discussions_count > 0
-                      \&middot; #{link_to tr("{count} discussions", "view/ideas/network", :count => e.idea.discussions_count), discussions_idea_url(e.idea)}
-      %p
-        = will_paginate @ideas
+      - for idea_endorsement in @ideas
+        - if @endorsements
+          - endorsement = @endorsements.detect {|p| p.idea_id == idea_endorsement.idea_id }
+          = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea_endorsement.idea, :endorsements=>@endorsements}
+          %div
+            %div{:id => "idea_detail_#{idea_endorsement.idea.id}"}
+    = will_paginate @ideas
