@@ -53,7 +53,7 @@ class IdeaRanker
 
     # ranks all the ideas in the database with any endorsements.
 
-    sub_instances_with_nil = SubInstance.all<<nil
+    sub_instances_with_nil = SubInstance.all
     sub_instances_with_nil.each do |sub_instance|
       update_positions_by_sub_instance(sub_instance)
     end
@@ -224,6 +224,7 @@ class IdeaRanker
     i = 0
     puts "ideas.count = #{ideas.count}"
     for p in ideas
+     p.reload
      p.score = p.number
      first_time = false
      i = i + 1
@@ -252,16 +253,16 @@ class IdeaRanker
        p.position_24hr = 0
        p.position_24hr_change = 0
      end   
- 
+
      date = Time.now-5.hours-7.days
      c = p.charts.find_by_date_year_and_date_month_and_date_day(date.year,date.month,date.day)
      if c
        p.position_7days = c.position
-       p.position_7days_change = p.position_7days - i   
+       p.position_7days_change = p.position_7days - i
      else
        p.position_7days = 0
        p.position_7days_change = 0
-     end      
+     end
 
      date = Time.now-5.hours-30.days
      c = p.charts.find_by_date_year_and_date_month_and_date_day(date.year,date.month,date.day)
@@ -272,7 +273,8 @@ class IdeaRanker
        p.position_30days = 0
        p.position_30days_change = 0
      end      
-     
+
+     puts "#{p.trending_score} #{p.position_7days_change} #{p.position}"
      p.trending_score = p.position_7days_change/p.position
      if p.down_endorsements_count == 0
        p.is_controversial = false
