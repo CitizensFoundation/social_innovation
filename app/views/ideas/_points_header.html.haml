@@ -4,7 +4,7 @@
     = link_to tr("Add point for", "view/ideas/_nav"), new_idea_point_path(idea, support: true),          |
       :class => "add_point_endorse", :title => tr("I endorse this and want to explain why.", "view/ideas/_nav") |
 - else
-  %span#oppose-titl
+  %span#oppose-title
     = tr("Points against", "view/ideas/_nav")
   %span.idea_add{:id => "idea_add_point_against#{idea.id.to_s}"}
     = link_to tr("Add point against", "view/ideas/_nav"), new_idea_point_path(idea),                       |
