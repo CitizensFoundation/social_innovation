@@ -57,8 +57,8 @@
               = link_to tr("ENDORSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
                   :method => :post,                                                                                                                                        |
                   :remote => true,                                                                                                                                         |
-                  'data-loader-name' => "no_loader",                                                                                                                       |
-                  'data-disable-with' => '<span class=""><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
+                  'data-loader-name' => "circle",                                                                                                                       |
+                  'data-disable-with' => "<id style='width: 90px;'></id>",                   |
                   :class => "idea_add_link1", :title =>  tr("I support this, add it to my idea list", "view/ideas")                             |
           %td{:width=>standard_width}
             %div.debate_button{:id=>"debate_button_#{idea.id}"}
@@ -68,7 +68,7 @@
               = link_to tr("OPPOSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
                   :method => :post,                                                                                                                                        |
                   :remote => true,                                                                                                                                         |
-                  'data-loader-name' => "no_loader",                                                                                                                       |
-                  'data-disable-with' => '<span class="idea_add_link2 idea_add_working"><img src="/assets/ajax/horizontal_small.gif" /></span>',                   |
+                  'data-loader-name' => "circle",                                                                                                                       |
+                  'data-disable-with' => '',                   |
                   :class => "idea_add_link2", :title =>  tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas")      |
     = render :partial => "ideas/debate_button_javascript", :locals => { :idea => idea }
