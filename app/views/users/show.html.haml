@@ -16,6 +16,8 @@
               %div
                 %div{:id => "idea_detail_#{idea_endorsement.idea.id}"}
         #activities.single
+          %h1
+            = tr("Latest Activity","home")
           - for activity in @activities
             = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_nouser"}
           = #render :partial => "left_nav"

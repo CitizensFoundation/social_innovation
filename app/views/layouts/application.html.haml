@@ -20,8 +20,8 @@
       #sib_left_menu
         = render :partial => "shared/side_navigation"
       #sib_main_content
-        = flash_div :warning, :notice, :error
         = render :partial => "ads/pick"
+        = flash_div :warning, :notice, :error
         = render :partial => "shared/sub_navigation"
         = yield :layout
         = #render :partial => "shared/sidebar"
