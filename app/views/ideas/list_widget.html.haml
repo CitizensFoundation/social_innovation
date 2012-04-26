@@ -26,20 +26,20 @@
             - if idea.is_new?
               %td{:align => "center", :colspan => "2", :valign => "top"}
                 .nb_idea_position_new= tr("new", "view/ideas/list_widget")
-            - elsif idea.position_7days_change == 0 and idea.position_30days_change == 0
+            - elsif idea.position_7days_delta == 0 and idea.position_30days_delta == 0
               %td{:align => "center", :colspan => "2", :valign => "top"}
                 .nb_idea_position_nochange{:title => tr("This idea hasn't moved up or down in the rankings at all this month.", "view/ideas/list_widget")}= tr("UNCH", "view/ideas/list_widget").upcase
             - else
               %td{:style => "padding-left: 2px;", :valign => "top"}
-                - if idea.position_7days_change > 0
-                  .nb_idea_position_up{:title => tr("This idea moved up {count} spots in the rankings this week", "view/ideas/list_widget", :count => idea.position_7days_change.abs)}= idea.position_7days_change.abs
-                - elsif idea.position_7days_change < 0
-                  .nb_idea_position_down{:title => tr("This idea moved down {count} spots in the rankings this week", "view/ideas/list_widget", :count => idea.position_7days_change.abs)}= idea.position_7days_change.abs
+                - if idea.position_7days_delta > 0
+                  .nb_idea_position_up{:title => tr("This idea moved up {count} spots in the rankings this week", "view/ideas/list_widget", :count => idea.position_7days_delta.abs)}= idea.position_7days_delta.abs
+                - elsif idea.position_7days_delta < 0
+                  .nb_idea_position_down{:title => tr("This idea moved down {count} spots in the rankings this week", "view/ideas/list_widget", :count => idea.position_7days_delta.abs)}= idea.position_7days_delta.abs
               %td{:style => "padding-left: 3px;", :valign => "top"}
-                - if idea.position_30days_change > 0
-                  .nb_idea_position_up{:title => tr("This idea moved up {count} spots in the rankings this month", "view/ideas/list_widget", :count => idea.position_30days_change.abs)}= idea.position_30days_change.abs
-                - elsif idea.position_30days_change < 0
-                  .nb_idea_position_down{:title => tr("This idea moved down {count} spots in the rankings this month", "view/ideas/list_widget", :count => idea.position_30days_change.abs)}= idea.position_30days_change.abs
+                - if idea.position_30days_delta > 0
+                  .nb_idea_position_up{:title => tr("This idea moved up {count} spots in the rankings this month", "view/ideas/list_widget", :count => idea.position_30days_delta.abs)}= idea.position_30days_delta.abs
+                - elsif idea.position_30days_delta < 0
+                  .nb_idea_position_down{:title => tr("This idea moved down {count} spots in the rankings this month", "view/ideas/list_widget", :count => idea.position_30days_delta.abs)}= idea.position_30days_delta.abs
           %td.nb_idea_name_cell{:colspan => "3", :valign => "top"}
             .nb_idea{:id => "nb_idea_#{idea.id}"}
               .nb_idea_name{:id => "nb_idea_name_#{idea.id}"}

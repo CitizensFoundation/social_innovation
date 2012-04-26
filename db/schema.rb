@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120425204051) do
+ActiveRecord::Schema.define(:version => 20120425235809) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -283,10 +283,10 @@ ActiveRecord::Schema.define(:version => 20120425204051) do
     t.integer  "position_24hr",                           :default => 0,     :null => false
     t.integer  "position_7days",                          :default => 0,     :null => false
     t.integer  "position_30days",                         :default => 0,     :null => false
-    t.integer  "position_1hr_change",                     :default => 0,     :null => false
-    t.integer  "position_24hr_change",                    :default => 0,     :null => false
-    t.integer  "position_7days_change",                   :default => 0,     :null => false
-    t.integer  "position_30days_change",                  :default => 0,     :null => false
+    t.integer  "position_1hr_delta",                      :default => 0,     :null => false
+    t.integer  "position_24hr_delta",                     :default => 0,     :null => false
+    t.integer  "position_7days_delta",                    :default => 0,     :null => false
+    t.integer  "position_30days_delta",                   :default => 0,     :null => false
     t.integer  "change_id"
     t.string   "cached_issue_list"
     t.integer  "up_endorsements_count",                   :default => 0
@@ -1177,9 +1177,9 @@ ActiveRecord::Schema.define(:version => 20120425204051) do
     t.integer  "position_24hr",                               :default => 0
     t.integer  "position_7days",                              :default => 0
     t.integer  "position_30days",                             :default => 0
-    t.integer  "position_24hr_change",                        :default => 0
-    t.integer  "position_7days_change",                       :default => 0
-    t.integer  "position_30days_change",                      :default => 0
+    t.integer  "position_24hr_delta",                         :default => 0
+    t.integer  "position_7days_delta",                        :default => 0
+    t.integer  "position_30days_delta",                       :default => 0
     t.integer  "position",                                    :default => 0
     t.boolean  "is_followers_subscribed",                     :default => true
     t.integer  "sub_instance_referral_id"
@@ -1197,9 +1197,9 @@ ActiveRecord::Schema.define(:version => 20120425204051) do
     t.string   "city",                         :limit => 80
     t.string   "state",                        :limit => 50
     t.integer  "points_count",                                :default => 0
-    t.float    "index_24hr_change",                           :default => 0.0
-    t.float    "index_7days_change",                          :default => 0.0
-    t.float    "index_30days_change",                         :default => 0.0
+    t.float    "index_24hr_delta",                            :default => 0.0
+    t.float    "index_7days_delta",                           :default => 0.0
+    t.float    "index_30days_delta",                          :default => 0.0
     t.integer  "received_notifications_count",                :default => 0
     t.integer  "unread_notifications_count",                  :default => 0
     t.string   "rss_code",                     :limit => 40

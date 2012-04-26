@@ -35,12 +35,12 @@ class User < ActiveRecord::Base
   scope :by_oldest_updated_at, :order => "users.updated_at asc"
   scope :by_twitter_crawled_at, :order => "users.twitter_crawled_at asc"
   
-  scope :by_24hr_gainers, :conditions => "users.endorsements_count > 4", :order => "users.index_24hr_change desc"
-  scope :by_24hr_losers, :conditions => "users.endorsements_count > 4", :order => "users.index_24hr_change asc"  
-  scope :by_7days_gainers, :conditions => "users.endorsements_count > 4", :order => "users.index_7days_change desc"
-  scope :by_7days_losers, :conditions => "users.endorsements_count > 4", :order => "users.index_7days_change asc"  
-  scope :by_30days_gainers, :conditions => "users.endorsements_count > 4", :order => "users.index_30days_change desc"
-  scope :by_30days_losers, :conditions => "users.endorsements_count > 4", :order => "users.index_30days_change asc"  
+  scope :by_24hr_gainers, :conditions => "users.endorsements_count > 4", :order => "users.index_24hr_delta desc"
+  scope :by_24hr_losers, :conditions => "users.endorsements_count > 4", :order => "users.index_24hr_delta asc"  
+  scope :by_7days_gainers, :conditions => "users.endorsements_count > 4", :order => "users.index_7days_delta desc"
+  scope :by_7days_losers, :conditions => "users.endorsements_count > 4", :order => "users.index_7days_delta asc"  
+  scope :by_30days_gainers, :conditions => "users.endorsements_count > 4", :order => "users.index_30days_delta desc"
+  scope :by_30days_losers, :conditions => "users.endorsements_count > 4", :order => "users.index_30days_delta asc"  
 
   scope :item_limit, lambda{|limit| {:limit=>limit}}
   scope :all_endorsers_and_opposers_for_idea, lambda { |idea_id| User.joins(:endorsements).where(endorsements: {idea_id: idea_id}); }
@@ -800,7 +800,7 @@ class User < ActiveRecord::Base
   end
   
   # computes the change in percentage of all their ideas over the last [limit] days.
-  def index_change_percent(limit=7)
+  def index_delta_percent(limit=7)
     index_charts(limit-1).collect{|c|c.percentage.to_f}.reverse.sum
   end
   
