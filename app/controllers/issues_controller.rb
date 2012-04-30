@@ -109,43 +109,7 @@ class IssuesController < ApplicationController
       format.xml { render :xml => @ideas.to_xml(:include => :idea, :except => NB_CONFIG['api_exclude_fields']) }
       format.json { render :json => @ideas.to_json(:include => :idea, :except => NB_CONFIG['api_exclude_fields']) }
     end   
-  end  
-
-  def official
-    @page_title = tr("{official_user_name} {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize, :official_user_name => current_instance.official_user.name.possessive)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.official_endorsed.top_rank.paginate :page => params[:page], :per_page => params[:per_page]
-    get_endorsements
-    respond_to do |format|
-      format.html { render :action => "list" }
-      format.js { render :layout => false, :text => "document.write('" + js_help.escape_javascript(render_to_string(:layout => false, :template => 'ideas/list_widget_small')) + "');" }
-      format.xml { render :xml => @ideas.to_xml(:except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @ideas.to_json(:except => NB_CONFIG['api_exclude_fields']) }
-    end  
   end
-  
-  def not_official
-    @page_title = tr("{tag_name} ideas NOT on {official_user_name} agenda", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize, :official_user_name => current_instance.official_user.name.possessive)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.not_official.top_rank.paginate :page => params[:page], :per_page => params[:per_page]
-    get_endorsements
-    respond_to do |format|
-      format.html { render :action => "list" }
-      format.js { render :layout => false, :text => "document.write('" + js_help.escape_javascript(render_to_string(:layout => false, :template => 'ideas/list_widget_small')) + "');" }
-      format.xml { render :xml => @ideas.to_xml(:except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @ideas.to_json(:except => NB_CONFIG['api_exclude_fields']) }
-    end   
-  end
-  
-  def official_opposed
-    @page_title = tr("{tag_name} ideas {official_user_name} opposes", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize, :official_user_name => current_instance.official_user.name)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.official_opposed.top_rank.paginate :page => params[:page], :per_page => params[:per_page]
-    get_endorsements
-    respond_to do |format|
-      format.html { render :action => "list" }
-      format.js { render :layout => false, :text => "document.write('" + js_help.escape_javascript(render_to_string(:layout => false, :template => 'ideas/list_widget_small')) + "');" }
-      format.xml { render :xml => @ideas.to_xml(:except => NB_CONFIG['api_exclude_fields']) }
-      format.json { render :json => @ideas.to_json(:except => NB_CONFIG['api_exclude_fields']) }
-    end
-  end  
 
   def rising
     @page_title = tr("Rising {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
