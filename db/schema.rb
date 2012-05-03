@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120425235809) do
+ActiveRecord::Schema.define(:version => 20120503151518) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -34,10 +34,12 @@ ActiveRecord::Schema.define(:version => 20120425235809) do
     t.integer  "followers_count",                         :default => 0
     t.datetime "changed_at"
     t.integer  "idea_status_change_log_id"
+    t.integer  "change_id"
   end
 
   add_index "activities", ["activity_id"], :name => "activity_activity_id"
   add_index "activities", ["ad_id"], :name => "activities_ad_id_index"
+  add_index "activities", ["change_id"], :name => "activities_change_id_index"
   add_index "activities", ["changed_at"], :name => "index_activities_on_changed_at"
   add_index "activities", ["created_at"], :name => "created_at"
   add_index "activities", ["idea_id"], :name => "activity_idea_id_index"
@@ -100,6 +102,35 @@ ActiveRecord::Schema.define(:version => 20120425235809) do
     t.text     "description"
     t.string   "sub_tags"
   end
+
+  create_table "changes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "idea_id"
+    t.integer  "new_idea_id"
+    t.string   "type"
+    t.string   "status"
+    t.integer  "yes_votes",             :default => 0
+    t.integer  "no_votes",              :default => 0
+    t.datetime "sent_at"
+    t.datetime "approved_at"
+    t.datetime "declined_at"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "position",              :default => 0
+    t.integer  "cost"
+    t.integer  "estimated_votes_count", :default => 0
+    t.integer  "votes_count",           :default => 0
+    t.boolean  "is_endorsers",          :default => true
+    t.boolean  "is_opposers",           :default => true
+    t.boolean  "is_flip",               :default => false
+  end
+
+  add_index "changes", ["new_idea_id"], :name => "changes_new_idea_id_index"
+  add_index "changes", ["idea_id"], :name => "changes_idea_id_index"
+  add_index "changes", ["status"], :name => "changes_status_index"
+  add_index "changes", ["type"], :name => "changes_type_index"
+  add_index "changes", ["user_id"], :name => "changes_user_id_index"
 
   create_table "color_schemes", :force => true do |t|
     t.string   "nav_background",                :limit => 6,  :default => "f0f0f0"
