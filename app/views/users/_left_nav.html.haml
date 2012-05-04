@@ -1,6 +1,6 @@
 #user_sidebar
   - if @user.endorsements_count > 4
-    - if @user.index_7days_change != 0 or @user.index_30days_change != 0 or @user.index_24hr_change != 0
+    - if @user.index_7days_delta != 0 or @user.index_30days_delta != 0 or @user.index_24hr_delta != 0
       .heading
         = tr("{user_name} Agenda", "view/users/_left_nav", :user_name => @user.name)
       %br/

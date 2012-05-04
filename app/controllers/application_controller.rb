@@ -478,7 +478,7 @@ class ApplicationController < ActionController::Base
 
   def find_menu_item_by_url(url)
     @items.each do |id,item|
-      if item[1]==url
+      if url =~ /\A#{item[1]}(\?.*)?\z/
         return id,item
         break
       end

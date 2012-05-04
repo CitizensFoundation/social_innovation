@@ -1,6 +1,6 @@
 class Message < ActiveRecord::Base
 
-  scope :active, :conditions => "messages.status <> 'deleted'"
+  scope :active, :conditions => "messages.status <> 'removed'"
   scope :sent, :conditions => "messages.status in('sent','read')"
   scope :read, :conditions => "messages.status = 'read'"
   scope :unread, :conditions => "messages.status = 'sent'"
@@ -23,24 +23,24 @@ class Message < ActiveRecord::Base
     state :draft do
       event :send, transitions_to: :sent
       event :read, transitions_to: :read
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :sent do
       event :read, transitions_to: :read
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :read do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
-    state :deleted do
-      event :undelete, transitions_to: :read, meta: { validates_presence_of: [:read_at] }
-      event :undelete, transitions_to: :sent, meta: { validates_presence_of: [:sent_at] }
-      event :undelete, transitions_to: :draft
+    state :removed do
+      event :unremove, transitions_to: :read, meta: { validates_presence_of: [:read_at] }
+      event :unremove, transitions_to: :sent, meta: { validates_presence_of: [:sent_at] }
+      event :unremove, transitions_to: :draft
     end
   end
 
   def on_sent_entry(new_state, event)
-    self.deleted_at = nil  
+    self.removed_at = nil  
     if not Following.find_by_user_id_and_other_user_id_and_value(self.recipient_id,self.sender_id,-1) and self.sent_at.blank?
       self.notifications << NotificationMessage.new(:sender => self.sender, :recipient => self.recipient)
     end
@@ -49,7 +49,7 @@ class Message < ActiveRecord::Base
   end
   
   def on_read_entry(new_state, event)
-    self.deleted_at = nil
+    self.removed_at = nil
     self.read_at = Time.now
     save(:validate => false)
     for n in self.notifications
@@ -58,11 +58,11 @@ class Message < ActiveRecord::Base
     end
   end
   
-  def on_deleted_entry(new_state, event)
-    self.deleted_at = Time.now
+  def on_removed_entry(new_state, event)
+    self.removed_at = Time.now
     save(:validate => false)
     for n in self.notifications
-      n.delete!
+      n.remove!
     end    
   end
   

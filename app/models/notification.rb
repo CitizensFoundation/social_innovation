@@ -5,7 +5,7 @@ class Notification < ActiveRecord::Base
 
   belongs_to :notifiable, :polymorphic => true
 
-  scope :active, :conditions => "notifications.status <> 'deleted'"
+  scope :active, :conditions => "notifications.status <> 'removed'"
   scope :unprocessed, :conditions => "notifications.processed_at IS NULL"
   scope :sent, :conditions => "notifications.status in('sent','read')"
   scope :read, :conditions => "notifications.status = 'read'"
@@ -27,19 +27,19 @@ class Notification < ActiveRecord::Base
     state :unsent do
       event :send, transitions_to: :sent
       event :read, transitions_to: :read
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :sent do
       event :read, transitions_to: :read
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :read do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
-    state :deleted do
-      event :undelete, transitions_to: :read, meta: { validates_presence_of: [:read_at] }
-      event :undelete, transitions_to: :sent, meta: { validates_presence_of: [:sent_at] }
-      event :undelete, transitions_to: :unsent
+    state :removed do
+      event :unremove, transitions_to: :read, meta: { validates_presence_of: [:read_at] }
+      event :unremove, transitions_to: :sent, meta: { validates_presence_of: [:sent_at] }
+      event :unremove, transitions_to: :unsent
     end
   end
 
@@ -56,14 +56,14 @@ class Notification < ActiveRecord::Base
   end
   
   def on_read_entry(new_state, event)
-    self.deleted_at = nil
+    self.removed_at = nil
     self.read_at = Time.now
     save(:validate => false)
     recipient.decrement!(:unread_notifications_count)
   end
   
-  def on_deleted_entry(new_state, event)
-    self.deleted_at = Time.now
+  def on_removed_entry(new_state, event)
+    self.removed_at = Time.now
     save(:validate => false)
     recipient.decrement!(:received_notifications_count)
     recipient.decrement!(:unread_notifications_count) if status != 'read'
@@ -91,7 +91,7 @@ class Notification < ActiveRecord::Base
   
   def on_sent_entry(new_state, event)
     Rails.logger.info("In send!")
-    self.deleted_at = nil    
+    self.removed_at = nil    
     self.processed_at = Time.now
     Rails.logger.debug("In send! #{is_recipient_subscribed?} #{recipient.has_email?} #{recipient.is_active?}")
     if (is_recipient_subscribed? and recipient.has_email? and recipient.is_active?) or

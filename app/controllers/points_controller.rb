@@ -117,7 +117,7 @@ class PointsController < ApplicationController
   # GET /points/1
   def show
     @point = Point.find(params[:id])
-    if @point.is_deleted?
+    if @point.is_removed?
       flash[:error] = tr("That point was deleted", "controller/points")
       redirect_to @point.idea
       return
@@ -314,7 +314,7 @@ class PointsController < ApplicationController
   def abusive
     @point = Point.find(params[:id])
     @point.do_abusive
-    @point.delete!
+    @point.remove!
     respond_to do |format|
       format.js {
         render :update do |page|
@@ -344,7 +344,7 @@ class PointsController < ApplicationController
       redirect_to(@point)
       return
     end
-    @point.delete!
+    @point.remove!
     ActivityPointDeleted.create(:user => current_user, :point => @point)
     respond_to do |format|
       format.html { redirect_to(points_url) }

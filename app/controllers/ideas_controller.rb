@@ -295,7 +295,7 @@ class IdeasController < ApplicationController
   def finished
     @page_title = tr("Ideas in progress", "controller/ideas")
     @rss_url = finished_ideas_url(:format => 'rss')
-    @ideas = Idea.finished.not_deleted.by_most_recent_status_change.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.finished.not_removed.by_most_recent_status_change.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html { render :action => "list" }
       format.rss { render :action => "list" }
@@ -854,7 +854,7 @@ class IdeasController < ApplicationController
   def abusive
     @idea = Idea.find(params[:id])
     @idea.do_abusive
-    @idea.delete!
+    @idea.remove!
     respond_to do |format|
       format.js {
         render :update do |page|
@@ -974,7 +974,7 @@ class IdeasController < ApplicationController
     end
     return unless @idea
     name = @idea.name
-    @idea.delete!
+    @idea.remove!
     flash[:notice] = tr("Permanently deleting {idea_name}. This may take a few minutes depending on how many endorsements/oppositions need to be removed.", "controller/ideas", :idea_name => name)
     respond_to do |format|
       format.html { redirect_to yours_created_ideas_url }
@@ -1004,7 +1004,7 @@ class IdeasController < ApplicationController
     
     def load_endorsement
       @idea = Idea.find(params[:id])
-      if @idea.status == 'deleted' or @idea.status == 'abusive'
+      if @idea.status == 'removed' or @idea.status == 'abusive'
         flash[:notice] = tr("That idea was deleted", "controller/ideas")
         redirect_to "/"
         return false

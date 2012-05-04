@@ -2,7 +2,7 @@
   = render :partial => "activities/show", :locals => {:activity => activity.activity, :suffix => ""}
 - else
   .activity_border{:id => "activity_and_comments_#{activity.id}"}
-    - if activity.user and activity.user.status == 'deleted' and params[:action] != 'unhide'
+    - if activity.user and activity.user.status == 'removed' and params[:action] != 'unhide'
       .activity_hidden{:id => "activity_hidden_#{activity.id.to_s}"}
         Hidden because #{activity.user.name} deleted their account.
         \#{link_to tr("Show", "view/activities/_show"), unhide_activity_url(activity), :method => :get, 'data-disable-with' => "", 'data-loader-name' => "horizontal_small",		             :remote=>true}

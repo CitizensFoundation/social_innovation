@@ -59,7 +59,7 @@ class ActivitiesController < ApplicationController
   def destroy
     @activity = Activity.find(params[:id])
     access_denied unless current_user.is_admin? or @activity.user_id == current_user.id
-    @activity.delete!
+    @activity.remove!
     respond_to do |format|
       format.html { redirect_to(activities_url) }
       format.js {
@@ -73,7 +73,7 @@ class ActivitiesController < ApplicationController
   # PUT /activities/1/undelete
   def undelete
     @activity = Activity.find(params[:id])
-    @activity.undelete!
+    @activity.unremove!
     respond_to do |format|
       format.html { redirect_to(activities_url) }
     end

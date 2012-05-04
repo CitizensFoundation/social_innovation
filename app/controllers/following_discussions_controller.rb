@@ -6,7 +6,7 @@ class FollowingDiscussionsController < ApplicationController
   # GET /activities/1/followings
   # GET /activities/1/followings.xml
   def index
-    if @activity.status == 'deleted'
+    if @activity.status == 'removed'
       flash[:error] = tr("That comment was deleted", "controller/discussions")
       if not (logged_in? and current_user.is_admin?)
         redirect_to @activity.idea and return if @activity.idea

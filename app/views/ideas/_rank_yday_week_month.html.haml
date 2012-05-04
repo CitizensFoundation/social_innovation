@@ -27,22 +27,22 @@
       - if idea.is_new?
         %td{:align => "center", :colspan => "3", :valign => "top"}
           .position_new= tr("new", "view/ideas/_rank_yday_week_month")
-      - elsif idea.position_7days_change == 0 and idea.position_30days_change == 0 and idea.position_24hr_change == 0
+      - elsif idea.position_7days_delta == 0 and idea.position_30days_delta == 0 and idea.position_24hr_delta == 0
         %td{:align => "center", :colspan => "3", :valign => "top"}
           .position_nochange{:title => tr("This idea hasn't moved up or down in the rankings at all this month.", "view/ideas/_rank_yday_week_month")}= tr("UNCH", "view/ideas/_rank_yday_week_month").upcase
       - else
         %td.left_scale{:align => "center", :valign => "top"}
-          - if idea.position_24hr_change > 0
-            .position_up{:title => tr("This idea moved up {count} spots in the rankings in the last 24 hours", "view/ideas/_rank_yday_week_month", :count => idea.position_24hr_change.abs)}= idea.position_24hr_change.abs
-          - elsif idea.position_24hr_change < 0
-            .position_down{:title => tr("This idea moved down {count} spots in the rankings in the last 24 hours", "view/ideas/_rank_yday_week_month", :count => idea.position_24hr_change.abs)}= idea.position_24hr_change.abs
+          - if idea.position_24hr_delta > 0
+            .position_up{:title => tr("This idea moved up {count} spots in the rankings in the last 24 hours", "view/ideas/_rank_yday_week_month", :count => idea.position_24hr_delta.abs)}= idea.position_24hr_delta.abs
+          - elsif idea.position_24hr_delta < 0
+            .position_down{:title => tr("This idea moved down {count} spots in the rankings in the last 24 hours", "view/ideas/_rank_yday_week_month", :count => idea.position_24hr_delta.abs)}= idea.position_24hr_delta.abs
         %td.left_scale{:align => "center", :valign => "top"}
-          - if idea.position_7days_change > 0
-            .position_up{:title => tr("This idea moved up {count} spots in the rankings this week", "view/ideas/_rank_yday_week_month", :count => idea.position_7days_change.abs)}= idea.position_7days_change.abs
-          - elsif idea.position_7days_change < 0
-            .position_down{:title => tr("This idea moved down {count} spots in the rankings this week", "view/ideas/_rank_yday_week_month", :count => idea.position_7days_change.abs)}= idea.position_7days_change.abs
+          - if idea.position_7days_delta > 0
+            .position_up{:title => tr("This idea moved up {count} spots in the rankings this week", "view/ideas/_rank_yday_week_month", :count => idea.position_7days_delta.abs)}= idea.position_7days_delta.abs
+          - elsif idea.position_7days_delta < 0
+            .position_down{:title => tr("This idea moved down {count} spots in the rankings this week", "view/ideas/_rank_yday_week_month", :count => idea.position_7days_delta.abs)}= idea.position_7days_delta.abs
         %td.left_scale{:align => "center", :valign => "top"}
-          - if idea.position_30days_change > 0
-            .position_up{:title => tr("This idea moved up {count} spots in the rankings this month", "view/ideas/_rank_yday_week_month", :count => idea.position_30days_change.abs)}= idea.position_30days_change.abs
-          - elsif idea.position_30days_change < 0
-            .position_down{:title => tr("This idea moved down {count} spots in the rankings this month", "view/ideas/_rank_yday_week_month", :count => idea.position_30days_change.abs)}= idea.position_30days_change.abs
+          - if idea.position_30days_delta > 0
+            .position_up{:title => tr("This idea moved up {count} spots in the rankings this month", "view/ideas/_rank_yday_week_month", :count => idea.position_30days_delta.abs)}= idea.position_30days_delta.abs
+          - elsif idea.position_30days_delta < 0
+            .position_down{:title => tr("This idea moved down {count} spots in the rankings this month", "view/ideas/_rank_yday_week_month", :count => idea.position_30days_delta.abs)}= idea.position_30days_delta.abs

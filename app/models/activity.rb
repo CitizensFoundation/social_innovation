@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
   acts_as_set_sub_instance :table_name=>"activities"
   
   scope :active, :conditions => "activities.status = 'active'"
-  scope :deleted, :conditions => "activities.status = 'deleted'", :order => "updated_at desc"
+  scope :removed, :conditions => "activities.status = 'removed'", :order => "updated_at desc"
   scope :for_all_users, :conditions => "is_user_only=false"
 
   scope :discussions, :conditions => "activities.comments_count > 0"
@@ -55,11 +55,11 @@ class Activity < ActiveRecord::Base
   workflow_column :status
   workflow do
     state :active do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
 
-    state :deleted do
-      event :undelete, transitions_to: :active
+    state :removed do
+      event :unremove, transitions_to: :active
     end
   end
 
@@ -91,10 +91,10 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  def on_deleted_entry(new_state, event)
-    # go through and mark all the comments as deleted
+  def on_removed_entry(new_state, event)
+    # go through and mark all the comments as removed
     for comment in published_comments
-      comment.delete!
+      comment.remove!
     end
   end
 

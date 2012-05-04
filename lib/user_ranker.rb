@@ -31,26 +31,26 @@ class UserRanker
         u.position_24hr = r.position if r
         u.position_24hr = i unless r
       end   
-      u.position_24hr_change = u.position_24hr - i    
+      u.position_24hr_delta = u.position_24hr - i    
 
       date = Time.now-5.hours-7.days
       c = u.charts.find_by_date_year_and_date_month_and_date_day(date.year,date.month,date.day)
       if c
         u.position_7days = c.position
-        u.position_7days_change = u.position_7days - i   
+        u.position_7days_delta = u.position_7days - i   
       else
         u.position_7days = 0
-        u.position_7days_change = 0
+        u.position_7days_delta = 0
       end      
 
       date = Time.now-5.hours-30.days
       c = u.charts.find_by_date_year_and_date_month_and_date_day(date.year,date.month,date.day)
       if c
         u.position_30days = c.position
-        u.position_30days_change = u.position_30days - i   
+        u.position_30days_delta = u.position_30days - i   
       else
         u.position_30days = 0
-        u.position_30days_change = 0
+        u.position_30days_delta = 0
       end      
       u.save(:validate => false)
       r = UserRanking.create(:version => v, :user => u, :position => i, :capitals_count => u.capitals_count)

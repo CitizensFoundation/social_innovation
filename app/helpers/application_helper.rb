@@ -198,11 +198,11 @@ module ApplicationHelper
   
   def agenda_change(user,period,precision=0)
     if period == '7days'
-		  user_last = user.index_7days_change*100
+		  user_last = user.index_7days_delta*100
 		elsif period == '24hr'
-		  user_last = user.index_24hr_change*100
+		  user_last = user.index_24hr_delta*100
 		elsif period == '30days'
-		  user_last = user.index_30days_change*100
+		  user_last = user.index_30days_delta*100
 		end
 		if user_last < 0.005 and user_last > -0.005
 		  s = '<div class="nochange">' + tr('unchanged',"agenda_change") + '</div>'

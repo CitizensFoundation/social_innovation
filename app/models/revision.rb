@@ -21,15 +21,15 @@ class Revision < ActiveRecord::Base
     end
     state :archived do
       event :publish, transitions_to: :published
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :published do
       event :archive, transitions_to: :archived
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
-    state :deleted do
-      event :undelete, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
-      event :undelete, transitions_to: :archived
+    state :removed do
+      event :unremove, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
+      event :unremove, transitions_to: :archived
     end
   end
 
@@ -106,7 +106,7 @@ class Revision < ActiveRecord::Base
     save(:validate => false)
   end
   
-  def on_deleted_entry
+  def on_removed_entry
     point.decrement!(:revisions_count)
     user.decrement!(:point_revisions_count)    
   end

@@ -20,7 +20,7 @@ class NotificationsController < ApplicationController
   # DELETE /notifications/1
   # DELETE /notifications/1.xml
   def destroy
-    @notification.delete!
+    @notification.remove!
     respond_to do |format|
       format.html { redirect_to(:controller => "inbox", :action => "notifications") }
       format.js {

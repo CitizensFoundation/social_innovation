@@ -224,9 +224,9 @@ namespace :fix do
     u.position_24hr = 0
     u.position_7days = 0
     u.position_30days = 0
-    u.position_24hr_change = 0
-    u.position_7days_change = 0
-    u.position_30days_change = 0
+    u.position_24hr_delta = 0
+    u.position_7days_delta = 0
+    u.position_30days_delta = 0
     u.position = 0
     u.ads_count = 0
     u.changes_count = 0
@@ -238,9 +238,9 @@ namespace :fix do
     u.documents_count = 0
     u.document_revisions_count = 0
     u.points_count = 0
-    u.index_24hr_change = 0.0
-    u.index_7days_change = 0.0
-    u.index_30days_change = 0.0
+    u.index_24hr_delta = 0.0
+    u.index_7days_delta = 0.0
+    u.index_30days_delta = 0.0
     u.received_notifications_count = 0
     u.unread_notifications_count = 0
     u.point_revisions_count = 0
@@ -672,9 +672,9 @@ namespace :fix do
         end
         Rails.cache.delete('views/total_volume_chart') # reset the daily volume chart
 #        for u in User.active.at_least_one_endorsement.all
-#          u.index_24hr_change = u.index_change_percent(2)
-#          u.index_7days_change = u.index_change_percent(7)
-#          u.index_30days_change = u.index_change_percent(30)
+#          u.index_24hr_delta = u.index_delta_percent(2)
+#          u.index_7days_delta = u.index_delta_percent(7)
+#          u.index_30days_delta = u.index_delta_percent(30)
 #          u.save(:validate => false)
 #          u.expire_charts
 #        end       

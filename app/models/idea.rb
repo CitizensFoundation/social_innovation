@@ -12,7 +12,7 @@ class Idea < ActiveRecord::Base
   scope :published, :conditions => "ideas.status = 'published'"
   scope :unpublished, :conditions => "ideas.status not in ('published','abusive')"
 
-  scope :not_deleted, :conditions => "ideas.status <> 'deleted'"
+  scope :not_removed, :conditions => "ideas.status <> 'removed'"
 
   scope :flagged, :conditions => "flags_count > 0"
 
@@ -29,15 +29,15 @@ class Idea < ActiveRecord::Base
   scope :falling, :conditions => "ideas.trending_score < 0", :order => "ideas.trending_score asc"
   scope :controversial, :conditions => "ideas.is_controversial = true", :order => "ideas.controversial_score desc"
 
-  scope :rising_7days, :conditions => "ideas.position_7days_change > 0"
-  scope :flat_7days, :conditions => "ideas.position_7days_change = 0"
-  scope :falling_7days, :conditions => "ideas.position_7days_change < 0"
-  scope :rising_30days, :conditions => "ideas.position_30days_change > 0"
-  scope :flat_30days, :conditions => "ideas.position_30days_change = 0"
-  scope :falling_30days, :conditions => "ideas.position_30days_change < 0"
-  scope :rising_24hr, :conditions => "ideas.position_24hr_change > 0"
-  scope :flat_24hr, :conditions => "ideas.position_24hr_change = 0"
-  scope :falling_24hr, :conditions => "ideas.position_24hr_change < 0"
+  scope :rising_7days, :conditions => "ideas.position_7days_delta > 0"
+  scope :flat_7days, :conditions => "ideas.position_7days_delta = 0"
+  scope :falling_7days, :conditions => "ideas.position_7days_delta < 0"
+  scope :rising_30days, :conditions => "ideas.position_30days_delta > 0"
+  scope :flat_30days, :conditions => "ideas.position_30days_delta = 0"
+  scope :falling_30days, :conditions => "ideas.position_30days_delta < 0"
+  scope :rising_24hr, :conditions => "ideas.position_24hr_delta > 0"
+  scope :flat_24hr, :conditions => "ideas.position_24hr_delta = 0"
+  scope :falling_24hr, :conditions => "ideas.position_24hr_delta < 0"
   
   scope :finished, :conditions => "ideas.official_status in (-2,-1,2)"
   
@@ -84,7 +84,7 @@ class Idea < ActiveRecord::Base
   has_many :ads, :dependent => :destroy
   has_many :notifications, :as => :notifiable, :dependent => :destroy
   
-  has_many :changes, :conditions => "status <> 'deleted'", :order => "updated_at desc"
+  has_many :changes, :conditions => "status <> 'removed'", :order => "updated_at desc"
   has_many :approved_changes, :class_name => "Change", :conditions => "status = 'approved'", :order => "updated_at desc"
   has_many :sent_changes, :class_name => "Change", :conditions => "status = 'sent'", :order => "updated_at desc"
   has_many :declined_changes, :class_name => "Change", :conditions => "status = 'declined'", :order => "updated_at desc"
@@ -128,32 +128,32 @@ class Idea < ActiveRecord::Base
   workflow_column :status
   workflow do
     state :published do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
       event :deactivate, transitions_to: :inactive
       event :abusive, transitions_to: :abusive
     end
     state :passive do
       event :publish, transitions_to: :published
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
     end
     state :draft do
       event :publish, transitions_to: :published
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
       event :deactivate, transitions_to: :inactive
     end
-    state :deleted do
+    state :removed do
       event :bury, transitions_to: :buried
-      event :undelete, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
-      event :undelete, transitions_to: :draft
+      event :unremove, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
+      event :unremove, transitions_to: :draft
     end
     state :buried do
       event :deactivate, transitions_to: :inactive
     end
     state :inactive do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :abusive
   end
@@ -211,11 +211,11 @@ class Idea < ActiveRecord::Base
   end
   
   def is_rising?
-    position_7days_change > 0
+    position_7days_delta > 0
   end  
 
   def is_falling?
-    position_7days_change < 0
+    position_7days_delta < 0
   end
   
   def up_endorsements_count
@@ -280,16 +280,16 @@ class Idea < ActiveRecord::Base
     end
   end
   
-  def position_7days_change_percent
-    position_7days_change.to_f/(position+position_7days_change).to_f
+  def position_7days_delta_percent
+    position_7days_delta.to_f/(position+position_7days_delta).to_f
   end
   
-  def position_24hr_change_percent
-    position_24hr_change.to_f/(position+position_24hr_change).to_f
+  def position_24hr_delta_percent
+    position_24hr_delta.to_f/(position+position_24hr_delta).to_f
   end  
   
-  def position_30days_change_percent
-    position_30days_change.to_f/(position+position_30days_change).to_f
+  def position_30days_delta_percent
+    position_30days_delta.to_f/(position+position_30days_delta).to_f
   end  
   
   def value_name 
@@ -443,23 +443,23 @@ class Idea < ActiveRecord::Base
       return tr("inactive", "model/idea").capitalize
     elsif created_at > Time.now-86400
       return tr("new", "model/idea").capitalize
-    elsif position_24hr_change == 0 and position_7days_change == 0 and position_30days_change == 0
+    elsif position_24hr_delta == 0 and position_7days_delta == 0 and position_30days_delta == 0
       return tr("no change", "model/idea").capitalize
     end
-    s += '+' if position_24hr_change > 0
-    s += '-' if position_24hr_change < 0    
-    s += tr("no change", "model/idea") if position_24hr_change == 0
-    s += position_24hr_change.abs.to_s unless position_24hr_change == 0
+    s += '+' if position_24hr_delta > 0
+    s += '-' if position_24hr_delta < 0    
+    s += tr("no change", "model/idea") if position_24hr_delta == 0
+    s += position_24hr_delta.abs.to_s unless position_24hr_delta == 0
     s += ' today'
-    s += ', +' if position_7days_change > 0
-    s += ', -' if position_7days_change < 0    
-    s += ', ' + tr("no change", "model/idea") if position_7days_change == 0
-    s += position_7days_change.abs.to_s unless position_7days_change == 0
+    s += ', +' if position_7days_delta > 0
+    s += ', -' if position_7days_delta < 0    
+    s += ', ' + tr("no change", "model/idea") if position_7days_delta == 0
+    s += position_7days_delta.abs.to_s unless position_7days_delta == 0
     s += ' this week'
-    s += ', and +' if position_30days_change > 0
-    s += ', and -' if position_30days_change < 0    
-    s += ', and ' + tr("no change", "model/idea") if position_30days_change == 0
-    s += position_30days_change.abs.to_s unless position_30days_change == 0
+    s += ', and +' if position_30days_delta > 0
+    s += ', and -' if position_30days_delta < 0    
+    s += ', and ' + tr("no change", "model/idea") if position_30days_delta == 0
+    s += position_30days_delta.abs.to_s unless position_30days_delta == 0
     s += ' this month'    
     s
   end
@@ -696,21 +696,21 @@ class Idea < ActiveRecord::Base
     ActivityIdeaNew.create(:user => user, :idea => self)
   end
   
-  def on_deleted_entry(new_state, event)
+  def on_removed_entry(new_state, event)
     activities.each do |a|
-      a.delete!
+      a.remove!
     end
     endorsements.each do |e|
       e.destroy
     end
-    self.deleted_at = Time.now
+    self.removed_at = Time.now
     save(:validate => false)
   end
-  
-  def on_delete_entry(new_state, event)
-    self.deleted_at = nil
+
+  def on_unremoved_entry(new_state, event)
+    self.removed_at = nil
     save(:validate => false)
-  end  
+  end
   
   def on_buried_entry(new_state, event)
     # should probably send an email notification to the person who submitted it

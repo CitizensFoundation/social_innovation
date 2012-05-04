@@ -6,7 +6,7 @@ class Comment < ActiveRecord::Base
   scope :unpublished, :conditions => "comments.status not in ('published','abusive')"
 
   scope :published_and_abusive, :conditions => "comments.status in ('published','abusive')"
-  scope :deleted, :conditions => "comments.status = 'deleted'"
+  scope :removed, :conditions => "comments.status = 'removed'"
   scope :flagged, :conditions => "flags_count > 0"
     
   scope :last_three_days, :conditions => "comments.created_at > '#{Time.now-3.days}'"
@@ -35,11 +35,11 @@ class Comment < ActiveRecord::Base
   workflow_column :status
   workflow do
     state :published do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
       event :abusive, transitions_to: :abusive
     end
-    state :deleted do
-      event :undelete, transitions_to: :published
+    state :removed do
+      event :unremove, transitions_to: :published
     end
     state :abusive
   end
@@ -88,7 +88,7 @@ class Comment < ActiveRecord::Base
     end
   end
   
-  def on_deleted_entry(new_state, event)
+  def on_removed_entry(new_state, event)
     if self.activity.comments_count == 1
       self.activity.changed_at = self.activity.created_at
     else
@@ -116,10 +116,10 @@ class Comment < ActiveRecord::Base
     if exists and exists.comments_count > 1
       exists.decrement!(:comments_count)
     elsif exists
-      exists.delete!
+      exists.remove!
     end
     for n in notifications
-      n.delete!
+      n.remove!
     end
   end
   

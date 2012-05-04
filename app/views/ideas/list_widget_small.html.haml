@@ -26,10 +26,10 @@
           ,
         - if idea.is_new?
           = tr("new this week", "view/ideas/list_widget_small")
-        - elsif idea.position_7days_change > 0
-          = tr("up {count} spots this week", "view/ideas/list_widget_small", :count => idea.position_7days_change.abs)
-        - elsif idea.position_7days_change < 0
-          = tr("down {count} spots this week", "view/ideas/list_widget_small", :count => idea.position_7days_change.abs)
+        - elsif idea.position_7days_delta > 0
+          = tr("up {count} spots this week", "view/ideas/list_widget_small", :count => idea.position_7days_delta.abs)
+        - elsif idea.position_7days_delta < 0
+          = tr("down {count} spots this week", "view/ideas/list_widget_small", :count => idea.position_7days_delta.abs)
         - else
           = tr("no change this week", "view/ideas/list_widget_small")
   - if ['yours','finished','yours_finished'].include?(params[:action])

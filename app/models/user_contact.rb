@@ -1,6 +1,6 @@
 class UserContact < ActiveRecord::Base
 
-  scope :active, :conditions => "user_contacts.status <> 'deleted'"
+  scope :active, :conditions => "user_contacts.status <> 'removed'"
   scope :tosend, :conditions => "user_contacts.status = 'tosend'"  
 
   scope :members, :include => :user, :conditions => "user_contacts.other_user_id is not null and users.status in ('active','pending')"
@@ -30,21 +30,21 @@ class UserContact < ActiveRecord::Base
     state :unsent do
       event :invite, transitions_to: :tosend
       event :accept, transitions_to: :accepted
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :tosend do
       event :send, transitions_to: :sent
       event :accept, transitions_to: :accepted
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :sent do
       event :accept, transitions_to: :accepted
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
     state :accepted do
-      event :delete, transitions_to: :deleted
+      event :remove, transitions_to: :removed
     end
-    state :deleted
+    state :removed
   end
   
   validates_presence_of     :email, :unless => :has_facebook?
@@ -205,7 +205,7 @@ class UserContact < ActiveRecord::Base
     save(:validate => false)
   end  
   
-  def on_deleted_entry(new_state, event)
+  def on_removed_entry(new_state, event)
     remove_counts
   end
   

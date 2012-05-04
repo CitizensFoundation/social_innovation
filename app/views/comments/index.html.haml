@@ -30,10 +30,10 @@
                 %td{:valign => "top", :width => "48"}
                   = render :partial => "users/pic_48", :locals => {:user => user[0]}
                 %td.left_scale8{:valign => "top"}
-                  - if user[0].status == 'suspended' or user[0].status == 'deleted'
+                  - if user[0].status == 'suspended' or user[0].status == 'removed'
                     %strike/
                   = link_to user[0].name, user[0]
                   %span.pc= tr("{capital}{currency_short_name}", "view/comments/index", :capital => user[0].capitals_count, :currency_short_name => current_instance.currency_short_name)
-                  - if user[0].status == 'suspended' or user[0].status == 'deleted'
+                  - if user[0].status == 'suspended' or user[0].status == 'removed'
                     .profile_small= tr("{count} comments", "view/comments/index", :count => user[1])
             %p
