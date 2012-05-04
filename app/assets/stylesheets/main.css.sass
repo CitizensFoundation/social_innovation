@@ -1,244 +1,25 @@
-@import "facebox"
-
-*
-  margin: 0
-  padding: 0
-
-html
-  font-size: 11px
-  color: #333333
-
 body
-  font-weight: normal
-  font-style: normal
-  font-variant: normal
-  text-transform: none
-  margin: 0
   background-image: url("/assets/new/bg.gif")
   background-position: center top
   background-repeat: repeat-y
 
-a:hover
-  text-decoration: under-line
-
-form
-  margin: 0
-
-input,textarea
-  padding: 3px
-  font-family: Arial
-  font-size: 12px
-  outline: none
-
-textarea
-  width: 97%
-
-h1,h2,h3,h4
-  line-height: 1.1em
-
-h1
-  font-size: 14px
-  line-height: 2em
-
-h2
-  font-weight: bold
-  padding-top: 5px
-  display: block
-  margin: 0
-  font-size: 13px!important
-  padding-bottom: 0!important
-  width: 100%!important
-
-h3
-  font-weight: bold
-  font-size: 16px!important
-  padding-bottom: 5px!important
-  padding-top: 5px!important
-
-h4
-  font-size: 1em
-
-.notice
-  padding: 0 3px
-
-#sidebar
-  float: right
-  overflow: hidden
-  padding-right: 4px
-  position: relative
-  top: -90px
-  margin-top: 0
-  padding-top: 0
-  width: 220px
-  right: 0
-
-#contentwrap
-  width: 720px
-  margin-left: 4px
-  float: left
-  position: relative
-  padding: 0!important
-  margin-right: 0
-
-#branding
-  font-size: 2em
-  background-color: #fefefe!important
-
-#branding a
-  display: block
-  font-weight: bold
-  background-color: #fefefe!important
-  color: #e5e5e5!important
-
 #content_text
-  letter-spacing: 0
-  line-height: 1.4em
-  font-size: 11px!important
-  background-color: #fff
   background-image: url(/assets/new/content-text-bg.png)!important
   background-position: left top!important
   background-repeat: no-repeat
-  padding: 10px
-  margin-top: 0
-  min-height: 300px
-
-#facebox
-  line-height: 1.4em
-  font-size: 1.2em
-
-#warning
-  font-weight: bold
-  padding: 2px 0 2px 10px
-
-#search_ideas input
-  width: 203px
-  margin: 3px 0 0
-
-#new_idea
-  margin-bottom: 0
-  width:  525px
-  margin-left: 100px
-
-#idea_name
-  font-size: 13px
-  height: 20px
-  margin-left: 0!important
-  margin-right: 10px!important
-  width: 424px
-  border: 1px solid #ccc!important
-
-#user_name
-  font-size: 12px
-  padding: 8px 0 8px 8px
-
-#login,#intro,#buzz_box
-  padding: 0 10px 5px 15px
-  line-height: 1.4em
-  font-size: 1.2em
-
-#search_box
-  padding: 5px 5px 5px 10px
-  float: top
-
-#not_activated_header
-  background: none
-  color: #BC0000
-  font-size: 1.2em
-  margin-top: 0
-  padding: 4px 0 2px 10px
-
-#not_activated
-  font-size: 11px
-  line-height: 1.4em
-  padding: 10px
-
-#notification_box,#next_steps_box
-  font-size: 12px
-  font-weight: bold
-  line-height: 1.4em
-  padding: 2px 10px
-
-#user_login_search
-  width: 125px
-  height: 22px
-
-#q_top
-  width: 100px
-
-.magnifier_wrap
-  width: 120px
-  background-color: #fff
-  padding: 3px
-  float: right
-
-.magnifier_wrap2
-  width: 190px
-  background-color: #fff
-  margin-top: 10px
-  margin-bottom: 5px
-  padding: 3px
-  margin-left: 0
-  margin-right: 0
-  border: 1px solid #DDDDDD
-
-.magnifier_wrap input,.magnifier_wrap2 input
-  border: none
-  font-size: 13px
-  padding: 0 0 0 2px
-
-.magnifier_image
-  position: relative
-  top: 3px
-  left: 4px
-
-.suggest_button
-  outline: none
-  font-size: 13px
-  font-weight: bold
-  letter-spacing: .3px
-  outline-color: 0
-  outline-style: none
-  outline-width: medium
-  padding: 4px 10px
-  text-align: center
-
-#idea_column
-  margin-top: 7px
-  padding-left: 5px
-  font-size: 11px
-  color: #444444
-
-#right_column_ideas
-  padding: 0!important
-
-#your_ideas_container
-  font-size: 11px
-  line-height: 140%
-
-#notifications
-  padding: 0 17px 10px 25px
-  letter-spacing: 0
-  line-height: 1.4em
-  font-size: 1em
 
 .flash_error,.flash_notice
   width: 100%
   text-align: center
   display: none
-  padding: 5px 0
   -moz-border-radius: 4px
   -webkit-border-radius: 4px
   border-radius: 4px
   behavior: url(/assets/PIE.htc)
   position: relative
-  margin: 5px 0
-  font-weight: normal
 
 .flash_error span,.flash_notice span
   text-align: center
-  width: 95%
-  font-size: 1.3em
-  line-height: 1em
 
 .close_notify
   white-space: nowrap
@@ -247,725 +28,175 @@ h4
   text-decoration: none
   color: #FFF!important
 
-.notification_sentence
-  margin-right: -3px
-
-.small
-  font-size: .8em
-  padding: 0 2px 2px 0
-  letter-spacing: .5px
-
 .link_current
   text-decoration: underline
 
-.facebook_button
-  margin-top: 15px
-  background-color: #3b5998
-  font-size: 1.1em
-  padding: 3px
-  text-align: center
-  border-right: solid 1px #0e1f5b
-  border-bottom: solid 1px #0e1f5b
-  border-top: solid 1px #d9dfea
-  border-left: solid 1px #d9dfea
-  width: 138px
-
-.facebook_button a
-  color: #FFF!important
-  letter-spacing: .5px
-
-#status
-  margin-left: 10px
-  padding-top: 5px
-
-.fb_profile_pic_rendered
-  border: 0
-
-.cancel a
-  margin-left: 20px
-  font-size: .8em
-
-.pc
-  font-size: 10px
-  margin: 0 0 0 3px
-  padding: 0 1px
-
-.pc_under
-  font-size: 10px
-  padding-left: 3px
-  margin-top: 2px
-
-.infocusideas
-  padding: 0 17px 0 15px
-  font-size: 1.1em
-  line-height: 1.6em
-
-.endorsement_x
-  padding-left: 5px
-  padding-top: 4px
-
 .endorsement_row_edit
   position: relative
-  bottom: 1px
-  width: 14px
-  margin-right: 0
 
 .comment_x
   position: relative
   float: right
-  top: 2px
-  bottom: 4px
-  margin-right: 2px
 
 .x
-  font-size: 7px
-  font-weight: bold
   position: relative
-  top: -1px
-  left: 3px
 
 .activity_x
   float: right
-  margin: 0 4px 0 2px
-
-.endorsement_row
-  margin-right: 4px
-
-#notification_show
-  padding: 4px 4px 4px 4px
-  font-size: 1.05em
-  letter-spacing: 0
-  width: 800px
-  line-height: 1.4em
-
-#notification_show a
-  text-decoration: none
-  font-size: 9.5px
-
-.notification_show_message
-  margin-top: 0
-  margin-bottom: 2px
-
-.endorsement_up,.endorsement_down
-  margin: 1px 0 0
-  padding: 2px 2px 2px 4px
-  background-color: #FFFFFF
-  border: 1px dotted #666666!important
-
-#hp_intro
-  font-weight: bold
-  margin-bottom: 4px
-  font-size: 14px
-  line-height: 160%!important
-
-ins
-  background-color: #ffff99
-  text-decoration: none
-
-.rss_feed img
-  position: relative
-  top: 2px
-
-.highlight
-  background-color: #ffff99
-  padding: 1px
-
-.new
-  letter-spacing: .1em
-  font-weight: bold
-  font-size: .7em
-
-.subhead
-  font-size: .8em
-  padding: 8px 2px 0 0
-  letter-spacing: .5px
 
 .icon
   float: left
-  right: 5px
-  padding-bottom: 7px
-  left: 0
-  margin: 19px 0 0 26px
   position: absolute
   z-index: 0
-  display: none
-
-#hp_intro .icon
-  padding: 4px 5px 5px 0
-
-.notification
-  padding: 4px 0
-  margin-left: 12px
-
-.activity
-  padding: 4px 0
-  margin-left: 12px
-  font-size: 11px!important
-
-.activity_more
-  margin-left: 28px
-  margin-bottom: 7px
-
-.activity_hidden
-  font-size: .8em
-  margin: 0 0 0 12px
-  padding: 4px 0 2px
-  letter-spacing: .5px
-
-.show_all_encouragements
-  font-size: .7em
-  padding-left: 8px
-
-.encouragement_show_inline
-  margin-top: 12px
 
 #activities
   position: relative
-  min-height: 20px
-  border: 0 solid #DDDDDD!important
-  margin-bottom: 10px
-  right: 0!important
   float: left
-  margin-left: 85px
-
-#endless_scroll_ul_idea_show #activities
-  margin-left: 42px
-
-#home_activity_list #activities
-  margin-left: 0px
-
-.message_error,.comment_error
-  text-align: left
-  padding: 3px 3px 0 5px
-
-#backgroundwrap
-  padding-bottom: 15px
-  position: relative
-  width: 960px!important
-  margin: 0 auto
-  height: 100%
-
-#footer
-  font-size: 1.1em
-  padding: 5px 30px 10px
-  line-height: 1.4em
-  margin: 0 auto
-  clear: both
-  width: 960px
-
-#footer_image
-  padding-right: 15px
-
-#sub_instance_image
-  margin: 20px 0 0 10px
-  font-size: 1.2em
-  line-height: 1.4em
-
-#quiz_header
-  font-size: 2em
-  font-weight: bold
-  line-height: 1em
-
-#quiz_intro
-  font-size: 1.3em
-  margin-bottom: 10px
-
-#prioritizer
-  margin-top: 25px
-  margin-bottom: 5px
-
-.prioritizer_choice
-  font-size: 1.5em
-  font-weight: bold
-  line-height: 1em
-
-#prioritizer_skip
-  width: 100px
-  margin-top: 30px
-  font-weight: bold
-
-#quiz_changes
-  text-align: center
-  margin-top: 25px
-  height: 25px
-
-.field
-  margin-bottom: 1px
 
 .fieldWithErrors input
   display: table
 
 #errorExplanation
-  padding: 7px
-  padding-bottom: 12px
-  margin-bottom: 20px
-
-#errorExplanation h2
-  text-align: left
-  font-weight: bold
-  padding: 5px 5px 5px 15px
-  font-size: 1em
-  margin: -7px
-
-#errorExplanation p
-  margin-bottom: 0
-  padding: 5px
-
-#errorExplanation ul li
-  font-size: 1em
-  list-style: square
 
 .tag_button
-  font-weight: bold
   text-transform: uppercase
-  padding: 0 2px
-  margin-right: 5px
-  font-size: 10px!important
-  width: auto
-  margin: 0!important
   display: inline-block
-  margin-right: 5px !important
 
-.heading
-  font-size: 12px
-  color: #333!important
-  margin-bottom: 3px
-  font-weight: bold!important
-  margin-top: 10px
-
-.happening_heading
-  font-weight: bold
-  padding: 0 0 3px 2px
-  display: none
-
-.idea_listing,.portlet .idea_listing
-  margin: 0 0 4px
-  padding-bottom: 5px
-
-.portlet .idea_listing
-  margin: 0 0 4px!important
-  padding: 0 0 5px 15px
-
-.sub_instance_logo
-  padding: 10px
-
-.yellow_button
-  font-weight: bold
-  letter-spacing: .5px
-  text-align: center
-  padding: 2px 5px
-  border: 1px solid #FFCC00!important
-
-.grey_button_wide,.grey_button
-  text-align: center
-  padding: 4px 4px 2px
-
-.grey_button_wide
-  font-weight: bold
-  margin-bottom: 5px
-
-.change_name_first
-  font-size: 1.3em
-  font-weight: bold
-  margin-bottom: 2px
-  line-height: 1em
-
-.change_name_second
-  font-size: 1em
-  font-weight: normal
-  padding: 3px 0 2px
-  line-height: 1em
-
-.change_user_pic
-  float: left
-  padding: 5px 8px 0 0
-
-.point_name
-  font-weight: bold
-  margin-bottom: 2px
-  line-height: 1em
-  font-size: 13px!important
-  padding-bottom: 1px
-
-.endorsed,.opposed,.compromised
-  font-size: .8em
-  border: 1px solid #FF6666
-  bottom: 1px
-  display: block
-  font-weight: bold
-  padding: 1px 3px 0
-  position: relative
-  text-align: center
-  text-transform: uppercase
-  white-space: nowrap
-  width: 85px
-
-.point_edit
-  font-style: normal
-
-.point_byline
-  line-height: 120%
-  font-size: 11px!important
-  font-style: normal!important
-  color: #999
-  padding-bottom: 2px
-
-.point_content p,.point_content_detail p
-  margin-bottom: 0
-  margin-top: 0
-
-.point_content_detail
-  font-size: 1em
-  line-height: 1.4em
-  margin: 2px 0 5px
-
-.point_content_detail_container
-  margin: 10px 0 20px
 
 .endorse_or
-  font-size: .7em
   text-align: center
   display: none
-
-.or
-  font-size: .7em
-  margin-left: 5px
-  margin-right: 5px
 
 .big_x
   position: relative
-  left: 3px
-  bottom: 1px
-  font-size: .8em
 
 .import_button
-  font-size: 1.1em
-  padding: 3px 10px
   text-align: center
 
 .position_down
   background-image: url(/assets/red_down.gif)
   background-position: 17px 5px
   background-repeat: no-repeat
-  color: #000033
-  font-size: .8em
-  margin: 7px 0 0
-  padding-bottom: 6px
-  padding-right: 8px
   position: relative
   text-align: center
-  top: 0
-  width: 20px
 
 .position_up
   background-image: url(/assets/green_up.gif)
   background-position: right center
   background-repeat: no-repeat
-  color: #000033
-  font-size: .8em
-  margin: 7px 0 0
-  padding-right: 8px
   position: relative
   text-align: center
-  top: 0
-  width: 20px
 
 .position_nochange
-  font-size: .8em
   text-align: center
-  padding-top: 8px
   position: relative
-  top: 0
   text-transform: capitalize
 
 .idea_endorsement_count
-  font-size: 11px
-  left: 0
   position: static
-  top: 0
 
 .table_header
-  font-size: .8em
   text-transform: uppercase
 
-.activity_picture
-  margin: 2px 2px 2px 32px
-
 .bulletin_form
-  padding: 5px
   float: right
-  width: 747px
 
 .bulletin_form textarea
-  font-family: Arial
-  font-size: 1em
   height: 50px
 
 #short_url
   width: 85px
-  font-size: .9em
-  padding: 1px 1px 0
 
 #issue_nav_name
   text-transform: uppercase
-  color: #AAA
-  font-weight: bold
-  font-size: .8em
-  padding: 4px 10px 0 5px
   float: left
 
-.comment_list_detail
-  padding: 2px 0 0 23px
-
-.comment_list_empty
-  padding: 0 0 0 29px
-
 .comment,.comment_endorses,.comment_opposes
-  margin-top: 1px
-  padding: 0
   background: none
-  color: #444444
-  border: 0 solid #DDDDDD
 
 .comment_more
-  padding: 3px 0 3px 5px
-  margin-top: 1px
   background: none
 
-.comment_content p
-  margin-top: 3px
-  margin-bottom: 7px
-  font-size: 12px!important
-
 .comment_link
-  padding: 0 0 2px
-  font-size: inherit
-  letter-spacing: inherit
-  padding-left: 20px
   background: url(/assets/new/comment-icon4.png) no-repeat left
 
 .comment_link_add
-  font-size: .8em
-  margin-top: 1px
   background: none
-  letter-spacing: .5px
-  border: 1px solid #C1C1C1
   position: relative
-  width: auto
-  padding: 0
-  margin: 10px 0 0 50px
-
-.comment_flag
-  font-size: .8em
-  padding: 0 0 0 36px
-  letter-spacing: .5px
-  border-right: solid 2px #cc0000
-  border-left: solid 2px #cc0000
-
-.comment_hidden
-  font-size: .8em
-  margin: 0 0 2px
-  padding: 0
-  letter-spacing: .5px
-
-.comment_form
-  margin-top: 1px
-  padding: 5px 0 5px 5px
-
-.change_vote_now
-  margin: 0 10px 5px 5px
-  padding: 15px 5px 2px 10px
-
-.idea_chart td
-  font-size: 8px
-  line-height: 9px
-
-.idea_chart
-  margin-right: 5px!important
-
-.chart_label
-  padding-left: 2px
-
-.count_over
-  color: #bc0000
-  font-weight: bold
-
-.idea_chart td.chart_label_plus
-  padding-left: 2px
-  color: #009933
-
-.idea_chart td.chart_label_minus
-  padding-left: 2px
-  color: #bc0000
-
-.intro
-  margin-bottom: 2px
-  color: #333
-  font-size: 14px
-  line-height: 120%!important
 
 #contacts
   overflow: auto
   height: 300px
-  padding: 0 0 0 5px
-
-#contacts_small
-  padding: 0 0 0 5px
-
-.invite_text
-  padding: 5px
-  margin: 10px 0
-
-.message
-  margin: 0 0 2px
-  padding: 2px 0 0 5px
-
-.message_link_add
-  font-size: .8em
-  margin: 0 0 10px
-  padding: 0 0 0 5px
-  letter-spacing: .5px
-
-.message_content p
-  margin-top: 3px
-  margin-bottom: 7px
-
-.message_form
-  margin: 0 0 2px
-  padding: 5px 0 5px 5px
-
-.tag_count
-  font-size: .8em
-  padding: 0 3px 0 0
 
 .home_issue_name
-  font-size: .8em
-  padding: 8px 2px 0 0
-  letter-spacing: .5px
   text-transform: uppercase
 
-.home_issue_idea_name
-  font-size: 1.2em
-  font-weight: bold
-
 .index_chart_legend
-  font-size: .8em
-  margin-top: 5px
   text-transform: uppercase
 
 .ac_results
-  padding: 0
-  background-color: white
   overflow: hidden
   z-index: 99999
 
 .ac_results ul
-  width: 100%
   list-style-position: outside
   list-style: none
-  padding: 0
-  margin: 0
 
 .ac_results li
-  margin: 0
-  padding: 2px 5px
   cursor: default
   display: block
-  font: menu
   overflow: hidden
 
 .ac_loading
   background: white url(/assets/indicator.gif) right center no-repeat
 
-#toolbar
-  padding: 0 0 3px
-  background-color: #fff!important
-
 #nav
-  background-color: #fff
-  margin-top: -10px!important
-  font-size: 14px
-  font-family: Arial, Helvetica, sans-serif!important
   z-index: -1
 
 ul#menu,ul#idea_menu
-  padding: 0 10px 0 0
   text-align: left
-  margin: 0
   list-style-type: none
 
 ul#menu li,ul#menu_sub li,ul#menu_third li
   display: inline-block
   position: relative
-  top: 0
-  left: 0
 
 .tab_subhead,.tab_subhead a
-  font-weight: bold
-  color: #444!important
 
 .tab_body
-  line-height: 1.4em
   display: none
-  background-color: #fff
   text-align: left
-  padding: .5em
-  padding-bottom: 0
-  margin-top: 2px!important
 
 ul#menu li .tab_header
-  font-weight: bold
-  margin-right: 3px
 
 ul#menu li
   z-index: 20
-  padding: 3px 0
 
 ul#menu_sub li
   z-index: 17
-  padding: 3px 0
 
 ul#menu_third li
   z-index: 15
-  padding: 3px 0
-  margin-top: 2px
-
 
 ul#menu li .tab_header a
   border: 0 solid #DDDDDD
-  font-weight: bold
-  letter-spacing: normal!important
-  margin-right: 0
-  padding: 3px 10px 10px
   text-decoration: none
   float: left
-  margin: 7px 1px 0 0
   display: inline-block
 
 ul#menu li.mega .tab_header a
-  padding: 3px 13px 3px 10px
-  margin-right: 0
   text-decoration: none
-  margin: 7px 8px 0 0
   float: left
   display: inline-block
 
 ul#menu .tab_body
   position: absolute
-  top: 27px
-  left: 0
 
 ul#menu_sub .tab_body,ul#menu_third .tab_body
   position: absolute
-  top: 19px
-  left: 0
 
 ul#idea_menu div.tab_body
-  top: 18px
-  left: 0
   position: absolute
-  padding: 0!important
-  border: none!important
 
 ul#menu li.tab2 div.tab_body
   width: 410px
@@ -987,43 +218,21 @@ ul#menu li.tab7 div.tab_body
 
 #nav_sub
   z-index: -1
-  font-size: 1.2em
-  margin: 1px 0 0
 
 ul#menu_sub
   text-align: left
   list-style-type: none
-  padding: 0 10px 0 0
-  margin: 1px 10px 5px
 
 ul#menu_sub li .tab_header a
-  padding: 3px 10px
-  margin: 0
   text-decoration: none
 
 ul#menu_sub li.mega .tab_header a
-  padding: 3px 13px 3px 7px
-  margin-right: 0
   text-decoration: none
   background: transparent url(/assets/mega_down_arrow.gif) center right no-repeat
-
-.action
-  font-weight: normal!important
-
-ul#idea_menu li .tab_header a
-  padding: 3px 5px
-  margin-right: 0
-  text-decoration: none
-  letter-spacing: normal!important
-  font-weight: normal!important
-  font-size: 11px!important
 
 ul#idea_menu li.mega .tab_header a
   background-color: none
   background: url(/assets/mega_down_arrow.gif) no-repeat scroll right center
-  margin-right: 0
-  padding: 3px 13px 3px 7px
-  text-decoration: none
 
 ul#idea_menu li.tab4 div.tab_body
   width: 90px
@@ -1035,215 +244,28 @@ ul#idea_menu li.tab10 div.tab_body
   width: 230px
 
 .users_button
-  margin-right: 5px
   position: relative
-  top: -1px
-
-.profile_name
-  font-weight: bold
-  font-size: 13px!important
-  line-height: 1.5em
-  border-bottom: none!important
-
-.profile_website
-  margin-top: 2px
-  font-size: .95em
-
-.profile_small
-  font-size: 11px
-  margin-top: 5px
-  padding: 0 0 4px
-  margin-bottom: 3px
-
-.profile_pc a
-  font-size: 10px
-  margin: 0
-  padding: 0 1px
-  position: relative
-  top: -2px
-
-a
-  color: #3B5998!important
 
 .search_results ul li
   list-style: none
 
 #search
   position: relative
-  right: 0
-  top: 47px
-  width: 230px
-  left: 574px
-  //left: 572px !ie
-
-#search input.input
-  height: 21px
-  margin-right: 2px
-  margin-top: 1px
-  padding: 2px 3px 0
-
-#search input.leita
-  font-size: 12px
-  height: 22px!important
-  width: 45px
 
 #search-id
-  font-size: 12px
-  height: 22px!important
-  width: 160px
   float: left
-  margin-right: 3px
-  //margin-right: 0 !ie
 
 .search_results #left
   float: left
-  width: 150px
-  padding-right: 5px
 
 .search_results #right
   float: right
-  width: 600px
 
 .match
   color: red
 
-table tr th
-  font-weight: bold
-  padding-right: .5em
-
-hr
-  border-top: 3px solid #e5e5e5
-
-#network_sidebar
-  padding-right: 4px
-  padding-top: 0
-  width: 200px
-  float: right
-  padding: 0 4px 0 13px
-  vertical-align: top
-  top: 0
-  right: 0
-  margin-top: 0
-  position: relative
-
-#branding_text_header
-  margin-left: 8px
-  margin-top: 12px
-  font-family: sans-serif
-  font-style: normal
-  font-weight: normal
-  font-size: 20px
-  line-height: 100%
-  word-spacing: normal
-  letter-spacing: normal
-  text-decoration: none
-  text-transform: none
-  text-align: center
-  text-indent: 0
-
-#branding_text_sub
-  margin-left: 15px
-  color: #999
-  font-family: sans-serif
-  font-style: normal
-  font-variant: small-caps
-  font-weight: bold
-  font-size: 16px
-  line-height: 100%
-  word-spacing: normal
-  letter-spacing: normal
-  text-decoration: none
-  text-transform: none
-  text-align: center
-  text-indent: 0
-
-#branding a img
-  padding: 0!important
-  margin: 0!important
-  border: none 0 #fff!important
-
-#top_right_column
-  margin-top: -17px
-  background-color: transparent!important
-
-#search_ideas form input
-  width: 170px
-  font-size: 10px
-
-#your_ideas table
-  width: 200px
-
-div.meta
-  width: 120px!important
-
-.win.chrome .tag_button
-  margin: -16px -3px 0 0!important
-
-.container_12,.container_13
-  padding-bottom: 0
-
-.container_12 td
-  width: 350px
-  vertical-align: top
-
-.container_13 td
-  width: 300px
-
-.container_12 td.against,.container_13 td.against
-  padding-left: 1em
-
-.container_12.newpoints
-  margin-top: 1em
-
-.point_item h3
-  margin: 1em 0 0!important
-  color: #333333!important
-  font-size: 12px!important
-  font-weight: bold!important
-
 .tab_body a
   text-align: left
-  letter-spacing: normal!important
-
-.container_13 .grid_41
-  width: 262px!important
-
-.below_line
-  color: gray
-  margin: 3px 0 3px 5px
-  font-size: 10px
-  font-weight: normal
-  padding: 0
-  text-align: right
-
-#hp_intro a,h1 #hp_intro
-  color: #333
-  font-size: 16px!important
-  line-height: 120%!important
-
-.point_content_detail p
-  font-size: 12px
-  line-height: 120%!important
-
-.point_item p a
-  font-weight: bold!important
-  font-size: 12px!important
-
-.email input,.password input,.submit input
-  margin-top: 3px
-  width: 130px
-
-.submit input
-  margin-top: 3px
-  width: auto!important
-
-#portlets-menu
-  height: 13px
-  float: right!important
-  width: 150px
-
-#main-dialogues-div p
-  margin-bottom: 2px
 
 ul#menu li.mega .tab_header a:hover,ul#menu li.mega.hovering .tab_header a,ul#menu_sub li.mega .tab_header a:hover,ul#menu_sub li.mega.hovering .tab_header a,ul#menu_third li.mega .tab_header a:hover,ul#menu_third li.mega.hovering .tab_header a,ul#idea_menu li.mega .tab_header a:hover,ul#idea_menu li.hovering .tab_header a
   -moz-background-clip: border!important
@@ -1262,9 +284,6 @@ ul#menu_sub .tab_header a:hover,ul#menu_third .tab_header a:hover,.ac_over,ul#me
   background-color: #fff
   background: none
   border: 0 solid #DDDDDD!important
-  color: #444444
-  margin-bottom: 0
-  margin-top: 0
 
 input,textarea,#contacts,#contacts_small,.invite_text,.ac_results,.magnifier_wrap,.change_vote_now,.idleField
   background-color: #fff
@@ -1273,163 +292,24 @@ input,textarea,#contacts,#contacts_small,.invite_text,.ac_results,.magnifier_wra
   -moz-border-radius: .4em
   border-radius: .4em
 
-.idleField
-  width: 250px
-  height: 20px
-
 #new_idea_button
-  margin-top: 7px
-  border: 0 solid #DDDDDD
-  font-size: 1.5em
-  font-weight: bold
-  margin: 30px 0 8px
-  padding: 12px 0 16px 14px
-  width: 148px
-  text-decoration: none!important
   cursor: pointer
 
-#language_selection_box
-  margin-top: 4px
-  border: 0 solid #DDDDDD
-  margin-bottom: 0
-  padding: 10px 0 10px 15px
-  width: 205px
-  line-height: 1.4em
-
-#notification_box ol,#next_steps_box ol
-  font-size: 11px
-  font-weight: normal
-  padding-left: 18px
-
-#right_column_ideas a,#notification_box a,#next_steps_box a,#notification_box ol a,#next_steps_box ol a,#not_activated a
-  color: #533
-  padding-left: 3px
-
-#point_right
-  margin-left: 12px
-  min-height: 260px
-
-td
-  vertical-align: top!important
-
-#latest_video_discussion_thumbs h3
-  color: #ddd!important
-
-#latest_video_discussion_thumbs
-  float: left!important
-
 #point_name,#custom_tags,#point_website
-  font-size: 13px
-  height: 20px
-  margin-left: 0!important
-  margin-right: 10px!important
-  width: 424px!important
   border: 1px solid #ccc!important
 
 #pointContent
-  font-size: 13px
-  margin-left: 0!important
-  margin-right: 10px!important
   border: 1px solid #ddd!important
-  width: 525px
-  height: 100px
 
 #ideaContent
-  font-size: 13px
-  margin-left: 0!important
-  margin-right: 10px!important
   border: 1px solid #ddd!important
-  width: 525px
-  height: 80px
-
-#custom_tags
-  font-size: 13px
-  height: 20px
-  width: 230px
-
-#your_idea,.form_header
-  padding-bottom: 4px
-
-.form_header
-  font-size: 13px
-  font-weight: bold
-  padding-bottom: 4px
-
-.num_cols_5
-  width: 700px!important
-
-#top_points_table p
-  padding-bottom: 2px
-  padding-top: 4px
-  line-height: 130%
-  font-size: 11px
-  color: #333333
-
-.tag_button_hack
-
-  font-size: 11px!important
-  font-style: normal!important
-  color: #999
-  line-height: 150%
-
-.point_fblike
-  width: 80px
-  margin-left: 5px
-
-.point_item_hacky a
-  font-size: 12px!important
-  font-weight: bold!important
-
-.for_and_against_hacky
-  color: #333333!important
-  font-size: 10px!important
-  font-weight: normal!important
 
 .yes_and_no_points_link_hacky a
-  color: #333333!important
-  font-weight: normal!important
   text-decoration: underline
-  margin-top: 500px
-  font-size: 11px!important
 
 .notification_icon
   float: left
   position: relative
-  right: 5px
-  padding-bottom: 7px
-
-.top_level .idea_name,.idea_name_add
-  width: 320px
-
-.single .idea_name
-  font-size: 1.4em!important
-  margin-bottom: 8px
-  width: 500px
-
-#footer a
-  border-bottom-color: #997777
-  border-bottom-style: dotted
-  border-bottom-width: 1px
-  color: #553333
-
-.pagination
-  margin: -1px 0 5px 10px
-  padding-left: 7px
-  padding-bottom: 2px
-
-.tiny_info,#tiny_info
-  font-size: 11px
-  padding-top: 1px
-  font-weight: normal
-
-.tiny_info_no_pad
-  padding-bottom: 1px
-
-.characters
-  color: #999
-
-.portlet-content .idea_added
-  padding-top: 0!important
 
 .field_with_errors
   border: 1px solid red!important
@@ -1440,14 +320,6 @@ td
   float: left
   width: auto
 
-.white_line
-  border-bottom: solid 1px #FFF
-
-.reykjavik_icon
-  width: 100%
-  text-align: right
-  margin-top: 10px
-
 #message_to_users
   background: url(/assets/new/information_box_bg.png) repeat-x
   background-color: #fffceb
@@ -1456,440 +328,131 @@ td
   border-radius: 7px
   behavior: url(/assets/PIE.htc)
   position: relative
-  padding: 5px 10px 10px 75px
-  margin-bottom: 5px
 
 .close_notify2
-  color: #000
   float: right
-  margin-right: 0
-  text-decoration: none!important
   white-space: nowrap
 
 .information_icon
-  left: 31px
   position: absolute
-  top: 15px
 
 .comment_report
-  padding: 0!important
   float: right
-  display: none
 
 #activities .comment_report
-  padding: 0!important
   float: right
   position: absolute
-  right: 20px
-
 
 .border_miss_avatar
-  border: solid 1px #f4f4f4
   height: 35px
   width: 35px
 
 .border_miss_avatar48
-  border: solid 1px #f4f4f4
   height: 48px
   width: 48px
 
 .image_96
-  border: solid 1px #f4f4f4
   width: 96px
   height: 96px
-
-.fb_avatar
-  margin-top: -5px
 
 .content
   background-image: url(/assets/new/content-text-bg.png)!important
   background-position: left top!important
   background-repeat: no-repeat
-  padding: 10px
 
 .submit_button
   background-image: url(/assets/new/bg_submit.png)
   background-repeat: repeat-x
-  font-weight: bold
+
   -moz-border-radius: 3px
   -webkit-border-radius: 3px
   border-radius: 3px
   behavior: url(/assets/PIE.htc)
   position: relative
-  color: #666
   border: solid #FFF 1px
   box-shadow: 0 0 2px #000
   -moz-box-shadow: 0 0 2px #000
   -webkit-box-shadow: 0 0 2px #000
-  padding: 2px 10px
-  margin-top: 1px
   width: auto!important
   cursor: pointer
 
 .category_icon
   width: 55px
-  padding-top: 10px
-
-.add_point_field
-  margin-bottom: -10px
-
-.yourpri_logo
-  margin-top: 20px
-  text-align: center
 
 .portlet-content .comment_link_add
-  border: 1px solid #C1C1C1
-  margin: 0 0 0 15px
-  padding: 0
   position: relative
-  width: auto
-
-#deletepage li
-  margin-left: 15px
-
-.finished_status
-  font-size: 11px
-  font-weight: normal
-
-.brbox
-  border: 1px solid #000000
 
 .fblike
   float: left
-  margin-right: 0
-  width: 80px
   position: relative
 
-.fblike img
-  margin-right: 5px
-
 .button_count .like_button_dark .like_button_no_like .liketext,.button_count .connect_widget_like_button .liketext
-  margin: -10px 0 0!important
   float: right
-
-.user_pic_and_activity
-  margin-left: -12px
-  width: 320px
-
-.single .user_pic_and_activity
-  width: auto
-  margin-left: -7px
 
 .category
   float: left
-  width: auto
-  max-width: 200px
-  text-align: right
-  margin-top: 8px
-
-.category_list
-  max-width: 410px
 
 .single .category_list
-  text-align: left
   position: absolute
-  max-width: 340px
-  min-width: 300px
 
 .single .category
-  text-align: left
   position: absolute
-  max-width: 340px
-  margin-top: 0
 
 .idea_report
   float: right
-  margin-left: 10px
-  margin-top: -4px
-  margin-right: 6px
-
-.report1
-  display:none
-
-.ambassadors_images
-  padding: 7px 5px 4px 7px
-
-#profile_header
-  padding-bottom: 10px
-  min-height: 95px
-
-#branding p
-  position: absolute
-  left: 52px
-  top: 30px
-  font-size: 11px
-  color: #666
 
 .idea_name_link
   display: inline!important
-  padding-right: 5px
-  padding-top: 1px!important
-
-.ideas h3
-  font-size: 16px!important
 
 .endorse
   position: absolute
-  left: 0
   float: left
 
 .oppose
   position: absolute
-  left: 273px
   float: left
 
 .add_point_for
   position: absolute
-  left: 110px
-  top: -10px
   float: left
-  width: 112px
 
 .add_point_against
   position: absolute
-  left: 383px
-  top: -10px
   float: left
-  width: 112px
 
-#endorse_oppose_top_points .add_point_against
-  left: 475px
-
-.add_point_for a,.add_point_against a
-  font-weight: bold!important
-  text-decoration: none
 
 .green_button_idea,.red_button_idea
-  border: 1px solid #FFCC00!important
-  width: 100px
   position: absolute
-  left: 0
   float: left
-  top: 0
-  padding: 2px 1px 1px!important
-
-.green_button_idea .text
-  font-size: 12px!important
-
-.red_button_idea
-  background: #EE3423!important
-  left: 270px
-
-.green_button_idea .big_x a
-  color: #EE3423!important
-  font-weight: bold
-  font-size: 11px!important
-
-.red_button_idea .big_x a
-  color: #00529B!important
-  font-weight: bold
-  font-size: 11px!important
-
-.ideas_adjustments
-  position: relative!important
-  margin-bottom: 15px
-
-#idea_submit
-  width: 124px!important
 
 #first_points
-  width: 550px!important
   float: left
-
-.margin-top
-  margin-left: 100px
-  margin-top: -130px
-  width: 750px
-
-#idea_nav,#idea_nav1,#idea_menu
-  width: 90px
-
-#new_user_form .suggest_button,#new_user_form .yellow_button
-  width: auto
 
 #new_button .button-to
   float: left
-  padding-bottom: 0
-
-#new_button
-  margin-left: 3px
-  width: 190px!important
-  margin-right: 47px!important
-
-#new_button input,#new_button div
-  width: 184px!important
-  height: 25px
-
-.button-to
-  padding-bottom: 10px
 
 .ui-state-default,.ui-widget-content .ui-state-default
   background: url(none) repeat-x scroll 50% 50% #f0f0f0!important
   border: 1px solid #ddd!important
 
-.sub_instance_image a
-  margin-top: 7px!important
-
-.logo_small a
-  margin-top: 10px!important
-  margin-right: 6px
 
 .red
   color: #BC0000
-  font-size: 1.1em
-  font-weight: bolder
-  margin-right: 3px
   position: relative
 
 .ui-corner-all
   -moz-border-radius: 1px
 
-#header
-  width: 720px
-
-a.next,a.nextPage
-  left: 0!important
-  top: 0!important
-
-#althingi_video_discussions
-  margin-top: 10px
-  padding-left: 5px
-  padding-bottom: 10px
-  border: 1px solid #DDDDDD
-  -webkit-border-radius: 1em
-  -moz-border-radius: 1em
-  border-radius: 1em
-  behavior: url(/assets/PIE.htc)
-
-#althingi_video_discussions h1
-  padding-left: 11px
-  padding-bottom: 8px
-  padding-top: 5px
-
-.video_search form
-  padding-left: 11px
-
-h5
-  font-size: 11px!important
-  font-weight: bold
-  padding-left: 5px
-
-.idea_tags
-  padding-bottom: 4px
-  margin-left: 2px
-  width: 500px
-
-.point_name a
-  font-size: 13px!important
-  font-weight: bold
-
-.point_qualities
-  padding-bottom: 3px
-  padding-top: 6px
-
 #main-portal-div
   margin-top: 2px!important
   background-color: #FFF
 
-#portal_header div,#portal_header input
-  display: inline!important
-  float: left
-
-#portal-menu-div
-  width: 190px!important
-  padding-left: 240px
-
-#new_button input
-  font-size: 12px!important
-  font-weight: normal!important
-  font-family: helvetica,arial,sans-serif!important
-
-#google_search
-  margin-right: 48px
-
-#google_search .searchbox
-  width: 190px!important
-  display: inline!important
-  float: left
-  border: 1px solid #ddd
-  height: 17px
-
-#google_search .button
-  margin-left: 4px
-  border: 1px solid #ddd
-  height: 25px!important
-  width: 40px!important
-
-#add_portlet a
-  font-size: 12px!important
-  font-weight: normal!important
-  font-family: helvetica,arial,sans-serif!important
-  line-height: 130%!important
-
-input
-  display: inline!important
-
-.extras
-  display: none
-  padding-left: 0!important
-
-#blurb_faq ul
-  margin-top: 0
-  margin-bottom: 10px
-  list-style-position: inside
-  margin-left: 3px
-
-#scroll_in_portal li
-  font-size: 13px
-  line-height: 130%
-  width: 100px
-
-#scroll_in_portal ul.left
-  float: right
-  margin-top: 17px
-
-#scroll_in_portal ul ul
-  list-style: none
-  width: 35%
-  margin-bottom: 4px
-
-#scroll_in_portal .right
-  width: 100px
-
-.search_box input
-  height: 17px!important
-
 .focusField
   border: 1px solid red
-
-.logo a
-  padding: 10px 15px
-
-.change,#blurb_ad_new,#blurb_acquisition_new,.edit_idea
-  margin-top: 18px
-
-#idea_category
-  width: 524px
-
-#idea_category2
-  width: 500px
 
 .point_supports_label,.point_opposes_label
   position: relative
 
-#language_selection_box input
-  border: none!important
-  background-color: transparent!important
-
-.gt_text
-  margin: 2px 0 0 3px
-
-.cb
-  margin-top: 5px
-  margin-left: -2px
-
-.betrihverfi #content_text
-  background-image: none!important
 
 .clearfix:after,.container:after
   content: "\0020"
@@ -1907,65 +470,10 @@ input
 
 #encouragements
   width: 339px
-  margin-left: 0px
-  padding: 0px 0px 0px 0px
-  font-size: 10px
   border: 0 solid #99f
 
-td.right
-  width: 60px
-
-div.column .ui-widget-content
-  margin: 0 0 10px
-  width: 345px
-
-div.column .portlet-header
-  color: #555
-  font-size: 13px
-  font-weight: normal
-  margin: 5px 0
-  text-transform: uppercase
-  width: 335px
-
-div.column .portlet-header select
-  background: none repeat scroll 0 0 transparent
-  border: 1px solid #CCCCCC
-  float: right
-  font-size: .8em
-  padding: 1px
-  height: 21px
-  text-transform: none
-
-div.column .portlet-header select option
-  padding: 2px 5px
-  border: none
-  text-transform: none!important
-
-.column_id_1 .portlet
-  border-bottom: 1px solid #EEEEEE
-  padding: 5px
-
-.column_id_2 .portlet
-  border-bottom: 1px solid #EEEEEE
-  margin: 0 0 10px 5px!important
-  padding: 5px
-
-.notification_show_footer
-  margin-top: 0
-  padding: 0
-
 .notification_show_footer .idea_add
-  font-size: 11px
-  margin-right: 0
-  margin-top: 0
-  padding: 0
   text-transform: uppercase
-
-.notification_show_footer .idea_add a
-  background-color: #CCC
-  font-size: .7em!important
-  border: 1px solid #999999
-  padding: 0 2px
 
 div.addwrapper
   background-color: #FFFFFF
@@ -1974,12 +482,6 @@ div.addwrapper
   background-repeat: no-repeat
   border: medium none
 
-#hp_intro,#hp_intro a,#quiz_header,.idea_position,.your_idea_position,.profile_name,.profile_name a,h1,h2,h3,h4
-  color: #444
-
-div#content_text table
-  width: 100%
-  border-width: 0
 
 .top-level-table,.show-table
   border-collapse: collapse
@@ -1989,7 +491,6 @@ div#content_text table
 
 body.portal-index #content_text
   background: none
-  padding: 0
   background-repeat: no-repeat
 
 
@@ -1997,45 +498,18 @@ span#endorse-title
   background-image: url(/assets/new/add-endorse.png)!important
   background-position: left top!important
   background-repeat: no-repeat
-  padding: 8px 30px
-  color: #439A22!important
-  font-size: 1.1em
-  font-weight: bold
 
 span#oppose-title
   background-image: url(/assets/new/add-oppose.png)!important
   background-position: left top!important
   background-repeat: no-repeat
-  padding: 8px 30px
-  color: #BC0000!important
-  font-size: 1.1em
-  font-weight: bold
 
 .header-add .idea_add
   float: right
-  margin-top: 0
-
-body.Cideas #content_text table tbody tr td table tbody tr
-  border-bottom: 0 solid #cacaca
-
-#idea_nav1 li.tab1 .tab_header a,ul#idea_menu li .tab_header a
-  font-size: .95em
-  font-weight: bold!important
-  letter-spacing: normal!important
-  margin-right: 0
-  padding: 3px 5px
-  text-decoration: none
-
-ul#idea_menu li .tab_header a:hover,ul#idea_menu li.mega .tab_header a:hover
-  color: #000!important
 
 ul#idea_menu li .tab_header a:hover,ul#idea_menu li .tab_header a:hover
   background: none no-repeat scroll 0 0
   color: #FFFFFF
-
-#idea_nav1 li.tab1 .tab_header a,#idea_nav1 li.tab1.mega .tab_header a,#idea_nav2 li.tab2 .tab_header a,#idea_nav2 li.tab2.mega .tab_header a,#idea_nav3 li.tab3 .tab_header a,#idea_nav3 li.tab3.mega .tab_header a,#idea_nav4 li.tab4 .tab_header a,#idea_nav4 li.tab4.mega .tab_header a,#idea_nav5 li.tab5 .tab_header a,#idea_nav5 li.tab5.mega .tab_header a,#idea_nav6 li.tab6 .tab_header a,#idea_nav6 li.tab6.mega .tab_header a,#idea_nav7 li.tab7 .tab_header a,#idea_nav7 li.tab7.mega .tab_header a,#idea_nav8 li.tab8 .tab_header a,#idea_nav8 li.tab8.mega .tab_header a,#idea_nav9 li.tab9 .tab_header a,#idea_nav9 li.tab9.mega .tab_header a,#idea_nav10 li.tab10 .tab_header a,#idea_nav10 li.tab10.mega .tab_header a
-  color: #6699CC!important
-  padding-top: 3px
 
 .box_style
   position: relative
@@ -2044,36 +518,18 @@ ul#idea_menu li .tab_header a:hover,ul#idea_menu li .tab_header a:hover
   -webkit-border-radius: 8px
   border-radius: 8px
   border: solid 1px #CCC
-  padding: 10px
 
 .activity_border,.activity_hidden
   border: none
-  border-bottom: 1px solid #DDDDDD!important
-  margin-bottom: 5px
-  padding-bottom: 5px
   overflow: hidden
-
-span.entry_profile
-  padding: 0 10px
-
-div.best-points
-  background: #fff
 
 .comment_box
   min-height: 30px
   border-radius: 1em 1em 1em 1em
   background-color: #f4f4f4
-  padding: 10px
-  margin: 0 0 10px 50px
-
-.comment_content_1,.comment_content_2
-  padding: 10px 10px 0
 
 div.buddy-icon
   float: left
-
-.comment_box img
-  padding: 3px 0 4px
 
 div.delete-comment
   clear: both
@@ -2082,46 +538,25 @@ div.delete-comment
 .comment_link_add textarea
   border: none
   background: none
-  margin: 5px
 
 .new_comment_facebook
-  font-size: 12px
-  line-height: 15px
   position: relative
-  padding: 2px
   text-align: right
 
-.idea_add
-  background-color: transparent!important
-  border: none!important
-
-span.idea_add_working
-  margin-right: 7px
-  padding: 1px 5px
-  height: 16px
-
 span.idea_add_follow a,span.idea_add_ignore a
-  color: #aaa!important
   float: left
-  font-family: arial
-  font-size: .9em
-  font-weight: bold
-  margin-right: 7px
-  padding: 0 5px 1px
   text-decoration: none
 
 span.idea_add_ignore a,.idea_remove2
   background: #fff!important
   border: 1px solid #ccc!important
   width: auto
-  color: #aaa!important
 
 span.idea_add_follow a,.idea_add_link
   background: #FFF
   border: 1px solid #CCC
   width: auto
   float: left
-  color: #aaa
 
 .opposed,.red_button,.idea_remove_oppose
   background-color: #e49e6e
@@ -2139,41 +574,19 @@ span.idea_add_follow a,.idea_add_link
 .idea_remove1
   background-color: #FFF!important
   border: solid 1px #CCC!important
-  color: #333!important
 
 .flash_notice
   background-color: #003399
 
 .idea_remove_oppose,.idea_remove,.idea_remove1,.idea_remove2
-  font-size: .9em
-  font-weight: bold
-  margin: 0 3px 0 0
-  padding: 0 5px
   text-transform: uppercase
-  background-color: #E49E6E
   border: solid 1px #B92D19
-  width: auto
   float: left
 
-.idea_remove_link1
-  color: #CCC!important
-
-.idea_endorsement_count a
-  color: #888!important
-
-.grey_button_wide,.import_button,.notice
-  background-color: #F0F0F0
-  border: 1px solid #CCCCCC
-
-.suggest_button:hover,.yellow_button:hover,.grey_button_wide:hover
-  border: 1px solid #13499B!important
-
 div.userwrap
-  background-color: #F0F2F5
   background-image: url(/assets/new/user-bg3.png)!important
   background-position: top!important
   background-repeat: no-repeat
-  padding-bottom: 0
   position: relative
   z-index: 0
 
@@ -2187,62 +600,19 @@ div.userwrap2
   position: relative
   background-position: top!important
   background-repeat: no-repeat
-  padding-bottom: 0
   z-index: 0
-  margin-top: 22px!important
 
 #user_info_box
-  font-size: 10px
-  font-weight: bold
-  line-height: 1.4em
-  width: 205px
-  background: none
   border: 0 solid #DDDDDD
-  padding: 10px 10px 0
-  margin-bottom: 0px
-
-#user_info_box a
-  font-size: 10px
-  font-weight: normal
-  line-height: 1.4em
-  width: 205px
-
-#intro
-  border: solid 1px #EEE!important
-  margin-top: 5px
-  width: 191px
-
-#notification_box p,#next_steps_box p
-  font-size: .9em
-  line-height: 1.4em
-  font-weight: normal
 
 #next_steps_box ol
   list-style-position: inside
-  padding: 0
 
 .sub_header
-  font-size: .9em!important
-  font-weight: bold
   border-bottom: solid 1px #EEE
-  margin: 15px 0 10px
-  padding-bottom: 5px
-
-#simple_captcha
-  border: none!important
-  margin-bottom: 20px!important
-  padding: 5px!important
-
-.simple_captcha_image
-  width: 110px
-  height: 35px
-
-.simple_captcha_field
-  width: 157px
 
 .profile_picture96
   float: left
-  padding: 0 12px 0 0
 
 .list_left
   float: left
@@ -2251,46 +621,14 @@ div.userwrap2
 .list_right
   list-style: none
   float: right
-  margin-bottom: 2px
 
 .list_report
   float: right
   list-style: none
-  width: 30px
 
 .list_idea_overview
   float: left
   list-style: none
-  padding-left: 8px
-  width: 460px
-
-.plus_sign
-  padding-top: 7px
-  margin-right: 5px
-
-.top_listing
-  padding-bottom: 7px
-
-.left_scale
-  padding-left: 3px
-
-.left_scale8
-  padding-left: 8px
-
-.left_scale15
-  padding-left: 15px
-
-.left_scale30
-  padding-left: 30px
-
-.line_bellow
-  border-bottom: solid 1px #CCC
-
-#next_steps_box
-  padding: 10px!important
-
-.add_talking_point h3
-  font-size: 14px!important
 
 .idea_icon_single
   text-align: center
@@ -2299,8 +637,6 @@ div.userwrap2
   background-color: #f99
   float: right
   color: #FFF
-  margin: 25px 67px 2px 0
-  padding: 1px 5px
   -moz-border-radius: 4px
   -webkit-border-radius: 4px
   border-radius: 4px
@@ -2310,7 +646,6 @@ div.userwrap2
   max-width: 370px
   text-align: center
   left: 0
-  font-size: 1em
   z-index: 1000
 
 .warning_inline2
@@ -2319,91 +654,15 @@ div.userwrap2
 
 .warning_inline_point
   float: left
-  margin: 5px 0 -4px!important
-  width: 292px!important
 
 .single .warning_inline
-  margin: 32px 197px 2px 0!important
   min-width: 200px
 
-.single2 .warning_inline
-  margin: 25px 347px 2px 0!important
-
 .single2 .warning_inline2
-  font-size: .8em
   max-width: 400px!important
-  margin: 5px 0!important
 
 .single3 .warning_inline
-  margin: 3px 115px 2px 0!important
 
-.user_pic_box
-  padding: 8px 5px 4px 7px
-
-.encouragements_text
-  font-size: .8em
-  line-height: 1.5em
-
-.rules
-  margin: 20px 0 0 15px
-
-.top_position img
-  padding-right: 3px
-
-.per_user_cost
-  padding: 3px 0 0 5px
-
-.top_scale22
-  padding-top: 22px
-
-.bg_endorsed_encouragements
-  background-color: #009933
-
-.bg_opposed_encouragements
-  background-color: #bc0000
-
-.bg_response_encouragements
-  padding-top: 22px
-  padding-left: 10px
-
-.bg_yes_votes
-  background-color: #ffcc00
-
-.bg_no_votes
-  background-color: #ffff99
-
-.form_error_td
-  padding-left: 10px
-  padding-top: 3px
-
-.finished_idea
-  margin-left: 18px
-  margin-top: 5px
-  width: 450px
-
-.finished_idea ul
-  list-style: disc
-
-.socmedia_buttons
-  padding-bottom: 28px
-  margin-left: 10px
-
-.gamlabetri
-  width: 240px
-  float: auto
-  margin-top: 20px
-  margin-bottom: 18px
-
-.gamlabetri img
-  margin-left: 37px
-  border: 1px solid #ccc
-  padding: 10px
-  -webkit-border-radius: .4em
-  -moz-border-radius: .4em
-  border-radius: .4em
-
-.encouragement_click
-  background-color: #CCC
 
 #idea_category li
   list-style-type: none
@@ -2411,25 +670,17 @@ div.userwrap2
 #nav a:hover
   text-decoration: underline!important
 
-#toolbar a
-  color: #003399!important
-
 ul#menu,ul#menu1,ul#menu_sub,ul#menu_third
   width: 100%
   float: left
-  padding: 0
 
 ul#menu1
   width: 100%
   float: right
-  padding: 0
-  margin: 1px 0 10px 10px
   z-index: 500
 
 ul#menu_third
   border-top: 0 solid #e5e5e5
-  margin: -3px 10px 5px
-  padding: 3px 0 0
 
 ul#menu li,ul#menu1 li,ul#menu_sub li,ul#menu_third li
   display: inline
@@ -2451,9 +702,6 @@ ul#menu1 li
   z-index: 500
 
 ul#menu li .tab_header,ul#menu_sub li .tab_header,ul#menu_third li .tab_header
-  font-weight: bold
-  margin-right: 0
-  padding: 0 4px
   display: inline-block
   float: left
   background-image: url(/assets/new/menu-div-bg.png)
@@ -2465,48 +713,29 @@ ul#menu li .tab_header,ul#menu_sub li .tab_header,ul#menu_third li .tab_header
   background-repeat: no-repeat
   display: inline-block
   float: left
-  font-weight: bold
-  margin-right: -3px
-  padding: 0 4px 0 0
+
 
 #nav_sub ul#menu_sub .tab_header a,ul#menu_third .tab_header a
-  font-size: 11px
   border: 0 solid #DDDDDD
-  font-weight: normal
-  letter-spacing: normal!important
-  margin-right: 0
-  padding: 3px 8px
   text-decoration: none
-  margin: 0 0 0 -7px
 
 ul#menu li .tab_header a,ul#menu li.hovering div.tab_body,ul#menu_sub li .tab_header a,ul#menu_sub li.hovering div.tab_body,ul#menu_third li .tab_header a,ul#menu_third li.hovering div.tab_body,ul#idea_menu li.hovering div.tab_body
-  background-color: #fff
   float: left
 
-ul#menu li.tab0 .tab_header a
-  margin: 7px 0 0 5px
-  padding: 3px 10px 10px
-
 #nav0 li.tab0 .tab_header a,#nav1 li.tab1 .tab_header a,#nav2 li.tab2 .tab_header a,#nav3 li.tab3 .tab_header a,#nav4 li.tab4 .tab_header a,#nav5 li.tab5 .tab_header a,#nav6 li.tab6 .tab_header a,#nav7 li.tab7 .tab_header a,#nav8 li.tab8 .tab_header a
-  color: #6699cc!important
-  font-weight: bold!important
   background-color: #eef2f4
   background-image: url(/assets/new/menu-active-bg.png)
   background-repeat: no-repeat
   background-position: center bottom
   text-decoration: none
   float: left
-  margin: 7px 10px 0
   display: inline-block
 
 ul#menu li.mega .tab_header a,ul#menu1 li.mega .tab_header a,ul#menu_sub li.mega .tab_header a,ul#menu_third li.mega .tab_header a
   background: url(/assets/mega_down_arrow.gif) no-repeat scroll right center transparent
 
 ul#menu1 li.mega .tab_header a
-  padding: 3px 13px 3px 10px
-  margin-right: 0
   text-decoration: none
-  margin: 0
   float: left
   display: inline-block
 
@@ -2518,260 +747,59 @@ ul#menu1 .tab_body
   z-index: 5
   background-color: transparent
 
-.test
-  position: relative
-  behavior: url(/assets/PIE.htc)
-  -moz-border-radius: 8px
-  -webkit-border-radius: 8px
-  border-radius: 8px
-  border: solid 1px #CCC
-  padding: 14px 14px 5px
-  width: 190px
-  right: 20px
-  background-color: #FFF
-  z-index: 500
-
 ul#menu li .tab_body
   border: 1px solid #666
   border-top: 0
-  background: #f0f0f0
 
 #nav_third_1 li.tab1 .tab_header a,#nav_third_2 li.tab2 .tab_header a,#nav_third_3 li.tab3 .tab_header a,#nav_third_4 li.tab4 .tab_header a,#nav_third_5 li.tab5 .tab_header a,#nav_third_6 li.tab6 .tab_header a,#nav_third_7 li.tab7 .tab_header a,#nav_third_8 li.tab8 .tab_header a,#nav_third_9 li.tab9 .tab_header a,#nav_third_10 li.tab10 .tab_header a,#nav_third_11 li.tab1 .tab_header a,#nav_third_12 li.tab2 .tab_header a,#nav_third_13 li.tab3 .tab_header a,#nav_third_14 li.tab4 .tab_header a
-  color: #6699cc!important
-  font-weight: bold!important
   background-color: #eef2f4
   text-decoration: none
   float: left
-  margin: 0 8px 0 0
   display: inline-block
 
 #nav_sub_0 li.tab0 .tab_header a,#nav_sub_1 li.tab1 .tab_header a,#nav_sub_2 li.tab2 .tab_header a,#nav_sub_3 li.tab3 .tab_header a,#nav_sub_4 li.tab4 .tab_header a,#nav_sub_5 li.tab5 .tab_header a,#nav_sub_6 li.tab6 .tab_header a,#nav_sub_7 li.tab7 .tab_header a,#nav_sub_8 li.tab8 .tab_header a,#nav_sub_9 li.tab9 .tab_header a,#nav_sub_10 li.tab10 .tab_header a
-  color: #6699cc!important
-  font-weight: bold!important
   background-color: #eef2f4
   text-decoration: none
   float: left
-  margin: 0 7px 0 0!important
   display: inline-block
-
-#nav_sub ul#menu_sub li.mega .tab_header a
-  padding: 3px 8px 0
-
-.profile-nav
-  margin: 25px 0 0 100px
-  position: absolute
-
-.tweet
-  padding-bottom: 2px
-
-.ideain_profile
-  margin-left: -20px
-
-a:link,a:visited,a:active,#nav a
-  text-decoration: none
-
-abbr,#point_value_1,#point_value_-1,img,#encouragements h2
-  border: none
-
-.user_name,.althingi_process_container table thead td
-  font-weight: bold
-
-#intro,#buzz_box,#footer_container,.bio,#addthis,.yes_and_no_points_link_hacky,#message_to_users p,.field_label2,#infopage h4,.rules h5
-  margin-top: 10px
 
 #sib_login_form,#hide #endorse_oppose,.point_name span,.invisible
   display: none
 
-#sib_login_form
-  padding: 10px
-
-.task,#your_ideas,#login_message,.color_scheme,.webpage,.tab_sublinks,.pre_text,#idea_short_url,#blurb_faq p,div.header-add,.scale_bottom
-  margin-bottom: 10px
-
-.comment_x a,.endorsement_x a,.activity_x a,.tab_subhead
-  font-size: 13px
-
 .endorsement_down,.endorsement_down a
   text-decoration: line-through
 
-.encouragement_show,.episode,.change_message,.idea_icon_portlet,#infopage p,#point_opposes,.youtube-player
-  margin-top: 5px
-
-.heading_link,.idea_finished_time,.user_agenda_change,.webpage_footer,#intro p,.size08
-  font-size: .8em
-
-.related_idea,.point,.point_inline
-  margin-bottom: 12px
-
-.single .idea_listing,#content_text .idea_actions ul,#content_text .top_level_idea_listing ul,#content_text .idea_listing ul
-  margin-left: 0
-
-.idea_remove a,.idea_remove_oppose a
-  color: #fff!important
-  font-weight: normal
-
 .green_button,.red_button
-  font-weight: bold
-  letter-spacing: .5px
-  padding: 5px 1px 3px
   text-align: center
-
-.green_button a,.red_button a,ul#menu_sub li .tab_header
-  font-weight: normal
-
-.bio p,.bio br,.idea_finished,.tag_button_hack br
-  margin-bottom: 7px
-
-.gainer,.loser,.nochange
-  font-size: 1.3em
-  font-weight: bold
-
-.idea_nav,.nav,.idea_rank_detail,.home_issue,.home_issue_idea,p
-  margin-bottom: 5px
-
-.idea_rank,.right_scale
-  padding-right: 5px
-
-.idea_added,.top_scale10
-  padding-top: 10px
-
-.endorsement_delete,.search_results h3
-  padding-top: 5px
-
-.comment_list,body.Cideas #content_text table.show-table td,table.show-table td
-  padding: 0
 
 .comment_content,.message_content
   overflow: hidden
-  padding: 0 10px 0 0
-
-.comment_form textarea,.message_form textarea
-  font-family: Arial
-  font-size: 1em
-  height: 30px
 
 .pagination .current,.ajax_pagination .current
-  font-weight: bold
-  padding: 3px
+
 
 ul#menu li.hovering div.tab_body,ul#menu_sub li.hovering div.tab_body,ul#menu_third li.hovering div.tab_body,ul#idea_menu li.hovering div.tab_body,ul#menu1 li.hovering div.tab_body
   display: block
-  margin-top: 1px
-  padding: 10px 10px 2px
   z-index: 10
-
-ul#menu li.tab1 div.tab_body,.link_test
-  width: 400px
-
-ul#idea_menu li.tab5 div.tab_body,ul#idea_menu li.tab7 div.tab_body,ul#idea_menu li.tab9 div.tab_body
-  width: 150px
-
-ul#idea_menu li.tab11 div.tab_body,ul#idea_menu li.tab12 div.tab_body
-  width: 220px
-
-#profile_name,.top_scale
-  padding-top: 3px
-
-#footer a,#contentwrap a,#footer a:hover,#contentwrap a:hover
-  color: #333
-
-#toolbar a,#idea_menu a,#notification_box,#next_steps_box h4
-  border-bottom: none
 
 #network_sidebar td,.top_position
   vertical-align: top
 
-.comment_link_add,.small,#point_1_quality,#addthis,#addthis a,#idea_short_url
-  font-size: 11px!important
-
-#addthis a,.point_other a
-  font-size: 13px!important
-
-.close_notify2 a,#new_idea_button a:hover
-  text-decoration: none!important
-
-#infopage li,.tag_scale
-  margin-left: 5px
-
-.connect_widget_vertical_center connect_widget_button_cell,#portal_header
-  margin-top: -10px!important
-
-.user_pic_network,.user_pic_contributors
-  padding: 10px 5px 4px 7px
-
-.user_text,.user_name_chart
-  padding: 7px 5px 4px 0
-
 #user_info_box_picture,#scroll_in_portal ul.right,img.point_report,.point_fblike,.characters
   float: right
-
-#content_text ul,.sub_header a,.separator
-  margin-left: 10px
-
-#endorse_oppose_top_points .oppose,#endorse_oppose_top_points .red_button_idea
-  left: 365px
-
-#endorse_oppose,#endorse_oppose_top_points
-  position: relative!important
-
-#br_hack br,#portal_header .radio
-  display: none!important
-
-.point_other,.point_content,.point_source
-  padding-bottom: 3px
-
-#scroll_in_portal img,.left_scale5
-  padding-left: 5px
-
-.Chapter_name,.Chapter_name_2
-  margin-bottom: 15px
-  margin-right: 8px
-  position: relative
 
 #idea_category input,#idea_category2 input,#point_supports input,#point_opposes input
   background-color: transparent!important
   border: none!important
-  margin-bottom: 10px
-
-.left_scale20,#user_sidebar
-  padding-left: 20px
-
-.left_scale10,#idea_category ul ul li
-  padding-left: 10px
-
-.people_text,.td_pc
-  padding: 5px 5px 4px 0
-
-ul#menu li.tab1 .tab_header,body.news-top ul#menu_sub li.tab5 .tab_header,ul#menu_sub li.tab10 .tab_header,body.briefing-contributors ul#menu_sub li.tab4 .tab_header,body.Cpoints ul#menu_sub li.tab4 .tab_header,body.briefing-points ul#menu_sub li.tab4 .tab_header,ul#menu_sub li.tab7 .tab_header,body.news-capital ul#menu_third li.tab2 .tab_header,body.briefing-points ul#menu_third li.tab1 .tab_header,ul#menu_third li.tab4 .tab_header,ul#menu_third li.tab7 .tab_header,ul#menu_third li.tab6 .tab_header,ul#menu li.mega .tab_header
-  background-image: none
-
-ul, li
-  margin: 0
-  border: 0
-  padding: 0
-  list-style: none
 
 .add_point_endorse
   background-image: url(/assets/buttons/button_add_point_for_up.png) !important
   background-repeat: no-repeat
-  margin-top: -4px !important
-  padding-bottom: 15px !important
-  padding-top: 13px !important
   width: 123px !important
-  margin-right: 5px !important
   height: 35px !important
-  a
-    padding-top: -5px
-
 
 .add_point_oppose
   background-image: url(/assets/buttons/button_add_point_against_up.png) !important
   background-repeat: no-repeat !important
   width: 153px !important
   height: 35px !important
-
-.home_welcome
-  h1
-    float: left
-    margin-bottom: 0px
-    width: 600px

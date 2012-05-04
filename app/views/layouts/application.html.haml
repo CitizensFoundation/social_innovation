@@ -7,8 +7,6 @@
     = render :partial => "shared/head"
     = render :partial => "shared/javascripts"
     = render :partial => "shared/css"
-    - if controller_name == "users"
-      = stylesheet_link_tag "fb_invite_hack"
     - if controller_name == "ideas" and action_name == "show"
       = render :partial=>"ideas/fb_og_tags"
     = tr8n_scripts_tag
