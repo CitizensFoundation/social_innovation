@@ -1,5 +1,3 @@
-= javascript_include_tag "jquery.qtip.min.js"
-= stylesheet_link_tag "jquery.qtip.min.css"
 - if current_sub_instance and current_sub_instance.message_for_new_idea and current_sub_instance.message_for_new_idea!=""
   = render :partial=>"/shared/top_message_box", :locals=> {:message_text => current_sub_instance.message_for_new_idea.html_safe}
 - elsif Instance.current.message_for_new_idea and Instance.current.message_for_new_idea!=""

@@ -1,44 +1,44 @@
-%div.idea_menu
-  %div{:id => "idea_nav<haml:silent> if ['show'].include?(params[:action]) and ['ideas'].include?(params[:controller]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['endorsers'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['opposers'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['everyone_points','neutral_points','opposer_points','endorser_points'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['discussions'].include?(params[:action]) </haml:silent><haml:block>6</haml:block><haml:silent> elsif ['changes'].include?(params[:controller]) </haml:silent><haml:block>7</haml:block><haml:silent> elsif ['activities'].include?(params[:action]) </haml:silent><haml:block>8</haml:block><haml:silent> elsif ['edit','update'].include?(params[:action]) </haml:silent><haml:block>9</haml:block>"}
-    %ul
-      %li
-        = link_to tr("Overview", "view/ideas/_nav"), @idea
+.idea_menu
+  %ul
+    %li
+      = link_to tr("Overview", "view/ideas/_nav"), @idea
       - if @idea.points_count > 0
         %li
           = link_to tr("{count} points", "view/ideas/_nav", :count => @idea.points_count), top_points_idea_url(@idea)
       - else
         %li
-          = link_to tr("New point", "view/ideas/_nav"), new_idea_point_path(@idea)+"?support=1" , :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_nav"), :class => "qtip_left"
+          = link_to tr("New point", "view/ideas/_nav"), new_idea_point_path(@idea)+"?support=1" , :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_nav")
       %li
         - if @idea.discussions_count == 0
           = link_to tr("Discussions", "view/ideas/_nav"), discussions_idea_url(@idea)
         - else
           = link_to tr("{count} discussions", "view/ideas/_nav", :count => @idea.discussions_count), discussions_idea_url(@idea)
-      - if false and @idea.changes_count > 0 or params[:controller] == 'changes'
-        %li
-          = link_to tr("M&A", "view/ideas/_nav"), idea_changes_url(@idea)
+
+    - if false and @idea.changes_count > 0 or params[:controller] == 'changes'
       %li
-        = link_to tr("Feed", "view/ideas/_nav"), activities_idea_url(@idea)
-      - if current_user and current_user.capitals_count>0 and @idea.status == 'published'
-        %li
-          = link_to tr("Buy an ad", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
-      - if current_user and current_user.is_admin?
-        %li.tab2.mega
-          = link_to tr("Action", "view/ideas/_nav"), new_idea_point_path(@idea)
-          .tab_body
-            .box_style
-              = link_to tr("Add a point", "view/ideas/_nav"), new_idea_point_path(@idea), :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_nav"), :class => "qtip_left"
+        = link_to tr("M&A", "view/ideas/_nav"), idea_changes_url(@idea)
+    %li
+      = link_to tr("Feed", "view/ideas/_nav"), activities_idea_url(@idea)
+    - if current_user and current_user.capitals_count>0 and @idea.status == 'published'
+      %li
+        = link_to tr("Buy an ad", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
+    - if current_user and current_user.is_admin?
+      %li.tab2.mega
+        = link_to tr("Action", "view/ideas/_nav"), new_idea_point_path(@idea)
+        .tab_body
+          .box_style
+            = link_to tr("Add a point", "view/ideas/_nav"), new_idea_point_path(@idea), :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_nav"), :class => "qtip_left"
+            %br/
+            - if @idea.status == 'published'
+              = link_to tr("Buy an ad for this idea", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
               %br/
-              - if @idea.status == 'published'
-                = link_to tr("Buy an ad for this idea", "view/ideas/_nav"), new_idea_ad_url(@idea), :title => tr("Spend some of your {currency_name} to put this idea at the top of the page for everyone to consider.", "view/ideas/_nav", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database")), :class => "qtip_left"
+            - if logged_in?
+              - if (current_user.id == @idea.user_id and @idea.endorsements_count < 2) or current_user.is_admin?
+                = link_to tr("Edit this idea", "view/ideas/_nav"), edit_idea_url(@idea), :title => tr("Edit this idea", "view/ideas/_nav"), :class => "qtip_left"
                 %br/
-              - if logged_in?
-                - if (current_user.id == @idea.user_id and @idea.endorsements_count < 2) or current_user.is_admin?
-                  = link_to tr("Edit this idea", "view/ideas/_nav"), edit_idea_url(@idea), :title => tr("Edit this idea", "view/ideas/_nav"), :class => "qtip_left"
-                  %br/
-                - if current_user.is_admin?
-                  = link_to tr("Update this idea's status", "view/ideas/_nav"), update_status_idea_url(@idea), :title => tr("Update this idea's status", "view/ideas/_nav"), :class => "qtip_left"
-                  %br/
-                  = link_to tr("Delete this idea", "view/ideas/_nav"), @idea, :title => tr("Permanently delete this idea", "view/ideas/_nav"), :confirm => tr("Are you sure you want to permanently delete {idea_name}?", "view/ideas/_nav", :idea_name => @idea.name), :method => :delete
-                  %br/
-              %p
+              - if current_user.is_admin?
+                = link_to tr("Update this idea's status", "view/ideas/_nav"), update_status_idea_url(@idea), :title => tr("Update this idea's status", "view/ideas/_nav"), :class => "qtip_left"
+                %br/
+                = link_to tr("Delete this idea", "view/ideas/_nav"), @idea, :title => tr("Permanently delete this idea", "view/ideas/_nav"), :confirm => tr("Are you sure you want to permanently delete {idea_name}?", "view/ideas/_nav", :idea_name => @idea.name), :method => :delete
+                %br/
+= render partial: 'ideas/chart'
