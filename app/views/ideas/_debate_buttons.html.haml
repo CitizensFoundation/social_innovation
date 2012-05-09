@@ -17,7 +17,10 @@
                   :title => tr("Remove from my list of ideas", "view/ideas") |
             %td{:width=>standard_width}
               %span.debate_button{:id=>"debate_button_#{idea.id}"}
-                = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
+                - if @ideas
+                  = tr("DEBATE", "view/ideas")
+                - else
+                  = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
             %td{:width=>standard_width}
               %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
                 = link_to tr("OPPOSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
@@ -39,7 +42,10 @@
                     :class => "idea_add_link1 endorse_grey", :title =>  tr("I support this, add it to my idea list", "view/ideas")                             |
             %td{:width=>standard_width}
               %div.debate_button{:id=>"debate_button_#{idea.id}"}
-                = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
+                - if @ideas
+                  = tr("DEBATE", "view/ideas")
+                - else
+                  = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
             %td{:width=>standard_width}
               %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
                 = link_to tr("OPPOSED", "view/ideas"), endorsement_path(endorsement, :region => region),     |
@@ -62,7 +68,10 @@
                   :class => "idea_add_link1", :title =>  tr("I support this, add it to my idea list", "view/ideas")                             |
           %td{:width=>standard_width}
             %div.debate_button{:id=>"debate_button_#{idea.id}"}
-              = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
+              - if @ideas
+                = tr("DEBATE", "view/ideas")
+              - else
+                = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
           %td{:width=>standard_width}
             %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
               = link_to tr("OPPOSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
@@ -71,4 +80,4 @@
                   'data-loader-name' => "circle",                                                                                                                       |
                   'data-disable-with' => '',                   |
                   :class => "idea_add_link2", :title =>  tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas")      |
-    /= render :partial => "ideas/debate_button_javascript", :locals => { :idea => idea }
+    = render :partial => "ideas/debate_button_javascript", :locals => { :idea => idea } if @ideas
