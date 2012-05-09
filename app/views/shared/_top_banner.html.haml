@@ -1,5 +1,7 @@
-#sib_top_banner
-  %div.background
-    = image_tag SubInstance.current.top_banner.url(:icon_full), :size => "960x100", :border => 0
-  %div.top_navigation
+.header
+  .header-wrap
+    %p.logo
+    = #image_tag SubInstance.current.top_banner.url(:icon_full), :size => "960x100", :border => 0
+    %p.hide
+      %a{:href => "#content"} Skipt to content
     = render :partial => "shared/top_navigation"

@@ -1,31 +1,29 @@
-#sib_top_navigation
-  #topnav.topnav
-    %div
-      = render :partial => "shared/search"
-    %a.new_idea{:href => "/ideas/new"}
-      %span
+.nav.nav-user
+  %ul
+    %li.add
+      %a.button{:href => "/ideas/new"}
         = tr("New idea")
-    - if false and logged_in?
-      %a.notifications{:href => "notifications"}
-        %span
-          = tr("Notification")
+        %span.icn.icn-add
+    %li.signin
     - unless logged_in?
       %a.signin{:href => "login"}
-        %span
-          = tr("Sign in")
+        = tr("Sign in")
     - else
       %a.profile{:href => "profile"}
+        = current_user.login
+    %li.help
+      %a.help{:href => "help"}
         %span
-          = current_user.login
-    %a.help{:href => "help"}
-      %span
-        = tr("Help")
-    - if logged_in?
-      = render :partial => "shared/user_info"
-      = render :partial => "shared/notifications"
-    - else
-      = render :partial => "users/login"
-    = render :partial => "shared/help"
+          = tr("Help")
+    %li.search
+      = render :partial => "shared/search"
+
+- if logged_in?
+  = render :partial => "shared/user_info"
+  = render :partial => "shared/notifications"
+- else
+  = render :partial => "users/login"
+  = render :partial => "shared/help"
 
 :javascript
   $(document).ready(function() {

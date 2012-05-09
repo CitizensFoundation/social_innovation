@@ -1,7 +1,8 @@
 !!!
-%html{:lang => "is", "xml:lang" => "is", :xmlns => "http://www.w3.org/1999/xhtml", "xmlns:fb" => "http://www.facebook.com/2008/fbml"}
+%html{:lang => I18n.locale, "xml:lang" => I18n.locale, :xmlns => "http://www.w3.org/1999/xhtml", "xmlns:fb" => "http://www.facebook.com/2008/fbml"}
   %head
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
     %title= @page_title || tr(current_instance.name,"Name from database")
     = render :partial => "shared/description"
     = render :partial => "shared/head"
@@ -10,20 +11,19 @@
     - if controller_name == "ideas" and action_name == "show"
       = render :partial=>"ideas/fb_og_tags"
     = tr8n_scripts_tag
-  %body{:class => "#{h(controller.controller_name)}-#{h(controller.action_name)}"}
+  %body
     = csrf_meta_tag
-    #sib_container
-      #sib_header
-        = render :partial => "shared/top_banner"
-      #sib_left_menu
-        = render :partial => "shared/side_navigation"
-      #sib_main_content
-        = render :partial => "ads/pick"
-        = flash_div :warning, :notice, :error
-        = render :partial => "shared/sub_navigation"
-        = yield :layout
-        = #render :partial => "shared/sidebar"
-      = render :partial => "shared/footer"
-      = render :partial => "shared/analytics"
-      = render :partial => "shared/facebook_footer"
-      = render :partial => "shared/google_translate"
+    .page
+      = render :partial => "shared/top_banner"
+      .main
+        .nav.nav-main
+          = render :partial => "shared/side_navigation"
+        #content.content
+          .content-wrap.col-group
+            .col-10
+              .col-content
+                = render :partial => "ads/pick"
+                = flash_div :warning, :notice, :error
+                = render :partial => "shared/sub_navigation"
+                = yield :layout
+
