@@ -1,15 +1,20 @@
 #sib_idea_container
-  %div.sib_left
-    %div.sib_category_logo
-      - if idea.category and idea.category.icon
-        = link_to(image_tag(idea.category.icon.url(:icon_50), :size => "50x50", :border => 0), idea.category.to_url,
-                                                   :alt=>tr(idea.category.name,"from_database"), :title=>tr(idea.category.name,"from_database"))
-    %div.sib_position
-      = render :partial => "ideas/idea_rank", :locals => {:idea => idea }
-    %div.sib_idea
-      = render :partial => "ideas/about_idea", :locals => {:idea => idea }
-  %div.sib_right
-    %div.sib_debate_buttons
-      = render :partial => "ideas/debate_buttons", :locals => {:idea => idea, :endorsement => endorsement, :region=>"idea_inline" }
-    %div.sib_social
-      = render :partial => "ideas/idea_social_buttons", :locals => {:idea => idea, :endorsement => endorsement, :region=>"idea_inline" }
+  .col-group
+    .col-1
+      .col-content
+        %div.sib_category_logo
+          - if idea.category and idea.category.icon
+            = link_to(image_tag(idea.category.icon.url(:icon_50), :size => "50x50", :border => 0), idea.category.to_url,
+                                                       :alt=>tr(idea.category.name,"from_database"), :title=>tr(idea.category.name,"from_database"))
+        %div.sib_position
+          = render :partial => "ideas/idea_rank", :locals => {:idea => idea }
+    .col-8
+      .col-content
+        %div.sib_idea
+          = render :partial => "ideas/about_idea", :locals => {:idea => idea }
+    .col-1
+      .col-content
+        %div.sib_debate_buttons
+          = render :partial => "ideas/debate_buttons", :locals => {:idea => idea, :endorsement => endorsement, :region=>"idea_inline" }
+        %div.sib_social
+          = render :partial => "ideas/idea_social_buttons", :locals => {:idea => idea, :endorsement => endorsement, :region=>"idea_inline" }
