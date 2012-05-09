@@ -1,6 +1,6 @@
 #sib_idea_container
   .col-group
-    .col-1
+    .col-2
       .col-content
         %div.sib_category_logo
           - if idea.category and idea.category.icon
@@ -12,7 +12,7 @@
       .col-content
         %div.sib_idea
           = render :partial => "ideas/about_idea", :locals => {:idea => idea }
-    .col-1
+    .col-2
       .col-content
         %div.sib_debate_buttons
           = render :partial => "ideas/debate_buttons", :locals => {:idea => idea, :endorsement => endorsement, :region=>"idea_inline" }

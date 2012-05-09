@@ -1,24 +1,24 @@
-.clearfix
-  .endorse-wrap
-    .best-points
-      .header-add
-        = render partial: "points_header", locals: { idea: @idea, support: true }
-      .sub_header
-        = tr("Points for", "view/ideas/top_points")
-        = get_points_number_text(@points_top_up.length,@total_up_points)
-        %span.separator |
-        = link_to(tr("All points for endorse", "view/ideas/top_points"), endorsed_top_points_idea_url(@idea))
-      #pro_top
-        = render :partial => "points/short_list", :locals => {:id => "pro_top", :points => @points_top_up, :numbering=>true}
-    - unless @points_new_up.empty?
-      .sub_header
-        = tr("Newest Points For", "view/ideas/top_points")
-        = get_points_number_text(@points_new_up.length,@total_up_points_new,true)
-        %span.separator |
-        = link_to(tr("All points for endorse", "view/ideas/top_points"), endorsed_top_points_idea_url(@idea,:by_newest=>true))
-      #pro_new
-        = render :partial => "points/short_list", :locals => {:newest_points=>true, :id => "pro_new", :points => @points_new_up, :numbering=>false}
-  .oppose-wrap
+.col-4
+  .col-content
+    .header-add
+      = render partial: "points_header", locals: { idea: @idea, support: true }
+    .sub_header
+      = tr("Points for", "view/ideas/top_points")
+      = get_points_number_text(@points_top_up.length,@total_up_points)
+      %span.separator |
+      = link_to(tr("All points for endorse", "view/ideas/top_points"), endorsed_top_points_idea_url(@idea))
+    #pro_top
+      = render :partial => "points/short_list", :locals => {:id => "pro_top", :points => @points_top_up, :numbering=>true}
+  - unless @points_new_up.empty?
+    .sub_header
+      = tr("Newest Points For", "view/ideas/top_points")
+      = get_points_number_text(@points_new_up.length,@total_up_points_new,true)
+      %span.separator |
+      = link_to(tr("All points for endorse", "view/ideas/top_points"), endorsed_top_points_idea_url(@idea,:by_newest=>true))
+    #pro_new
+      = render :partial => "points/short_list", :locals => {:newest_points=>true, :id => "pro_new", :points => @points_new_up, :numbering=>false}
+.col-4
+  .col-content
     .header-add
       = render partial: "points_header", locals: { idea: @idea, support: false }
     .sub_header.pro

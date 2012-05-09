@@ -6,7 +6,7 @@
       - if endorsement.is_up?
         %table.debate_buttons_table
           %tr
-            %td{:width=>standard_width}
+            %td
               %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
                 = link_to tr("ENDORSED", "view/ideas"), endorsement_path(endorsement, :region => region),     |
                   :method => :delete,                                                                |
@@ -15,13 +15,15 @@
                   'data-loader-name' => "spinner",                                                   |
                   :class => "idea_add_link1",                                                  |
                   :title => tr("Remove from my list of ideas", "view/ideas") |
-            %td{:width=>standard_width}
+          %tr
+            %td
               %span.debate_button{:id=>"debate_button_#{idea.id}"}
                 - if @ideas
                   = tr("DEBATE", "view/ideas")
                 - else
                   = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
-            %td{:width=>standard_width}
+          %tr
+            %td
               %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
                 = link_to tr("OPPOSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
                     :method => :post,                                                                                                                                        |
@@ -29,6 +31,7 @@
                     'data-loader-name' => "circle",                                                                                                                       |
                     'data-disable-with' => '',                   |
                     :class => "idea_add_link2 oppose_grey", :title =>  tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas")      |
+
       - else
         %table.debate_buttons_table
           %tr
@@ -40,13 +43,15 @@
                     'data-loader-name' => "circle",                                                                                                                       |
                     'data-disable-with' => '',                   |
                     :class => "idea_add_link1 endorse_grey", :title =>  tr("I support this, add it to my idea list", "view/ideas")                             |
-            %td{:width=>standard_width}
+          %tr
+            %td
               %div.debate_button{:id=>"debate_button_#{idea.id}"}
                 - if @ideas
                   = tr("DEBATE", "view/ideas")
                 - else
                   = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
-            %td{:width=>standard_width}
+          %tr
+            %td
               %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
                 = link_to tr("OPPOSED", "view/ideas"), endorsement_path(endorsement, :region => region),     |
                   :method => :delete,                                                                |
@@ -55,10 +60,11 @@
                   'data-loader-name' => "spinner",                                                   |
                   :class => "idea_add_link2",                                                  |
                   :title => tr("Remove from my list of ideas", "view/ideas") |
+
     - else
       %table.debate_buttons_table
         %tr
-          %td{:width=>standard_width}
+          %td
             %span.idea_add{:id => "idea_add_endorse_#{idea.id.to_s}"}
               = link_to tr("ENDORSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
                   :method => :post,                                                                                                                                        |
@@ -66,13 +72,15 @@
                   'data-loader-name' => "circle",                                                                                                                       |
                   'data-disable-with' => "<id style='width: 90px;'></id>",                   |
                   :class => "idea_add_link1", :title =>  tr("I support this, add it to my idea list", "view/ideas")                             |
-          %td{:width=>standard_width}
+        %tr
+          %td
             %div.debate_button{:id=>"debate_button_#{idea.id}"}
               - if @ideas
                 = tr("DEBATE", "view/ideas")
               - else
                 = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
-          %td{:width=>standard_width}
+        %tr
+          %td
             %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
               = link_to tr("OPPOSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
                   :method => :post,                                                                                                                                        |
@@ -80,4 +88,5 @@
                   'data-loader-name' => "circle",                                                                                                                       |
                   'data-disable-with' => '',                   |
                   :class => "idea_add_link2", :title =>  tr("I oppose this, and want to add my opposition to my idea list.", "view/ideas")      |
+
     = render :partial => "ideas/debate_button_javascript", :locals => { :idea => idea } if @ideas

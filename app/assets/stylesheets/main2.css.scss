@@ -675,11 +675,11 @@ pre {
   line-height: 1em;
 }
 ul, ol {
-  margin: 1em 0;
-  padding: 0 0 0 1.4em;
+  margin: 0;
+  padding: 0;
 }
 ul {
-  padding: 0 0 0 1.2em;
+  padding: 0;
 }
 ul.inline, ol.inline {
   padding: 0;
@@ -687,6 +687,11 @@ ul.inline, ol.inline {
 .inline li {
   display: inline;
 }
+
+li {
+  list-style-type: none;
+}
+
 a, a:visited {
   text-decoration: none;
   color: #454bcc;
