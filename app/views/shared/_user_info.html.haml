@@ -18,6 +18,55 @@
           #user_info_box_picture
             = link_to :controller=>"settings", :action=>"picture" do
               = render :partial => "users/pic_48", :locals => {:user => current_user}
+      %tr
+        %td{:style=>"colspan 2"}
+          - if logged_in? and current_user.is_admin?
+            %ul#menu
+              %li.tab6.mega
+                %span.tab_header
+                  = link_to tr("Settings", "view/shared/_menu"), "#"
+                .tab_body
+                  - if logged_in? and current_user.is_admin?
+                    .tab_subhead
+                      = link_to tr("Setup a sub_instance", "view/shared/_menu"), sub_instances_url
+                  - if logged_in? and current_user.is_admin? and SubInstance.current
+                    .tab_subhead
+                      = link_to tr("SubInstance settings", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+                  .tab_sublinks
+                    - if logged_in? and current_user.is_admin? and SubInstance.current
+                      = link_to tr("SubInstance account", "view/shared/_menu"), edit_sub_instance_url(SubInstance.current)
+                      \&middot; #{link_to tr("Logo", "view/shared/_menu"), picture_sub_instance_path(SubInstance.current)}
+                      \&middot; #{link_to tr("Email list", "view/shared/_menu"), email_sub_instance_path(SubInstance.current)}
+                  - if current_user.is_admin?
+                    .tab_subhead
+                      = link_to tr("Nation settings", "view/shared/_menu"), edit_instance_url(current_instance)
+                    .tab_sublinks
+                      = link_to tr("Categories", "view/shared/_menu"), "/categories"
+                      \&middot;
+                      \#{link_to tr("Settings", "view/shared/_menu"), edit_instance_url(current_instance)}
+                      \&middot;
+                      \#{link_to tr("All Flagged", "view/shared/_menu"), "/admin/all_flagged"}
+                      \&middot;
+                      - if current_instance.is_tags?
+                        \&middot; #{link_to current_instance.tags_name.pluralize.titleize, tags_url}
+                      \&middot; #{link_to tr("API keys", "view/shared/_menu"), apis_instance_url(current_instance)}
+                      %br/
+                      = link_to tr("Pages", "view/shared/_menu"), pages_url
+                      \&middot;
+                      %br/
+                      = link_to tr("Graphics", "view/shared/_menu"), :controller => "admin", :action => "picture"
+                      \&middot; #{link_to tr("Colors", "view/shared/_menu"), color_schemes_url}
+                      %br/
+                      = link_to tr("Unverified users", "view/network/_nav"), :controller => "network", :action => "unverified"
+                      %br/
+                      = link_to tr("Warnings users", "view/network/_nav"), :controller => "network", :action => "warnings"
+                      %br/
+                      = link_to tr("Suspended users", "view/network/_nav"), :controller => "network", :action => "suspended"
+                      %br/
+                      = link_to tr("Probation users", "view/network/_nav"), :controller => "network", :action => "probation"
+                      %br/
+                      = link_to tr("Deleted users", "view/network/_nav"), :controller => "network", :action => "deleted"
+
     - if current_user.warnings_count > 0
       #warning
         - if current_user.warnings_count > 1
