@@ -50,9 +50,9 @@
 - if nav == 1
 - elsif nav == 6
   - if ['instances','color_schemes','admin','pages','tags'].include?(params[:controller])
-    = render :partial => "admin/nav"
+    = #render :partial => "admin/nav"
   - elsif ['sub_instances'].include?(params[:controller]) and logged_in?
-    = render :partial => "sub_instances/nav"
+    = #render :partial => "sub_instances/nav"
   - elsif logged_in?
     = render :partial => "settings/nav"
 - elsif nav == 7
