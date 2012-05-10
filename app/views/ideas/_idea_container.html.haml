@@ -8,6 +8,8 @@
                                                        :alt=>tr(idea.category.name,"from_database"), :title=>tr(idea.category.name,"from_database"))
         %div.sib_position
           = render :partial => "ideas/idea_rank", :locals => {:idea => idea }
+        %div{:style=>"float: left;"}
+          = render :partial => "ideas/idea_endorsements_overview", :locals => {:idea => idea }
     .col-8
       .col-content
         %div.sib_idea
