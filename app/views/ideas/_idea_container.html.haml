@@ -4,7 +4,7 @@
       .col-content
         %div.sib_category_logo
           - if idea.category and idea.category.icon
-            = link_to(image_tag(idea.category.icon.url(:icon_50), :size => "50x50", :border => 0), idea.category.to_url,
+            = link_to(image_tag(idea.category.icon.url(:icon_50), :size => "40x40", :border => 0), idea.category.to_url,
                                                        :alt=>tr(idea.category.name,"from_database"), :title=>tr(idea.category.name,"from_database"))
         %div.sib_position
           = render :partial => "ideas/idea_rank", :locals => {:idea => idea }

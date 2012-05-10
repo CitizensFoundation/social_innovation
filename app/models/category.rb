@@ -1,7 +1,7 @@
 class Category < ActiveRecord::Base
   has_many :ideas
   has_many :blog_posts
-  has_attached_file :icon, :styles => { :icon_32 => "32x32#", :icon_25 => "25x25#", :icon_50  => "50x50#", :icon_100 => "100x100#" }
+  has_attached_file :icon, :styles => { :icon_32 => "32x32#", :icon_25 => "25x25#", :icon_40  => "40x40#", :icon_50  => "50x50#", :icon_100 => "100x100#" }
 
   validates_attachment_size :icon, :less_than => 5.megabytes
   validates_attachment_content_type :icon, :content_type => ['image/png']

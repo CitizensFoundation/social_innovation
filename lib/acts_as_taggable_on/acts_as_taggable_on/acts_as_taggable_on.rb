@@ -67,7 +67,7 @@ module ActiveRecord
           
           if respond_to?(:tag_types)
             class_attribute :tag_types
-            self.tag_types = (tag_types + args).uniq
+            self.tag_types = (tag_types + args).uniq if args and tag_types
           else
             self.class_eval do
               class_attribute :tag_types
