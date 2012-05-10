@@ -3,8 +3,6 @@
     %ul
       %li
         = link_to tr("Overview", "view/ideas/_nav"), @idea
-      = render :partial => "ideas/endorser_link"
-      = render :partial => "ideas/opposer_link"
       - if @idea.points_count > 0
         %li
           = link_to tr("{count} points", "view/ideas/_nav", :count => @idea.points_count), top_points_idea_url(@idea)
