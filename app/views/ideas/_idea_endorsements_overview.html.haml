@@ -2,8 +2,3 @@
   = link_to (idea.up_endorsements_count.to_s + ' ' + tr("endorsed", "view/ideas/_endorsement_count")).html_safe, idea.show_endorsers_url
   %br
   = link_to (idea.down_endorsements_count.to_s + ' ' + tr("opposed", "view/ideas/_endorsement_count")).html_safe, idea.show_opposers_url
-  %br
-  - if idea.points_count > 0
-    = link_to tr("{count} points", "view/ideas/_nav", :count => idea.points_count), top_points_idea_url(idea)
-  - else
-    = link_to tr("New point", "view/ideas/_nav"), new_idea_point_path(idea)+"?support=1" , :title => tr("Can you make a compelling point for or against this idea in less than 500 characters?", "view/ideas/_nav"), :class => "qtip_left"
