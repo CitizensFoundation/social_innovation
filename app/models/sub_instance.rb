@@ -8,7 +8,7 @@ class SubInstance < ActiveRecord::Base
   
   belongs_to :picture
 
-  has_attached_file :top_banner, :styles => { :icon_full => "980x100#" }
+  has_attached_file :top_banner, :styles => { :icon_full => "1024x80#" }
   validates_attachment_size :top_banner, :less_than => 5.megabytes
   validates_attachment_content_type :top_banner, :content_type => ['image/jpeg', 'image/png', 'image/gif']
 
