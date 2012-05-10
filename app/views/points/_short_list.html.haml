@@ -3,12 +3,10 @@
   - if @qualities
     - quality = @qualities.detect { |e| e.point_id == point.id }
   .point_item
-    %h3.point_item_hacky
+    %h3
       = numbering ? "#{i+1}. " : ""
       = link_to_unless_current tg(h(point.name)), point
-    = render :partial=>"points/report_content", :locals=>{:point=>point}
-    = render :partial=>"points/flagged", :locals=>{:point=>point}
-    .point_byline
+    .small_text
       = tr("by {author_sentence}", "view/points/_short_list", :author_sentence => point.author_sentence)
       = tr("added {time_ago}", "view/points/_short_list", :time_ago => time_ago(point.created_at))
       %span.point_edit
@@ -23,5 +21,10 @@
       .point_source
         = tr("Source:", "view/points/_show")
         %a{:href => point.website_link}= truncate(point.website_link, :length=>70)
+    = render :partial=>"points/report_content", :locals=>{:point=>point}
+    = render :partial=>"points/flagged", :locals=>{:point=>point}
     .point_qualities
       = render :partial => "points/button_small", :locals => {:newest_points=>defined?(newest_points) ? true : false, :point => point, :quality => quality}
+    %br
+    %hr
+    %br
