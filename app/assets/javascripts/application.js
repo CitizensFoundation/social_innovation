@@ -51,15 +51,13 @@ jQuery(document).ready(function() {
   jQuery('a[data-remote]').live("ajax:beforeSend", function(){
       var $clicked = $(this);
       $disable_with = $clicked.attr("data-disable-with");
-      if ($clicked.attr("data-loader-name")!="no_loader") {
-        $loader_name = $clicked.attr("data-loader-name");
-        $clicked.replaceWith($disable_with+' <img src=\"/assets/ajax/'+$loader_name+'.gif\">');
-
-      } else if ($clicked.attr("data-loader-name")!="external_spinner") {
+      if ($clicked.attr("data-loader-name")=="external_spinner") {
         $($disable_with).html('<img src=\"/assets/ajax/spinner.gif\">');
+      } else if ($clicked.attr("data-loader-name")!="no_loader") {
+        $loader_name = $clicked.attr("data-loader-name");
+        $clicked.replaceWith($disable_with+'<img src=\"/assets/ajax/'+$loader_name+'.gif\">');
+    // $clicked.href("#")
       }
-
-    // $clicked.href("#");
     });
 
 	var isChrome = /Chrome/.test(navigator.userAgent);
