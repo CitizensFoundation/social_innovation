@@ -54,8 +54,9 @@ jQuery(document).ready(function() {
       if ($clicked.attr("data-loader-name")!="no_loader") {
         $loader_name = $clicked.attr("data-loader-name");
         $clicked.replaceWith($disable_with+' <img src=\"/assets/ajax/'+$loader_name+'.gif\">');
-      } else {
-        $clicked.replaceWith($disable_with);
+
+      } else if ($clicked.attr("data-loader-name")!="external_spinner") {
+        $($disable_with).html('<img src=\"/assets/ajax/spinner.gif\">');
       }
 
     // $clicked.href("#");
