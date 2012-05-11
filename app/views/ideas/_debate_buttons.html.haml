@@ -21,7 +21,7 @@
                 - if @ideas
                   = tr("DEBATE (7)", "view/ideas")
                 - else
-                  = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
+                  = link_to tr("DEBATE (7)", "view/ideas"), new_idea_point_path(idea)
           %tr
             %td
               %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
@@ -37,7 +37,7 @@
           %tr
             %td{:width=>standard_width}
               %span.idea_add.endorse_grey{:id => "idea_add_endorse_#{idea.id.to_s}"}
-                = link_to tr("ENDORSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
+                = link_to tr("ENDORSE (153)", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
                     :method => :post,                                                                                                                                        |
                     :remote => true,                                                                                                                                         |
                     'data-loader-name' => "circle",                                                                                                                       |
@@ -47,13 +47,13 @@
             %td
               %div.debate_button{:id=>"debate_button_#{idea.id}"}
                 - if @ideas
-                  = tr("DEBATE", "view/ideas")
+                  = tr("DEBATE (7)", "view/ideas")
                 - else
-                  = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
+                  = link_to tr("DEBATE (7)", "view/ideas"), new_idea_point_path(idea)
           %tr
             %td
               %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
-                = link_to tr("OPPOSED", "view/ideas"), endorsement_path(endorsement, :region => region),     |
+                = link_to tr("OPPOSED (13)", "view/ideas"), endorsement_path(endorsement, :region => region),     |
                   :method => :delete,                                                                |
                   :remote=>true,                                                                     |
                   'data-disable-with' => "",                                                         |
@@ -66,7 +66,7 @@
         %tr
           %td
             %span.idea_add{:id => "idea_add_endorse_#{idea.id.to_s}"}
-              = link_to tr("ENDORSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
+              = link_to tr("ENDORSE (153)", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => 1), |
                   :method => :post,                                                                                                                                        |
                   :remote => true,                                                                                                                                         |
                   'data-loader-name' => "circle",                                                                                                                       |
@@ -76,13 +76,13 @@
           %td
             %div.debate_button{:id=>"debate_button_#{idea.id}"}
               - if @ideas
-                = tr("DEBATE", "view/ideas")
+                = tr("DEBATE (7)", "view/ideas")
               - else
-                = link_to tr("DEBATE", "view/ideas"), new_idea_point_path(idea)
+                = link_to tr("DEBATE (7)", "view/ideas"), new_idea_point_path(idea)
         %tr
           %td
             %span.idea_add{:id => "idea_add_oppose_#{idea.id.to_s}"}
-              = link_to tr("OPPOSE", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
+              = link_to tr("OPPOSE (13)", "view/ideas"), endorse_idea_path(idea, :referral_id => (@user || nil), :region => region, :value => -1), |
                   :method => :post,                                                                                                                                        |
                   :remote => true,                                                                                                                                         |
                   'data-loader-name' => "circle",                                                                                                                       |
