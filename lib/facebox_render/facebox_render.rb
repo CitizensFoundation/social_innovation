@@ -1,26 +1,38 @@
 module FaceboxRender
-  
+
   def render_to_facebox( options = {} )
-    options[:template] = "#{default_template_name}" if options.empty?
-    
-    action_string = render_to_string(:action => options[:action], :layout => false) if options[:action]
-    template_string = render_to_string(:template => options[:template], :layout => false) if options[:template]
-    
+    l = options.delete(:layout) { false }
+
+    if options[:action]
+      s = render_to_string(:action => options[:action], :layout => l)
+    elsif options[:template]
+      s = render_to_string(:template => options[:template], :layout => l)
+    elsif !options[:partial] && !options[:html]
+      s = render_to_string(:layout => l)
+    end
+
     render :update do |page|
-      page << "jQuery.facebox(#{action_string.to_json})" if options[:action]
-      page << "jQuery.facebox(#{template_string.to_json})" if options[:template]
-      page << "jQuery.facebox(#{(render :partial => options[:partial]).to_json})" if options[:partial]
-      page << "jQuery.facebox(#{options[:html].to_json})" if options[:html]
-      
+      if options[:action]
+        page << "jQuery.facebox(#{s.to_json})"
+      elsif options[:template]
+        page << "jQuery.facebox(#{s.to_json})"
+      elsif options[:partial]
+        page << "jQuery.facebox(#{(render :partial => options[:partial]).to_json})"
+      elsif options[:html]
+        page << "jQuery.facebox(#{options[:html].to_json})"
+      else
+        page << "jQuery.facebox(#{s.to_json})"
+      end
+
       if options[:msg]
         page << "jQuery('#facebox .content').prepend('<div class=\"message\">#{options[:msg]}</div>')"
       end
-          
+
       yield(page) if block_given?
-      
+
     end
   end
-  
+
   # close an existed facebox, you can pass a block to update some messages
   def close_facebox
     render :update do |page|
@@ -35,5 +47,12 @@ module FaceboxRender
       page.redirect_to url
     end
   end
-  
+
+  # redirect to another facebox page
+  def redirect_to_facebox(url)
+    render :update do |page|
+      page << "$.getScript('#{url}')"
+    end
+  end
+
 end

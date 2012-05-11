@@ -41,7 +41,7 @@ jQuery(function ($) {
 
 
 jQuery(document).ready(function() {
-  jQuery('form[data-remote]').bind("ajax:before", function(){
+    jQuery('form[data-remote]').bind("ajax:before", function(){
     for (instance in CKEDITOR.instances){
       CKEDITOR.instances[instance].updateElement();
     }

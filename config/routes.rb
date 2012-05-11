@@ -82,6 +82,7 @@ SocialInnovation::Application.routes.draw do
 
   resources :ideas do
   	member do
+      get :statistics
       put :flag_inappropriate
       get :flag
       put :bury

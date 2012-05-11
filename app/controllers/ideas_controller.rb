@@ -993,6 +993,14 @@ class IdeasController < ApplicationController
     end
   end
 
+  def statistics
+    @idea = Idea.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js { render_to_facebox }
+    end
+  end
+
   private
   
     def get_endorsements
