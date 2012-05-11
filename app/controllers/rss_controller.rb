@@ -30,7 +30,7 @@ class RssController < ApplicationController
     @activities = nil
     created_idea_ids = @user.created_ideas.collect{|p|p.id}
     if created_idea_ids.any?
-      @activities = Activity.active.filtered.by_recently_created.paginate :conditions => ["idea_id in (?)",created_idea_ids], :page => params[:page], :per_page => params[:per_page]
+      @activities = Activity.active.by_recently_created.paginate :conditions => ["idea_id in (?)",created_idea_ids], :page => params[:page], :per_page => params[:per_page]
     end
     respond_to do |format|
       format.rss { render :template => "rss/activities" }

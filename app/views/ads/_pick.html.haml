@@ -5,7 +5,7 @@
       #notification_show
         = render :partial => "ads/show", :locals => {:ad => ad }
 - else
-  - ad = Ad.active.filtered.by_random.first
+  - ad = Ad.active.by_random.first
   - if ad
     #encouragements
       #notification_show

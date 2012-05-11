@@ -106,7 +106,7 @@ class Instance < ActiveRecord::Base
   
   def update_counts
     self.users_count = User.count
-    self.ideas_count = Idea.published.filtered.count
+    self.ideas_count = Idea.published.count
     self.endorsements_count = Endorsement.active_and_inactive.count
     self.sub_instances_count = SubInstance.active.count
     self.points_count = Point.published.count

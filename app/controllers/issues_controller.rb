@@ -7,7 +7,7 @@ class IssuesController < ApplicationController
   def index
     @page_title =  tr("Categories", "controller/issues")
     #if request.format != 'html' or current_instance.tags_page == 'list'
-    @categories = Category.all.collect { |category| t = Tag.filtered.find_by_name(category.name) }.select { |t| t != nil }
+    @categories = Category.all.collect { |category| t = Tag.find_by_name(category.name) }.select { |t| t != nil }
     @sub_instance_tags = []
     if current_sub_instance.required_tags
       sub_instance_tags = {}
@@ -19,9 +19,9 @@ class IssuesController < ApplicationController
       @sub_instance_tags = sub_instance_tags.keys.collect { |t| Tag.find_by_name(t) }
     end
     if default_tags and default_tags.length>1
-      @issues = Tag.filtered.not_in_default_tags(@sub_instance_tags.collect { |t| t.slug }).not_in_default_tags(@categories.collect { |c| c.slug }).not_in_default_tags(default_tags).most_ideas.paginate(:page => params[:page], :per_page => params[:per_page])
+      @issues = Tag.not_in_default_tags(@sub_instance_tags.collect { |t| t.slug }).not_in_default_tags(@categories.collect { |c| c.slug }).not_in_default_tags(default_tags).most_ideas.paginate(:page => params[:page], :per_page => params[:per_page])
     else
-      @issues = Tag.filtered.not_in_default_tags(@sub_instance_tags.collect { |t| t.slug }).not_in_default_tags(@categories.collect { |c| c.slug }).most_ideas.paginate(:page => params[:page], :per_page => params[:per_page])
+      @issues = Tag.not_in_default_tags(@sub_instance_tags.collect { |t| t.slug }).not_in_default_tags(@categories.collect { |c| c.slug }).most_ideas.paginate(:page => params[:page], :per_page => params[:per_page])
     end
     respond_to do |format|
       format.html {
@@ -42,7 +42,7 @@ class IssuesController < ApplicationController
       redirect_to "/" and return 
     end
     @page_title = tr("{tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.filtered.tagged_with(@tag_names, :on => :issues).published.top_rank.paginate(:page => params[:page], :per_page => params[:per_page])
+    @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.top_rank.paginate(:page => params[:page], :per_page => params[:per_page])
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -91,7 +91,7 @@ class IssuesController < ApplicationController
   
   def network
     @page_title = tr("Your network's {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @tag_ideas = Idea.published.filtered.tagged_with(@tag_names, :on => :issues)
+    @tag_ideas = Idea.published.tagged_with(@tag_names, :on => :issues)
     if @user.followings_count > 0
       @ideas = Endorsement.active.find(:all,
         :select => "endorsements.idea_id, sum((#{Endorsement.max_position+1}-endorsements.position)*endorsements.value) as score, count(*) as endorsements_number, ideas.*",
@@ -192,7 +192,7 @@ class IssuesController < ApplicationController
   def discussions
     @page_title = tr("Discussions on {tag_name}", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
     @ideas = Idea.tagged_with(@tag_names, :on => :issues)
-    @activities = Activity.filtered.active.filtered.discussions.for_all_users.by_recently_updated.find(:all, :conditions => ["idea_id in (?)",@ideas.collect{|p| p.id}]).paginate :page => params[:page], :per_page => params[:per_page], :per_page => 10
+    @activities = Activity.active.discussions.for_all_users.by_recently_updated.find(:all, :conditions => ["idea_id in (?)",@ideas.collect{|p| p.id}]).paginate :page => params[:page], :per_page => params[:per_page], :per_page => 10
     respond_to do |format|
       format.html
       format.xml { render :xml => @activities.to_xml(:include => :comments, :except => NB_CONFIG['api_exclude_fields']) }
@@ -202,8 +202,8 @@ class IssuesController < ApplicationController
 
   def points
     @page_title = tr("{tag_name} points", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.filtered.tagged_with(@tag_names, :on => :issues)
-    @points = Point.filtered.by_helpfulness.find(:all, :conditions => ["idea_id in (?)",@ideas.collect{|p| p.id}]).paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.tagged_with(@tag_names, :on => :issues)
+    @points = Point.by_helpfulness.find(:all, :conditions => ["idea_id in (?)",@ideas.collect{|p| p.id}]).paginate :page => params[:page], :per_page => params[:per_page]
     @qualities = nil
     if logged_in? and @points.any? # pull all their qualities on the points shown
       @qualities = PointQuality.find(:all, :conditions => ["point_id in (?) and user_id = ? ", @points.collect {|c| c.id},current_user.id])
@@ -223,10 +223,10 @@ class IssuesController < ApplicationController
 
   def set_counts
     if @tag_names
-      ideas = Idea.filtered.tagged_with(@tag_names, :on => :issues).published.only_ids
+      ideas = Idea.tagged_with(@tag_names, :on => :issues).published.only_ids
       @ideas_count = ideas.count
-      @points_count = Point.filtered.by_helpfulness.count(:all, :conditions => ["idea_id in (?)",ideas.collect{|p| p.id}])
-      @discussions_count = Activity.filtered.active.filtered.discussions.for_all_users.by_recently_updated.count(:all, :conditions => ["idea_id in (?)",ideas.collect{|p| p.id}])
+      @points_count = Point.by_helpfulness.count(:all, :conditions => ["idea_id in (?)",ideas.collect{|p| p.id}])
+      @discussions_count = Activity.active.discussions.for_all_users.by_recently_updated.count(:all, :conditions => ["idea_id in (?)",ideas.collect{|p| p.id}])
     end
   end
   def get_tag_names

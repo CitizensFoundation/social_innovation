@@ -506,7 +506,7 @@ class User < ActiveRecord::Base
   
   def pick_ad(current_idea_ids)
   	shown = 0
-  	for ad in Ad.active.filtered.most_paid.all
+  	for ad in Ad.active.most_paid.all
   		if shown == 0 and not current_idea_ids.include?(ad.idea_id)
   			shown_ad = ad.shown_ads.find_by_user_id(self.id)
   			if shown_ad and not shown_ad.has_response? and shown_ad.seen_count < 4
@@ -1124,7 +1124,7 @@ class User < ActiveRecord::Base
     top_category_score = {}
     Category.all.each do |category|
       category = Tag.find_by_name(category.name)
-      top_ideas[category] = Idea.filtered.tagged_with(category, :on => :issues).published.top_rank.limit(3)
+      top_ideas[category] = Idea.tagged_with(category, :on => :issues).published.top_rank.limit(3)
       top_category_score[category] = top_ideas[category].shift.score
       top_ideas[category].each do |idea|
         idea_followers[idea.id] = all_endorsers_and_opposers_for_idea(idea.id).collect { |u| u.id }

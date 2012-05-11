@@ -22,7 +22,7 @@ class IdeasController < ApplicationController
   # GET /ideas
   def index
     if params[:term] and request.xhr?
-      ideas = Idea.published.filtered.find(:all, :select => "ideas.name", :conditions => ["name LIKE ?", "%#{params[:term]}%"], :order => "endorsements_count desc")
+      ideas = Idea.published.find(:all, :select => "ideas.name", :conditions => ["name LIKE ?", "%#{params[:term]}%"], :order => "endorsements_count desc")
       idea_links = []
       ideas.each do |idea|
         idea_links << view_context.link_to(idea.name, idea_path(idea))
@@ -134,7 +134,7 @@ class IdeasController < ApplicationController
   # GET /ideas/ads
   def ads
     @page_title = tr("Ads running at {instance_name}", "controller/ideas", :instance_name => tr(current_instance.name,"Name from database"))
-    @ads = Ad.filtered.active_first.paginate :include => [:user, :idea], :page => params[:page], :per_page => params[:per_page]
+    @ads = Ad.active_first.paginate :include => [:user, :idea], :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html
       format.xml { render :xml => @ads.to_xml(:include => [:idea], :except => NB_CONFIG['api_exclude_fields']) }
@@ -175,7 +175,7 @@ class IdeasController < ApplicationController
   def official
     @page_title = tr("{official_user_name} ideas", "controller/ideas", :instance_name => tr(current_instance.name,"Name from database"), :official_user_name => current_instance.official_user.name.possessive)
     @rss_url = official_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.official_endorsed.top_rank.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.official_endorsed.top_rank.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -190,7 +190,7 @@ class IdeasController < ApplicationController
   def top
     @page_title = tr("Top ideas", "controller/ideas")
     @rss_url = top_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.top_rank.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.top_rank.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -205,7 +205,7 @@ class IdeasController < ApplicationController
   def top_24hr
     @page_title = tr("Top ideas past 24 hours", "controller/ideas")
     @rss_url = top_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.top_24hr.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.top_24hr.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -220,7 +220,7 @@ class IdeasController < ApplicationController
   def top_7days
     @page_title = tr("Top ideas past 7 days", "controller/ideas")
     @rss_url = top_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.top_7days.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.top_7days.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -235,7 +235,7 @@ class IdeasController < ApplicationController
   def top_30days
     @page_title = tr("Top ideas past 30 days", "controller/ideas")
     @rss_url = top_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.top_30days.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.top_30days.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -250,7 +250,7 @@ class IdeasController < ApplicationController
   def rising
     @page_title = tr("Ideas rising in the rankings", "controller/ideas")
     @rss_url = rising_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.rising.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.rising.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -265,7 +265,7 @@ class IdeasController < ApplicationController
   def falling
     @page_title = tr("Ideas falling in the rankings", "controller/ideas")
     @rss_url = falling_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.falling.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.falling.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -280,7 +280,7 @@ class IdeasController < ApplicationController
   def controversial
     @page_title = tr("Most controversial ideas", "controller/ideas")
     @rss_url = controversial_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.controversial.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.controversial.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -309,9 +309,9 @@ class IdeasController < ApplicationController
   def random
     @page_title = tr("Random ideas", "controller/ideas")
     if User.adapter == 'postgresql'
-      @ideas = Idea.published.filtered.paginate :order => "RANDOM()", :page => params[:page], :per_page => params[:per_page]
+      @ideas = Idea.published.paginate :order => "RANDOM()", :page => params[:page], :per_page => params[:per_page]
     else
-      @ideas = Idea.published.filtered.paginate :order => "rand()", :page => params[:page], :per_page => params[:per_page]
+      @ideas = Idea.published.paginate :order => "rand()", :page => params[:page], :per_page => params[:per_page]
     end
     get_endorsements
     respond_to do |format|
@@ -327,7 +327,7 @@ class IdeasController < ApplicationController
   def newest
     @page_title = tr("Newest ideas", "controller/ideas")
     @rss_url = newest_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.newest.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.newest.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html
@@ -342,7 +342,7 @@ class IdeasController < ApplicationController
   def untagged
     @page_title = tr("Untagged (or uncategorized) ideas", "controller/ideas")
     @rss_url = untagged_ideas_url(:format => 'rss')
-    @ideas = Idea.published.filtered.untagged.paginate :page => params[:page], :per_page => params[:per_page]
+    @ideas = Idea.published.untagged.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }

@@ -16,7 +16,7 @@ class PointsController < ApplicationController
  
   def your_index
     @page_title = tr("Your points", "controller/points", :instance_name => tr(current_instance.name,"Name from database"))
-    @points = Point.filtered.published.by_recently_created.paginate :conditions => ["user_id = ?", current_user.id], :include => :idea, :page => params[:page], :per_page => params[:per_page]
+    @points = Point.published.by_recently_created.paginate :conditions => ["user_id = ?", current_user.id], :include => :idea, :page => params[:page], :per_page => params[:per_page]
     get_qualities
     respond_to do |format|
       format.html { render :action => "index" }
@@ -27,7 +27,7 @@ class PointsController < ApplicationController
   
   def newest
     @page_title = tr("Newest points", "controller/points", :instance_name => tr(current_instance.name,"Name from database"))
-    @points = Point.filtered.published.by_recently_created.paginate :include => :idea, :page => params[:page], :per_page => params[:per_page]
+    @points = Point.published.by_recently_created.paginate :include => :idea, :page => params[:page], :per_page => params[:per_page]
     @rss_url = url_for :only_path => false, :format => "rss"
     get_qualities
     respond_to do |format|

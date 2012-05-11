@@ -194,19 +194,19 @@ class IdeaRanker
     # make sure the scores for all the positions above the max position are set to 0
     Endorsement.update_all("score = 0", "position > #{Endorsement.max_position}")      
     # get the last version # for the different time lengths
-    v = Ranking.filtered.find(:all, :select => "max(version) as version")[0]
+    v = Ranking.find(:all, :select => "max(version) as version")[0]
     if v
      v = v.version || 0
      v+=1
     else
      v = 1
     end
-    oldest = Ranking.filtered.find(:all, :select => "max(version) as version")[0].version
+    oldest = Ranking.find(:all, :select => "max(version) as version")[0].version
     v_1hr = oldest
     v_24hr = oldest
-    r = Ranking.filtered.find(:all, :select => "max(version) as version", :conditions => "created_at < '#{Time.now-1.hour}'")[0]
+    r = Ranking.find(:all, :select => "max(version) as version", :conditions => "created_at < '#{Time.now-1.hour}'")[0]
     v_1hr = r.version if r
-    r = Ranking.filtered.find(:all, :select => "max(version) as version", :conditions => "created_at < '#{Time.now-1.hour}'")[0]
+    r = Ranking.find(:all, :select => "max(version) as version", :conditions => "created_at < '#{Time.now-1.hour}'")[0]
     v_24hr = r.version if r
 
     ideas = Idea.find_by_sql("
@@ -288,7 +288,7 @@ class IdeaRanker
     Idea.connection.execute("update ideas set position = 0, trending_score = 0, is_controversial = false, controversial_score = 0, score = 0 where endorsements_count = 0;")
 
     # check if there's a new fastest rising idea
-    rising = Idea.filtered.published.rising.all[0]
+    rising = Idea.published.rising.all[0]
     ActivityIdeaRising1.find_or_create_by_idea_id(rising.id) if rising
     SubInstance.current = nil
   end

@@ -5,7 +5,7 @@ class AdsController < ApplicationController
   
   # GET /ideas/1/ads
   def index
-    @ads = @idea.ads.filtered.by_recently_created.paginate :page => params[:page], :per_page => params[:per_page]
+    @ads = @idea.ads.by_recently_created.paginate :page => params[:page], :per_page => params[:per_page]
     @page_title = tr("All ads for {idea_name}", "controller/ads", :idea_name => @idea.name)
     respond_to do |format|
       format.html { redirect_to idea_url(@idea) }
