@@ -99,9 +99,13 @@ class SubInstance < ActiveRecord::Base
   ReservedShortnames = %w[admin blog ftp mail pop pop3 imap smtp stage stats status www localize feedback facebook]
   validates_exclusion_of :short_name, :in => ReservedShortnames, :message => tr('is already taken',"")
 
-  def self.current  
-    Thread.current[:sub_instance]
-  end  
+  def self.current
+    if Thread.current[:sub_instance]
+      Thread.current[:sub_instance]
+    else
+      Thread.current[:sub_instance] = SubInstance.first
+    end
+  end
 
   def self.current_id
     if Thread.current[:sub_instance]

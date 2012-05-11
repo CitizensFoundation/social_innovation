@@ -19,7 +19,7 @@ module AuthenticatedSystem
     # Store the given user id in the session.
     def current_user=(new_user)
       session[:user_id] = new_user ? new_user.id : nil
-      @current_user = new_user || false
+      Thread.current[:current_user] = @current_user = new_user || false
     end
     
     # Check if the user is authorized

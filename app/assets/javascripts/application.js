@@ -14,6 +14,7 @@
 //= require jquery.endless-scroll
 //= require jquery.sticky
 //= require jquery.pop
+//= require jquery.dd
 //= require_self
 
 jQuery(function ($) {

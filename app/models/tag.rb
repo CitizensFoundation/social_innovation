@@ -1,7 +1,7 @@
 class Tag < ActiveRecord::Base
 
   acts_as_set_sub_instance :table_name=>"tags"
-  
+
   scope :by_endorsers_count, :order => "tags.up_endorsers_count desc"
 
   scope :alphabetical, :order => "tags.name asc"
