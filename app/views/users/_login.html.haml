@@ -1,6 +1,9 @@
 #login
   #sib_login_form
     %p
+      - if current_instance.has_facebook_enabled?
+        %div{:style => "margin-bottom: 10px; margin-top: 7px;"}
+          = fb_login_and_redirect "/", :text=>tr("Sign in with Facebook","views/shared/_login"), :size=>"small", :title=>tr("Sign in with Facebook","views/shared/_login"), :scope=>"email"
       - if current_instance.has_twitter_enabled?
         %div{:style => "margin-bottom: 5px;"}
           = link_to image_tag("twitter_signin.png", :border => 0, :title=>tr("Sign in with Twitter","_login")), :controller => "twitter", :action => "create"
@@ -32,7 +35,7 @@
         %tr
           %td.submit
             = submit_tag tr("Sign in", "view/shared/_login"), :class => "submit_button"
-      #login_message
+      .login_message
       = link_to tr("I forgot my password", "view/shared/_login"), new_password_path
     - if current_instance.has_facebook_enabled? or current_instance.has_twitter_enabled? or current_instance.google_login_enabled
       %p

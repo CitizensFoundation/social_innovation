@@ -101,12 +101,12 @@ class Revision < ActiveRecord::Base
     user.increment!(:point_revisions_count)    
   end
   
-  def on_archived_entry
+  def on_archived_entry(new_state, event)
     self.published_at = nil
     save(:validate => false)
   end
   
-  def on_removed_entry
+  def on_removed_entry(new_state, event)
     point.decrement!(:revisions_count)
     user.decrement!(:point_revisions_count)    
   end

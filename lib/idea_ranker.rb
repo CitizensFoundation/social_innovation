@@ -3,7 +3,9 @@ class IdeaRanker
 
   def perform
     puts "IdeaRanker.perform starting... at #{start_time=Time.now}"
-    Instance.current = Instance.all.last
+    Instance.current = Instance.first
+    SubInstance.current = SubInstance.first
+    Thread.current[:current_user]= User.first
     setup_endorsements_counts
     if Instance.current.is_tags? and Tag.count > 0
       # update the # of issues people who've logged in the last two hours have up endorsed
@@ -124,19 +126,21 @@ class IdeaRanker
 
     # now, check to see if the charts have been updated in the last day
     
-    date = Time.now-4.hours-1.day
+    date = Time.now
     previous_date = date-1.day
     start_date = date.year.to_s + "-" + date.month.to_s + "-" + date.day.to_s
     end_date = (date+1.day).year.to_s + "-" + (date+1.day).month.to_s + "-" + (date+1.day).day.to_s
-    
+
+    puts "Before charts"
     if IdeaChart.count(:conditions => ["date_year = ? and date_month = ? and date_day = ?", date.year, date.month, date.day]) == 0  # check to see if it's already been done for yesterday
-      ideas = Idea.published.find(:all)
+      ideas = Idea.unscoped.published.find(:all)
       for p in ideas
         # find the ranking
         r = p.rankings.find(:all, :conditions => ["rankings.created_at between ? and ?",start_date,end_date], :order => "created_at desc",:limit => 1)
+        puts "r: #{r}"
         if r.any?
           c = p.charts.find_by_date_year_and_date_month_and_date_day(date.year,date.month,date.day)
-          if not c
+          if true or not c
             c = IdeaChart.new(:idea => p, :date_year => date.year, :date_month => date.month, :date_day => date.day)
           end
           c.position = r[0].position
@@ -150,7 +154,7 @@ class IdeaRanker
           end
           c.save
           if p.created_at+2.days > Time.now # within last two days, check to see if we've given them their priroity debut activity
-            ActivityIdeaDebut.create(:user => p.user, :idea => p, :position => p.position) unless ActivityIdeaDebut.find_by_idea_id(p.id)
+            ActivityIdeaDebut.create(:user => p.user, :idea => p, :position => p.position) unless ActivityIdeaDebut.unscoped.find_by_idea_id(p.id)
           end        
         end
         Rails.cache.delete('views/idea_chart-' + p.id.to_s)
@@ -288,13 +292,13 @@ class IdeaRanker
     Idea.connection.execute("update ideas set position = 0, trending_score = 0, is_controversial = false, controversial_score = 0, score = 0 where endorsements_count = 0;")
 
     # check if there's a new fastest rising idea
-    rising = Idea.published.rising.all[0]
-    ActivityIdeaRising1.find_or_create_by_idea_id(rising.id) if rising
+    rising = Idea.unscoped.published.rising.all[0]
+    ActivityIdeaRising1.unscoped.find_or_create_by_idea_id(rising.id) if rising
     SubInstance.current = nil
   end
   
   def setup_endorsements_counts
-    Idea.all.each do |p|
+    Idea.unscoped.all.each do |p|
       p.endorsements_count = p.endorsements.active_and_inactive.size
       p.up_endorsements_count = p.endorsements.endorsing.active_and_inactive.size
       p.down_endorsements_count = p.endorsements.opposing.active_and_inactive.size
@@ -321,7 +325,7 @@ class IdeaRanker
   end
 
   def add_missing_tags_for_ideas
-    Idea.all.each do |p|
+    Idea.unscoped.all.each do |p|
       if p.category
         the_tags = []
         the_tags<<p.category.name
@@ -351,7 +355,7 @@ class IdeaRanker
     else
       sub_instance_sql = "ideas.sub_instance_id IS NULL"
     end
-    @@all_ideas[sub_instance_sql] = Idea.find(:all, :conditions=>sub_instance_sql) unless @@all_ideas[sub_instance_sql]
+    @@all_ideas[sub_instance_sql] = Idea.unscoped.find(:all, :conditions=>sub_instance_sql) unless @@all_ideas[sub_instance_sql]
     puts @@all_ideas[sub_instance_sql].count
     ideas = Idea.find_by_sql("
        select ideas.id, ideas.endorsements_count, ideas.up_endorsements_count, ideas.down_endorsements_count, \
@@ -367,7 +371,7 @@ class IdeaRanker
        order by number desc")
 
     puts "Found #{ideas.count} in range"
-    Idea.transaction do
+    Idea.unscoped.transaction do
       ideas.each_with_index do |idea,index|
         idea.reload
         eval_cmd = "idea.#{position_db_name} = #{index+1}"
@@ -380,7 +384,7 @@ class IdeaRanker
     not_in_range_ideas = @@all_ideas[sub_instance_sql]-ideas
 
     puts "Found #{not_in_range_ideas.count} NOT in range"
-    Idea.transaction do
+    Idea.unscoped.transaction do
       not_in_range_ideas.each do |idea|
         idea.reload
         eval "idea.#{position_db_name} = nil"

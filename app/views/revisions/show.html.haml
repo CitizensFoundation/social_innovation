@@ -1,8 +1,10 @@
 = render :partial => "points/header"
-= render :partial => "points/nav"
-%table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-  %tr
-    %td{:valign => "top"}
+.col-group
+  .col-1
+    .col-content
+      = render :partial => "points/nav"
+  .col-8
+    .col-content
       - if @revision.attribute_present?("content_diff")
         %p
         .notice
@@ -22,5 +24,6 @@
       .heading= tr("Recent activity on this point", "view/revisions/show")
       - for activity in @revision.activities.active
         = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_noself" }
-    %td{:style => "padding-left: 20px;", :valign => "top", :width => "150"}
+  .col-3
+    .col-content
       = render :partial => "revisions"

@@ -172,7 +172,6 @@ class UserContact < ActiveRecord::Base
   
   def on_sent_entry(new_state, event)
     return if attribute_present?("sent_at") # only send it once
-    Tr8n::Config.init('is', Tr8n::Config.current_user) if Instance.last.layout == "better_reykjavik" or Instance.last.layout == "better_iceland"
     send_email
   end
 

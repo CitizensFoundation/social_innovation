@@ -1,7 +1,0 @@
-#endorse_oppose
-  %div{:id => "idea_#{@idea.id.to_s}_button"}
-    = render :partial => "ideas/button", :locals => {:idea => @idea, :endorsement => @endorsement}
-  %span.yes_and_no_points_link_hacky.add_point_for.yellow_button
-    = link_to(tr("Add your point for endorse", "view/ideas/_endorse_oppose"), new_idea_point_path(@idea,:support=>true))
-  %span.yes_and_no_points_link_hacky.add_point_against.yellow_button
-    = link_to(tr("Add your point for oppose", "view/ideas/_endorse_oppose"), new_idea_point_path(@idea))

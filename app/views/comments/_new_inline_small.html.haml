@@ -1,9 +1,0 @@
-- if logged_in?
-  .comment_link_add{:id => "comment_link_#{activity.id.to_s}"}
-    = link_to tr("Add a comment", "view/comments/_new_inline_small"), new_activity_comment_url(activity), :method => :get, |
-      :remote=>true,                                                                                                       |
-      'data-disable-with' => escape_t(tr("Sending","Ajax")),                                                               |
-      'data-loader-name' => "horizontal_small"                                                                             |
-    - if not current_page?(activity_comments_url(activity))
-      \&middot;
-      \#{link_to_unless_current tr("Permalink", "view/comments/_new_inline_small"), activity_comments_url(activity)}

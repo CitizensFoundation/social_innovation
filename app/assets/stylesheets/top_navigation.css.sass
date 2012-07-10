@@ -1,3 +1,14 @@
+.header .col-12
+  position: absolute
+  top: 0
+  left: 0
+
+.nav.nav-user ul
+  margin-top: 50px
+
+.nav.nav-user ul li
+  float: right
+
 #topnav
   padding: 0
   position: relative
@@ -10,9 +21,11 @@
     text-decoration: none
     font-weight: bold
     color: #fff
-    -webkit-border-radius: 4px
-    -moz-border-radius: 4px
-    border-radius: 4px
+    -webkit-border-radius: 3px
+    -moz-border-radius: 3px
+    border-radius: 3px
+    behavior: url(/assets/PIE.htc)
+
     *background: transparent url("/assets/top_navigation/signin-nav-bg-ie.png") no-repeat 0 0
     *padding: 4px 12px 6px
     &:hover
@@ -55,6 +68,26 @@ a.help
 a.profile
   @extend .signin_arrow
 
+.signin
+
+.signedin
+  margin-top: -30px
+
+.avatar
+  float: left
+  margin-left: 20%
+  margin-right: 5px
+
+.avatar img
+  vertical-align: bottom
+
+.notify_box
+  padding-top: 9px
+
+.profile
+  float: left
+  min-width: 80px
+
 #topnav a.menu-open
   background: #ccc!important
   color: #666!important
@@ -68,20 +101,14 @@ a.profile
   width: 170px
 
 #general_form
-  -moz-border-radius-topleft: 3px
-  -moz-border-radius-topright: 3px
-  -moz-border-radius-bottomleft: 3px
-  -moz-border-radius-bottomright: 3px
-  -webkit-border-top-left-radius: 3px
-  -webkit-border-top-right-radius: 3px
-  -webkit-border-bottom-left-radius: 3px
-  -webkit-border-bottom-right-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
   display: none
   background-color: #fff
   position: absolute
-  width: 225px
+  width: 240px
   z-index: 100
-  border: 1px solid #1931B9
+  border: 1px solid #a0a5ad
   text-align: left
   padding: 0px
   margin-left: -8px
@@ -91,12 +118,15 @@ a.profile
   input
     &[type=text], &[type=password]
       display: block
-      -moz-border-radius: 4px
-      -webkit-border-radius: 4px
+      -moz-border-radius: 3px
+      -webkit-border-radius: 3px
+      border-radius: 3px
+      behavior: url(/assets/PIE.htc)
       border: 1px solid #ACE
       margin: 0 0 5px
-      padding: 5px
+      padding: 0px
       width: 203px
+      padding: 0px 0px 0px 5px
   p
     margin: 0
   a
@@ -112,6 +142,19 @@ a.profile
     a
       color: #27B!important
 
+a.notifications
+  background: #fff
+  color: #454bcc
+  border: #F68F3E 1px solid
+  padding: 2px 4px 0px 4px
+  margin-left: 5px
+  -moz-border-radius: 3px
+  -webkit-border-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+
+
 #sib_notifications
   @extend #general_form
   display: none
@@ -120,27 +163,34 @@ a.profile
 #sib_login_form
   @extend #general_form
   display: none
-  margin-left: 276px !important
-  margin-top: 8px !important
-  padding: 10px 0px 0px 10px
+  margin-left: 270px !important
+  margin-top: 25px !important
+  padding: 10px 10px 10px 10px
 
 #sib_profile
   @extend #general_form
   display: none
-  margin-left: 251px !important
-  margin-top: 3px !important
+  margin-left: 230px !important
+  margin-top: 25px !important
+
+#user_info_box
+  background: none repeat scroll 0 0 transparent
+  border: 0 solid #DDDDDD
+  line-height: 1.4em
+  margin-bottom: 0
+  padding: 10px 10px 10px 10px
+  width: 225px
 
 #sib_help
   @extend #general_form
   display: none
-  margin-left: 348px !important
-  margin-top: 3px !important
-  padding: 10px 0px 0px 10px
+  margin-left: 338px !important
+  margin-top: 25px !important
+  padding: 10px 10px 10px 10px
 
 .magnifier_wrap
   height: 20px
-  margin-top: -4px
-  margin-left: 5px
+  width: 120px
 
 .magnifier_box
   float: top
@@ -150,8 +200,10 @@ a.signin.menu-open a.notifications.menu-open span
   color: #789
 
 #signin_submit
-  -moz-border-radius: 4px
-  -webkit-border-radius: 4px
+  -moz-border-radius: 3px
+  -webkit-border-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
   background: #3399dd url('/assets/top_navigation/bg-btn-blue.png') repeat-x scroll 0 0
   border: 1px solid #39D
   color: #fff
@@ -180,3 +232,13 @@ a.signin.menu-open a.notifications.menu-open span
   color: #333
   a
     font-weight: bold
+
+#user_info_box_picture img
+  -moz-border-radius: 3px
+  -webkit-border-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+
+#notification_show
+  margin-bottom: 8px

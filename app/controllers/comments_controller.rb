@@ -83,7 +83,7 @@ class CommentsController < ApplicationController
         render :update do |page|
           page.insert_html :bottom, 'activity_' + @activity.id.to_s + '_comments', render(:partial => "new_inline", :locals => {:comment => @comment, :activity => @activity})
           page.remove 'comment_link_' + @activity.id.to_s
-          page << render(:partial => "shared/javascripts_reloadable")
+          page << render(:partial => "shared/javascripts_reloadable", formats: [:js])
           page['comment_content_' + @activity.id.to_s].focus    
           page << "jQuery('#comment_content_#{@activity.id.to_s}').autoResize({extraSpace : 20});"
         end        
@@ -118,8 +118,8 @@ class CommentsController < ApplicationController
         }
         format.js {
           render :update do |page|            
-            page.insert_html :before, 'activity_' + @activity.id.to_s + '_comment_form', render(:partial => "comments/show", :locals => {:comment => @comment, :activity => @activity})
-            page.replace 'activity_' + @activity.id.to_s + '_comment_form', render(:partial => "new_inline", :locals => {:comment => Comment.new, :activity => @activity})
+            page.insert_html :before, 'activity_' + @activity.id.to_s + '_comment_form_container', render(:partial => "comments/show", :locals => {:comment => @comment, :activity => @activity})
+            page.replace 'activity_' + @activity.id.to_s + '_comment_form_container', render(:partial => "new_inline", :locals => {:comment => Comment.new, :activity => @activity})
             page << "pageTracker._trackPageview('/goal/comment')" if current_instance.has_google_analytics?
           end     
         }     
@@ -224,7 +224,7 @@ class CommentsController < ApplicationController
   
   protected
   def get_activity
-    @activity = Activity.find(params[:activity_id])
+    @activity = Activity.unscoped.find(params[:activity_id])
   end  
   
 end

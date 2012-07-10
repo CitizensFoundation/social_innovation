@@ -3,15 +3,11 @@
 :javascript
   $(function(){
   	$('.rss_move').replaceWith($('.rss_feed'));
-  
+
   });
-%ul
-  %li{:style => "float:left; list-style:none;"}
-    #hp_intro{:style => "border-bottom:none;"}= @page_title
-  %li{:style => "float:right; list-style:none;"}
-    .rss_move
+/ Needs RSS here
+/    .rss_move
 .clear
-.white_line
 /
   <haml:silent> if not logged_in? </haml:silent><haml:block>
   <div class="pre_text">
@@ -20,7 +16,11 @@
   </haml:block>
 %div
   - if logged_in? and (params[:action].include?("activities") or params[:action].include?("discussions"))
-    = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
+    #new_activities
+      .col-group
+        .col-11.col-offset-1
+          .col-content
+            = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
   - if params[:action].include?("network") and logged_in? and current_following_ids.empty?
     = tr("You can add people to your network by clicking the FOLLOW button on their profile page, then their updates will appear below.  To get started, here's a list of the <a href=\"/network\">most influential</a> people at {instance.name}.", "view/feed/activity_list")
   - if not @activities

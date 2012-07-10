@@ -15,9 +15,9 @@
                   'data-loader-name' => "circle",                                                                                                               |
                   :remote=>true,                                                                                                                                |
                   :title => tr("Click the number to change its position on your list. You can also drag and drop the names to sort.", "view/ideas/_yours") |
-            %td{:valign => "top", :width => "220"}
-              .if.else{:class => "endorsement_<haml:silent> endorsement.is_up? </haml:silent><haml:block>up</haml:block><haml:silent> </haml:silent><haml:block>down</haml:block>"}
-                = link_to_unless_current h(endorsement.idea.name), endorsement.idea
+            /%td{:valign => "top", :width => "220"}
+            /  .if.else{:class => "endorsement_<haml:silent> endorsement.is_up? </haml:silent><haml:block>up</haml:block><haml:silent> </haml:silent><haml:block>down</haml:block>"}
+            /    = link_to_unless_current h(endorsement.idea.name), endorsement.idea
             %td{:valign => "top"}
               .endorsement_x
                 = link_to "x", endorsement_path(endorsement, :region => "your_ideas"),                                                        |

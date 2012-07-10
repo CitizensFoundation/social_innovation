@@ -463,7 +463,7 @@
   native_name: "Eesti"
   google_key: "et"
   facebook_key: ""
-  enabled:  true
+  enabled:  tru
   featured_index: 300
 "fo":
   english_name: "Faroese"
@@ -607,7 +607,7 @@
   enabled:  false
 "gn":
   english_name: "Guarani"
-  native_name: "Avañe\ẽ"
+  native_name: "Avañe"
   google_key: "gn"
   facebook_key: "gn-PY"
   enabled:  false
@@ -660,7 +660,7 @@
   native_name: "Íslenska"
   google_key: "is"
   facebook_key: ""
-  enabled:  true
+  enabled:  false
 "ig":
   english_name: "Igbo"
   native_name: "Igbo"
@@ -1262,7 +1262,7 @@
   native_name: "Español (Argentina)"
   google_key: "es"
   facebook_key: ""
-  enabled:  true
+  enabled:  false
 "es-BO":
   english_name: "Spanish (Bolivia)"
   native_name: "Español (Bolivia)"

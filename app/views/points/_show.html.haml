@@ -4,7 +4,6 @@
       %span.for_and_against_hacky= tr("Points against", "view/points/_show")
     - else
       %span.for_and_against_hacky= tr("Points for", "view/points/_show")
-    %br/
     = link_to_unless_current h(point.name), point
     = render :partial=>"points/report_content", :locals=>{:point=>point}
     = render :partial=>"points/flagged", :locals=>{:point=>point}

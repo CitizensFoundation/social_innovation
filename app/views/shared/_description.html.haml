@@ -4,7 +4,7 @@
   %meta{:content => tr("{prompt} {idea_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :idea_name => @idea.name), :itemprop => "description"}/
   %meta{:content => "http://#{request.host_with_port+current_instance.logo.url}", :itemprop => "image"}/
 - elsif params[:controller] == 'users' and @user and @user.has_top_idea?
-  %meta{:content => tr("{user_name} top idea for: {idea_name}", "view/shared/_description", :user_name => @user.name, :idea_name => @user.top_endorsement.idea.name), :name => "description"}/
+  %meta{:content => tr("{user_name} top idea for: {idea_name}", "view/shared/_description", :user_name => @user.name, :idea_name => Idea.unscoped.find(@user.top_endorsement.idea_id).name, :name => "description")}
 - else
   %meta{:content => tr(current_instance.description,"Description from database"), :name => "description"}/
   %meta{:content => tr(current_instance.name,"Name from database"), :itemprop => "name"}/

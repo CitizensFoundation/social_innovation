@@ -3,6 +3,7 @@
   = tr("If you'd like to participate, <a href='{signup_url}'>please sign up</a>. Membership is free and you can even use your existing Facebook account.", "view/issues/discussions", :signup_url => new_user_url)
   %p
 - if logged_in?
+  #new_activities
   = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
 = render :partial => "shared/paginate_with_feed", :locals => {:collection => @activities}
 #activities

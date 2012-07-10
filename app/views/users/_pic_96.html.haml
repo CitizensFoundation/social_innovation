@@ -1,6 +1,0 @@
-- if user.has_picture?
-  %a{:href => url_for user}= image_tag user.buddy_icon.url(:icon_96), :size => "96x96", :border => 0, :alt => ""
-- elsif user.facebook_id
-  = fb_profile_pic user,:facebook_logo=>false, :linked=>false, :size=>"small", :alt => ""
-- else
-  = image_tag current_instance.buddy_icon.url(:icon_96), :size => "96x96", :border => 0, :alt => ""

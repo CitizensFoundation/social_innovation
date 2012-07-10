@@ -58,14 +58,15 @@ class SessionsController < ApplicationController
             Rails.logger.debug("BLAH: #{session[:return_to]}")
             redirect_from_facebox(session[:return_to] ? session[:return_to] : "/")
           else
-            if params[:region] == 'inline'
-              render :update do |page|
-                page.replace_html 'login_message', tr("Oops, try again.", "controller/sessions")
-              end
-            else
-              flash[:error] = tr("Oops, try again.", "controller/sessions")
-              render_to_facebox(:action => "new")
-            end
+            render partial: 'login_failed'
+            #if params[:region] == 'inline'
+            #  render :update do |page|
+            #    page.replace_html 'login_message', tr("Oops, try again.", "controller/sessions")
+            #  end
+            #else
+            #  flash[:error] = tr("Oops, try again.", "controller/sessions")
+            #  render_to_facebox(:action => "new")
+            #end
           end          
         }
     end        
@@ -75,7 +76,8 @@ class SessionsController < ApplicationController
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token
     cookies.delete "fbs_#{Facebooker2.app_id}"
-    reset_session    
+    reset_session
+    Thread.current[:current_user] = nil
     flash[:notice] = tr("Logged out. Please come again soon.", "controller/sessions")
     redirect_back_or_default('/')
   end

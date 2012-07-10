@@ -23,25 +23,26 @@
               'data-disable-with' => "",                                  |
               'data-loader-name' => "circle",                             |
               :confirm => escape_t(tr("Delete from this page?","Ajax"))   |
-        .top_position
-          %table.top_position
-            %tr
-              %td.top_position{:height => "35px", :width => "35x"}
-                - if activity.user
-                  = render :partial => "users/pic_35", :locals => {:user => activity.user}
-              %td#temptest.left_scale8.activity_content
-                - cache("#{activity[:type].downcase}#{suffix}-#{activity.id}-#{session[:locale]}-#{@inline_translations_enabled}-#{current_user and current_user.is_admin?}") do
-                  = render :partial => "activities/#{activity[:type].downcase}#{suffix}", :locals => {:activity => activity}
-                %span.small= time_ago(activity.created_at)
-                - if activity.class != ActivityCommentParticipant
-                  - if activity.published_comments.count > 0
-                    %span.comment_link{:title => escape_t(tr("Send comment","Ajax"))}
-                      = link_to_unless_current pluralize(activity.published_comments.count, title="#{escape_t(tr("Comment","Ajax"))}"), activity_comments_url(activity)
-                  - else
-                    %span.comment_link{:id => "comment_link_#{activity.id.to_s}", :title => escape_t(tr("Send comment","Ajax"))}
-                      = link_to tr("Comment", "view/activities/_show"), new_activity_comment_url(activity), :method => :get, |
-                        'data-disable-with' => "",                                                                           |
-                        'data-loader-name' => "horizontal_small",                                                            |
-                        :remote=>true                                                                                        |
-      - if activity.class != ActivityCommentParticipant and activity.class != ActivityBulletinProfileAuthor
-        = render :partial => "activities/comments", :locals => {:activity => activity}
+        - if activity.user
+          .col-group
+            .col-1
+              .col-content
+                = render :partial => "users/pic_48", :locals => {:user => activity.user}
+            .col-11
+              .col-content
+                .activity_content
+                  - cache("#{activity[:type].downcase}#{suffix}-#{activity.id}-#{session[:locale]}-#{@inline_translations_enabled}-#{current_user and current_user.is_admin?}") do
+                    = render :partial => "activities/#{activity[:type].downcase}#{suffix}", :locals => {:activity => activity}
+                  %span.small= time_ago(activity.created_at)
+                  - if activity.class != ActivityCommentParticipant
+                    - if activity.published_comments.count > 0
+                      %span.comment_link{:title => escape_t(tr("Send comment","Ajax"))}
+                        = link_to_unless_current pluralize(activity.published_comments.count, title="#{escape_t(tr("Comment","Ajax"))}"), activity_comments_url(activity)
+                    - else
+                      %span.comment_link{:id => "comment_link_#{activity.id.to_s}", :title => escape_t(tr("Send comment","Ajax"))}
+                        = link_to tr("Comment", "view/activities/_show"), new_activity_comment_url(activity), :method => :get, |
+                          'data-disable-with' => "",                                                                           |
+                          'data-loader-name' => "horizontal_small",                                                            |
+                              :remote=>true                                                                                        |
+  - if activity.class != ActivityCommentParticipant and activity.class != ActivityBulletinProfileAuthor
+    = render :partial => "activities/comments", :locals => {:activity => activity}

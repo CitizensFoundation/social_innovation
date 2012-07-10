@@ -6,6 +6,6 @@
 %p= tr('The following activity has affected your social points on {instance_name}:', |
     "email",                                                                           |
     instance_name: tr(Instance.current.name, "Name from database"))                |
-= render :partial=>"activities/#{@activity.class_name}_email", formats: [:html], locals: { activity: @activity, current_instance: Instance.current }
+= render :partial=>"activities/#{@activity.type.downcase}_email", formats: [:html], locals: { activity: @activity, current_instance: Instance.current }
 %p= tr('You now have {points} social point(s).', 'email', points: @user.capitals_count)
 = render :partial=>"footer", formats: [:html]

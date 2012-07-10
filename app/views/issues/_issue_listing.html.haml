@@ -1,17 +1,17 @@
 - for issue in issues
   .idea_listing
     %span.idea_name
-      %a{:href => "/issues/#{issue.slug}"}= tr(issue.title, "model/category")
+      = tr(issue.name, "model/category")
     - if issue.attribute_present?("description")
       = h(issue.description)
     .idea_action
-      %a{:href => "/issues/#{issue.slug}"}= tr("{count} ideas", "view/issues/index", :count => issue.ideas_count)
+      %a{:href => "#{issue.to_url}"}
+        = tr("{count} ideas", "view/issues/index", :count => issue.ideas.count)
       - if issue.points_count > 0
         \&middot;
-        %a{:href => "/issues/#{issue.slug}/points"}= tr("{count} points", "view/issues/index", :count => issue.points_count)
+        %a{:href => "#{issue.to_url}/points"}
+          = tr("{count} points", "view/issues/index", :count => issue.points_count)
       - if issue.discussions_count > 0
         \&middot;
-        %a{:href => "/issues/#{issue.slug}/discussions"}= tr("{count} discussions", "view/issues/index", :count => issue.discussions_count)
-      - if logged_in? and current_user.is_admin?
-        \&nbsp;
-        %span.tag_button= link_to tr("Edit", "view/issues/index"), edit_tag_url(issue)
+        %a{:href => "#{issue.to_url}/discussions"}
+          = tr("{count} discussions", "view/issues/index", :count => issue.discussions_count)

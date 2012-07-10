@@ -1,4 +1,0 @@
-%span{:class => "idea_#{idea.id.to_s}_endorsement_count idea_endorsement_count", :id => "idea_#{idea.id.to_s}_endorsement_count"}
-  = link_to (idea.up_endorsements_count.to_s + ' ' + tr("endorsed", "view/ideas/_endorsement_count")).html_safe, idea.show_endorsers_url
-  %br
-  = link_to (idea.down_endorsements_count.to_s + ' ' + tr("opposed", "view/ideas/_endorsement_count")).html_safe, idea.show_opposers_url

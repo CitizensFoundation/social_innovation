@@ -7,7 +7,6 @@ class Activity < ActiveRecord::Base
   scope :for_all_users, :conditions => "is_user_only=false"
 
   scope :discussions, :conditions => "activities.comments_count > 0"
-  scope :changes, :conditions => "change_id is not null"
   scope :points, :conditions => "type like 'ActivityPoint%'", :order => "activities.created_at desc"
   scope :capital, :conditions => "type like '%Capital%'"
   scope :interesting, :conditions => "type in ('ActivityIdeaMergeProposal','ActivityIdeaAcquisitionProposal') or comments_count > 0"
@@ -63,8 +62,19 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  before_save :setup_group_id
   before_save :update_changed_at
-  
+
+  def setup_group_id
+    if self.idea
+      self.group_id = self.idea.group_id
+    elsif self.point and self.point.idea
+      self.group_id = self.point.idea.group_id
+    elsif self.revision and self.revision.point and self.revision.point.idea
+      self.group_id = self.revision.point.idea.group_id
+    end
+  end
+
   def update_changed_at
     self.changed_at = Time.now unless self.attribute_present?("changed_at")
   end
@@ -105,11 +115,6 @@ class Activity < ActiveRecord::Base
     comments.count(:group => :user, :order => "count_all desc")
   end  
 
-  def is_official_user?
-    return false unless Instance.current.has_official?
-    user_id == Instance.current.official_user_id
-  end
-
   def has_idea?
     attribute_present?("idea_id")
   end
@@ -129,11 +134,7 @@ class Activity < ActiveRecord::Base
   def has_point?
     attribute_present?("point_id")
   end
-  
-  def has_change?
-    attribute_present?("change_id")
-  end
-  
+
   def has_capital?
     attribute_present?("capital_id")
   end  

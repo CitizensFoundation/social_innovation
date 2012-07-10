@@ -1,3 +1,15 @@
+def compile_asset?(path)
+  # ignores any filename that begins with '_' (e.g. sass partials)
+  # all other css/js/sass/image files are processed
+  if File.basename(path) =~ /^[^_].*\.\w+$/
+    puts "Compiling: #{path}"
+    true
+  else
+    puts "Ignoring: #{path}"
+    false
+  end
+end
+
 SocialInnovation::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -67,8 +79,8 @@ SocialInnovation::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
-  config.assets.precompile += ['*.js', '*.css']
+  config.assets.precompile += [ method(:compile_asset?).to_proc ]
 
-  config.cache_store = :dalli_store, '127.0.0.1:11211', { :namespace => "oad_3_#{Rails.env}_#{Rails.application.config.database_configuration[Rails.env]["git_branch"]}",
+  config.cache_store = :dalli_store, '127.0.0.1:11211', { :namespace => "si_3_#{Rails.env}_#{Rails.application.config.database_configuration[Rails.env]["git_branch"]}",
                                                           :compress => true, :compress_threshold => 64*1024 }
 end

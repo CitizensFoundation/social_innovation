@@ -1,6 +1,22 @@
 //= require jquery
 //= require jquery_ujs
-//= require jquery.ui.all
+//= require jquery.ui.core
+//= require jquery.ui.widget
+//= require jquery.ui.mouse
+//= require jquery.ui.position
+//= require jquery.ui.draggable
+//= require jquery.ui.droppable
+//= require jquery.ui.resizable
+//= require jquery.ui.selectable
+//= require jquery.ui.sortable
+//= require jquery.ui.accordion
+//= require jquery.ui.autocomplete
+//= require jquery.ui.button
+//= require jquery.ui.dialog
+//= require jquery.ui.slider
+//= require jquery.ui.tabs
+//= require jquery.ui.progressbar
+//= require jquery.effects.all
 //= require facebox
 //= require jquery.NobleCount.min
 //= require jquery.timeago
@@ -15,6 +31,9 @@
 //= require jquery.sticky
 //= require jquery.pop
 //= require jquery.dd
+//= require jquery.autoSuggest
+//= require jquery.tipsy
+//= require msdropdown
 //= require_self
 
 jQuery(function ($) {
@@ -50,14 +69,18 @@ jQuery(document).ready(function() {
 
   jQuery('a[data-remote]').live("ajax:beforeSend", function(){
       var $clicked = $(this);
-      $disable_with = $clicked.attr("data-disable-with");
+      if ($clicked.attr("data-disabled-with")) {
+          $disable_with = $clicked.attr("data-disabled-with");
+      } else {
+          return;
+      }
       if ($clicked.attr("data-loader-name")=="external_spinner") {
-        $($disable_with).html('<img src=\"/assets/ajax/spinner.gif\">');
+        $("#"+$disable_with).html('<img src=\"/assets/ajax/spinner.gif\">');
       } else if ($clicked.attr("data-loader-name")!="no_loader") {
         $loader_name = $clicked.attr("data-loader-name");
         $clicked.replaceWith($disable_with+'<img src=\"/assets/ajax/'+$loader_name+'.gif\">');
     // $clicked.href("#")
-      }
+      };
     });
 
 	var isChrome = /Chrome/.test(navigator.userAgent);
@@ -76,7 +99,7 @@ jQuery(document).ready(function() {
 	function addMega(){
 	  jQuery(this).addClass("hovering"); 
 	} 
-                                          77
+
 	function removeMega(){ 
 	  jQuery(this).removeClass("hovering"); 
 	}

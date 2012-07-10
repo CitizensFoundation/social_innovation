@@ -1,5 +1,5 @@
 #nav_sub
-  %div{:id => "nav_sub_<haml:silent> if ['index'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['picture'].include?(params[:action]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['profiles'].include?(params[:controller]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['signups'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['passwords'].include?(params[:controller]) </haml:silent><haml:block>6</haml:block>"}
+  %div.user_menu
     %ul#menu_sub
       %li.tab1
         %span.tab_header

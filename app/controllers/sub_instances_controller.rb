@@ -57,9 +57,9 @@ class SubInstancesController < ApplicationController
     @page_title = tr("SubInstance with {instance_name}", "controller/sub_instances", :instance_name => tr(current_instance.name,"Name from database"))
     respond_to do |format|
       if @sub_instance.save
-        @sub_instance.register!
+        #@sub_instance.register!
         current_user.update_attribute(:sub_instance_id,@sub_instance.id)
-        @sub_instance.activate!
+        #@sub_instance.activate!
         flash[:notice] = tr("Thanks for sub_instanceing with us!", "controller/sub_instances")
         session[:goal] = 'sub_instance'
         format.html { redirect_to 'http://' + @sub_instance.short_name + '.' + current_instance.base_url + picture_sub_instance_path(@sub_instance)}

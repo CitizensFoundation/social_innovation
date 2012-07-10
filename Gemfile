@@ -1,11 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.3'
-
+gem 'rails', '3.2.5'
+gem 'rails-i18n'
 gem 'mysql2'
 gem "recaptcha", :require => "recaptcha/rails"
-gem 'capistrano_colors'
-gem 'rvm-capistrano'
+gem 'capistrano', require: false
+gem 'capistrano_colors', require: false
+gem 'rvm-capistrano', require: false
+gem 'haml'
 gem 'haml-rails'
 gem 'nokogiri'
 gem 'tidy-ext'
@@ -15,17 +17,19 @@ gem 'kgio'
 gem 'whenever', :require => false
 gem 'geoip'
 gem 'htmlentities'
-gem 'auto_html'
-gem 'delayed_job', '2.1.4'
+gem 'auto_html', '1.5.1'
+gem 'delayed_job'
+gem 'delayed_job_active_record'
 gem 'rmagick','2.12.2'
 gem 'daemons'
 gem 'paperclip'
 gem 'sunlight', '>= 0.9'
 gem 'googlecharts'
 gem 'oauth', '>= 0.3.1'
-gem "twitter-auth", :git => "git://github.com/benders/twitter-auth.git", :branch => "rails_3", :require => "twitter_auth/engine"
+#gem "twitter-auth", :git => "git://github.com/benders/twitter-auth.git", :branch => "rails_3", :require => "twitter_auth/engine"
 gem 'hpricot', '>= 0.6'
 gem 'will_paginate'
+gem 'will-paginate-i18n'
 gem 'mogli', '>= 0.0.33'
 gem 'facebooker2', '>= 0.0.16'
 gem 'dalli'
@@ -36,18 +40,17 @@ gem 'jquery-rails'
 gem 'ckeditor', '3.6.3'
 gem 'kaminari'
 gem 'will_filter'
-gem 'tr8n', :git => "git://github.com/rbjarnason/tr8n.git"
+gem 'tr8n', :git => "git://github.com/hinrik/tr8n.git", :branch => "social_innovation"
 gem 'workflow'
 gem "airbrake"
 gem 'jquery-rjs', :git => "git://github.com/bikeexchange/jquery-rjs.git"
 gem 'pry-rails'
 gem 'awesome_print'
-
-#gem 'multi_json', '1.1.0'
+gem 'backup', :require => false, :git => "git://github.com/hinrik/backup.git"
 
 group :development do
   gem 'rails-dev-boost'
-  gem 'rails_view_annotator', :git => "git://github.com/duncanbeevers/rails_view_annotator.git"
+  gem 'rails_view_annotator'
 end
 
 group :production do
@@ -62,34 +65,10 @@ group :test do
   gem 'factory_girl_rails'
 end
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-# Gems used only for assets and not required
-# in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platform => :ruby
-
-  gem 'uglifier', '>= 1.0.3'
+  gem 'sass-rails'
+  gem 'uglifier'
   gem 'jquery-ui-rails'
   gem 'execjs'
   gem 'therubyracer', :platforms => :ruby
 end
-
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'

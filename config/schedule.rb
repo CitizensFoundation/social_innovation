@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :output, "/home/yrpri/sites/social-innovation/master/shared/log/cron_log.log"
+set :output, "/home/yrpri/sites/social_innovation_internal/yrpri2/shared/log/cron_log.log"
 
 every 5.minutes do
   rake "schedule:fix_top_endorsements"
@@ -32,7 +32,7 @@ end
 every :reboot do
   rake "ts:index"
   rake "ts:start"
-  command "cd /home/yrpri/sites/social-innovation/master/current; RAILS_ENV=production ruby script/delayed_job start RAILS_ENV=production"
+  command "cd /home/yrpri/sites/social_innovation_internal/yrpri2/current; RAILS_ENV=production ruby script/delayed_job start"
 end
 
 every 50.minutes do
@@ -45,4 +45,16 @@ end
 
 every 6.hours do
   rake "schedule:fix_counts"
+end
+
+every 1.hour do
+  command "cd /home/yrpri/sites/social_innovation_internal/yrpri2/current; bundle exec backup perform -t hourly_backup --config_file config/backup.rb --data-path db --log-path log --tmp-path tmp"
+end
+
+every 1.day do
+  command "cd /home/yrpri/sites/social_innovation_internal/yrpri2/current; bundle exec backup perform -t daily_backup --config_file config/backup.rb --data-path db --log-path log --tmp-path tmp"
+end
+
+every 1.week do
+  command "cd /home/yrpri/sites/social_innovation_internal/yrpri2/current; bundle exec backup perform -t weekly_backup --config_file config/backup.rb --data-path db --log-path log --tmp-path tmp"
 end

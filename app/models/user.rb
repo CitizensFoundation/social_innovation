@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
 
   require 'paperclip'
 
+  attr_accessible :buddy_icon
+
   scope :active, :conditions => "users.status in ('pending','active')"
   scope :at_least_one_endorsement, :conditions => "users.endorsements_count > 0"
   scope :newsletter_subscribed, :conditions => "users.report_frequency != 0 and users.email is not null and users.email <> ''"
@@ -45,6 +47,8 @@ class User < ActiveRecord::Base
   scope :item_limit, lambda{|limit| {:limit=>limit}}
   scope :all_endorsers_and_opposers_for_idea, lambda { |idea_id| User.joins(:endorsements).where(endorsements: {idea_id: idea_id}); }
 
+  has_and_belongs_to_many :groups
+
   belongs_to :picture
   has_attached_file :buddy_icon, :styles => { :icon_24 => "24x24#", :icon_35 => "35x35#", :icon_48 => "48x48#", :icon_96 => "96x96#" }
   
@@ -71,7 +75,6 @@ class User < ActiveRecord::Base
   has_many :activities, :dependent => :destroy
   has_many :points, :dependent => :destroy
   has_many :point_revisions, :class_name => "Revision", :dependent => :destroy
-  has_many :changes, :dependent => :nullify
   has_many :rankings, :class_name => "UserRanking", :dependent => :destroy
     
   has_many :point_qualities, :dependent => :destroy
@@ -118,18 +121,18 @@ class User < ActiveRecord::Base
   validates_length_of       :password, :within => 4..40, :if => [:should_validate_password?]
   validates_confirmation_of :password, :if => [:should_validate_password?]
 
-  validates_presence_of     :post_code, :message => tr("Please enter your postcode.", "model/user"), :if => :using_br?
-  validates_presence_of     :age_group, :message => tr("Please select your age group.", "model/user"), :if => :using_br?
-  validates_presence_of     :my_gender, :message => tr("Please select your gender.", "model/user"), :if => :using_br?
+  #validates_presence_of     :post_code, :message => tr("Please enter your postcode.", "model/user")
+  #validates_presence_of     :age_group, :message => tr("Please select your age group.", "model/user")
+  #validates_presence_of     :my_gender, :message => tr("Please select your gender.", "model/user")
 
   validates_acceptance_of   :terms, :message => tr("Please accept the terms and conditions", "model/user")
 
  # validates_inclusion_of    :age_group, :in => lambda {|foo| foo.allowed_for_age_group},
- #                           message: tr("Please select your gender.", "model/user"), :if => :using_br?
- # validates_inclusion_of    :my_gender, :in => lambda {|foo| foo.allowed_for_gender}, message: tr("Please select your gender.", "model/user"), :if => :using_br?
+ #                           message: tr("Please select your gender.", "model/user")
+ # validates_inclusion_of    :my_gender, :in => lambda {|foo| foo.allowed_for_gender}, message: tr("Please select your gender.", "model/user")
 
-  validate :validate_age_group
-  validate :validate_gender
+  #validate :validate_age_group
+  #validate :validate_gender
 
   before_save :encrypt_password
   before_create :make_rss_code
@@ -147,18 +150,14 @@ class User < ActiveRecord::Base
 
 
   def validate_age_group
-    if using_br?
-      unless allowed_for_age_group.include?(self.age_group)
-        self.errors.add(:age_group ,tr("Please select your age group", "model/user"))
-      end
+    unless allowed_for_age_group.include?(self.age_group)
+      self.errors.add(:age_group ,tr("Please select your age group", "model/user"))
     end
   end
 
   def validate_gender
-    if using_br?
-      unless allowed_for_gender.include?(self.my_gender)
-        self.errors.add(:my_gender ,tr("Please select gender", "model/user"))
-      end
+    unless allowed_for_gender.include?(self.my_gender)
+      self.errors.add(:my_gender ,tr("Please select gender", "model/user"))
     end
   end
 
@@ -168,10 +167,6 @@ class User < ActiveRecord::Base
 
   def allowed_for_gender
     [tr("Male", "model/user"),tr("Female", "model/user")]
-  end
-
-  def using_br?
-    Instance.current && Instance.current.layout == "better_reykjavik" ? true : false
   end
 
   def set_signup_country
@@ -729,8 +724,7 @@ class User < ActiveRecord::Base
     self.update_attribute(:capitals_count,new_capitals_count)
 
     if capitals_difference != 0 and !self.is_admin and self.is_capital_subscribed and self.status == "active"
-      activity_id = self.activities.last.id
-      self.delay.send_capital_email(activity_id, capitals_difference)
+      User.delay.send_capital_email(self.activities.last.id, capitals_difference)
     end
   end  
   
@@ -884,11 +878,11 @@ class User < ActiveRecord::Base
     self.twitter_secret
   end
   
-  if TwitterAuth.oauth?
-    include TwitterAuth::OauthUser
-  else
-     include TwitterAuth::BasicUser
-  end
+  #if TwitterAuth.oauth?
+  #  include TwitterAuth::OauthUser
+  #else
+  #   include TwitterAuth::BasicUser
+  #end
 
   def twitter
     if TwitterAuth.oauth?
@@ -1079,7 +1073,7 @@ class User < ActiveRecord::Base
     return 'mysql'
   end
   
-  def on_abusive_entry(new_state, event, parent_notifications)
+  def do_abusive!(parent_notifications)
      if self.warnings_count == 0 # this is their first warning, get a warning message
       parent_notifications << NotificationWarning1.new(:recipient => self)
     elsif self.warnings_count == 1 # 2nd warning
@@ -1094,7 +1088,7 @@ class User < ActiveRecord::Base
     self.increment!("warnings_count")
   end
 
-  def send_capital_email(activity_id, point_difference)
+  def self.send_capital_email(activity_id, point_difference)
     activity = Activity.find(activity_id)
     user = activity.user
     UserMailer.lost_or_gained_capital(user, activity, point_difference).deliver
@@ -1109,7 +1103,6 @@ class User < ActiveRecord::Base
     }
     status = status_types[status]
     idea = Idea.find(idea_id)
-    Tr8n::Config.init('is', Tr8n::Config.current_user) if Instance.last.layout == "better_reykjavik" or Instance.last.layout == "better_iceland"
     all_endorsers_and_opposers_for_idea(idea_id).each do |user|
       next unless user.is_finished_subscribed
       position = Endorsement.where(idea_id: idea_id, user_id: user.id).first.value
@@ -1118,7 +1111,6 @@ class User < ActiveRecord::Base
   end
 
   def self.send_report_emails(frequency)
-    Tr8n::Config.init('is', Tr8n::Config.current_user) if Instance.last.layout == "better_reykjavik" or Instance.last.layout == "better_iceland"
     top_ideas = {}
     idea_followers = {}
     top_category_score = {}
@@ -1174,6 +1166,16 @@ class User < ActiveRecord::Base
       near_top = near_top[0..2] if near_top.count > 3
 
       UserMailer.user_report(user, important, important_to_followers, near_top, frequency).deliver
+    end
+  end
+
+  def is_group_admin?(idea)
+    return true if self.is_admin?
+    groups_user = idea ? GroupsUser.where(:user_id=>self.id, :group_id=>idea.group_id) : nil
+    if groups_user and groups_user.is_admin?
+      true
+    else
+      false
     end
   end
 

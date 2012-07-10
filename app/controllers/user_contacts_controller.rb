@@ -146,5 +146,4 @@ class UserContactsController < ApplicationController
     @user = User.find(params[:user_id])
     access_denied unless current_user.id == @user.id
   end
-
 end

@@ -1,21 +1,24 @@
 - quality = nil
 - if logged_in?
   - quality = PointQuality.first(conditions: {user_id: current_user.id, point_id: @point.id})
-= render :partial => "points/header", locals: { quality: quality }
-%table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-  %tr
-    %td{:valign => "top"}
-      .point_content_detail_container
-        .point_content_detail
-          = @point.content_html
-        - if @point.has_website?
-          .point_source
-            = tr("Source:", "view/points/show")
-            %a{:href => @point.website_link}= truncate(@point.website_link,:length=>70)
-      %p
-      .heading= tr("Recent activity on this point", "view/points/show")
+.col-group
+  .col-1
+    .col-content= render partial: "points/nav"
+  .col-8
+    .col-content
+      = render :partial => "points/header", locals: { quality: quality }
+      .point_name= @point.name
+      .point_content_detail
+        %p= @point.content_html
+      - if @point.has_website?
+        .point_source
+          = tr("Source:", "view/points/show")
+          %a{:href => @point.website_link}= truncate(@point.website_link,:length=>70)
+      .point_feed_header
+        = tr("Recent activity on this point", "view/points/show")
       - for activity in @point.activities.active.by_recently_created.find(:all, :limit => 10)
         = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_noself" }
-    %td{:style => "padding-left: 20px;", :valign => "top", :width => "150"}
+  .col-3
+    .col-content
       = render :partial => "points/authors", :locals => {:users => @point.authors }
       = render :partial => "points/left_nav"

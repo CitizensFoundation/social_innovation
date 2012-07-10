@@ -1,7 +1,22 @@
 .header
   .header-wrap
-    %div
-    = image_tag SubInstance.current.top_banner.url(:icon_full), :size => "1024x80", :border => 0
-    %p.hide
-      %a{:href => "#content"} Skipt to content
-    = render :partial => "shared/top_navigation"
+    .col-group
+      .col-12
+        .col-content
+          %div
+            - unless SubInstance.current.top_banner.to_s.include?("missing.png")
+              = image_tag SubInstance.current.top_banner.url(:icon_full), :size => "1024x80", :border => 0
+            - else
+              = image_tag current_instance.top_banner.url(:icon_full), :size => "1024x80", :border => 0
+          %p.hide
+            %a{:href => "#content"} Skipt to content
+      .col-group
+        .col-3
+          .col-content
+          &nbsp;
+        .col-7
+          .col-content
+            = render :partial => "shared/top_navigation"
+        .col-2
+          .col-content
+          &nbsp;

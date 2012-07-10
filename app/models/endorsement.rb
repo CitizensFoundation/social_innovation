@@ -45,6 +45,7 @@ class Endorsement < ActiveRecord::Base
       event :finish, transitions_to: :finished
       event :suspend, transitions_to: :suspended
       event :replace, transitions_to: :replaced
+      event :remove, transitions_to: :removed
     end
     state :inactive do
       event :finish, transitions_to: :finished
@@ -64,6 +65,18 @@ class Endorsement < ActiveRecord::Base
     state :replaced do
       event :activate, transitions_to: :active
       event :unremove, transitions_to: :active
+    end
+  end
+
+  def on_removed_entry(new_state, event)
+#    if user_id == Instance.current.official_user_id and idea.official_value != 0
+#      Idea.update_all("official_value = 0", ["id = ?",idea_id])
+#    end
+    delete_update_counts
+    if self.is_up?
+      ActivityEndorsementDelete.create(:user => user, :sub_instance => sub_instance, :idea => idea)
+    else
+      ActivityOppositionDelete.create(:user => user, :sub_instance => sub_instance, :idea => idea)
     end
   end
 
@@ -94,7 +107,7 @@ class Endorsement < ActiveRecord::Base
   before_create :calculate_score
   after_save :check_for_top_idea
   after_save :check_official
-  before_destroy :remove
+  before_destroy :remove!
   after_destroy :check_for_top_idea
   
   # check to see if they've added a new #1 idea, and create the activity
@@ -239,20 +252,6 @@ class Endorsement < ActiveRecord::Base
   end
 
   private
-  
-  def remove
-    if self.status == 'active'
-#      if user_id == Instance.current.official_user_id and idea.official_value != 0
-#        Idea.update_all("official_value = 0", ["id = ?",idea_id])
-#      end
-      delete_update_counts
-      if self.is_up?
-        ActivityEndorsementDelete.create(:user => user, :sub_instance => sub_instance, :idea => idea)
-      else
-        ActivityOppositionDelete.create(:user => user, :sub_instance => sub_instance, :idea => idea)
-      end
-    end
-  end
   
   def delete_update_counts
 #    if self.is_up?

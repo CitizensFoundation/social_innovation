@@ -1,6 +1,6 @@
 #############################################################################
 #
-# Tr8n Data Tokens
+# Tr8n Default Data Tokens
 #
 #############################################################################
 
@@ -16,4 +16,6 @@ rsquo:    "&rsquo;"   # ’
 laquo:    "&laquo;"   # « 
 raquo:    "&raquo;"   # »  
 nbsp:     "&nbsp;"    # space
+lsaquo:   "&lsaquo;"  # ‹
+rsaquo:   "&rsaquo;"  # ›
 br:       "<br/>"     # line break 

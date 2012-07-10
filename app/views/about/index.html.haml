@@ -1,25 +1,49 @@
-%h1= tr("About {instance_name}", "view/about/index", :instance_name => tr(current_instance.name, "Name from database"))
-- if current_instance.layout=="better_reykjavik"
-  %br/
-  %p= tr("We believe the people of the world need good online democracy tools to find and choose their top ideas. And together discover which ideas they want to implement and in what order.", "view/about/index")
-  %br/
-  %p= tr("This is a global service by the Citizens Foundation in Iceland. The service provides a website for every country in the world under the yrpri domain.", "view/about/index")
-  %br/
-  %p= tr("Using Social Innovation software developed by the Citizens Foundation and others, people can add new ideas, add arguments for and against ideas, indicate if they support or oppose an idea, create a personal list of ideas and discuss all ideas. The end results are lists of top ideas in many categories as well as the best arguments for and against each idea.", "view/about/index")
-  %br/
-  %p= tr("The Citizens Foundation is an Icelandic non-profit organization focused on developing and promoting tools for citizen democracy worldwide.  All the software it creates is released as open source which anybody can use for free. The Citizens Foundation is and will be a neutral entity whose main objective is to foster collaboration between people and their politicians.", "view/about/index")
-  %br/
-  %p
-    %b= tr("Enjoy!", "view/about/index")
-- else
-  %br/
-  %p= tr("We believe the people of the world need good online democracy tools to find and choose their top ideas. And together discover which ideas they want to implement and in what order.", "view/about/index")
-  %br/
-  %p= tr("This is a global service by the Citizens Foundation in Iceland. The service provides a website for every country in the world under the yrpri domain.", "view/about/index")
-  %br/
-  %p= tr("Using Social Innovation software developed by the Citizens Foundation and others, people can add new ideas, add arguments for and against ideas, indicate if they support or oppose an idea, create a personal list of ideas and discuss all ideas. The end results are lists of top ideas in many categories as well as the best arguments for and against each idea.", "view/about/index")
-  %br/
-  %p= tr("The Citizens Foundation is an Icelandic non-profit organization focused on developing and promoting tools for citizen democracy worldwide.  All the software it creates is released as open source which anybody can use for free. The Citizens Foundation is and will be a neutral entity whose main objective is to foster collaboration between people and their politicians.", "view/about/index")
-  %br/
-  %p
-    %b= tr("Enjoy!", "view/about/index")
+.col-group
+  .col-10.col-offset-1
+    .col-content
+      %h1= tr("About {instance_name}", "view/about/index", :instance_name => tr(current_instance.name, "Name from database"))
+      %br
+      %ul
+        %li
+          = tr("Your Priorities is operated by the non-profit Citizens Foundation.", "view/about/index")
+          %br
+          %br
+          = "<a href='http://www.citizens.is/'>www.citizens.is</a>".html_safe
+          %br
+          = "<a href='https://www.facebook.com/Citizens.is'>www.facebook.com/Citizens.is</a>".html_safe
+          %br
+          = "<a href='http://twitter.com/citizensFNDN'>twitter.com/citizensFNDN</a>".html_safe
+          %br
+          %br
+            = raw "<a href='mailto:citizens@citizens.is'>citizens@citizens.is</a>"
+          %br
+        %li
+          %b= tr("Socialise Innovation!", "view/about/index")
+        %li
+          = tr("We offer a new way to discuss, debate and communicate ideas within your organisation.", "view/about/index")
+        %li
+          = tr("We are adapting ideas from social networking tools and focusing them to generate innovation.", "view/about/index")
+
+      %br
+      %ul
+        %li
+          %b= tr("How it works", "view/about/index")
+        %li
+          = tr("Users can:", "view/about/index")
+        %li
+          = tr("Put forth their ideas", "view/about/index")
+        %li
+          = tr("Add arguments for and against all ideas", "view/about/index")
+        %li
+          = tr("Engage in discussions about ideas", "view/about/index")
+        %li
+          = tr("Support or oppose ideas and arguments", "view/about/index")
+        %li
+          = tr("The end result is that top ideas and arguments are collated for management to improve and progress the company", "view/about/index")
+      %br
+      %ul
+        %li
+          %b= tr("Open Source software", "view/about/index")
+          %br
+          = raw "The software running Your Priorities is called Social Innovation and is open source. You can download it from <a href='https://github.com/rbjarnason/social_innovation'>https://github.com/rbjarnason/social_innovation</a> and it was created by Robert Bjarnason, Gunnar Grimsson, Hinrik Örn Siguðrsson, Dave Parsons, Jim Gilliam and <a href='/about/contributors'>many others</a>."
+

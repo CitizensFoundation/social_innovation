@@ -1,25 +1,22 @@
-= render :partial => "header"
-%p
-  %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-    %tr
-      %td{:valign => "top"}
-        - if @user.profile
-          .bio
-            = @user.profile.bio_html
-        - if @ideas.any?
-          - if @user.endorsements_count > 5
-            .heading= link_to tr("Top 5 of {idea_count} ideas", "view/users/show", :idea_count => @user.endorsements_count), ideas_user_path(@user)
-          - else
-            .heading= tr("Top {count} ideas", "view/users/show", :count => @ideas.length)
-            - @ideas.each do |idea_endorsement|
-              = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea_endorsement.idea, :endorsements=>@endorsements}
-              %div
-                %div{:id => "idea_detail_#{idea_endorsement.idea.id}"}
-        #activities.single
-          %h1
-            = tr("Latest Activity","home")
-          - for activity in @activities
-            = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_nouser"}
-          = #render :partial => "left_nav"
-          - if @activities.total_pages > 1
-            = will_paginate(@activities, :params => {:action => "activities"} )
+.col-group
+  .col-1
+    .col-content
+      = render :partial => "users/profile_pic"
+      = render :partial => "users/profile_nav"
+  .col-11
+    .col-content
+      = render :partial => "users/profile_info"
+      - if @ideas.any?
+        - if @user.endorsements_count > 5
+          %h2= tr("Top 5 of {idea_count} ideas", "view/users/show", :idea_count => @user.endorsements_count)
+        - else
+          %h2= tr("Top {count} ideas", "view/users/show", :count => @ideas.length)
+        - @ideas.each do |idea_endorsement|
+          - idea = Idea.unscoped.find(idea_endorsement.idea_id)
+          = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
+          %div{:id => "idea_detail_#{idea.id}"}
+        %h2= tr("Latest Activity","home")
+        - for activity in @activities
+          = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_nouser"}
+        - if @activities.total_pages > 1
+          = will_paginate(@activities, :params => {:action => "activities"} )

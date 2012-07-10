@@ -1,6 +1,6 @@
 - if controller_name == "ideas" and action_name == "show"
   %meta{:content => @idea.name, :property => "og:title"}/
-  %meta{:content => tr("{prompt} {idea_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :idea_name => @idea.name), :property => "og:description"}/
+  %meta{:content => tr("{idea_name}. Learn more at {instance_name}", "view/shared/_description", :prompt => current_instance.prompt, :instance_name => tr(current_instance.name,"Name from database"), :idea_name => @idea.name), :property => "og:description"}/
   %meta{:content => "website", :property => "og:type"}/
   %meta{:content => "http://#{request.host_with_port+current_instance.logo.url}", :property => "og:image"}/
   %meta{:content => @idea.show_url, :property => "og:url"}/

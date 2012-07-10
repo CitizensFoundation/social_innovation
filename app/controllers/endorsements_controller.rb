@@ -41,8 +41,8 @@ class EndorsementsController < ApplicationController
               page.replace_html 'idea_' + @endorsement.idea.id.to_s + "_position",render(:partial => "endorsements/position", :locals => {:endorsement => @endorsement})
             elsif params[:region] == 'yours'
             end
-            page.replace_html 'your_ideas_container', :partial => "ideas/yours"
-          end        
+            #page.replace_html 'your_ideas_container', :partial => "ideas/yours"
+          end
         }
       end
     end
@@ -56,15 +56,19 @@ class EndorsementsController < ApplicationController
       @endorsement = current_user.endorsements.find(params[:id])
     end
     return unless @endorsement
-    @idea = @endorsement.idea
+    Idea.unscoped {
+      @idea = @endorsement.idea
+    }
     eid = @endorsement.id
     @endorsement.destroy
-    @idea.reload
+    Idea.unscoped {
+      @idea.reload
+    }
     respond_to do |format|
       format.js {
         render :update do |page|
           if params[:region] == 'idea_left'
-            page.replace_html 'idea_' + @idea.id.to_s + "_button",render(:partial => "ideas/debate_buttons", :locals => {:idea => @idea, :endorsement => nil, :region=>"idea_left"})
+            page.replace_html 'idea_' + @idea.id.to_s + "_button",render(:partial => "ideas/debate_buttons", :locals => {:force_debate_to_new=>(params[:force_debate_to_new] and params[:force_debate_to_new].to_i==1) ? true : false, :idea => @idea, :endorsement => nil, :region=>"idea_left"})
             page.replace_html 'idea_' + @idea.id.to_s + "_position",render(:partial => "endorsements/position", :locals => {:endorsement => nil})
             page.replace 'endorser_link', render(:partial => "ideas/endorser_link")
             page.replace 'opposer_link', render(:partial => "ideas/opposer_link")
@@ -79,13 +83,13 @@ class EndorsementsController < ApplicationController
             page.replace 'endorser_link', render(:partial => "ideas/endorser_link")
             page.replace 'opposer_link', render(:partial => "ideas/opposer_link")
           elsif ['idea_inline'].include?(params[:region])
-            page<<"$('.idea_#{@idea.id.to_s}_button_small').replaceWith('#{escape_javascript(render(:partial => "ideas/debate_buttons", :locals => {:idea => @idea, :endorsement => nil, :region => params[:region]}))}')"
+            page<<"$('.idea_#{@idea.id.to_s}_button_small').replaceWith('#{escape_javascript(render(:partial => "ideas/debate_buttons", :locals => {:force_debate_to_new=>(params[:force_debate_to_new] and params[:force_debate_to_new].to_i==1) ? true : false, :idea => @idea, :endorsement => nil, :region => params[:region]}))}')"
             page<<"$('.idea_#{@idea.id.to_s}_endorsement_count').replaceWith('#{escape_javascript(render(:partial => "ideas/endorsement_count", :locals => {:idea => @idea}))}')"
           elsif params[:region] == 'your_ideas'
             # page.visual_effect :fade, 'endorsement_' + eid.to_s, :duration => 0.5
           elsif params[:region] == 'ad'
           end     
-          page.replace_html 'your_ideas_container', :partial => "ideas/yours"
+          #page.replace_html 'your_ideas_container', :partial => "ideas/yours"
           # page.visual_effect :highlight, 'your_ideas' unless params[:region] == 'your_ideas'
         end
       }    

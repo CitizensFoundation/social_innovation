@@ -1,0 +1,21 @@
+.col-group
+  .col-8
+    .col-content
+      %div
+      %h1
+        = tr("First time? Create an account:", "view/sessions/new")
+      = render :partial => "users/form"
+  .col-4
+    .col-content
+      %div
+      %h1
+        = tr("Already have an account?", "view/sessions/new")
+      = render :partial => "sessions/form"
+      %div{:style => "margin-top: 10px;"}
+        = link_to tr("I forgot my password", "view/sessions/new"), new_password_path
+      - if current_instance.has_facebook_enabled? or current_instance.has_twitter_enabled?
+        %p= tr("or <b>sign in instantly</b> with:", "view/sessions/new")
+        - if current_instance.has_facebook_enabled?
+          = fb_login_and_redirect "/", :text=>tr("Sign in with Facebook","views/shared/_login"), :size=>"small", :title=>tr("Sign in with Facebook","views/shared/_login"), :scope=>"email"
+        - if current_instance.has_twitter_enabled?
+          = link_to image_tag("twitter_signin.png", :border => 0), :controller => "twitter", :action => "create"

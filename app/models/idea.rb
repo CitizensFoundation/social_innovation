@@ -58,6 +58,7 @@ class Idea < ActiveRecord::Base
   belongs_to :user
   belongs_to :sub_instance
   belongs_to :category
+  belongs_to :group
   
   has_many :relationships, :dependent => :destroy
   has_many :incoming_relationships, :foreign_key => :other_idea_id, :class_name => "Relationship", :dependent => :destroy
@@ -84,23 +85,18 @@ class Idea < ActiveRecord::Base
   has_many :ads, :dependent => :destroy
   has_many :notifications, :as => :notifiable, :dependent => :destroy
   
-  has_many :changes, :conditions => "status <> 'removed'", :order => "updated_at desc"
-  has_many :approved_changes, :class_name => "Change", :conditions => "status = 'approved'", :order => "updated_at desc"
-  has_many :sent_changes, :class_name => "Change", :conditions => "status = 'sent'", :order => "updated_at desc"
-  has_many :declined_changes, :class_name => "Change", :conditions => "status = 'declined'", :order => "updated_at desc"
-  has_many :changes_with_deleted, :class_name => "Change", :order => "updated_at desc", :dependent => :destroy
   has_many :idea_status_change_logs, dependent: :destroy
 
   attr_accessor :idea_type
 
-  belongs_to :change # if there is currently a pending change, it will be attached
-  
   acts_as_taggable_on :issues
   acts_as_list
   
   define_index do
     indexes name
+    indexes description
     indexes category.name, :facet=>true, :as=>"category_name"
+    indexes updated_at, :sortable => true
     has sub_instance_id, :as=>:sub_instance_id, :type => :integer
     where "ideas.status in ('published','inactive')"
   end  
@@ -112,6 +108,10 @@ class Idea < ActiveRecord::Base
       'No category'
     end
   end
+
+  def help_with_this
+
+  end
     
   validates_length_of :name, :within => 5..60, :too_long => tr("has a maximum of 60 characters", "model/idea"),
                                                :too_short => tr("please enter more than 5 characters", "model/idea")
@@ -119,7 +119,7 @@ class Idea < ActiveRecord::Base
   validates_length_of :description, :within => 5..300, :too_long => tr("has a maximum of 300 characters", "model/idea"),
                                                        :too_short => tr("please enter more than 5 characters", "model/idea")
 
-  validates_uniqueness_of :name, :if => Proc.new { |idea| idea.status == 'published' }
+  #validates_uniqueness_of :name, :if => Proc.new { |idea| idea.status == 'published' }
   validates :category_id, :presence => true
 
   after_create :on_published_entry
@@ -131,7 +131,6 @@ class Idea < ActiveRecord::Base
       event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
       event :deactivate, transitions_to: :inactive
-      event :abusive, transitions_to: :abusive
     end
     state :passive do
       event :publish, transitions_to: :published
@@ -155,7 +154,6 @@ class Idea < ActiveRecord::Base
     state :inactive do
       event :remove, transitions_to: :removed
     end
-    state :abusive
   end
 
   def to_param
@@ -417,7 +415,7 @@ class Idea < ActiveRecord::Base
   
   def official_status_name
     return tr("Failed", "status_messages") if official_status == -2
-    return tr("In Progress", "status_messages") if official_status == -1
+    return tr("In progress", "status_messages") if official_status == -1
     return tr("Unknown", "status_messages") if official_status == 0
     return tr("Published", "status_messages") if official_status == 1
     return tr("Successful", "status_messages") if official_status == 2
@@ -527,7 +525,7 @@ class Idea < ActiveRecord::Base
     size = p2.endorsements.active_and_inactive.length
     up_size = p2.endorsements.active_and_inactive.endorsing.length
     down_size = p2.endorsements.active_and_inactive.opposing.length
-    Idea.update_all("endorsements_count = #{size}, up_endorsements_count = #{up_size}, down_endorsements_count = #{down_size}", ["id = ?",p2.id])
+    Idea.update(p2.id, endorsements_count: size, up_endorsements_count: up_size, down_endorsements_count: down_size)
 
     # look for the activities that should be removed entirely
     for a in Activity.find(:all, :conditions => ["idea_id = ? and type in ('ActivityIdeaDebut','ActivityIdeaNew','ActivityIdeaRenamed','ActivityIdeaFlag','ActivityIdeaFlagInappropriate','ActivityIdeaOfficialStatusCompromised','ActivityIdeaOfficialStatusFailed','ActivityIdeaOfficialStatusIntheworks','ActivityIdeaOfficialStatusSuccessful','ActivityIdeaRising1','ActivityIssueIdea1','ActivityIssueIdeaControversial1','ActivityIssueIdeaOfficial1','ActivityIssueIdeaRising1')",self.id])
@@ -678,7 +676,7 @@ class Idea < ActiveRecord::Base
     latest_idea_process_txt.html_safe if latest_idea_process_txt
   end
 
-  def on_abusive_entry(new_state, event)
+  def do_abusive!
     self.user.do_abusive!(notifications)
     self.update_attribute(:flags_count, 0)
   end
@@ -697,11 +695,10 @@ class Idea < ActiveRecord::Base
   end
   
   def on_removed_entry(new_state, event)
-    activities.each do |a|
-      a.remove!
-    end
-    endorsements.each do |e|
-      e.destroy
+    [activities, endorsements, points].each do |children|
+      children.each do |child|
+        child.remove!
+      end
     end
     self.removed_at = Time.now
     save(:validate => false)

@@ -26,21 +26,25 @@
 
 :javascript
   $(document).ready(function() {
+    $(".subnav").click(function(e) {
+      e.preventDefault();
+      //var $this = $(this);
+      if ($(this).hasClass('menu-open')) {
+        $(this).removeClass('menu-open');
+        $('#sub_menu').hide();
+      }
+      else {
+        $(this).addClass('menu-open');
+        $('#sub_menu').show();
+      }
+      return false;
+    });
 
-      $(".subnav").click(function(e) {
-          e.preventDefault();
-          $("#sub_menu").toggle();
-          $(".preventDefault").toggleClass("menu-open");
-      });
-
-      $("#sub_menu").mouseup(function() {
-          return false
-      });
-
-      $(document).mouseup(function(e) {
-          if($(e.target).parent("a.preventDefault").length==0) {
-              $(".preventDefault").removeClass("menu-open");
-              $("#sub_menu").hide();
-          }
-      });
+    $(document).click(function(e) {
+      if ($('#sub_menu').is(':visible') && $(e.target).parents('#sub_menu').length === 0) {
+        $('.subnav').removeClass('menu-open');
+        $('#sub_menu').hide();
+        return false;
+      }
+    });
   });

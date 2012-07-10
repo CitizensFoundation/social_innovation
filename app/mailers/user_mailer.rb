@@ -23,7 +23,6 @@ class UserMailer < ActionMailer::Base
 
   def lost_or_gained_capital(user, activity, point_difference)
     @instance = Instance.current
-    @user = user
     @activity = activity
     @point_difference = point_difference
     @recipient = @user = user
@@ -119,7 +118,7 @@ class UserMailer < ActionMailer::Base
          :reply_to => Instance.current.admin_email,
          :from => "#{tr(Instance.current.name,"Name from database")} <#{Instance.current.admin_email}>",
          :subject => tr("Your new temporary password","email") do |format|
-           format.text { render :text=>convert_to_text(render_to_string("new_password"), formats: [:html]) }
+           format.text { render :text=>convert_to_text(render_to_string("new_password", formats: [:html])) }
            format.html
          end
   end
@@ -179,12 +178,8 @@ class UserMailer < ActionMailer::Base
   private
 
     def get_conditional_logo
-      if Instance.first.layout.include?("better_reykjavik")
-        File.read(Rails.root.join("app/assets/images/logos/BR_email.png"))
-      elsif Instance.first.layout.include?("better_iceland")
-        File.read(Rails.root.join("app/assets/images/logos/betraIsland-merki.png"))
-      elsif Instance.first.layout.include?("your_ideas")
-        File.read(Rails.root.join("app/assets/images/logos/YourIdeas_large.png"))
+      if Instance.first.has_email_banner?
+        File.read(Instance.first.email_banner.path())
       else
         File.read(Rails.root.join("app/assets/images/logos/default.gif"))
       end

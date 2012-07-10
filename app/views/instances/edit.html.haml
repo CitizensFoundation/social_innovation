@@ -25,6 +25,21 @@
               = tr("What are you running?", "view/instances/edit")
             .field_box
               = f.text_field :target, :size => 40, :maxlength => 30
+            %p
+              %label{:for => "top_banner_image"}= tr("Top Banner Image", "view/sub_instances/_form")
+              %br/
+              = f.file_field :top_banner
+              %br/
+            %p
+              %label{:for => "menu_strip_image"}= tr("Menu Strip Image Thin", "view/sub_instances/_form")
+              %br/
+              = f.file_field :menu_strip
+              %br/
+            %p
+              %label{:for => "menu_strip_side_image"}= tr("Menu Strip Side Image", "view/sub_instances/_form")
+              %br/
+              = f.file_field :menu_strip_side
+              %br/
           .field
             .field_label
               = tr("Prompt", "view/instances/edit")
@@ -52,6 +67,11 @@
             .field_label
               Language:
               \#{f.select :language_code, [1, 2, 3]}
+          - if @instance.has_email_banner?
+            = image_tag @instance.email_banner.url(), :border => 0
+          .field
+            .field_label= tr("Email banner", "view/instances/edit")
+            .field_box= f.file_field :email_banner
         %td{:style => "padding-left: 20px;", :valign => "top"}
           .field
             .field_label
@@ -130,4 +150,4 @@
             .field_box
               = f.check_box :is_tags
               = tr("Enable {tags_name}", "view/instances/edit", :tags_name => current_instance.tags_name.pluralize.downcase)
-    = f.submit tr("Save Nation Settings", "view/instances/edit"), :class => "submit_button"
+    = f.submit tr("Save Instance", "view/instances/edit"), :class => "submit_button"

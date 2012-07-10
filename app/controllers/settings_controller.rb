@@ -59,6 +59,7 @@ class SettingsController < ApplicationController
     self.current_user.forget_me
     cookies.delete :auth_token
     reset_session    
+    Thread.current[:current_user] = nil
     flash[:notice] = tr("Your account was deleted. Good bye!", "controller/settings")
     redirect_to "/" and return
   end

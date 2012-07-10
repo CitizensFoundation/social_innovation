@@ -1,7 +1,0 @@
-%center
-  - if SubInstance.current and SubInstance.current.short_name=="world"
-    = image_tag "tr8n/flags/64/_united-nations.png"
-  - elsif SubInstance.current and SubInstance.current.short_name=="eu"
-    = image_tag "tr8n/flags/64/_european-union.png"
-  - elsif SubInstance.current and SubInstance.current.iso_country
-    = image_tag SubInstance.current.iso_country.large_flag_image

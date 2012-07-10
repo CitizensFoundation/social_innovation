@@ -52,7 +52,7 @@ class BulletinsController < ApplicationController
           }
         format.js {
           render :update do |page|
-            page.insert_html :top, 'activities', render(:partial => "activities/show", :locals => {:activity => @activity, :suffix => ""})
+            page.insert_html :top, 'new_activities', render(:partial => "activities/show", :locals => {:activity => @activity, :suffix => ""})
 #            page["bulletin-form-submit"].enable  
             page["bulletin_content"].focus()
 #            page["bulletin_content"].clear()

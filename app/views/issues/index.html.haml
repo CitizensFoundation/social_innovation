@@ -10,26 +10,19 @@
 .white_line
 .pre_text
   = tr("Here, you can find ideas organized by categories, and add your own.", "view/issues/index")
-%table
-  %tr
-    - if current_sub_instance.required_tags
-      %td{:width => "33%"}
-    - else
-      %td{:width => "50%"}
-    = render partial: 'issue_listing', locals: { issues: @categories }
-    - if current_sub_instance.required_tags
-      %td{:width => "33%"}
-        - if not @sub_instance_tags.empty?
-          %h3= tr("Better neighborhoods", "views/issues/index")
-          - issues = @sub_instance_tags
-          - issues.unshift(Tag.find_by_slug('betri-hverfi')) if Instance.current.layout == 'better_reykjavik'
-          = render partial: 'issue_listing', locals: { issues: issues }
-        - if not current_sub_instance
-          %h3= tr("By neighborhood", "views/issues/index")
-          - if Instance.current.default_tags_checkbox and not current_sub_instance
-            - issues = Instance.current.default_tags_checkbox.split(",").collect { |tag| Tag.find_by_slug(tag.parameterize_full) }
-            = render partial: 'issue_listing', locals: { issues: issues }
-    - if current_sub_instance.required_tags
-      %td{:width => "33%"}
-    - else
-      %td{:width => "50%"}
+  - if current_sub_instance.required_tags
+  - else
+  = render partial: 'issue_listing', locals: { issues: @categories }
+  - if current_sub_instance.required_tags
+    - if not @sub_instance_tags.empty?
+      %h3= tr("Better neighborhoods", "views/issues/index")
+      - issues = @sub_instance_tags
+      - issues.unshift(Tag.find_by_slug('betri-hverfi')) if Instance.current.layout == 'better_reykjavik'
+      = render partial: 'issue_listing', locals: { issues: issues }
+    - if not current_sub_instance
+      %h3= tr("By neighborhood", "views/issues/index")
+      - if Instance.current.default_tags_checkbox and not current_sub_instance
+        - issues = Instance.current.default_tags_checkbox.split(",").collect { |tag| Tag.find_by_slug(tag.parameterize_full) }
+        = render partial: 'issue_listing', locals: { issues: issues }
+  - if current_sub_instance.required_tags
+  - else

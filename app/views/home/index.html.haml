@@ -10,22 +10,31 @@
   });
 - if @new_ideas.any?
   %div.home_welcome
-    %h1
+    %h1.home_h1
       = tr("New Ideas","home")
     - @new_ideas.each do |idea|
       = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
       %div
         %div{:id => "idea_detail_#{idea.id}"}
+- else
+  .home_welcome
+    %h2= tr("No idea has been created for {country}", 'home', country: tr(SubInstance.current.name,"welcome"))
 - if @top_ideas.any?
-  %div.home_welcome
-    %h1
+  %div.home_welcome{:style=>"margin-top: 10px; padding-top: 10px;"}
+    %h1.home_h1
+      = tr("&nbsp;","home")
+    %h1.home_h1
       = tr("Top Ideas","home")
     - @top_ideas.each do |idea|
       = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea, :endorsements=>@endorsements}
       %div
         %div{:id => "idea_detail_#{idea.id}"}
 - if @random_ideas.any?
+  %br
+  %br
   %div.home_welcome
+    %h1.home_h1
+      = tr("&nbsp;","home")
     %h1
       = tr("Random Ideas","home")
     - @random_ideas.each do |idea|
@@ -33,11 +42,13 @@
       %div
         %div{:id => "idea_detail_#{idea.id}"}
 - unless @activities.blank?
-  %div{:style=>"float: left;margin-top:5px;"}
+  %div.home_welcome
+    %br
+    %h1.home_h1
+      = tr("&nbsp;","home")
     %h1
       = tr("Latest Activity","home")
-    #home_activity_list
-      %ul#endless_scroll_ul.list{:last => @activities.to_a.last.changed_at}
-        = render :template => 'feed/activity_list_simple'
-        #infinite-scroll
-        .endless_scroll_inner_wrap
+    %ul#endless_scroll_ul.list{:last => @activities.to_a.last.changed_at}
+      = render :template => 'feed/activity_list_simple'
+      #infinite-scroll
+      .endless_scroll_inner_wrap

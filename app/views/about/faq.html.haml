@@ -1,133 +1,69 @@
-#infopage
-  %h1= tr("Answers to Frequently Asked Questions", "view/about/br_faq")
-  %br/
-  - if current_instance.layout=="better_reykjavik"
-    - tr('The status of the idea <a href="{idea_link}">{idea_name}</a> {support_or_endorse_text} has been changed on {instance_name}.',
-    - "email", idea_name: "", idea_link: "", support_or_endorse_text: "", instance_name: "")
-    - tr("which you support", "email")
-    - tr("which you oppose", "email")
-    - tr('The status of the idea "{idea}" has been changed', "email", idea: "")
-    - tr("{user_name} was refunded {capital}{currency_short_name} for an ad for idea {idea_name} because the idea is now in progress", "model/activity",
-    - user_name: "",
-    - capital: "",
-    - currency_short_name: "",
-    - idea_name: "")
-    %p= tr("<a name=\"what_is\"></a><b>Q: What is {instance_name}?</b>", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %p= tr("A: {instance_name} is a website that allows people from all over the world to prioritise which issues matter the most to them", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"who_runs\"></a><b>Q: Who runs the {instance_name} service?</b>", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %p= tr("A: The Citizens Foundation, a non-profit organisation that is based in Iceland", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"can_everyone_use\"></a><b>Q: Can everyone use {instance_name}?</b>", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %p= tr("A: Yes, everyone can view everything without logging in but you need to create a free account to participate", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"what_happens\"></a><b>Q: What happens to the ideas?</b>", "view/about/br_faq")
-    %p= tr("A: To ensure that Better Reykjavik will be a real tool for citizens influence we have our rules about what will be done with the ideas. The highest ranking ideas will be processed by the appropriate specialist council. Lower ranking ideas will be advisory to the elected officials and executives of the city.", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"what_are_the_rules\"></a><b>Q: What are the rules?</b>", "view/about/br_faq")
-    %p= tr("A: See <a href=\"/about/rules\">the rules</a> for detailed information.", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"city_responsible\"></a><b>Q: How can I know what projects are the responsibility of the city?</b>", "view/about/br_faq")
-    %p= tr("A: Part of the citys administration is split into eight specialist councils. the committee for sport and leisure, the committee for culture and tourism, the committee for education, the planning committee, the committee for the environment and the welfare committee. <a href=\"/about/council\">More information about each councils responsibilites.</a><br /><br />  When a idea is added to Better Reykjavik the users must decide which category it fits in. The categories are: Administrataion, Construction projects, Culture & Arts, Education, Environment, Human rights, Leisure & Outdoors, Miscellaneous, Planning, Sports, Tourism, Transportation and Welfare. Please choose Miscellaneous when it's not clear in which category the idea should go. The choice of categories decides which specialist council will be allocated the idea if it gets enough support. ", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"dont_know_category\"></a><b>Q: What if I don't know in which category the idea belongs to?</b>", "view/about/br_faq")
-    %p= tr("A: Better Reykjavik editors will notify if the idea is obviously in the wrong category and move it to the correct one. ", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"remove_endorsement\"></a><b>Q: How do I remove an endorsement from my list?</b>", "view/about/br_faq")
-    %p= tr("A: Click the grey X next to it in your list on the right.  In general, throughout the site, whenever you see an X, that will get rid of that endorsement/following/opposition/etc.", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"counts\"></a><b>Q: Why are there so many more endorsements than oppositions for many items?</b>", "view/about/br_faq")
-    %p= tr("A: People tend to use it only to indicate things they are so opposed to, that stopping it should actually be a idea itself.  If people don't feel particularly strongly, they just don't endorse or oppose it.", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"typo\"></a><b>Q: How can I fix a typo or mis-spelling in my idea?</b>", "view/about/br_faq")
-    %p= tr("A: If no one else has endorsed it yet, you can simply click on \"rename this idea\" in the \"Action\" menu on that idea's page and fix the error.  Otherwise, post a bulletin of what is messed up and click \"flag for review\" on the \"Action\" menu to bring it to {instance_name} attention.", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"numbers\"></a><b>Q: What are the big \"rank\" numbers next to the ideas?</b>", "view/about/br_faq")
-    %p= tr("A: That's everyone's individual ideas merged into one big list, taking into account how many people endorsed or opposed it, and whether it's high or low in their list.  The smaller the number, the more important it is -- #1 is the top idea.", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"arrows\"></a><b>Q: What about the red and green arrows with the numbers?</b>", "view/about/br_faq")
-    %p= tr("A: That tracks how the idea is moving up or down in the rankings.  <img src=\"/assets/green_up.gif\" height=\"7\" width=\"11\" border=\"0\"> is up, <img src=\"/assets/red_down.gif\" height=\"7\" width=\"11\" border=\"0\"> is down and the number is how many spots it moved in the rankings.  The WK column is how much it's moved this week, MO stands for month, and YDAY is how much it's moved since yesterday.", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"rankings\"></a><b>Q: How do the rankings work?</b>", "view/about/br_faq")
-    %p= tr("A: It's not simply a matter of how many endorsements or oppositions a idea has.  The ranking is heavily influenced by how sincerely a person uses the site.One of the challenges in building something like this on the internet is that some people will sign in every day, some people will sign in once a month, and some people will sign in once and never come back. We don't want any of these groups to skew the rankings of the ideas.  For instance, you shouldn't have to sign in to the site every single day to update your ideas, most people simply won't do that, and it would give too much power to the people with the most time.  But you also shouldn't be able to leave a fake email address, endorse one thing, never come back, and have that count as much as someone who's put together a broad list of ideas.  And if someone endorses one idea, and then opposes a hundred other ideas, that opposition should count less.So how does someone use the site sincerely?  The ideal person is someone who leaves a real email address, and verifies it (You would see a notice at the top of the page if you haven't verified), endorse and oppose ideas in a variety of different categories, occasionally giving a reason why in the comments, and comes back at least once a month. The other major factor is how high someone has it on their list of ideas.  So if a lot of people have something as their #1 idea, that gives it a bigger boost than something most people rank as 20th idea.", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"how_long\"></a><b>Q: How long can I support or oppose a idea?</b>", "view/about/br_faq")
-    %p= tr("A: Every last weekday of each month, at 12:00 the five top ideas from Better Reykjavik and the top idea from each category are given to the specialist councils of the city. After that you can no longer endorse or support those ideas. Other ideas will however continue to be open for discussion.  ", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"index\"></a><b>Q: What is the \"[my name] Index\"?</b>", "view/about/br_faq")
-    %p= tr("A: Think of your ideas as a stock portfolio, or a mutual fund.  That index represents how your ideas are moving up and down in the rankings, just like the stock markets.  At a glance, you can see whether your ideas are becoming more important, or less.The \"volume\" you see underneath is how many endorsements or oppositions people made at {instance_name} that day.", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"idea_chart\"></a><b>Q: The chart on each idea's page?</b>", "view/about/br_faq")
-    %p= tr("A: That shows how the idea has moved up and down in the rankings for the last 3 months (or less if it hasn't been around that long).  The volume underneath is the number of endorsements (green) or oppositions (red) on any given day.", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"pc\"></a><b>Q: What is \"s\"?</b>", "view/about/br_faq")
-    %p= tr("A: Social Points.  It's a way to track your influence at {instance_name}, and determine the \"<a href=\"/network\">most influential</a>\" chart.                                                                                                                          |
-        You can spend your Social points by <a href=\"/ideas/ads\">putting ads</a> for your favorite ideas at the top of all the {instance_name} pages, or proposing acquisitions.", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database")) |
-    %br/
-    %p= tr("<a name=\"earnpc\"></a><b>Q: How do I earn Social points (s)?</b>", "view/about/br_faq")
-    %p= tr("<ul><li><span class=\"pc\">+1s</span> when someone follows you. <span class=\"pc\">-1s</span> when someone ignores you.", "view/about/br_faq")
-    %p= tr("<li><span class=\"pc\">+1s</span> if either endorsers or opposers find your talking point helpful.", "view/about/br_faq")
-    %p= tr("<li>an additional<span class=\"pc\">+1s</span> if <i>both</i> endorsers and opposers find your talking point helpful.", "view/about/br_faq")
-    %p= tr("<li><span class=\"pc\">+5s</span> when someone accepts your invitation to join {instance_name}.", "view/about/br_faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %p= tr("<li><span class=\"pc\">+?s</span> when an acquisition you proposed is approved by 70%+, you will receive double the pc you spent proposing the acquisition.</ul>", "view/about/br_faq")
-    %br/
-    %p= tr("<a name=\"spellcheck\"></a><b>Q: Can I have spell check?</b>", "view/about/br_faq")
-    %p= tr("A: There is no spell check built into the site itself, but you can enable it in your browser to work on all sites, not just this one.", "view/about/br_faq")
-    %p= tr("<ul><li><a href=\"http://www.mozilla.com/en-US/firefox/firefox.html\">Firefox</a> has spell check built-in, it will underline in red any words that it thinks are misspelled.", "view/about/br_faq")
-    %p= tr("<li>Spell check can be enabled in Safari.  <a href=\"http://www.tuaw.com/2007/05/07/mac-101-enabling-built-in-spell-check/\">Instructions here</a>.", "view/about/br_faq")
-    %p= tr("<li>Internet Explorer 7+, you can <a href=\"http://www.ie7pro.com/spell-checker.html\">install this free extension</a>.</ul>", "view/about/br_faq")
-  - else
-    %p= tr("<a name=\"remove_endorsement\"></a><b>Q: What is {instance_name}?</b>", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %p= tr("A: {instance_name} is a website that allows people from all over the world to prioritise which issues matter the most to them", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"remove_endorsement\"></a><b>Q: Who runs the {instance_name} service?</b>", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %p= tr("A: The Citizens Foundation, a non-profit organisation that is based in Iceland", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"remove_endorsement\"></a><b>Q: Can everyone use {instance_name}?</b>", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %p= tr("A: Yes, everyone can view everything without logging in but you need to create a free account to participate", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"remove_endorsement\"></a><b>Q: What happens to the ideas?</b>", "view/about/faq")
-    %p= tr("A: That is really up to the people and the rulers. {instance_name} is not affiliated with any instance but our hope is that local politicians will see how much they have to gain by fulfilling the will of their people.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"remove_endorsement\"></a><b>Q: What are the rules?</b>", "view/about/faq")
-    %p= tr("A: See <a href=\"/about/rules\">the rules</a> for detailed information.", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"remove_endorsement\"></a><b>Q: How do I remove an endorsement from my list?</b>", "view/about/faq")
-    %p= tr("A: Click the grey X next to it in your list on the right.  In general, throughout the site, whenever you see an X, that will get rid of that endorsement/following/opposition/etc.", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"counts\"></a><b>Q: Why are there so many more endorsements than oppositions for many items?</b>", "view/about/faq")
-    %p= tr("A: People tend to use it only to indicate things they are so opposed to, that stopping it should actually be a idea itself.  If people don't feel particularly strongly, they just don't endorse or oppose it.", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"typo\"></a><b>Q: How can I fix a typo or mis-spelling in my idea?</b>", "view/about/faq")
-    %p= tr("A: If no one else has endorsed it yet, you can simply click on \"rename this idea\" in the \"Action\" menu on that idea's page and fix the error.  Otherwise, post a bulletin of what is messed up and click \"flag for review\" on the \"Action\" menu to bring it to {instance_name} attention.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"numbers\"></a><b>Q: What are the big \"rank\" numbers next to the ideas?</b>", "view/about/faq")
-    %p= tr("A: That's everyone's individual ideas merged into one big list, taking into account how many people endorsed or opposed it, and whether it's high or low in their list.  The smaller the number, the more important it is -- #1 is the top idea.", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"arrows\"></a><b>Q: What about the red and green arrows with the numbers?</b>", "view/about/faq")
-    %p= tr("A: That tracks how the idea is moving up or down in the rankings.  <img src=\"/assets/green_up.gif\" height=\"7\" width=\"11\" border=\"0\"> is up, <img src=\"/assets/red_down.gif\" height=\"7\" width=\"11\" border=\"0\"> is down and the number is how many spots it moved in the rankings.  The WK column is how much it's moved this week, MO stands for month, and YDAY is how much it's moved since yesterday.", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"rankings\"></a><b>Q: How do the rankings work?</b>", "view/about/faq")
-    %p= tr("A: It's not simply a matter of how many endorsements or oppositions a idea has.  The ranking is heavily influenced by how sincerely a person uses the site.One of the challenges in building something like this on the internet is that some people will sign in every day, some people will sign in once a month, and some people will sign in once and never come back. We don't want any of these groups to skew the rankings of the ideas.  For instance, you shouldn't have to sign in to the site every single day to update your ideas, most people simply won't do that, and it would give too much power to the people with the most time.  But you also shouldn't be able to leave a fake email address, endorse one thing, never come back, and have that count as much as someone who's put together a broad list of ideas.  And if someone endorses one idea, and then opposes a hundred other ideas, that opposition should count less.So how does someone use the site sincerely?  The ideal person is someone who leaves a real email address, and verifies it (You would see a notice at the top of the page if you haven't verified), endorse and oppose ideas in a variety of different categories, occasionally giving a reason why in the comments, and comes back at least once a month. The other major factor is how high someone has it on their list of ideas.  So if a lot of people have something as their #1 idea, that gives it a bigger boost than something most people rank as 20th idea.", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"index\"></a><b>Q: What is the \"[my name] Index\"?</b>", "view/about/faq")
-    %p= tr("A: Think of your ideas as a stock portfolio, or a mutual fund.  That index represents how your ideas are moving up and down in the rankings, just like the stock markets.  At a glance, you can see whether your ideas are becoming more important, or less.The \"volume\" you see underneath is how many endorsements or oppositions people made at {instance_name} that day.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"idea_chart\"></a><b>Q: The chart on each idea's page?</b>", "view/about/faq")
-    %p= tr("A: That shows how the idea has moved up and down in the rankings for the last 3 months (or less if it hasn't been around that long).  The volume underneath is the number of endorsements (green) or oppositions (red) on any given day.", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"pc\"></a><b>Q: What is \"sp\"?</b>", "view/about/faq")
-    %p= tr("A: Social Points.  It's a way to track your influence at {instance_name}, and determine the \"<a href=\"/network\">most influential</a>\" chart. You can spend your Social points by <a href=\"/ideas/ads\">putting ads</a> for your favorite ideas at the top of all the {instance_name} pages, or proposing acquisitions.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %br/
-    %p= tr("<a name=\"earnpc\"></a><b>Q: How do I earn Social points (sp)?</b>", "view/about/faq")
-    %p= tr("<ul><li><span class=\"pc\">+1sp</span> when someone follows you. <span class=\"pc\">-1sp</span> when someone ignores you.", "view/about/faq")
-    %p= tr("<li><span class=\"pc\">+1sp</span> if either endorsers or opposers find your talking point helpful.", "view/about/faq")
-    %p= tr("<li>an additional<span class=\"pc\">+1sp</span> if <i>both</i> endorsers and opposers find your talking point helpful.", "view/about/faq")
-    %p= tr("<li><span class=\"pc\">+5sp</span> when someone accepts your invitation to join {instance_name}.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
-    %p= tr("<li><span class=\"pc\">+?sp</span> when an acquisition you proposed is approved by 70%+, you will receive double the pc you spent proposing the acquisition.</ul>", "view/about/faq")
-    %br/
-    %p= tr("<a name=\"spellcheck\"></a><b>Q: Can I have spell check?</b>", "view/about/faq")
-    %p= tr("A: There is no spell check built into the site itself, but you can enable it in your browser to work on all sites, not just this one.", "view/about/faq")
-    %p= tr("<ul><li><a href=\"http://www.mozilla.com/en-US/firefox/firefox.html\">Firefox</a> has spell check built-in, it will underline in red any words that it thinks are misspelled.", "view/about/faq")
-    %p= tr("<li>Spell check can be enabled in Safari.  <a href=\"http://www.tuaw.com/2007/05/07/mac-101-enabling-built-in-spell-check/\">Instructions here</a>.", "view/about/faq")
-    %p= tr("<li>Internet Explorer 7+, you can <a href=\"http://www.ie7pro.com/spell-checker.html\">install this free extension</a>.</ul>", "view/about/faq")
+.col-group
+  .col-10.col-offset-1
+    .col-content
+      .about
+        %h1
+          = tr("Answers to Frequently Asked Questions", "view/about/br_faq")
+        %p
+          = tr("<a name=\"remove_endorsement\"></a><b>Q: What is {instance_name} ?</b>", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
+          %br= tr("A: {instance_name}  is a website that allows people from all over the world to prioritise which issues matter the most to them", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
+        %p
+          = tr("<a name=\"remove_endorsement\"></a><b>Q: Can everyone use {instance_name} ?</b>", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
+          %br= tr("A: Yes, everyone can view everything without logging in but you need to create a free account to participate", "view/about/faq")
+        %p
+          = tr("<a name=\"remove_endorsement\"></a><b>Q: What happens to the ideas?</b>", "view/about/faq")
+          %br= tr("A: That is really up to the people and the rulers. {instance_name}  is not affiliated with any instance but our hope is that local politicians will see how much they have to gain by fulfilling the will of their people.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
+        %p
+          = tr("<a name=\"remove_endorsement\"></a><b>Q: What are the rules?</b>", "view/about/faq")
+          %br= tr("A: See <a href=\"/about/rules\">the rules</a> for detailed information.", "view/about/faq")
+
+        %p
+          = tr("<a name=\"remove_endorsement\"></a><b>Q: How do I remove an endorsement from my list?</b>", "view/about/faq")
+          %br= tr("A: Click the grey X next to it in your list on the right.  In general, throughout the site, whenever you see an X, that will get rid of that endorsement/following/opposition/etc.", "view/about/faq")
+
+        %p
+          = tr("<a name=\"counts\"></a><b>Q: Why are there so many more endorsements than oppositions for many items?</b>", "view/about/faq")
+          %br= tr("A: People tend to use it only to indicate things they are so opposed to, that stopping it should actually be a idea itself.  If people don't feel particularly strongly, they just don't endorse or oppose it.", "view/about/faq")
+
+        %p
+          = tr("<a name=\"typo\"></a><b>Q: How can I fix a typo or mis-spelling in my idea?</b>", "view/about/faq")
+          %br= tr("A: If no one else has endorsed it yet, you can simply click on \"rename this idea\" in the \"Action\" menu on that idea's page and fix the error.  Otherwise, post a bulletin of what is messed up and click \"flag for review\" on the \"Action\" menu to bring it to {instance_name}  attention.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
+
+        %p
+          = tr("<a name=\"numbers\"></a><b>Q: What are the big \"rank\" numbers next to the ideas?</b>", "view/about/faq")
+          %br= tr("A: That's everyone's individual ideas merged into one big list, taking into account how many people endorsed or opposed it, and whether it's high or low in their list.  The smaller the number, the more important it is -- #1 is the top idea.", "view/about/faq")
+
+        %p
+          = tr("<a name=\"arrows\"></a><b>Q: What about the red and green arrows with the numbers?</b>", "view/about/faq")
+          %br= tr("A: That tracks how the idea is moving up or down in the rankings.  <img src=\"/assets/green_up.gif\" height=\"7\" width=\"11\" border=\"0\"> is up, <img src=\"/assets/red_down.gif\" height=\"7\" width=\"11\" border=\"0\"> is down and the number is how many spots it moved in the rankings.  The WK column is how much it's moved this week, MO stands for month, and YDAY is how much it's moved since yesterday.", "view/about/faq")
+
+        %p
+          = tr("<a name=\"rankings\"></a><b>Q: How do the rankings work?</b>", "view/about/faq")
+          %br= tr("A: It's not simply a matter of how many endorsements or oppositions a idea has.  The ranking is heavily influenced by how sincerely a person uses the site.One of the challenges in building something like this on the internet is that some people will sign in every day, some people will sign in once a month, and some people will sign in once and never come back. We don't want any of these groups to skew the rankings of the ideas.  For instance, you shouldn't have to sign in to the site every single day to update your ideas, most people simply won't do that, and it would give too much power to the people with the most time.  But you also shouldn't be able to leave a fake email address, endorse one thing, never come back, and have that count as much as someone who's put together a broad list of ideas.  And if someone endorses one idea, and then opposes a hundred other ideas, that opposition should count less.So how does someone use the site sincerely?  The ideal person is someone who leaves a real email address, and verifies it (You would see a notice at the top of the page if you haven't verified), endorse and oppose ideas in a variety of different categories, occasionally giving a reason why in the comments, and comes back at least once a month. The other major factor is how high someone has it on their list of ideas.  So if a lot of people have something as their #1 idea, that gives it a bigger boost than something most people rank as 20th idea.", "view/about/faq")
+
+        %p
+          = tr("<a name=\"index\"></a><b>Q: What is the \"[my name] Index\"?</b>", "view/about/faq")
+          %br= tr("A: Think of your ideas as a stock portfolio, or a mutual fund.  That index represents how your ideas are moving up and down in the rankings, just like the stock markets.  At a glance, you can see whether your ideas are becoming more important, or less.The \"volume\" you see underneath is how many endorsements or oppositions people made at {instance_name}  that day.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
+
+        %p
+          = tr("<a name=\"idea_chart\"></a><b>Q: The chart on each idea's page?</b>", "view/about/faq")
+          %br= tr("A: That shows how the idea has moved up and down in the rankings for the last 3 months (or less if it hasn't been around that long).  The volume underneath is the number of endorsements (green) or oppositions (red) on any given day.", "view/about/faq")
+
+        %p
+          = tr("<a name=\"pc\"></a><b>Q: What is \"sp\"?</b>", "view/about/faq")
+          %br= tr("A: Social Points.  It's a way to track your influence at {instance_name} , and determine the \"<a href=\"/network\">most influential</a>\" chart. You can spend your Social points by <a href=\"/ideas/ads\">putting ads</a> for your favorite ideas at the top of all the {instance_name}  pages, or proposing acquisitions.", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
+
+        %p.list
+          = tr("<a name=\"earnpc\"></a><b>Q: How do I earn Social points (sp)?</b>", "view/about/faq")
+          = tr("<ul><li><span class=\"pc\">+1sp</span> when someone follows you. <span class=\"pc\">-1sp</span> when someone ignores you.", "view/about/faq")
+          = tr("<li><span class=\"pc\">+1sp</span> if either endorsers or opposers find your talking point helpful.", "view/about/faq")
+          = tr("<li>an additional<span class=\"pc\">+1sp</span> if <i>both</i> endorsers and opposers find your talking point helpful.", "view/about/faq")
+          = tr("<li><span class=\"pc\">+5sp</span> when someone accepts your invitation to join {instance_name} .", "view/about/faq", :instance_name => tr(current_instance.name,"Name from database"))
+          = tr("<li><span class=\"pc\">+?sp</span> when an acquisition you proposed is approved by 70%+, you will receive double the pc you spent proposing the acquisition.</ul>", "view/about/faq")
+
+        %p.list
+          = tr("<a name=\"spellcheck\"></a><b>Q: Can I have spell check?</b>", "view/about/faq")
+          = tr("A: There is no spell check built into the site itself, but you can enable it in your browser to work on all sites, not just this one.", "view/about/faq")
+          = tr("<ul><li><a href=\"http://www.mozilla.com/en-US/firefox/firefox.html\">Firefox</a> has spell check built-in, it will underline in red any words that it thinks are misspelled.", "view/about/faq")
+          = tr("<li>Spell check can be enabled in Safari.  <a href=\"http://www.tuaw.com/2007/05/07/mac-101-enabling-built-in-spell-check/\">Instructions here</a>.", "view/about/faq")
+          = tr("<li>Internet Explorer 7+, you can <a href=\"http://www.ie7pro.com/spell-checker.html\">install this free extension</a>.</ul>", "view/about/faq")

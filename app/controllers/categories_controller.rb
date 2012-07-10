@@ -3,7 +3,11 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.xml
   def index
-    @categories = Category.all
+    if params[:default]
+      @categories = Category.unscoped.where("sub_instance_id IS NULL").all
+    else
+      @categories = Category.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -35,7 +39,7 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1/edit
   def edit
-    @category = Category.find(params[:id])
+    @category = Category.unscoped.find(params[:id])
   end
 
   # POST /categories
@@ -57,7 +61,7 @@ class CategoriesController < ApplicationController
   # PUT /categories/1
   # PUT /categories/1.xml
   def update
-    @category = Category.find(params[:id])
+    @category = Category.unscoped.find(params[:id])
 
     respond_to do |format|
       if @category.update_attributes(params[:category])
@@ -73,7 +77,7 @@ class CategoriesController < ApplicationController
   # DELETE /categories/1
   # DELETE /categories/1.xml
   def destroy
-    @category = Category.find(params[:id])
+    @category = Category.unscoped.find(params[:id])
     @category.destroy
 
     respond_to do |format|

@@ -1,34 +1,43 @@
 .nav.nav-user
   %ul
-    %li.add
-      %a.button{:href => "/ideas/new"}
-        = tr("New idea")
-        %span.icn.icn-add
-    %li.signin
-    - unless logged_in?
-      %a.signin{:href => "login"}
-        = tr("Sign in")
-    - else
-      %a.profile{:href => "profile"}
-        = current_user.login
+    %li.search
+      = render :partial => "shared/search"
     %li.help
       %a.help{:href => "help"}
         %span
           = tr("Help")
-    %li.search
-      = render :partial => "shared/search"
+    %li.signin
+      - unless logged_in?
+        %a.signin{:href => "login"}
+          = tr("Sign in")
+      - else
+        %div.signedin
+          %div.avatar
+            = render :partial => "users/pic_30", :locals => {:user => current_user}
+          - if current_user.unread_notifications_count > 0
+            %div.notify_box
+              %a.notifications{:href => "notifications"}
+                = current_user.unread_notifications_count
+          %a.profile{:href => "profile"}
+            %div
+              = current_user.login
+    %li.add
+      %a.button{:href => "/ideas/new"}
+        = tr("New idea")
+        %span.icn.icn-add
 
 - if logged_in?
   = render :partial => "shared/user_info"
   = render :partial => "shared/notifications"
 - else
   = render :partial => "users/login"
-  = render :partial => "shared/help"
+
+= render :partial => "shared/help"
 
 :javascript
   $(document).ready(function() {
 
-      $(".signin").click(function(e) {
+      $("a.signin").click(function(e) {
           e.preventDefault();
           $("#sib_login_form").toggle();
           $(".signin").toggleClass("menu-open");
@@ -45,13 +54,13 @@
           }
       });
 
-      $(".notifications").click(function(e) {
+      $("a.notifications").click(function(e) {
           e.preventDefault();
           $("#sib_notifications").toggle();
           $(".notifications").toggleClass("menu-open");
       });
 
-      $("#sib_notifications_box").mouseup(function() {
+      $("#sib_notifications").mouseup(function() {
           return false
       });
       $(document).mouseup(function(e) {
@@ -61,7 +70,7 @@
           }
       });
 
-      $(".profile").click(function(e) {
+      $("a.profile").click(function(e) {
           e.preventDefault();
           $("#sib_profile").toggle();
           $(".profile").toggleClass("menu-open");
@@ -77,7 +86,7 @@
           }
       });
 
-      $(".help").click(function(e) {
+      $("a.help").click(function(e) {
           e.preventDefault();
           $("#sib_help").toggle();
           $(".help").toggleClass("menu-open");

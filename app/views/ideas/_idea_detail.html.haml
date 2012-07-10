@@ -1,19 +1,19 @@
 .col-group
-  .col-2
+  .col-1
     .col-content
       %div.sib_left_debate
         = render :partial => "ideas/nav", :locals => {:idea => @idea, :endorsement => @endorsement, :noaction=> defined?(noaction) ? true : false }
-  .col-10
+  .col-11
     .col-content
       .col-full
         .col-content
           = render :partial => "ideas/idea_status_changelogs"
       .col-half
-        .col-content{:style=>"background-color: #fff;"}
+        .col-content.point_for
           %div
-            .header-add
+            .header_add
               = render partial: "points_header", locals: { idea: @idea, support: true }
-            %divc.sub_header
+            %div.sub_header
               = tr("Points for", "view/ideas/top_points")
               = get_points_number_text(@points_top_up.length,@total_up_points)
               %span.separator |
@@ -29,7 +29,7 @@
             #pro_new
               = render :partial => "points/short_list", :locals => {:newest_points=>true, :id => "pro_new", :points => @points_new_up, :numbering=>false}
       .col-half
-        .col-content{:style=>"background-color: #fff;"}
+        .col-content.point_against
           %div
             .header-add
               = render partial: "points_header", locals: { idea: @idea, support: false }
@@ -48,4 +48,9 @@
                 = link_to(tr("All points for oppose", "view/ideas/top_points"), opposed_top_points_idea_url(@idea,:by_newest=>true))
               #con_new
                 = render :partial => "points/short_list", :locals => {:newest_points=>true, :id => "con_new", :points => @points_new_down, :numbering=>false}
-
+    - if request.xhr?
+      .col-group
+        .col-full
+          .col-content
+            .more_container
+              = link_to tr("More...", "view/ideas/idea_detail"), idea_path(@idea), class: "idea_detail_more"

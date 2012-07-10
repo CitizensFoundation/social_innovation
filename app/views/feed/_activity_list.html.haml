@@ -7,7 +7,7 @@
         - else
           = render :partial => "activities/show", :locals => {:activity => activity, :suffix => ""}
     - else
-      %span{:style => "text-align:center;"}= tr("The end","_activites")
+      %span= #tr("The end","_activites")
 - else
   #activities.single
     - if not @activities.empty?
@@ -17,4 +17,4 @@
         - else
           = render :partial => "activities/show", :locals => {:activity => activity, :suffix => ""}
     - else
-      %span{:style => "text-align:center;"}= tr("The end","_activites")
+      %span= #tr("The end","_activites")

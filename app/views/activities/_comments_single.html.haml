@@ -1,9 +1,0 @@
-- if activity.comments_count > 0
-  .comment_list{:id => "activity_#{activity.id}_comments"}
-- else
-  .comment_list_empty{:id => "activity_#{activity.id}_comments"}
-- if activity.comments_count > 0
-  - @comments = activity.comments.published_and_abusive.by_first_created.find(:all, :include => :user)
-  = render :partial => "comments/show_all", :locals => {:comments => @comments}
-  - if @comments.length > 0 and activity.class != ActivityCommentParticipant
-    = render :partial => "comments/new_inline", :locals => {:activity => activity, :comment => Comment.new}

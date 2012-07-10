@@ -8,6 +8,7 @@
     = render :partial => "shared/head"
     = render :partial => "shared/javascripts"
     = render :partial => "shared/css"
+    = render :partial => "shared/analytics"
     - if controller_name == "ideas" and action_name == "show"
       = render :partial=>"ideas/fb_og_tags"
     = tr8n_scripts_tag
@@ -22,8 +23,10 @@
           .content-wrap.col-group
             .col-12
               .col-content
-                = render :partial => "ads/pick"
                 = flash_div :warning, :notice, :error
-                = render :partial => "shared/sub_navigation"
+                - unless controller_name == "home" && action_name == "world"
+                  = render :partial => "ads/pick"
+                  = render :partial => "shared/sub_navigation"
                 = yield :layout
+      = render :partial => "shared/facebook_footer"
 

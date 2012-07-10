@@ -2,12 +2,11 @@
   - if @geoblocked
     = render :partial=>"shared/geoblocking_info"
   - else
-    = tr("You can sign up with one click using Facebook, Twitter or GMail or you can sign up below using your own email.", "view/users/_form")
-    %br/
     - if current_instance.has_facebook_enabled?
+      = tr("You can sign up with one click using Facebook or you can sign up below using your own email.", "view/users/_form")
+      %br/
       %div{:style => "margin-bottom: 10px; margin-top: 7px;"}
         = fb_login_and_redirect "/", :text=>tr("Sign in with Facebook","views/shared/_login"), :size=>"small", :title=>tr("Sign in with Facebook","views/shared/_login"), :scope=>"email"
-    %p
       - if current_instance.has_twitter_enabled?
         %div{:style => "margin-bottom: 5px;"}
           = link_to image_tag("twitter_signin.png", :border => 0, :title=>tr("Sign in with Twitter","_login")), :controller => "twitter", :action => "create"
@@ -23,49 +22,48 @@
           %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
             %tr
               %td{:valign => "top"}
-                .field_label
+                .form_header
                   = tr("First name", "view/users/_form")
                 .field_box
-                  = f.text_field :first_name, :size => 20
+                  = f.text_field :first_name, :size => 30
               %td{:style => "padding-left: 3px;", :valign => "top"}
                 .field_label
                   = tr("and Last name", "view/users/_form")
-                .field_box
-                  = f.text_field :last_name, :size => 20
+                .form_header
+                  = f.text_field :last_name, :size => 30
           .small{:style => "margin-bottom: 10px;"}= tr("(Not displayed on the site)", "view/users/_form")
         .field
           .field_label
             = tr("Email address", "view/users/_form")
           .field_box
-            = f.text_field :email
+            = f.text_field :email, :size => 30
           .small{:style => "margin-bottom: 10px;"}= tr("(Never shared without your permission)", "view/users/_form")
-        - if Instance.current.layout == "better_reykjavik"
-          .field
-            .field_label
-              = tr("Post code", "view/users/_form")
-            .field_box
-              = f.text_field :post_code, :size => 5
-          .field
-            .field_label2
-              = tr("Age group", "view/users/_form_long")
-            .field_box
-              = f.select :age_group, options_for_select([tr("Select age group", "model/user"), tr("12 years and younger", "model/user"),tr("13 to 17 years", "model/user"),tr("18 to 25 years", "model/user"),tr("26 to 69 years", "model/user"),tr("70 years and older", "model/user")], tr("Select age group", "model/user"))
-          .field
-            .field_label2
-              = tr("Gender", "view/users/_form_long")
-            .field_box
-              = f.select :my_gender, options_for_select([tr("Select gender", "model/user"), tr("Male", "model/user"),tr("Female", "model/user")], tr("Select gender", "model/user"))
+        /.field
+        /  .field_label
+        /    = tr("Post code", "view/users/_form")
+        /  .field_box
+        /    = f.text_field :post_code, :size => 5
+        /.field
+        /  .field_label
+        /    = tr("Age group", "view/users/_form_long")
+        /  .field_box
+        /    = f.select :age_group, options_for_select([tr("Select age group", "model/user"), tr("12 years and younger", "model/user"),tr("13 to 17 years", "model/user"),tr("18 to 25 years", "model/user"),tr("26 to 69 years", "model/user"),tr("70 years and older", "model/user")], tr("Select age group", "model/user"))
+        /.field
+        /  .field_label
+        /    = tr("Gender", "view/users/_form_long")
+        /  .field_box
+        /    = f.select :my_gender, options_for_select([tr("Select gender", "model/user"), tr("Male", "model/user"),tr("Female", "model/user")], tr("Select gender", "model/user"))
         .field{:style => "width:300px; padding-bottom: 10px;"}
           %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
             %tr
               %td{:valign => "top"}
-                .field_label2= tr("Password", "view/users/_form")
+                .field_label= tr("Password", "view/users/_form")
                 .field_box
-                  = f.password_field :password, :size => 20
+                  = f.password_field :password, :size => 30
               %td{:style => "padding-left: 3px;", :valign => "top"}
-                .field_label2= tr("and re-type it", "view/users/_form")
+                .field_label= tr("and re-type it", "view/users/_form")
                 .field_box
-                  = f.password_field :password_confirmation, :size => 20
+                  = f.password_field :password_confirmation, :size => 30
         .field
           .field_label
             = tr("How should you be identified on the site?", "view/users/_form")
@@ -86,10 +84,12 @@
             )
         :javascript
           var RecaptchaOptions = { theme : 'clean' };
-        = recaptcha_tags
+        = #recaptcha_tags
         %br/
         = check_box("user", "terms")
-        = tr("I accept the terms detailed below.", "view/users/_form")
+        = tr(" I promise to honor the ", "view/users/_form")
+        %a{:href => '/about/rules', :target => '_new'}>= tr(" rules.", "view/users/_form")
+        %br/
         %br/
         - if @idea
           - if @value == 1
@@ -100,5 +100,5 @@
             = submit_tag tr("Signup", "view/users/_form"), :class => "submit_button"
         - else
           = submit_tag tr("Signup", "view/users/_form"), :class => "submit_button"
-= render :partial=>"shared/keypad_javascript"
+
 = render :partial => "users/rules_info"

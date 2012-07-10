@@ -1,6 +1,6 @@
 class NetworkController < ApplicationController
   
-  before_filter :login_required, :only => [:find]
+  before_filter :login_required, :only => [:find, :following]
   before_filter :admin_required, :only => [:unverified, :deleted, :suspended, :probation, :warnings]
   before_filter :setup, :except => [:sub_instance]
 
@@ -148,6 +148,16 @@ class NetworkController < ApplicationController
     end
   end  
 
+  def following
+    @page_title = tr("People you're following at {instance_name}", "controller/contacts", :instance_name => tr(current_instance.name,"Name from database"))
+    unless current_following_ids.empty?
+      @users = User.active.by_capital.find(:all, :conditions => ["id in (?)",current_following_ids]) #:page => params[:page], :per_page => params[:per_page]
+    end
+    respond_to do |format|
+      format.html { render template: 'user_contacts/following' }
+    end
+  end
+
   private
   def setup
     @user = User.new
@@ -162,7 +172,7 @@ class NetworkController < ApplicationController
      @items[3]=[tr("New members", "view/network/_nav"), url_for(:controller => "network", :action => "newest")]
      @items[4]=[tr("Ambassadors", "view/network/_nav"), url_for(:controller => "network", :action => "ambassadors")]
      if logged_in?
-       @items[5]=[tr("Your network", "view/user_contacts/_nav"), following_user_contacts_path(current_user)]
+       @items[5]=[tr("Your network", "view/user_contacts/_nav"), url_for(controller: "network", action: "following")]
        if current_instance.has_twitter_enabled?
          @items[6]=[tr("Twitterers", "view/network/_nav"), url_for(:controller => "network", :action => "twitterers")]
        end

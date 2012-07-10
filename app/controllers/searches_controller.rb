@@ -6,13 +6,21 @@ class SearchesController < ApplicationController
     if params[:q]
       @query = params[:q]
       @page_title = tr("Search for '{query}'", "controller/searches", :instance_name => tr(current_instance.name,"Name from database"), :query => @query)
-      @facets = ThinkingSphinx.facets @query, :all_facets => true, :with => {:sub_instance_id => SubInstance.current ? SubInstance.current.id : 0}, :star => true, :page => params[:page]
+      if params[:global]
+        @facets = ThinkingSphinx.facets @query, :all_facets => true, :star => true, :page => params[:page]
+      else
+        @facets = ThinkingSphinx.facets @query, :all_facets => true, :with => {:sub_instance_id => SubInstance.current ? SubInstance.current.id : 0}, :star => true, :page => params[:page]
+      end
       if params[:category_name]
         @search_results = @facets.for(:category_name=>params[:category_name])
       elsif params[:class]
         @search_results = @facets.for(:class=>params[:class].to_s)
       else
-        @search_results = ThinkingSphinx.search @query, :with => {:sub_instance_id => SubInstance.current ? SubInstance.current.id : 0}, :star => true, :retry_stale => true, :page => params[:page]
+        if params[:global]
+          @search_results = ThinkingSphinx.search @query, :order => :updated_at_sort, :sort_mode => :desc, :star => true, :retry_stale => true, :page => params[:page]
+        else
+          @search_results = ThinkingSphinx.search @query, :order => :updated_at_sort, :sort_mode => :desc, :with => {:sub_instance_id => SubInstance.current.id }, :star => true, :retry_stale => true, :page => params[:page]
+        end
       end
     end
     respond_to do |format|
@@ -21,4 +29,6 @@ class SearchesController < ApplicationController
       format.json { render :json => @ideas.to_json(:except => [:user_agent,:ip_address,:referrer]) }
     end
   end
+
+  #TODO: We need a new method here for handling the search
 end

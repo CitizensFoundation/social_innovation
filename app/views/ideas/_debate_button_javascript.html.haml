@@ -2,19 +2,22 @@
   jQuery("#debate_button_#{idea.id}").click(function () {
         var slide = jQuery("#idea_detail_#{idea.id}");
         if (!slide.data("loaded")) {
-            slide.load('#{idea_detail_idea_url(idea)}');
+            $("#idea_debate_spinner_debate_#{idea.id.to_s}").html('<img src=\"/assets/ajax/spinner.gif\">');
+            slide.load('#{idea_detail_idea_url(idea)}', function() {
+              $("#idea_debate_spinner_debate_#{idea.id.to_s}").html('');
+            });
             slide.data("loaded", true);
-                                  $('.border').css('border-bottom','none');
+            $('.border').css('border-bottom','none');
         } else {
             slide.slideToggle("slow");
                                   $('.border').css('border-bottom','none');
         };
     });
-  jQuery("#debate_button_#{idea.id}").toggle(
+  /*jQuery("#debate_button_#{idea.id}").toggle(
     function () {
       $("#debate_button_#{idea.id}").css("background-image", "url(/assets/buttons/debate_grey.png)");
     },
     function () {
       $("#debate_button_#{idea.id}").css("background-image", "url(/assets/buttons/debate.png)");
     }
-  );
+  );*/

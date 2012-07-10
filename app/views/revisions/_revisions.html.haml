@@ -1,5 +1,6 @@
 %p
-  .heading= tr("Revisions", "view/revisions/_revisions")
+  .heading
+    = tr("Revisions", "view/revisions/_revisions")
   - for revision in @point.revisions.by_recently_created
     %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
       %tr
@@ -10,5 +11,5 @@
             %strike/
           = link_to_unless_current tr("{user_name} revision", "view/revisions/_revisions", :user_name => revision.user.name), point_revision_url(@point,revision)
           - if revision.user.status == 'suspended' or revision.user.status == 'removed'
-          .profile_small= time_ago(revision.created_at)
+            .profile_small= time_ago(revision.created_at)
     %p

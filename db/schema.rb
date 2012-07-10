@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120503151518) do
+ActiveRecord::Schema.define(:version => 20120618205644) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -34,12 +34,11 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.integer  "followers_count",                         :default => 0
     t.datetime "changed_at"
     t.integer  "idea_status_change_log_id"
-    t.integer  "change_id"
+    t.integer  "group_id"
   end
 
   add_index "activities", ["activity_id"], :name => "activity_activity_id"
   add_index "activities", ["ad_id"], :name => "activities_ad_id_index"
-  add_index "activities", ["change_id"], :name => "activities_change_id_index"
   add_index "activities", ["changed_at"], :name => "index_activities_on_changed_at"
   add_index "activities", ["created_at"], :name => "created_at"
   add_index "activities", ["idea_id"], :name => "activity_idea_id_index"
@@ -102,35 +101,6 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.text     "description"
     t.string   "sub_tags"
   end
-
-  create_table "changes", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "idea_id"
-    t.integer  "new_idea_id"
-    t.string   "type"
-    t.string   "status"
-    t.integer  "yes_votes",             :default => 0
-    t.integer  "no_votes",              :default => 0
-    t.datetime "sent_at"
-    t.datetime "approved_at"
-    t.datetime "declined_at"
-    t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "position",              :default => 0
-    t.integer  "cost"
-    t.integer  "estimated_votes_count", :default => 0
-    t.integer  "votes_count",           :default => 0
-    t.boolean  "is_endorsers",          :default => true
-    t.boolean  "is_opposers",           :default => true
-    t.boolean  "is_flip",               :default => false
-  end
-
-  add_index "changes", ["new_idea_id"], :name => "changes_new_idea_id_index"
-  add_index "changes", ["idea_id"], :name => "changes_idea_id_index"
-  add_index "changes", ["status"], :name => "changes_status_index"
-  add_index "changes", ["type"], :name => "changes_type_index"
-  add_index "changes", ["user_id"], :name => "changes_user_id_index"
 
   create_table "color_schemes", :force => true do |t|
     t.string   "nav_background",                :limit => 6,  :default => "f0f0f0"
@@ -217,6 +187,7 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.string   "locked_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "queue"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -270,6 +241,18 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
 
   add_index "followings", ["other_user_id"], :name => "followings_other_user_id_index"
   add_index "followings", ["user_id"], :name => "followings_user_id_index"
+
+  create_table "groups", :force => true do |t|
+    t.string  "name"
+    t.text    "description"
+    t.integer "sub_instance_id"
+  end
+
+  create_table "groups_users", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "group_id"
+    t.boolean "is_admin", :default => false
+  end
 
   create_table "idea_charts", :force => true do |t|
     t.integer  "idea_id"
@@ -355,6 +338,7 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.integer  "external_session_id"
     t.string   "finished_status_subject"
     t.date     "finished_status_date"
+    t.integer  "group_id"
   end
 
   add_index "ideas", ["category_id"], :name => "index_ideas_on_category_id"
@@ -366,66 +350,66 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
   add_index "ideas", ["user_id"], :name => "ideas_user_id_index"
 
   create_table "instances", :force => true do |t|
-    t.string   "status",                  :limit => 30
-    t.string   "short_name",              :limit => 20
-    t.string   "domain_name",             :limit => 60
-    t.string   "layout",                  :limit => 20
-    t.string   "name",                    :limit => 60
-    t.string   "tagline",                 :limit => 100
-    t.string   "email",                   :limit => 100
-    t.boolean  "is_public",                              :default => true
+    t.string   "status",                       :limit => 30
+    t.string   "short_name",                   :limit => 20
+    t.string   "domain_name",                  :limit => 60
+    t.string   "layout",                       :limit => 20
+    t.string   "name",                         :limit => 60
+    t.string   "tagline",                      :limit => 100
+    t.string   "email",                        :limit => 100
+    t.boolean  "is_public",                                   :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "db_name",                 :limit => 20
-    t.string   "target",                  :limit => 30
-    t.boolean  "is_tags",                                :default => true
-    t.boolean  "is_facebook",                            :default => true
-    t.string   "admin_name",              :limit => 60
-    t.string   "admin_email",             :limit => 100
-    t.string   "google_analytics_code",   :limit => 15
-    t.string   "quantcast_code",          :limit => 20
-    t.string   "tags_name",               :limit => 20,  :default => "Category"
-    t.string   "currency_name",           :limit => 30,  :default => "political capital"
-    t.string   "currency_short_name",     :limit => 3,   :default => "pc"
-    t.string   "homepage",                :limit => 20,  :default => "top"
-    t.integer  "ideas_count",                            :default => 0
-    t.integer  "points_count",                           :default => 0
-    t.integer  "users_count",                            :default => 0
-    t.integer  "contributors_count",                     :default => 0
-    t.integer  "sub_instances_count",                    :default => 0
-    t.integer  "endorsements_count",                     :default => 0
+    t.string   "db_name",                      :limit => 20
+    t.string   "target",                       :limit => 30
+    t.boolean  "is_tags",                                     :default => true
+    t.boolean  "is_facebook",                                 :default => true
+    t.string   "admin_name",                   :limit => 60
+    t.string   "admin_email",                  :limit => 100
+    t.string   "google_analytics_code",        :limit => 15
+    t.string   "quantcast_code",               :limit => 20
+    t.string   "tags_name",                    :limit => 20,  :default => "Category"
+    t.string   "currency_name",                :limit => 30,  :default => "political capital"
+    t.string   "currency_short_name",          :limit => 3,   :default => "pc"
+    t.string   "homepage",                     :limit => 20,  :default => "top"
+    t.integer  "ideas_count",                                 :default => 0
+    t.integer  "points_count",                                :default => 0
+    t.integer  "users_count",                                 :default => 0
+    t.integer  "contributors_count",                          :default => 0
+    t.integer  "sub_instances_count",                         :default => 0
+    t.integer  "endorsements_count",                          :default => 0
     t.integer  "picture_id"
-    t.integer  "color_scheme_id",                        :default => 1
-    t.string   "mission",                 :limit => 200
-    t.string   "prompt",                  :limit => 100
+    t.integer  "color_scheme_id",                             :default => 1
+    t.string   "mission",                      :limit => 200
+    t.string   "prompt",                       :limit => 100
     t.integer  "buddy_icon_id"
     t.integer  "fav_icon_id"
-    t.boolean  "is_suppress_empty_ideas",                :default => false
-    t.string   "tags_page",               :limit => 20,  :default => "list"
-    t.string   "facebook_api_key",        :limit => 32
-    t.string   "facebook_secret_key",     :limit => 32
-    t.string   "windows_appid",           :limit => 32
-    t.string   "windows_secret_key",      :limit => 32
-    t.string   "yahoo_appid",             :limit => 40
-    t.string   "yahoo_secret_key",        :limit => 32
-    t.boolean  "is_twitter",                             :default => true
-    t.string   "twitter_key",             :limit => 46
-    t.string   "twitter_secret_key",      :limit => 46
-    t.string   "language_code",           :limit => 2,   :default => "en"
-    t.string   "password",                :limit => 40
+    t.boolean  "is_suppress_empty_ideas",                     :default => false
+    t.string   "tags_page",                    :limit => 20,  :default => "list"
+    t.string   "facebook_api_key",             :limit => 32
+    t.string   "facebook_secret_key",          :limit => 32
+    t.string   "windows_appid",                :limit => 32
+    t.string   "windows_secret_key",           :limit => 32
+    t.string   "yahoo_appid",                  :limit => 40
+    t.string   "yahoo_secret_key",             :limit => 32
+    t.boolean  "is_twitter",                                  :default => true
+    t.string   "twitter_key",                  :limit => 46
+    t.string   "twitter_secret_key",           :limit => 46
+    t.string   "language_code",                :limit => 2,   :default => "en"
+    t.string   "password",                     :limit => 40
     t.string   "logo_file_name"
-    t.string   "logo_content_type",       :limit => 30
+    t.string   "logo_content_type",            :limit => 30
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
     t.string   "buddy_icon_file_name"
-    t.string   "buddy_icon_content_type", :limit => 30
+    t.string   "buddy_icon_content_type",      :limit => 30
     t.integer  "buddy_icon_file_size"
     t.datetime "buddy_icon_updated_at"
     t.string   "fav_icon_file_name"
-    t.string   "fav_icon_content_type",   :limit => 30
+    t.string   "fav_icon_content_type",        :limit => 30
     t.integer  "fav_icon_file_size"
     t.datetime "fav_icon_updated_at"
-    t.boolean  "google_login_enabled",                   :default => false
+    t.boolean  "google_login_enabled",                        :default => false
     t.string   "default_tags_checkbox"
     t.text     "message_to_users"
     t.text     "description"
@@ -436,6 +420,22 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.text     "message_for_points"
     t.text     "message_for_new_idea"
     t.text     "message_for_news"
+    t.string   "email_banner_file_name"
+    t.string   "email_banner_content_type"
+    t.integer  "email_banner_file_size"
+    t.datetime "email_banner_updated_at"
+    t.string   "top_banner_file_name"
+    t.string   "top_banner_content_type",      :limit => 30
+    t.integer  "top_banner_file_size"
+    t.datetime "top_banner_updated_at"
+    t.string   "menu_strip_file_name"
+    t.string   "menu_strip_content_type",      :limit => 30
+    t.integer  "menu_strip_file_size"
+    t.datetime "menu_strip_updated_at"
+    t.string   "menu_strip_side_file_name"
+    t.string   "menu_strip_side_content_type", :limit => 30
+    t.integer  "menu_strip_side_file_size"
+    t.datetime "menu_strip_side_updated_at"
   end
 
   add_index "instances", ["domain_name"], :name => "index_instances_on_domain_name"
@@ -660,6 +660,8 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.text     "message_for_new_idea"
     t.string   "parent_tag"
     t.text     "message_to_users"
+    t.string   "google_analytics_code"
+    t.string   "custom_css"
   end
 
   add_index "sub_instances", ["short_name"], :name => "short_name"
@@ -742,6 +744,7 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.string   "country_english_name", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "map_coordinates"
   end
 
   add_index "tr8n_iso_countries", ["code"], :name => "index_tr8n_iso_countries_on_code"
@@ -960,6 +963,8 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.boolean  "admin"
     t.string   "locale"
     t.integer  "level",             :default => 0
+    t.datetime "synced_at"
+    t.string   "type"
   end
 
   add_index "tr8n_translation_keys", ["key"], :name => "index_tr8n_translation_keys_on_key", :unique => true
@@ -1003,6 +1008,7 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.text     "rules"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "synced_at"
   end
 
   add_index "tr8n_translations", ["created_at"], :name => "tr8n_trans_created_at"
@@ -1084,6 +1090,7 @@ ActiveRecord::Schema.define(:version => 20120503151518) do
     t.boolean  "manager"
     t.string   "last_ip"
     t.string   "country_code"
+    t.integer  "remote_id"
   end
 
   add_index "tr8n_translators", ["created_at"], :name => "index_tr8n_translators_on_created_at"

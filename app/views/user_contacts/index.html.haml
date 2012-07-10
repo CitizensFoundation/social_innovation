@@ -11,7 +11,7 @@
     %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
       %tr
         %td{:align => "middle", :valign => "middle"}
-          = link_to image_tag("gmail-logo.jpg", :border => 0), :controller => "import", :action => "authenticate_google" unless current_instance.layout=="better_reykjavik"
+          = link_to image_tag("gmail-logo.jpg", :border => 0), :controller => "import", :action => "authenticate_google"
         - if current_instance.has_yahoo_enabled?
           %td{:align => "middle", :valign => "middle"}
             = link_to image_tag("yahoo-mail-logo.jpg", :border => 0), :controller => "import", :action => "yahoo"

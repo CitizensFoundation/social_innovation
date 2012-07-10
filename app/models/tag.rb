@@ -39,7 +39,7 @@ class Tag < ActiveRecord::Base
   after_destroy :expire_cache
 
   def show_url
-    if self.sub_instance_id and Instance.current.layout != "better_reykjavik"
+    if self.sub_instance_id
       Instance.current.homepage_url(self.sub_instance) + 'issues/' + self.slug
     else
       Instance.current.homepage_url + 'issues/' + self.slug

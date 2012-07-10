@@ -14,8 +14,6 @@ class ActivitiesController < ApplicationController
     end    
   end
 
-  # GET /activities/1
-  # GET /activities/1.xml
   def show
     @activity = Activity.find(params[:id])
     respond_to do |format|
@@ -25,7 +23,6 @@ class ActivitiesController < ApplicationController
     end    
   end
   
-  #GET /activities/1/unhide
   def unhide
     @activity = Activity.find(params[:id])    
     respond_to do |format|

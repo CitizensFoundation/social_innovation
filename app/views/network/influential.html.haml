@@ -1,35 +1,31 @@
 - if Instance.current.message_for_network and Instance.current.message_for_network!=""
   = render :partial=>"/shared/top_message_box", :locals=> {:message_text => Instance.current.message_for_network.html_safe }
-#hp_intro= @page_title
-%p
-  = tr("The most influential rankings are based on the amount of {currency_name}<span class='pc'>{currency_short_name}</span> someone has earned. <br/>Learn more about<span class='pc'>{currency_short_name}</span> in the <a href='/about/faq#pc'>FAQ</a>.", "view/network/index", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database"), :currency_short_name => current_instance.currency_short_name)
-  %p
-    %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+  %p= tr("The most influential rankings are based on the amount of {currency_name}<span class='pc'> ({currency_short_name})</span> that users can earn. <br/>Learn more about <span class='pc'>{currency_short_name}</span> in the <a href='/about/faq#pc'>FAQ</a>.", "view/network/index", :currency_name => tr(current_instance.currency_name.downcase,"Currency name from database"), :currency_short_name => current_instance.currency_short_name)
+- if !@users.empty?
+  %table
+    %thead
       %tr
-        %td
-          %span.table_header= tr("Rank", "view/network/index")
-        %td.left_scale
-          %span.table_header= tr("Wk", "view/network/index")
-        %td.left_scale
-          %span.table_header= tr("Mo", "view/network/index")
-        / <td style="padding-left: 7px; margin-bottom: 2px;" colspan="2"><haml:loud> will_paginate @users </haml:loud></td>
-      - for user in @users
+        %th.rank= tr("Rank", "view/network/index")
+        %th.week= tr("Change", "view/network/index")
+    %tbody
+      - @users.each_with_index do |user, rank|
         %tr
-          = render :partial => "ideas/rank_week_month", :locals => {:idea => user }
-          %td.user_pic_box{:valign => "top", :width => "26"}
-            = render :partial => "users/pic", :locals => {:user => user}
-          %td.people_text{:colspan => "2", :valign => "top"}
-            = link_to user.login, user
-            %span.pc
-              = user.capitals_count
-              = current_instance.currency_short_name
-            - if user.followers_count > 0
-              = tr("{count} followers", "view/network/index", :count => user.followers_count)
-            - if user.has_top_idea? and user.top_endorsement.idea
-              %br/
-              = tr("#1 idea:", "view/network/index")
-              - if user.top_endorsement.is_down?
-                %span.opposed= tr("Opposing", "view/network/index")
-              = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
-    %p
-      = will_paginate(@users)
+          %td #{rank+1}
+          %td= render :partial => "ideas/rank_week_month", :locals => {:idea => user }
+          %td= render :partial => "users/pic_48", :locals => {:user => user}
+          %td
+            .col-group
+              .col-content
+                = link_to user.login, user
+                %span.pc
+                  = user.capitals_count
+                  = current_instance.currency_short_name
+                - if user.followers_count > 0
+                  = tr("{count} followers", "view/network/index", :count => user.followers_count)
+              - if user.has_top_idea? and user.top_endorsement.idea
+                .col-content
+                  = tr("#1 idea:", "view/network/index")
+                  - if user.top_endorsement.is_down?
+                    %span.opposed= tr("Opposing", "view/network/index")
+                  = link_to user.top_endorsement.idea.name, user.top_endorsement.idea
+  = will_paginate(@users)

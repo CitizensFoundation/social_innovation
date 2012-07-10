@@ -1,25 +1,12 @@
-= render :partial => "header"
-%p
-  %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-    %tr
-      %td{:valign => "top"}
-        = will_paginate(@ideas)
-        %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
-          - for p in @ideas
-            - if @endorsements
-              - endorsement = @endorsements.detect {|e| e.idea_id == p.idea_id }
-            %tr
-              %td{:valign => "top"}
-              %td{:align => "right", :valign => "top", :width => "25"}
-                .idea_position= p.position
-              %td{:style => "padding-left: 8px;", :valign => "top"}
-                .idea_listing{:id => "idea_#{p.idea_id}"}
-                  .point_name{:id => "idea_#{p.idea_id}_name"}
-                    - if p.value < 0
-                      %span.opposed= tr("opposed", "view/users/ideas")
-                    = link_to_unless_current h(p.idea.name), p.idea, :class => "idea_name_link"
-                  = render :partial => "ideas/action_show", :locals => {:idea => p.idea, :endorsement => endorsement }
-        %p
-          = will_paginate(@ideas)
-      %td{:style => "padding-left: 20px;", :valign => "top", :width => "160"}
-        = render :partial => "left_nav"
+.col-group
+  .col-1
+    .col-content
+      = render :partial => "users/profile_pic"
+      = render :partial => "users/profile_nav"
+  .col-11
+    .col-content
+      = will_paginate(@ideas)
+      - if @ideas.any?
+        - @ideas.each do |idea_endorsement|
+          = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea_endorsement.idea, :endorsements=>@endorsements}
+          %div{:id => "idea_detail_#{idea_endorsement.idea.id}"}

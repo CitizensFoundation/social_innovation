@@ -1,33 +1,20 @@
-%div{:style => "width:auto;"}
-  %ul
-    %li{:style => "float:left; list-style:none; border-bottom:none;"}
-      #hp_intro{:style => "border-bottom:none;"}= @page_title
-    %li{:style => "float:right; list-style:none"}
-      = rss_url(@rss_url)
-  %ul
-.clear
-.white_line
-- if params[:action] == 'yours_finished'
-  = tr("Like a to do list, when ideas you've endorsed or opposed are finished, they will fall off your list and be placed here.", "view/ideas/yours")
-- if @ideas.empty?
-  = tr("You have not endorsed any ideas yet. For inspiration, why not check out some <a href='/ideas/random'>random ideas</a>?", "view/ideas/yours")
-- else
-  %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}
-    %tr
-      %td{:align => "right", :style => "padding-right: 5px;"}
-        %span.table_header= tr("Rank", "view/ideas/yours")
-      %td{:style => "padding-left: 3px;"}
-        %span.table_header= tr("Wk", "view/ideas/yours")
-      %td{:style => "padding-left: 3px;"}
-        %span.table_header= tr("Mo", "view/ideas/yours")
-      %td{:style => "padding-left: 7px; padding-bottom: 2px;"}= will_paginate @ideas
-    - for e in @ideas
-      %tr
-        = render :partial => "ideas/rank_week_month", :locals => {:idea => e.idea }
-        %td{:style => "padding-left: 8px;", :valign => "top"}
-          .idea_listing{:id => "idea_#{e.idea.id}"}
-            = render :partial => "ideas/listing", :locals => {:idea => e.idea, :endorsement => e, :value => 0}
-  %p
+- if action_name == "finished" and Instance.current.message_for_finished and Instance.current.message_for_finished!=""
+  = render :partial=>"/shared/top_message_box", :locals=> {:message_text => Instance.current.message_for_finished.html_safe }
+:javascript
+  $(function(){
+  	$('.move_test').replaceWith($('.category'));
+  	$('.replace_fblike').replaceWith($('.fblike'));
+  	$('.replace_report').replaceWith($('.report1'));
+  	$('.replace_notice').replaceWith($('.single .warning_inline2'));
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  });
+- if @ideas.any?
+  - for idea in @ideas
+    = render :partial=>"ideas/top_level_listing", :locals=>{:idea=>idea.idea, :endorsements=>@endorsements} if idea.idea
+    %div
+      %div{:id => "idea_detail_#{idea.id}"}
     = will_paginate @ideas
-  %p
-    = tr("You can also follow all the <a href='/feed/your_idea_activities'>activity</a> and <a href='/feed/your_idea_discussions'>discussions</a> on your ideas.", "view/ideas/yours")
+- else
+  = tr("No ideas here yet.","ideas")

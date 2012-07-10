@@ -1,11 +1,14 @@
 .idea_name{:id => "idea_#{idea.id}_name"}
-  = link_to_unless_current tg(h(idea.name)), idea.show_url, :class => "idea_name_link"
+  - if @position_in_idea_name
+    = link_to_unless_current "#{idea.position}. #{tg(idea.name)}".html_safe, idea.show_url, :class => "idea_name_link"
+  - else
+    = link_to_unless_current tg(idea.name).html_safe, idea.show_url, :class => "idea_name_link"
   = render :partial=>"ideas/flagged", :locals=>{:idea=>idea}
   :javascript
     $(function(){
         $('#action_insert').replaceWith($('#idea_flag_#{idea.id.to_s}'));
     });
+  %div{style: 'float: right;'}= render :partial=>"ideas/report_content", :locals=>{:idea=>idea}
 .category
-  = render :partial=>"ideas/report_content", :locals=>{:idea=>idea}
 %p
   = idea.description

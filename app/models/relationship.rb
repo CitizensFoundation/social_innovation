@@ -13,11 +13,13 @@ class Relationship < ActiveRecord::Base
   before_destroy :remove_counts
   
   def add_counts
-    Idea.update_all("relationships_count = relationships_count + 1", "id = #{self.idea_id}")
+    idea = Idea.find(self.idea_id)
+    idea.update_attribute("relationships_count", idea.relationships_count + 1)
   end
   
   def remove_counts
-    Idea.update_all("relationships_count = relationships_count - 1", "id = #{self.idea_id}")
+    idea = Idea.find(self.idea_id)
+    idea.update_attribute("relationships_count", idea.relationships_count - 1)
   end
   
 end

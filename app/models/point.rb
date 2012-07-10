@@ -47,6 +47,7 @@ class Point < ActiveRecord::Base
     indexes name
     indexes content
     indexes idea.category.name, :facet=>true, :as=>"category_name"
+    indexes updated_at, :sortable => true
     has sub_instance_id, :as=>:sub_instance_id, :type => :integer
     where "points.status = 'published'"    
   end
@@ -60,7 +61,7 @@ class Point < ActiveRecord::Base
   end
   
   def category_name
-    if idea.category
+    if idea and idea.category
       idea.category.name
     else
       'No category'
@@ -94,7 +95,7 @@ class Point < ActiveRecord::Base
     state :published do
       event :remove, transitions_to: :removed
       event :bury, transitions_to: :buried
-      event :abusive, transitions_to: :abusive
+      event :remove, transitions_to: :removed
     end
     state :draft do
       event :publish, transitions_to: :published
@@ -111,10 +112,9 @@ class Point < ActiveRecord::Base
       event :unbury, transitions_to: :published, meta: { validates_presence_of: [:published_at] }
       event :unbury, transitions_to: :draft
     end
-    state :abusive
   end
 
-  def on_abusive_entry(new_state, event)
+  def do_abusive!
     self.last_author.do_abusive!(notifications)
     self.update_attribute(:flags_count, 0)
   end
@@ -135,7 +135,7 @@ class Point < ActiveRecord::Base
   
   def on_removed_entry(new_state, event)
     remove_counts
-    activities.each do |a|
+    activities.active.each do |a|
       a.remove!
     end
     #capital_earned = capitals.sum(:amount)

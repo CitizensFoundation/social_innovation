@@ -19,6 +19,11 @@
   %br/
   %span.small (hér er,um,frá,til,stutt_útgáfa_fyrir_að_búa_til_hugmynd)
 %p
+  %label{:for => "sub_instance_website"}
+    = tr("Google Analytics Code", "view/sub_instances/_form")
+  %br/
+  = f.text_field :google_analytics_code
+%p
   %label{:for => "sub_instance_website"}= tr("Link to your homepage", "view/sub_instances/_form")
   %br/
   = f.text_field :website
@@ -36,6 +41,11 @@
   %label{:for => "geoblocking_open_countries"}= tr("Geoblocking open countries", "view/sub_instances/_form")
   %br/
   = f.text_field :geoblocking_open_countries
+  %br/
+%p
+  %label{:for => "logo"}= tr("Logo", "view/sub_instances/_form")
+  %br/
+  = f.file_field :logo
   %br/
 %p
   %label{:for => "top_banner_image"}= tr("Top Banner Image", "view/sub_instances/_form")
@@ -74,12 +84,18 @@
   %br/
 .field
   .field_label
+    = tr("Custom css (not sass!)", "view/instances/edit")
+  .field_box
+    = f.text_area :custom_css, :rows => 7, :cols=>60
+.field
+  .field_label
     = tr("Message for new idea", "view/instances/edit")
   .field_box
-    = f.text_area :message_for_new_idea, :rows => 7, :cols=>20
+    = f.text_area :message_for_new_idea, :rows => 5, :cols=>60
+  %br/
 .field
   .field_label= tr("Message to users", "view/instances/edit")
-  .field_box= f.text_area :message_to_users, :rows => 7, :cols=>20
+  .field_box= f.text_area :message_to_users, :rows => 7, :cols=>60
 = f.check_box :is_daily_summary
 = tr("Email me a weekly summary of activity", "view/sub_instances/_form")
 %br/

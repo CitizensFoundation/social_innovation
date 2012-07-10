@@ -21,33 +21,6 @@ en-US:
     multipart:  false 
     part1:      is_not
     value1:     "1"
-en: 
-  rule1:
-    multipart:  false 
-    part1:      is
-    value1:     "1"
-  rule2:
-    multipart:  false 
-    part1:      is_not
-    value1:     "1"
-is: 
-  rule1:
-    multipart:  false 
-    part1:      is
-    value1:     "1"
-  rule2:
-    multipart:  false 
-    part1:      is_not
-    value1:     "1"
-fr: 
-  rule1:
-    multipart:  false 
-    part1:      is
-    value1:     "1"
-  rule2:
-    multipart:  false 
-    part1:      is_not
-    value1:     "1"
 ru: 
   rule1:
     multipart:  true 

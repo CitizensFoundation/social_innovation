@@ -1,8 +1,0 @@
-#user_name
-  %table{:border => "0", :cellpading => "0", :cellspacing => "0"}
-    %tr
-      %td{:style => "padding-left: 5px;", :valign => "top"}
-        .user_name
-          = link_to tr("Your Ideas", "view/shared/_your_ideas", :user_name => current_user.name), yours_ideas_url
-#your_ideas_container
-  = render :partial => "ideas/yours"

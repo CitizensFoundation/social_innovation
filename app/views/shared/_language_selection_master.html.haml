@@ -1,12 +1,13 @@
-#language_selection_box
-  Select language: #{tr8n_language_selector_tag}
-  - if @inline_translations_allowed
-    - if @inline_translations_enabled
-      %strong
-        %u
+%ul
+  %li.menu_header.menu_margin
+    Select language:
+    #{tr8n_language_selector_tag}
+    - if @inline_translations_allowed
+      - if @inline_translations_enabled
+        %strong
           %br/
           = link_to_function(trla("Stop translating"), "tr8nLanguageSelector.toggleInlineTranslations();")
-      %br/
-    - else
-      %br/
-      = link_to_function(trla("Start translating"), "tr8nLanguageSelector.toggleInlineTranslations();")
+        %br/
+      - else
+        %br/
+        = link_to_function(trla("Start translating"), "tr8nLanguageSelector.toggleInlineTranslations();")

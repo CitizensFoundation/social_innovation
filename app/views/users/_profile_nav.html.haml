@@ -1,72 +1,44 @@
-#idea_nav
-  %div{:id => "idea_nav<haml:silent> if ['show'].include?(params[:action]) </haml:silent><haml:block>1</haml:block><haml:silent> elsif ['messages'].include?(params[:controller]) </haml:silent><haml:block>2</haml:block><haml:silent> elsif ['ideas'].include?(params[:action]) </haml:silent><haml:block>3</haml:block><haml:silent> elsif ['following','followers'].include?(params[:action]) </haml:silent><haml:block>4</haml:block><haml:silent> elsif ['documents','points'].include?(params[:action]) </haml:silent><haml:block>5</haml:block><haml:silent> elsif ['discussions','activities','capital','issues','ads'].include?(params[:action]) </haml:silent><haml:block>6</haml:block><haml:silent> elsif ['edit','update','signups'].include?(params[:action]) </haml:silent><haml:block>7</haml:block>"}
-    %ul#idea_menu
-      %li.tab1
-        %span.tab_header
-          = link_to tr("Profile", "view/users/_profile_nav"), @user
-      - if @user.endorsements_count > 5
-        %li.tab3
-          %span.tab_header
-            = link_to tr("Ideas", "view/users/_profile_nav") + " (" + @user.endorsements_count.to_s + ")", ideas_user_url(@user)
-      - if @user.followings_count > 0 or @user.followers_count > 0
-        %li.tab4.mega
-          %span.tab_header
-            = link_to tr("Network", "view/users/_profile_nav") + " (" + @user.followings_count.to_s + ")", following_user_url(@user)
-          .tab_body
-            - if @user.followings_count > 0
-              = link_to tr("Following", "view/users/_profile_nav"), following_user_url(@user)
-              (#{@user.followings_count})
-              %br/
-            - if @user.followers_count > 0
-              = link_to tr("Followers", "view/users/_profile_nav"), followers_user_url(@user)
-              (#{@user.followers_count})
-              %br/
-            %p
-      %li.tab6.mega
-        %span.tab_header
-          = link_to tr("Feed", "view/users/_profile_nav"), activities_user_url(@user)
-        .tab_body
-          = link_to tr("{count} discussions", "view/users/_profile_nav", :count => @user.points_count), discussions_user_url(@user)
-          %br/
-          = link_to current_instance.currency_name.titleize, capital_user_url(@user)
-          %br/
-          = link_to tr("Ads", "view/users/_profile_nav"), ads_user_url(@user)
-          %br/
-          = link_to tr("All activity", "view/users/_profile_nav"), activities_user_url(@user)
-          %p
-          .rss_feed
-            %a{:href => url_for(activities_user_url(@user, :format => "rss"))}= image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
-            %a{:href => url_for(activities_user_url(@user, :format => "rss"))}= tr("Activity feed", "view/users/_profile_nav")
-          - if @user.comments_count > 0
-            .rss_feed
-              %a{:href => url_for(comments_user_url(@user, :format => "rss"))}= image_tag "feed-icon-14x14.png", :size => "14x14", :border => 0
-              %a{:href => url_for(comments_user_url(@user, :format => "rss"))}= tr("Discussions feed", "view/users/_profile_nav")
-          %p
-      - if logged_in? and current_user.is_admin?
-        %li.tab7.mega
-          %span.tab_header.action
-            = link_to tr("Admin", "view/users/_profile_nav"), edit_user_url(@user)
-          .tab_body
-            = link_to tr("Account settings", "view/users/_profile_nav"), edit_user_url(@user)
-            %br/
-            = link_to tr("Email settings", "view/users/_profile_nav"), signups_user_url(@user)
-            %br/
-            - if @user.is_active?
-              - if @user.is_pending?
-                = link_to tr("Resend verification email", "view/users/_profile_nav"), resend_activation_user_url(@user)
-                %br/
-              - if @user.has_email?
-                = link_to tr("Reset password", "view/users/_profile_nav"), reset_password_user_url(@user)
-                %br/
-              = link_to tr("Suspend this member", "view/users/_profile_nav"), suspend_user_url(@user), :title => tr("Lock out this member completely", "view/users/_profile_nav"), :class => "qtip_left", :confirm => tr("{user_name} will no longer be able to sign in, and their profile will be deleted with a message that they were suspended. They will NOT receive an email notification of this.", "view/users/_profile_nav", :user_name => @user.name), :method => :put
-              %br/
-            - elsif @user.is_suspended?
-              = link_to tr("Reinstate this member", "view/users/_profile_nav"), unsuspend_user_url(@user), :title => tr("Un suspend this person", "view/users/_profile_nav"), :class => "qtip_left", :confirm => tr("If you reinstate {user_name}, their profile will be restored and they will be able to sign in again. They will NOT receive an email notification of this, so if you want them to know you should contact them directly.", "view/users/_profile_nav", :user_name => @user.name), :method => :put
-              %br/
-            - if @user.is_active? and not @user.is_admin?
-              %p
-                = link_to tr("Sign in as this member", "view/users/_profile_nav"), impersonate_user_url(@user), :title => tr("Sign in as this member", "view/users/_profile_nav"), :class => "qtip_left", :confirm => tr("Are you sure you want to sign in as {user_name}? Be careful!", "view/users/_profile_nav", :user_name => @user.name), :method => :put
-                %br/
-                = link_to tr("Make an administrator", "view/users/_profile_nav"), make_admin_user_url(@user), :title => tr("Make this member an administrator", "view/users/_profile_nav"), :class => "qtip_left", :confirm => tr("If you make {user_name} an administrator, they will have the same privileges as you, and you will NOT be able to remove those privileges.", "view/users/_profile_nav", :user_name => @user.name), :method => :put
-                %br/
-            %p
+.profile_menu
+  %ul
+    %li.highlight
+      = link_to_unless_current tr("Profile", "view/users/_profile_nav"), @user
+    - if @user.endorsements_count > 5
+      %li
+        = link_to_unless_current tr("Ideas", "view/users/_profile_nav") + " (#{@user.endorsements_count})", ideas_user_url(@user)
+    - if @user.followings_count > 0
+      %li
+        = link_to_unless_current tr("Following", "view/users/_profile_nav") + " (#{@user.followings_count})", following_user_url(@user)
+    - if @user.followers_count > 0
+      %li
+        = link_to_unless_current tr("Followers", "view/users/_profile_nav") + " (#{@user.followers_count})", followers_user_url(@user)
+    %li
+      = link_to_unless_current tr("Feed", "view/users/_profile_nav"), activities_user_url(@user)
+    %li
+      = link_to_unless_current tr("{count} discussions", "view/users/_profile_nav", :count => @user.points_count), discussions_user_url(@user)
+    %li
+      = link_to_unless_current current_instance.currency_name.titleize, capital_user_url(@user)
+    %li
+      = link_to_unless_current tr("Ads", "view/users/_profile_nav"), ads_user_url(@user)
+    - if logged_in? && (current_user.is_admin? || @user == current_user)
+      %li
+        = link_to_unless_current tr("Account settings", "view/users/_profile_nav"), edit_user_url(@user)
+      - if @user.has_email?
+        %li
+          = link_to_unless_current tr("Email settings", "view/users/_profile_nav"), signups_user_url(@user)
+      - if @user.is_pending?
+        %li
+          = link_to_unless_current tr("Resend verification email", "view/users/_profile_nav"), resend_activation_user_url(@user)
+      %li
+        = link_to_unless_current tr("Reset password", "view/users/_profile_nav"), reset_password_user_url(@user)
+    - if logged_in? and current_user.is_admin?
+      - if not @user.is_suspended?
+        %li
+          = link_to tr("Suspend this member", "view/users/_profile_nav"), suspend_user_url(@user), :title => tr("Lock out this member completely", "view/users/_profile_nav"), :class => "qtip_left", :confirm => tr("{user_name} will no longer be able to sign in, and their profile will be deleted with a message that they were suspended. They will NOT receive an email notification of this.", "view/users/_profile_nav", :user_name => @user.name), :method => :put
+      - if @user.is_suspended?
+        %li
+          = link_to tr("Reinstate this member", "view/users/_profile_nav"), unsuspend_user_url(@user), :title => tr("Un suspend this person", "view/users/_profile_nav"), :class => "qtip_left", :confirm => tr("If you reinstate {user_name}, their profile will be restored and they will be able to sign in again. They will NOT receive an email notification of this, so if you want them to know you should contact them directly.", "view/users/_profile_nav", :user_name => @user.name), :method => :put
+      - if @user.is_active? and not @user.is_admin? and @user != current_user
+        %li
+          = link_to tr("Sign in as this member", "view/users/_profile_nav"), impersonate_user_url(@user), :title => tr("Sign in as this member", "view/users/_profile_nav"), :class => "qtip_left", :confirm => tr("Are you sure you want to sign in as {user_name}? Be careful!", "view/users/_profile_nav", :user_name => @user.name), :method => :put
+      %li
+        = link_to tr("Make an administrator", "view/users/_profile_nav"), make_admin_user_url(@user), :title => tr("Make this member an administrator", "view/users/_profile_nav"), :class => "qtip_left", :confirm => tr("If you make {user_name} an administrator, they will have the same privileges as you, and you will NOT be able to remove those privileges.", "view/users/_profile_nav", :user_name => @user.name), :method => :put

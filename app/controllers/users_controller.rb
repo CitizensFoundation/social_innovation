@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
 
   before_filter :login_required, :only => [:destroy, :request_validate_user_for_country, :validate_user_for_country, :resend_activation, :follow, :unfollow, :endorse, :subscriptions, :disable_facebook]
-  before_filter :current_user_required, :only => [:resend_activation]
-  before_filter :admin_required, :only => [:list_suspended, :suspend, :unsuspend, :impersonate, :edit, :update, :signups, :make_admin, :reset_password]
+  before_filter :current_user_required, :only => [:resend_activation, :edit]
+  before_filter :admin_required, :only => [:list_suspended, :suspend, :unsuspend, :impersonate, :update, :signups, :make_admin, :reset_password]
   
   caches_action :show,
                 :if => proc {|c| c.do_action_cache? },
@@ -51,6 +51,7 @@ class UsersController < ApplicationController
   end
 
   def disable_facebook
+   #TODO: THis needs to be implemented
 #    @user = current_user
 #    @user.facebook_uid=nil
 #    @user.save(:validate => false)
@@ -292,7 +293,9 @@ class UsersController < ApplicationController
     begin
       if Rails.env.test? && @user.save!
         @valid = true
-      elsif verify_recaptcha(:model => @user, :message => tr("Please try reCAPTCHA again","users")) and @user.save! #save first
+#      elsif verify_recaptcha(:model => @user, :message => tr("Please try reCAPTCHA again","users")) and @user.save! #save first
+#        @valid = true
+      elsif @user.save! #save first
         @valid = true
       else
         @valid = false
@@ -454,7 +457,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.js {
         render :update do |page|
-          page.replace_html 'your_ideas_container', :partial => "ideas/yours"
+          #page.replace_html 'your_ideas_container', :partial => "ideas/yours"
         end
       }
     end
@@ -476,7 +479,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.js {
         render :update do |page|
-          page.replace_html 'your_ideas_container', :partial => "ideas/yours"
+          #page.replace_html 'your_ideas_container', :partial => "ideas/yours"
           #page.replace_html 'your_ideas_container', order.inspect
         end
       }
@@ -490,6 +493,7 @@ class UsersController < ApplicationController
     self.current_user.forget_me
     cookies.delete :auth_token
     reset_session
+    Thread.current[:current_user] = nil
     flash[:notice] = tr("Your account was deleted. Good bye!", "controller/settings")
     redirect_to "/" and return
   end

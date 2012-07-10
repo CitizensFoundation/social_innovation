@@ -1,28 +1,29 @@
 class IssuesController < ApplicationController
 
-  before_filter :get_tag_names, :except => :index
-  before_filter :set_counts, :except => :index
+  #before_filter :get_tag_names, :except => :index
+  #before_filter :set_counts, :except => :index
   before_filter :check_for_user, :only => [:yours, :yours_finished, :yours_created, :network]
+  before_filter :setup_filter_dropdown
 
   def index
     @page_title =  tr("Categories", "controller/issues")
-    #if request.format != 'html' or current_instance.tags_page == 'list'
-    @categories = Category.all.collect { |category| t = Tag.find_by_name(category.name) }.select { |t| t != nil }
-    @sub_instance_tags = []
-    if current_sub_instance.required_tags
-      sub_instance_tags = {}
-      SubInstance.all.each do |sub_instance|
-        sub_instance.required_tags.split(',').each do |tag|
-          sub_instance_tags[tag] = true
-        end
-      end
-      @sub_instance_tags = sub_instance_tags.keys.collect { |t| Tag.find_by_name(t) }
-    end
-    if default_tags and default_tags.length>1
-      @issues = Tag.not_in_default_tags(@sub_instance_tags.collect { |t| t.slug }).not_in_default_tags(@categories.collect { |c| c.slug }).not_in_default_tags(default_tags).most_ideas.paginate(:page => params[:page], :per_page => params[:per_page])
-    else
-      @issues = Tag.not_in_default_tags(@sub_instance_tags.collect { |t| t.slug }).not_in_default_tags(@categories.collect { |c| c.slug }).most_ideas.paginate(:page => params[:page], :per_page => params[:per_page])
-    end
+    @categories = Category.all
+    #@categories = Category.all.collect { |category| t = Tag.find_by_name(category.name) }.select { |t| t != nil }
+    #@sub_instance_tags = []
+    #if current_sub_instance.required_tags
+    #  sub_instance_tags = {}
+    #  SubInstance.all.each do |sub_instance|
+    #    sub_instance.required_tags.split(',').each do |tag|
+    #      sub_instance_tags[tag] = true
+    #    end
+    #  end
+    #  @sub_instance_tags = sub_instance_tags.keys.collect { |t| Tag.find_by_name(t) }
+    #end
+    #if default_tags and default_tags.length>1
+    #  @issues = Tag.not_in_default_tags(@sub_instance_tags.collect { |t| t.slug }).not_in_default_tags(@categories.collect { |c| c.slug }).not_in_default_tags(default_tags).most_ideas.paginate(:page => params[:page], :per_page => params[:per_page])
+    #else
+    #  @issues = Tag.not_in_default_tags(@sub_instance_tags.collect { |t| t.slug }).not_in_default_tags(@categories.collect { |c| c.slug }).most_ideas.paginate(:page => params[:page], :per_page => params[:per_page])
+    #end
     respond_to do |format|
       format.html {
         if current_instance.tags_page == 'cloud'
@@ -37,12 +38,13 @@ class IssuesController < ApplicationController
   end
 
   def show
-    if not @tag
-      flash[:error] = tr("That {tags_name} doesn't exist anymore", "controller/issues", :tags_name => current_instance.tags_name.downcase)
-      redirect_to "/" and return 
-    end
-    @page_title = tr("{tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.top_rank.paginate(:page => params[:page], :per_page => params[:per_page])
+    #if not @tag
+    #  flash[:error] = tr("That {tags_name} doesn't exist anymore", "controller/issues", :tags_name => current_instance.tags_name.downcase)
+    #  redirect_to "/" and return
+    #end
+    @category = Category.find(params[:id])
+    @page_title = tr("{tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = Idea.where(category_id: @category.id).published.top_rank.paginate(:page => params[:page], :per_page => params[:per_page])
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -55,8 +57,9 @@ class IssuesController < ApplicationController
   alias :top :show
 
   def yours
-    @page_title = tr("Your {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = @user.ideas.tagged_with(@tag_names, :on => :issues).paginate :page => params[:page], :per_page => params[:per_page]
+    @category = Category.find(params[:id])
+    @page_title = tr("Your {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = @user.ideas.where(category_id: @category.id).paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements if logged_in?
     respond_to do |format|
       format.html { render :action => "list" }
@@ -67,8 +70,9 @@ class IssuesController < ApplicationController
   end
 
   def yours_finished
-    @page_title = tr("Your finished {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = @user.finished_ideas.finished.tagged_with(@tag_names, :on => :issues, :order => "ideas.status_changed_at desc").paginate :page => params[:page], :per_page => params[:per_page]
+    @category = Category.find(params[:id])
+    @page_title = tr("Your finished {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = @user.finished_ideas.finished.where(category_id: @category.id).order("ideas.status_changed_at desc").paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html { render :action => "list" }
       format.js { render :layout => false, :text => "document.write('" + js_help.escape_javascript(render_to_string(:layout => false, :template => 'ideas/list_widget_small')) + "');" }
@@ -78,8 +82,9 @@ class IssuesController < ApplicationController
   end
   
   def yours_created
-    @page_title = tr("{tag_name} ideas you created", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = @user.created_ideas.tagged_with(@tag_names, :on => :issues).paginate :page => params[:page], :per_page => params[:per_page]
+    @category = Category.find(params[:id])
+    @page_title = tr("{tag_name} ideas you created", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = @user.created_ideas.where(category_id: @category.id).paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements if logged_in?
     respond_to do |format|
       format.html { render :action => "list" }
@@ -90,8 +95,9 @@ class IssuesController < ApplicationController
   end  
   
   def network
-    @page_title = tr("Your network's {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @tag_ideas = Idea.published.tagged_with(@tag_names, :on => :issues)
+    @category = Category.find(params[:id])
+    @page_title = tr("Your network's {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @tag_ideas = Idea.published.where(category_id: @category.id)
     if @user.followings_count > 0
       @ideas = Endorsement.active.find(:all,
         :select => "endorsements.idea_id, sum((#{Endorsement.max_position+1}-endorsements.position)*endorsements.value) as score, count(*) as endorsements_number, ideas.*",
@@ -112,8 +118,9 @@ class IssuesController < ApplicationController
   end
 
   def rising
-    @page_title = tr("Rising {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.rising.paginate :page => params[:page], :per_page => params[:per_page]
+    @category = Category.find(params[:id])
+    @page_title = tr("Rising {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = Idea.where(category_id: @category.id).published.rising.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -124,8 +131,9 @@ class IssuesController < ApplicationController
   end
   
   def falling
-    @page_title = tr("Falling {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).falling.paginate :page => params[:page], :per_page => params[:per_page]
+    @category = Category.find(params[:id])
+    @page_title = tr("Falling {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = Idea.where(category_id: @category.id).falling.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -136,8 +144,9 @@ class IssuesController < ApplicationController
   end  
 
   def controversial
-    @page_title = tr("Controversial {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.controversial.paginate :page => params[:page], :per_page => params[:per_page]
+    @category = Category.find(params[:id])
+    @page_title = tr("Controversial {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = Idea.where(category_id: @category.id).published.controversial.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -149,13 +158,14 @@ class IssuesController < ApplicationController
 
   # this doesn't work in pgsql :(
   def random
-    @page_title = tr("Random {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
+    @category = Category.find(params[:id])
+    @page_title = tr("Random {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
     if User.adapter == 'postgresql'
       flash[:error] = "This page doesn't work, sorry."
       redirect_to "/issues/" + @tag.slug
       return
     else
-      @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.paginate :order => "rand()", :page => params[:page], :per_page => params[:per_page]
+      @ideas = Idea.where(category_id: @category).published.paginate :order => "rand()", :page => params[:page], :per_page => params[:per_page]
     end
     get_endorsements
     respond_to do |format|
@@ -167,8 +177,9 @@ class IssuesController < ApplicationController
   end
 
   def finished
-    @page_title = tr("Finished {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).finished.by_most_recent_status_change.paginate :page => params[:page], :per_page => params[:per_page]
+    @category = Category.find(params[:id])
+    @page_title = tr("Finished {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = Idea.where(category_id: @category.id).finished.by_most_recent_status_change.paginate :page => params[:page], :per_page => params[:per_page]
     respond_to do |format|
       format.html
       format.js { render :layout => false, :text => "document.write('" + js_help.escape_javascript(render_to_string(:layout => false, :template => 'ideas/list_widget_small')) + "');" }
@@ -178,8 +189,9 @@ class IssuesController < ApplicationController
   end
 
   def newest
-    @page_title = tr("New {tag_name} ideas", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues).published.newest.paginate :page => params[:page], :per_page => params[:per_page]
+    @category = Category.find(params[:id])
+    @page_title = tr("New {tag_name} ideas", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = Idea.where(category_id: @category.id).published.newest.paginate :page => params[:page], :per_page => params[:per_page]
     get_endorsements
     respond_to do |format|
       format.html { render :action => "list" }
@@ -190,8 +202,9 @@ class IssuesController < ApplicationController
   end
   
   def discussions
-    @page_title = tr("Discussions on {tag_name}", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues)
+    @category = Category.find(params[:id])
+    @page_title = tr("Discussions on {tag_name}", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = Idea.where(category_id: @category.id)
     @activities = Activity.active.discussions.for_all_users.by_recently_updated.find(:all, :conditions => ["idea_id in (?)",@ideas.collect{|p| p.id}]).paginate :page => params[:page], :per_page => params[:per_page], :per_page => 10
     respond_to do |format|
       format.html
@@ -201,8 +214,9 @@ class IssuesController < ApplicationController
   end
 
   def points
-    @page_title = tr("{tag_name} points", "controller/issues", :tag_name => tr(@tag_names, "model/category").titleize)
-    @ideas = Idea.tagged_with(@tag_names, :on => :issues)
+    @category = Category.find(params[:id])
+    @page_title = tr("{tag_name} points", "controller/issues", :tag_name => tr(@category.name, "model/category").titleize)
+    @ideas = Idea.where(category_id: @category.id)
     @points = Point.by_helpfulness.find(:all, :conditions => ["idea_id in (?)",@ideas.collect{|p| p.id}]).paginate :page => params[:page], :per_page => params[:per_page]
     @qualities = nil
     if logged_in? and @points.any? # pull all their qualities on the points shown
@@ -220,6 +234,19 @@ class IssuesController < ApplicationController
   end
   
   private
+
+  def setup_menu_items
+    @items ||= begin
+      items = Hash.new
+      categories = Category.all.collect { |category| t = Tag.find_by_name(category.name) }.select { |t| t != nil }
+      categories.each_with_index do |category, idx|
+        items[idx] = [tr(category.name, "model/category"), issue_url(category.slug)]
+      end
+      Rails.logger.debug "FOOBAR"
+      Rails.logger.debug items.inspect
+      items
+    end
+  end
 
   def set_counts
     if @tag_names

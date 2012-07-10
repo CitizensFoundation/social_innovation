@@ -13,6 +13,7 @@ class AdminController < ApplicationController
 
   def all_deleted
     #TODO: Rethink this as the list of deleted comments grows
+    #Yes, could be a problem
     @all = [] 
     @all += Idea.unpublished
     @all += Question.unpublished

@@ -1,41 +1,26 @@
 #sib_idea_container
-  background-color: #eef2f4
-  -moz-border-radius-topleft: 3px
-  -moz-border-radius-topright: 3px
-  -moz-border-radius-bottomleft: 3px
-  -moz-border-radius-bottomright: 3px
-  -webkit-border-top-left-radius: 3px
-  -webkit-border-top-right-radius: 3px
-  -webkit-border-bottom-left-radius: 3px
-  -webkit-border-bottom-right-radius: 3px
-  border-bottom: 3px dotted #eee
+  margin-bottom: 0px
+  padding: 5px 0px 0px 0px
 
   .sib_left
     float: left
     width: 540px
     min-height: 70px
   .sib_category_logo
-    float: left
-    width: 55px
-    min-height: 70px
-    margin-bottom: 15px
+    width: 40px
+    min-height: 40px
+    margin-bottom: 0px
+    margin: 0px auto
   .sib_position
-    font-size: 1.2em !important
+    font-size: 11px
+    margin: 0 auto
     width: 55px
-    min-height: 70px
-    float: left
   .sib_idea
     float: top
   .sib_right
     float: right
     width: 290px
     min-height: 70px
-  .sib_debate_buttons
-  .sib_social
-    display: none
-  .debate_button
-    float: left
-
 
 #sib_idea_detail
   width: 845px
@@ -44,7 +29,21 @@
   .sib_right_debate
     float: right
 
+.sib_social
+  float: right
 
+li.fb
+
+.sib_debate_buttons
+  float: right
+  width: 130px
+  .idea_add
+    float: none
+    text-align: left
+
+.report1
+  float: right
+  margin-top: -7px
 
 .idea_name,.idea_name_add
   font-weight: bold
@@ -58,37 +57,37 @@
   font-weight: bold
   margin-bottom: 2px
 
+span.count
+  font-weight: bold
+  padding-left: 5px
+
 .idea_add,.idea_add_follow,.idea_add_ignore
-  font-weight: normal!important
   text-transform: uppercase
-  font-size: 11px
-  padding: 0
-  margin-top: 3px
+  font-weight: bold
+  float: left
+  margin: 0px 0px 0px 0px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+  text-align: center
+
+.idea_add_point_for1
+  margin-top: -22
+
 
 .idea_remove
   font-weight: bold
   text-transform: uppercase
-  font-size: 9px
-  padding: 1px 2px 1px 3px
-  margin: 0 3px 0 0
 
 .idea_remove_oppose
   font-weight: bold
-  text-transform: uppercase
-  font-size: .7em
-  padding: 1px 2px 1px 3px
-  margin: 0 3px 0 0
 
 .idea_position
-  font-weight: bold
   float: right
+  display: inline
   padding-left: 2px
-  padding-right: 7px
 
 .idea_inactive,.portlet .idea_inactive
-  padding-top: 10px
-  font-size: 1.3em
-  text-align: center
+  font-size: 11px
 
 .single2 .idea_inactive
   padding-top: 10px
@@ -100,39 +99,253 @@
   padding-top: 3px
 
 .position_new
-  font-weight: bold
+  displaye: inline
+  float: right
 
 span.idea_add a,span.idea_add a:hover
   float: left
-  font-size: 16px
+  font-size: 13px
   font-weight: bold
   text-decoration: none
 
-.idea_add_link1
-  color: #090
-  padding-bottom: 6px
+.endorse_button
+  width: 110px
+  font-size: 12px
+  text-align: center
+  color: #fff
+  background-image: url("/assets/buttons/endorse_button_bg_strip_5.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 0px 4px 0px
+  padding: 0px 10px 0px 10px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
 
-.idea_add_link2
-  color: #900
+.endorse_grey
+  @extend .endorse_button
+  background-image: url("/assets/buttons/endorse_button_bg_strip_3_disabled.png")
+  padding-left: 5px
 
-.idea_add_link1:hover
+.debate_button
+  width: 110px
+  font-size: 12px
+  text-align: center
+  color: #fff
+  background-image: url("/assets/buttons/debate_button_bg_strip_3.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 0px 5px 0px
+  padding: 0px 10px 0px 10px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+  &:hover,&:focus
+    cursor: pointer
+  a
+    &:visited
+      color: white
+    &:hover
+      color: #dddddd
 
-.idea_add_link2:hover
+.idea_debate_spinner
+  float: right
+  padding-top: 1px
+  padding-right: 0px
+  img
+    padding: 2px 0px 0px 0px
 
-.sib_debate_buttons
-  margin-top: 3px
+.oppose_button
+  width: 110px
+  font-size: 12px
+  text-align: center
+  color: #fff
+  background-image: url("/assets/buttons/oppose_button_bg_strip_3.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 0px 5px 0px
+  padding: 0px 10px 0px 10px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+.oppose_grey
+  @extend .oppose_button
+  background-image: url("/assets/buttons/oppose_button_bg_strip_3_disabled.png")
+
+.add_point_for_button
+  font-size: 12px
+  text-align: center
+  width: 145px
+  height: 22px
+  color: #fff
+  background-image: url("/assets/buttons/endorse_button_bg_strip_5.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 0px 4px 0px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
+  &:hover,&:focus
+    cursor: pointer
+  a
+    &:visited
+      color: #fff !important
+    &:hover
+      color: #dddddd !important
+
+.add_point_against_button
+  font-size: 12px
+  text-align: center
+  width: 145px
+  height: 22px
+  color: #fff
+  background-image: url("/assets/buttons/oppose_button_bg_strip_3.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 0px 4px 0px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
+  &:hover,&:focus
+    cursor: pointer
+  a
+    &:visited
+      color: #fff !important
+    &:hover
+      color: #dddddd !important
+
+.idea_add_link
+  &:hover
+    color: #dddddd
+  padding: 0px 0px 0px 0px
+  color: #fff
+  display: block
+  height: 22px
+
+.idea_add_link_small
+  &:hover
+    color: #dddddd
+  padding: 0px 0px 0px 0px
+  color: #fff
+  display: block
+
+.endorse_button_small
+  font-size: 12px
+  text-align: center
+  color: #fff
+  background-image: url("/assets/buttons/endorse_button_bg_strip_5.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 5px 4px 0px
+  padding: 0px 5px 0px 5px
+  -webkit-border-radius: 3px !important
+  -moz-border-radius: 3px !important
+  border-radius: 3px !important
+  behavior: url(/assets/PIE.htc)
+  float: left
+
+.spacer_button_small
+  float: left
+  margin: 0px 5px 0px 0px
+
+.oppose_button_small
+  font-size: 12px
+  text-align: center
+  color: #fff
+  background-image: url("/assets/buttons/oppose_button_bg_strip_3.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 5px 4px 0px
+  padding: 0px 5px 0px 5px
+  -webkit-border-radius: 3px !important
+  -moz-border-radius: 3px !important
+  border-radius: 3px !important
+  behavior: url(/assets/PIE.htc)
+  float: left
+
+.other_button_small
+  font-size: 12px
+  text-align: center
+  color: #fff
+  background-image: url("/assets/buttons/other_button_bg_strip_2.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  padding: 0px 5px 0px 5px
+  -webkit-border-radius: 3px !important
+  -moz-border-radius: 3px !important
+  border-radius: 3px !important
+  behavior: url(/assets/PIE.htc)
+  float: left
+
+
+.ad
+  float: left
+  height: 100px
+  width: 100%
+
+.ad_avatar
+  text-align: center
+
+.ad_content
+  margin-top: -4px
+
+.ad_debate
+  float: right
+
+.ad_counts
+  float: right
+  font-size: 0.75em
+  margin-right: 7px
+  *margin-right: px
+  *width: 250px
+
 
 .top_level_idea_listing
   float: left
   padding-top: 0px
-  padding-bottom: 0px
+  padding-bottom: 5px
+  width: 100%
+  border-bottom: 1px solid #D7D7D7
+  padding: 7px 0px 0px 0px
 
 div.endorse-wrap
   background-color: #FFF
   border: 1px solid #cacaca
-  -webkit-border-radius: 4px!important
-  -moz-border-radius: 4px!important
-  border-radius: 4px!important
+  -webkit-border-radius: 3px!important
+  -moz-border-radius: 3px!important
+  border-radius: 3px
   behavior: url(/assets/PIE.htc)
   position: relative
   float: left
@@ -153,21 +366,6 @@ div.oppose-wrap
   padding: 10px
   width: 340px
 
-
-.debate_button
-  color: #00f
-  font-size: 16px
-  font-weight: bold
-  padding-bottom: 6px
-  &:hover,&:focus
-    cursor: pointer
-  a
-    &:hovef
-      text-decoration: none
-    &:visited
-      color: #FFFFFF !important
-
-
 .idea_detail_left
   float: left
   width: 120px !important
@@ -185,7 +383,8 @@ div.oppose-wrap
     margin-top: 6px
 
 .debate_buttons_table
-  width: 262px !important
+  /* width: 262px !important */
+  margin-top: -1px
 
 .endorse_grey
   color: #aaa
@@ -196,6 +395,21 @@ div.oppose-wrap
 #sib_main_content .subhead
   display: none
 
+div.sub_header
+  float: right
+  position: relative
+  top: 0px
+  right: 0px
+  font-color: #333
+  font-weight: bold
+
+.point_item
+  float: left
+  width: 100%
+
+.point_item h3
+  margin-top: 12px
+
 .with_feed
   margin: 0 !important
 
@@ -204,3 +418,231 @@ div.oppose-wrap
 
 .idea_chart + .idea_chart
   padding-top: 8px
+
+.idea_chart img
+  width: 75px
+
+.status_in_progress
+  text-align: left
+
+.status_opposed
+  color: #900
+  margin: 0px auto
+  text-align: center
+
+.status_endorsed
+  color: #090
+  text-align: center
+  margin: 0px auto
+
+.rss_feed
+  float: right
+
+#hp_intro
+  display: none
+
+.more_container
+  display: table
+  margin: auto
+  padding: 10px 0px 5px 0px
+
+.idea_detail_more
+  display: inline-block
+  font-size: 12px
+  font-weight: bold
+  text-align: center
+  text-transform: uppercase
+  margin: 0px 5px 4px 0px
+  padding: 0px 5px 12px 5px
+  -webkit-border-radius: 5px !important
+  -moz-border-radius: 5px !important
+  border-radius: 5px !important
+  behavior: url(/assets/PIE.htc)
+  float: left
+  &:hover,&:focus
+    cursor: pointer
+  a
+    &:visited
+      color: #2A2F9A !important
+    &:hover
+      color: #dddddd !important
+
+.idea_detail_more a
+  color: #fff
+
+.activity_x
+  float: right
+
+.activity_border
+  border-bottom: 1px solid #d7d7d7
+  margin-bottom: 5px
+  padding-bottom: 5px
+
+.comment_content_2, .comment_content
+  background: white
+  margin: 5px 0
+  padding: 10px 10px 10px 13px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+.col_text_area
+  width: 100%
+
+.form_header
+  padding: 0px 0px 2px 0px
+  font-weight: bold
+  color: #666666
+
+.field
+  padding: 0px 0px 0px 0px
+
+.field_label
+  padding: 0px 0px 2px 0px
+  font-weight: bold
+  color: #666666
+
+.field_box
+  padding: 0px 0px 5px 0px
+
+#idea_category
+  position: relative
+  left: -7px
+
+#point_supports
+  padding: 10px 0px 0px 0px
+
+#point_opposes
+  padding: 0px 0px 10px 0px
+
+.encouragement_stats
+  padding-top: 20px
+
+.finished_idea
+  padding-top: 10px
+
+.finished_status_date
+  font-weight: bold
+
+.home_welcome
+  height: 100%
+
+.home_h1
+  margin-bottom: 10px !important
+  padding-bottom: 10px !important
+
+.border_miss_avatar img
+  -moz-border-radius: 3px
+  -webkit-border-top: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+.border_miss_avatar48
+  text-align: center
+
+.border_miss_avatar48 img
+  -moz-border-radius: 3px
+  -webkit-border-top: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+.image_48 img
+  -moz-border-radius: 3px
+  -webkit-border-top: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+.bulletin_form
+  margin-top: 20px
+  border-top: 2px dotted #ccc
+  border-bottom: 2px dotted #ccc
+
+.new_comment
+  width: 100%
+
+.new_comment textarea
+  width: 450px
+  height: 65px
+  margin: 0px 0px 5px 0px
+  padding: 0px 0px 0px 5px
+
+.happening_heading
+  font-size: 14px
+  font-weight: bold
+  margin: 10px 0px 5px 0px
+
+.helpful_link
+  &:hover
+    color: #dddddd
+  padding: 0px 0px 0px 0px
+  color: #fff
+  display: block
+
+.helpful_button
+  width: 110px
+  font-size: 12px
+  text-align: center
+  color: #fff
+  background-image: url("/assets/buttons/endorse_button_bg_strip_5.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 0px 4px 0px
+  padding: 0px 10px 0px 10px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+.not_helpful_button
+  width: 110px
+  font-size: 12px
+  text-align: center
+  color: #fff
+  background-image: url("/assets/buttons/oppose_button_bg_strip_3.png")
+  background-repeat: repeat-x
+  background-position: 0 0
+  margin: 0px 0px 5px 0px
+  padding: 0px 10px 0px 10px
+  -moz-border-radius-topleft: 3px
+  -moz-border-radius-topright: 3px
+  -moz-border-radius-bottomleft: 3px
+  -moz-border-radius-bottomright: 3px
+  -webkit-border-top-left-radius: 3px
+  -webkit-border-top-right-radius: 3px
+  -webkit-border-bottom-left-radius: 3px
+  -webkit-border-bottom-right-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+.endorse_or
+  text-align: center
+  margin: 5px 0px 5px 0px
+
+.helpful_button_container
+  margin-left: 25%
+  margin-right: 25%
+
+.intro
+  color: #333
+  font-size: 16px
+  font-weight: bold
+  margin: 0px 0px 5px 0px
+
+.point_content_detail
+  color: #333
+  margin: 0px 0px 25px 0px
+
+.point_feed_header
+  color: #333
+  font-size: 16px
+  font-weight: bold
+  margin: 0px 0px 5px 0px
+  border-bottom: 2px dotted #ccc
+
+.match
+  color: red

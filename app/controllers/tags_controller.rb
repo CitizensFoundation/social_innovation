@@ -13,8 +13,6 @@ class TagsController < ApplicationController
     end
   end
 
-  # GET /tags/1
-  # GET /tags/1.xml
   def show
     @tag = Tag.find(params[:id])
     
@@ -32,6 +30,7 @@ class TagsController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @tag }
+      format.json  { render :xml => @tag }
     end
   end
 
@@ -61,8 +60,6 @@ class TagsController < ApplicationController
     end
   end
 
-  # PUT /tags/1
-  # PUT /tags/1.xml
   def update
     @tag = Tag.find(params[:id])
     if @tag.name != params[:tag][:name] 

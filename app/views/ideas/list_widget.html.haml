@@ -28,7 +28,8 @@
                 .nb_idea_position_new= tr("new", "view/ideas/list_widget")
             - elsif idea.position_7days_delta == 0 and idea.position_30days_delta == 0
               %td{:align => "center", :colspan => "2", :valign => "top"}
-                .nb_idea_position_nochange{:title => tr("This idea hasn't moved up or down in the rankings at all this month.", "view/ideas/list_widget")}= tr("UNCH", "view/ideas/list_widget").upcase
+                .nb_idea_position_nochange{:title => tr("This idea hasn't moved up or down in the rankings at all this month.", "view/ideas/list_widget")}
+                  = #tr("Unch", "view/ideas/list_widget")
             - else
               %td{:style => "padding-left: 2px;", :valign => "top"}
                 - if idea.position_7days_delta > 0

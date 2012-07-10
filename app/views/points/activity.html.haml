@@ -1,16 +1,22 @@
-= render :partial => "points/header"
-%table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
-  %tr
-    %td{:valign => "top"}
+.col-group
+  .col-1
+    .col_content= render partial: "points/nav"
+  .col-8
+    .col-content
+      = render :partial => "points/header"
+      .point_name
+        %p= @point.name
+      .point_content_detail
+        %p= @point.content_html
       - if logged_in? and params[:action] == 'discussions'
-        %p
-          = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
+        #new_activities
+        = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
       = will_paginate(@activities)
-      %p
       #activities
         - for activity in @activities
           = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_noself" }
-      %p
         = will_paginate(@activities)
-    %td{:style => "padding-left: 20px;", :valign => "top", :width => "150"}
-      = render :partial => "revisions/revisions"
+  .col-3
+    .col-content
+      = render :partial => "points/authors", :locals => {:users => @point.authors }
+      = render :partial => "points/left_nav"

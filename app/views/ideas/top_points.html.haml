@@ -1,4 +1,8 @@
 = render :partial => "header"
-= render :partial => "nav"
-.margin-top
-  = render :partial => "top_points"
+.col-group
+  .col-1
+    .col-content
+      = render :partial => "nav"
+  .col-11
+    .col-content
+      = render :partial => "top_points"

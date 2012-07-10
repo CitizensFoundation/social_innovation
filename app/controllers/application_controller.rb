@@ -4,7 +4,6 @@
 require 'will_paginate/array'
 
 class ApplicationController < ActionController::Base
-  #include Tr8n::CommonMethods
   include AuthenticatedSystem
   include FaceboxRender
 
@@ -23,6 +22,7 @@ class ApplicationController < ActionController::Base
   
   # switch to the right database for this instance
   before_filter :check_for_localhost
+  before_filter :setup_geoblocking
   before_filter :check_subdomain
   before_filter :check_geoblocking
 
@@ -49,15 +49,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  JS_ESCAPE_MAP = {
-        '\\'    => '\\\\',
-        '</'    => '<\/',
-        "\r\n"  => '\n',
-        "\n"    => '\n',
-        "\r"    => '\n',
-        '"'     => '\\"',
-        "'"     => "\\'" }
- 
   def action_cache_path
     params.merge({:geoblocked=>@geoblocked, :host=>request.host, :country_code=>@country_code,
                   :locale=>session[:locale], :google_translate=>session[:enable_google_translate],
@@ -77,19 +68,19 @@ class ApplicationController < ActionController::Base
   end
   
   def check_missing_user_parameters
-    if logged_in? and Instance.current and Instance.current.layout == "better_reykjavik" and controller_name!="settings"
-      unless current_user.email and current_user.my_gender and current_user.post_code and current_user.age_group
-        flash[:notice] = "Please make sure you have registered all relevant information about you for this website."
-        if request.format.js?
-          render :update do |page|
-            page.redirect_to :controller => "settings"
-          end
-          return false
-        else
-          redirect_to :controller=>"settings"
-        end
-      end
-    end
+    #if logged_in? and Instance.current and controller_name!="settings"
+    #  unless current_user.email and current_user.my_gender and current_user.post_code and current_user.age_group
+    #    flash[:notice] = "Please make sure you have registered all relevant information about you for this website."
+    #    if request.format.js?
+    #      render :update do |page|
+    #        page.redirect_to :controller => "settings"
+    #      end
+    #      return false
+    #    else
+    #      redirect_to :controller=>"settings"
+    #    end
+    #  end
+    #end
   end
 
   def check_for_localhost
@@ -107,6 +98,7 @@ class ApplicationController < ActionController::Base
         unless @time_left > 0
           Rails.logger.info("Resetting session")
           reset_session
+          Thread.current[:current_user] = nil
           flash[:error] = tr("Your session has expired, please login again.","session")
           redirect_to '/'
         end
@@ -127,6 +119,7 @@ class ApplicationController < ActionController::Base
     @inline_translations_enabled = false
 
     if logged_in? and Tr8n::Config.current_user_is_translator?
+      Tr8n::Config.current_translator.reload # workaround for broken tr8n
       unless Tr8n::Config.current_translator.blocked?
         @inline_translations_allowed = true
         @inline_translations_enabled = Tr8n::Config.current_translator.enable_inline_translations?
@@ -141,14 +134,6 @@ class ApplicationController < ActionController::Base
   def unfrozen_instance(object)
     eval "#{object.class}.where(:id=>object.id).first"
   end
-        
-  def escape_javascript(javascript)
-    if javascript
-      javascript.gsub(/(\\|<\/|\r\n|[\n\r"'])/) { JS_ESCAPE_MAP[$1] }
-    else
-      ''
-    end
-  end  
 
   # Will either fetch the current sub_instance or return nil if there's no subdomain
   def current_sub_instance
@@ -170,11 +155,16 @@ class ApplicationController < ActionController::Base
       end
     end
     @current_sub_instance ||= SubInstance.find_by_short_name(request.subdomains.first)
-    @current_sub_instance ||= SubInstance.first
+    if @iso_country
+      Rails.logger.info ("Setting sub instance to iso countr #{@iso_country.id}")
+      @current_sub_instance ||= SubInstance.where(:iso_country_id=>@iso_country.id).first
+    end
+    @current_sub_instance ||= SubInstance.find_by_short_name("united-nations")
+    @current_sub_instance ||= SubInstance.find_by_short_name("default")
     SubInstance.current = @current_sub_instance
   end
   
-  def check_geoblocking
+  def setup_geoblocking
     if File.exists?(Rails.root.join("lib/geoip/GeoIP.dat"))
       @country_code = Thread.current[:country_code] = (session[:country_code] ||= GeoIP.new(Rails.root.join("lib/geoip/GeoIP.dat")).country(request.remote_ip)[3]).downcase
     else
@@ -182,6 +172,9 @@ class ApplicationController < ActionController::Base
     end
     @country_code = "is" if @country_code == nil or @country_code == "--"
     @iso_country = Tr8n::IsoCountry.find_by_code(@country_code.upcase)
+  end
+
+  def check_geoblocking
     Rails.logger.info("Geoip country: #{@country_code} - locale #{session[:locale]} - #{current_user ? (current_user.email ? current_user.email : current_user.login) : "Anonymous"}")
     Rails.logger.info(request.user_agent)
     if SubInstance.current and SubInstance.current.geoblocking_enabled
@@ -196,10 +189,10 @@ class ApplicationController < ActionController::Base
       end
     end
     if @geoblocked
-      unless session["have_shown_geoblock_warning_#{@country_code}"]
+      #unless session["have_shown_geoblock_warning_#{@country_code}"]
         flash.now[:notice] = tr("This part of the website is only open for viewing in your country.","geoblocking")
-        session["have_shown_geoblock_warning_#{@country_code}"] = true
-      end
+      #  session["have_shown_geoblock_warning_#{@country_code}"] = true
+      #end
     end
   end
   
@@ -212,12 +205,6 @@ class ApplicationController < ActionController::Base
       if cookies[:last_selected_language]
         session[:locale] = cookies[:last_selected_language]
         Rails.logger.debug("Set language from cookie")
-      elsif Instance.current.layout == "better_reykjavik"
-        session[:locale] = "is"
-        Rails.logger.info("Set language from better reykjavik")
-      elsif Instance.current.layout == "better_iceland"
-        session[:locale] = "is"
-        Rails.logger.info("Set language from better iceland")
       elsif Instance.current.layout == "application"
         session[:locale] = "en"
         Rails.logger.info("Set language for application to English")
@@ -318,6 +305,7 @@ class ApplicationController < ActionController::Base
       self.current_user.forget_me if logged_in?
       cookies.delete :auth_token
       reset_session
+      Thread.current[:current_user] = nil
       flash[:notice] = "This account has been suspended."
       redirect_back_or_default('/')
       return  
@@ -432,6 +420,7 @@ class ApplicationController < ActionController::Base
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token
     reset_session    
+    Thread.current[:current_user] = nil
     flash[:error] = tr("Your Facebook session expired.", "controller/application")
     respond_to do |format|
       format.html { redirect_to '/portal/' }
@@ -453,9 +442,9 @@ class ApplicationController < ActionController::Base
     @sub_menu_items = @items
     Rails.logger.debug action_name
 
-    if action_name == "index" and @items and not request.xhr?
+    if action_name == "index" and @items and not request.xhr? and controller_name != 'issues'
       Rails.logger.debug "index"
-      selected = cookies["selected_#{controller_name}_filter_id"].to_i
+      selected = nil #DISABLED FEATURE cookies["selected_#{controller_name}_filter_id"].to_i
       Rails.logger.debug "cookie #{selected}"
       if selected and @sub_menu_items[selected]
         Rails.logger.debug "cookie"
@@ -472,7 +461,10 @@ class ApplicationController < ActionController::Base
     if selected_sub_menu_item
       @selected_sub_nav_name = selected_sub_menu_item[0]
       Rails.logger.debug "Saved submenu id #{selected_sub_menu_item_id}"
-      @selected_sub_nav_item_id = cookies["selected_#{controller_name}_filter_id"] = selected_sub_menu_item_id
+      @selected_sub_nav_item_id = selected_sub_menu_item_id
+      if controller_name != 'issues'
+        cookies["selected_#{controller_name}_filter_id"] = @selected_sub_nav_item_id
+      end
     end
   end
 

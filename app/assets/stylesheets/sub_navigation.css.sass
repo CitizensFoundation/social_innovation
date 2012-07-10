@@ -1,38 +1,25 @@
 #sib_sub_nav
-  background: #1931b9
-  height: 50px
+  background: #a0a5ad
+  height: 43px
   color: white
   font-weight: bold
   margin-bottom: 20px
-  -moz-border-radius-topleft: 3px
-  -moz-border-radius-topright: 3px
-  -moz-border-radius-bottomleft: 3px
-  -moz-border-radius-bottomright: 3px
-  -webkit-border-top-left-radius: 3px
-  -webkit-border-top-right-radius: 3px
-  -webkit-border-bottom-left-radius: 3px
-  -webkit-border-bottom-right-radius: 3px
+  -moz-border-radius: 3px
+  -webkit-border-top: 3px
+  border-radius: 3px
+
+html>/**/ #sib_sub_nav
+  behavior: url(/assets/PIE.htc)
+
   img
     margin-left: 50px
-      margin-right: 50px
-  a.pulldown_trigger
-    padding: 4px 30px 4px 5px
-    margin: 0px 0px 8px 0px
-    z-index: 500
-    background-image: url(/assets/white_arrow_down.png)
-    background-repeat: no-repeat
-    background-position: 95% 55%
-
+    margin-right: 50px
 
 #general_form
-  -moz-border-radius-topleft: 3px
-  -moz-border-radius-topright: 3px
-  -moz-border-radius-bottomleft: 3px
-  -moz-border-radius-bottomright: 3px
-  -webkit-border-top-left-radius: 3px
-  -webkit-border-top-right-radius: 3px
-  -webkit-border-bottom-left-radius: 3px
-  -webkit-border-bottom-right-radius: 3px
+  -moz-border-radius: 3px
+  -webkit-border-top: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
   display: none
   background-color: #fff
   position: absolute
@@ -61,6 +48,7 @@
 
 #sub_menu
   @extend #general_form
+  background-color: #a0a5ad
   margin-left: 78px
   margin-top: 6px
   display: none
@@ -71,6 +59,43 @@
 #section_title
   color: #fff
   font-size: 18px
-  padding: 12px 0px 0px 10px
+  padding: 10px 0px 0px 10px
   a
     color: #fff !important
+  a.pulldown_trigger
+    padding: 4px 30px 4px 5px
+    margin: 0px 0px 8px 0px
+    z-index: 500
+    background-image: url(/assets/white_arrow_down.png)
+    background-repeat: no-repeat
+    background-position: 95% 55%
+
+.flash_notice, .flash_error
+  width: 100%
+  font-size: 16px
+  color: white
+  margin-bottom: 15px
+  background: #A0A5AD
+  -moz-border-radius: 3px
+  -webkit-border-radius: 3px
+  border-radius: 3px
+  behavior: url(/assets/PIE.htc)
+
+.flash_error
+  background: #ADA5A0
+
+.flash_notice a, .flash_error a
+  padding-right: 8px
+  padding-top: 2px
+  color: white
+
+.flash_notice span, .flash_error span
+  padding-top: 3px
+  padding-bottom: 3px
+  padding-left: 8px
+  display: block
+
+.close_notify
+  float: right
+  font-weight: bold
+

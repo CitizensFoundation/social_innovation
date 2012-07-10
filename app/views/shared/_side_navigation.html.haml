@@ -16,11 +16,32 @@
   - nav = 0
 %div#sib_side_nav
   %ul
-    %li
-      = link_to :controller => "home" do
-        = raw "<div class='sprite_clip #{controller_name=="home" ? "home_pos_selected" : "home_pos"}'></div>"
-        %span.label
-          = tr("Home","Menu system")
+    - if current_instance.domain_name.include?("yrpri") and SubInstance.current and SubInstance.current.iso_country
+      %li
+        = link_to :controller => "home", :action=> "world" do
+          = raw "<div class='sprite_clip #{controller_name=="home" ? "home_pos_selected" : "home_pos"}'></div>"
+          %span.label
+            = tr("World","Menu system")
+      %li
+        = link_to :controller => "home", :action=> "index" do
+          .sprite_clip_flag
+            = image_tag SubInstance.current.iso_country.large_flag_image, :size=>"50x50"
+          %span.label
+            = tr("Home","Menu system")
+    - elsif current_instance.domain_name.include?("yrpri")
+      %li
+        = link_to :controller => "home", :action=> "index" do
+          .sprite_clip_flag
+            = image_tag SubInstance.current.logo.url(:icon_50), :border => 0, :size=>"50x50"
+          %span.label
+            = SubInstance.current.name
+    - else
+      %li
+        = link_to :controller => "home", :action=>current_instance.domain_name.include?("yrpri") ? "world" : "index" do
+          = raw "<div class='sprite_clip #{controller_name=="home" ? "home_pos_selected" : "home_pos"}'></div>"
+          %span.label
+            = tr("Home","Menu system")
+
     %li
       = link_to :controller => "ideas", :action=>"index" do
         = raw "<div class='sprite_clip #{controller_name=="ideas" ? "ideas_pos_selected" : "ideas_pos"}'></div>"
@@ -47,6 +68,13 @@
         = raw "<div class='sprite_clip #{controller_name=="issues" ? "categories_pos_selected" : "categories_pos"}'></div>"
         %span.label
           = tr("Categories", "view/shared/_menu")
+    - if current_instance.domain_name.include?("yrpri") and not SubInstance.current.iso_country
+      %li
+        = link_to :controller => "home", :action=>current_instance.domain_name.include?("yrpri") ? "world" : "index" do
+          = raw "<div class='sprite_clip #{controller_name=="home" ? "home_pos_selected" : "home_pos"}'></div>"
+          %span.label
+            = tr("World","Menu system")
+
 - if nav == 1
 - elsif nav == 6
   - if ['instances','color_schemes','admin','pages','tags'].include?(params[:controller])
@@ -54,7 +82,7 @@
   - elsif ['sub_instances'].include?(params[:controller]) and logged_in?
     = #render :partial => "sub_instances/nav"
   - elsif logged_in?
-    = render :partial => "settings/nav"
+    = #render :partial => "settings/nav"
 - elsif nav == 7
   - if ['charts'].include?(params[:controller])
     = render :partial => "charts/nav"

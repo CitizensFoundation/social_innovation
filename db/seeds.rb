@@ -28,8 +28,6 @@ si.short_name = "default"
 si.name = "Your Default Sub Instance"
 si.save(:validation=>false)
 
-require 'activity_classes'
-
 Instance.current = i
 
 require 'activity'

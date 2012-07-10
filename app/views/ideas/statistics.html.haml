@@ -1,11 +1,13 @@
 - cache("idea_chart_detailed-#{@idea.id.to_s}") do
   - @charts = @idea.charts.newest_first
+  - if Rails.env.development? and @charts.length>0 and @charts.length<=2
+    - @charts = [@charts[0],@charts[0],@charts[0]]
   - if @charts.any? and @charts.length > 2
     - sorted = @charts.sort_by { |c| c.position }
     - max_position = sorted.last.position
     - min_position = 1
     - max_volume = @charts.sort_by { |c| c.volume_count }.last.volume_count
-    - if sorted.first.position == sorted.last.position
+    - if false and sorted.first.position == sorted.last.position
       .idea_chart
         %p= tr("Green is the number of endorsements for this idea each day, and red is the oppositions.", "view/ideas/_left_nav")
         %table{:border => "0", :cellpadding => "0", :cellspacing => "0"}

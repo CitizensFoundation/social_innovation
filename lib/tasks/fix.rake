@@ -29,7 +29,1050 @@ def remove_all_endorsements_except
   end
 end
 
+def shall_we_change(col_name)
+  new_col_name = col_name
+  new_col_name = new_col_name.gsub("priorities","ideas") if new_col_name.index("priorities")
+  new_col_name = new_col_name.gsub("priority","idea") if new_col_name.index("priority")
+  new_col_name = new_col_name.gsub("governments","instances") if new_col_name.index("governments")
+  new_col_name = new_col_name.gsub("partners","sub_instances") if new_col_name.index("partners")
+  new_col_name = new_col_name.gsub("partner","sub_instance") if new_col_name.index("partner")
+  new_col_name = new_col_name.gsub("deleted_at","removed_at") if new_col_name.index("deleted_at")
+  new_col_name = new_col_name.gsub(/_change$/,"_delta") if new_col_name.index("_change")
+  if new_col_name == col_name
+    return nil
+  else
+    return new_col_name
+  end
+end
+
+def change_to_mysql_text(text)
+  if text=="integer"
+    return "int(11)"
+  elsif text=="text"
+    return "text"
+  elsif text=="datetime"
+    return "datetime"
+  elsif text=="float"
+    return "float"
+  elsif text=="boolean"
+    return "tinyint(1)"
+  else
+    raise text
+  end
+end
+
 namespace :fix do
+  desc 'duplicate_emails'
+  task :duplicate_emails => :environment do
+    User.transaction do
+      User.find(:all, :group => [:email], :having => "count(*) > 1").each do |dupe|
+        dupe_users = User.find(:all, :conditions => {:email => dupe.email})
+        if dupe.email
+          good_user = dupe_users.pop
+          puts "keeping user #{good_user.id}'s email of #{dupe.email}"
+        end
+        dupe_users.each do |dupe_user|
+          random_string = (0...8).map{65.+(rand(25)).chr}.joi
+          if dupe.email
+            new_email = "#{random_string}.#{dupe.email}"
+          else
+            new_email = "#{random_string}@example.com"
+          end
+          puts "changing user #{dupe_user.id}'s email of #{dupe.email} to #{new_email}"
+          dupe_user.email = new_email
+          dupe_user.save(validate: false)
+        end
+      end
+    end
+  end
+
+  desc 'fixdesc'
+  task :fixdesc => :environment do
+    Idea.unscoped.all.each do |idea|
+      if idea.points.where(sub_instance_id: idea.sub_instance_id).first
+        puts idea.points.where(sub_instance_id: idea.sub_instance_id).first.content_html
+        idea.description = idea.points.where(sub_instance_id: idea.sub_instance_id).first.content
+        idea.save(:validate=>false)
+      else
+        puts "NO POINT FOR #{idea.id}"
+      end
+    end
+  end
+
+  desc 'rename_activities'
+  task :rename_activities => :environment do
+    renames = {
+      'CapitalGovernmentNew' => 'CapitalInstanceNew',
+      'IssuePriority1' => 'IssueIdea1',
+      'PriorityDebut' => 'IdeaDebut',
+      'IssuePriorityRising1' => 'IssueIdeaRising1',
+    }
+    renames.each do |old, new|
+      puts "UPDATE activities SET type='Activity#{new}' where type='Activity#{old}';"
+    end
+  end
+
+  desc 'show_broken_activities'
+  task :show_broken_activities => :environment do
+    Activity.unscoped.all.each do |activity|
+      if activity.idea_id
+        idea = Idea.unscoped.find(activity.idea_id)
+        if activity.sub_instance_id != idea.sub_instance_id
+          puts "activity #{activity.id} has sub_instance_id of #{activity.sub_instance_id} instead of #{idea.sub_instance_id} like its Idea"
+        end
+      elsif activity.point_id
+        point = Point.unscoped.find(activity.point_id)
+        if activity.sub_instance_id != point.sub_instance_id
+          puts "activity #{activity.id} has sub_instance_id of #{activity.sub_instance_id} instead of #{point.sub_instance_id} like its Point"
+        end
+      elsif activity.ad_id
+        ad = Ad.unscoped.find(activity.ad_id)
+        if activity.sub_instance_id != ad.sub_instance_id
+          puts "activity #{activity.id} has sub_instance_id of #{activity.sub_instance_id} instead of #{ad.sub_instance_id} like its Ad"
+        end
+      end
+    end
+  end
+
+  desc 'fix_broken_activities'
+  task :fix_broken_activities => :environment do
+    Activity.unscoped.all.each do |activity|
+      if activity.idea_id
+        idea = Idea.unscoped.find(activity.idea_id)
+        if activity.sub_instance_id != idea.sub_instance_id
+          puts "activity #{activity.id} has sub_instance_id of #{activity.sub_instance_id} instead of #{idea.sub_instance_id} like its Idea"
+          activity.sub_instance_id = idea.sub_instance_id
+          activity.save
+        end
+      elsif activity.point_id
+        point = Point.unscoped.find(activity.point_id)
+        if activity.sub_instance_id != point.sub_instance_id
+          puts "activity #{activity.id} has sub_instance_id of #{activity.sub_instance_id} instead of #{point.sub_instance_id} like its Point"
+          activity.sub_instance_id = point.sub_instance_id
+          activity.save
+        end
+      elsif activity.ad_id
+        ad = Ad.unscoped.find(activity.ad_id)
+        if activity.sub_instance_id != ad.sub_instance_id
+          puts "activity #{activity.id} has sub_instance_id of #{activity.sub_instance_id} instead of #{ad.sub_instance_id} like its Ad"
+          activity.sub_instance_id = ad.sub_instance_id
+          activity.save
+        end
+      end
+    end
+  end
+
+  desc 'show_broken_points'
+  task :show_broken_points => :environment do
+    Idea.unscoped.all.each do |idea|
+      Point.unscoped.where(idea_id: idea.id).all.each do |point|
+        if point.sub_instance_id != idea.sub_instance_id
+          puts "point #{point.id} has sub_instance_id of #{point.sub_instance_id} instead of #{idea.sub_instance_id}"
+        end
+      end
+    end
+  end
+
+  desc 'fix_broken_points'
+  task :fix_broken_points => :environment do
+    Idea.unscoped.all.each do |idea|
+      Point.unscoped.where(idea_id: idea.id).all.each do |point|
+        if point.sub_instance_id != idea.sub_instance_id
+          puts "point #{point.id} has sub_instance_id of #{point.sub_instance_id} instead of #{idea.sub_instance_id}"
+          point.sub_instance_id = idea.sub_instance.id
+          point.save
+        end
+      end
+    end
+  end
+
+  desc 'clear_tr8n'
+  task :clear_tr8n => :environment do
+    Tr8n::Translation.delete_all
+  end
+
+  desc 'it2'
+  task :it2 => :environment do
+    Tagging.update_all("taggable_type='Idea' where taggable_type='Priority'")
+    Notification.update_all("notifiable_type='Idea' where notifiable_type='Priority'")
+    ['General', 'Localization', 'User interface', 'Data sources'].each do |name|
+      category = Category.find_by_name(name)
+      category.destroy
+    end
+  end
+
+  desc "it"
+  task :it => :environment do
+    #Drop and Create database
+    #drop database yrpri_translate_temp;
+    #CREATE database yrpri_translate_temp;
+    #use yrpri_translate_temp;
+    #mysql -u root -p yrpri_translate_temp < /home/robert/work/temp/s.sql
+    #rake fix:it
+    #copy paste
+    #DELETE FROM on target
+    #mysqldump --skip-triggers --compact --complete-insert --no-create-info -u root -p yrpri_translate_temp > /home/robert/work/temp/yrpri_trans.sql
+    #mysql -u root -p si_dev < /home/robert/work/temp/yrpri_trans.sql
+
+    used_list = %w[activities ads capitals categories comments endorsements following_discussions followings governments notifications partners point_qualities pictures points
+                 priorities priority_charts priority_status_change_logs profiles rankings relationships shown_ads revisions signups tag_subscriptions taggings tags
+                 unsubscribes user_charts user_contacts user_rankings users]
+
+    table_rename_list = [
+      %w[partners sub_instances],
+      %w[priorities ideas],
+      %w[governments instances],
+      %w[priority_charts idea_charts],
+      %w[priority_status_change_logs idea_status_change_logs]
+    ]
+
+    action_rename = %w[ActivityPriorityNew ActivityPriorityFlagInappropriate ActivityPriorityFlag ActivityPriorityBury ActivityPriorityCommentNew ActivityPriority1
+       ActivityPriority1Opposed ActivityPriorityRising1 ActivityIssuePriorityControversial1 ActivityPriorityMergeProposal ActivityPriorityRenamed
+       ActivityPriorityAcquisitionProposalNo ActivityPriorityAcquisitionProposalApproved ActivityPriorityAcquisitionProposalDeclined
+       ActivityPriorityAcquisitionProposalDeleted ActivityPriorityOfficialStatusFailed ActivityPriorityOfficialStatusCompromised
+       ActivityPriorityOfficialStatusInTheWorks ActivityPriorityOfficialStatusSuccessful ActivityPriorityStatusUpdate]
+
+    notification_rename = %w[NotificationPriorityFlagged NotificationPriorityFinished]
+
+    def rename_to_idea(text)
+      text.gsub("Priority","Idea")
+    end
+
+    action_rename.each do |rename|
+      puts "UPDATE activities SET type='#{rename_to_idea(rename)}' where type='#{rename}';"
+    end
+
+    notification_rename.each do |rename|
+      puts "UPDATE notifications SET type='#{rename_to_idea(rename)}' where type='#{rename}';"
+    end
+
+
+    puts "["
+    used_list.each do |table|
+      puts "{:#{table}=>%w[]},"
+    end
+    puts "]"
+
+
+
+    used_columns_per_table = [
+        {:activities=> {
+                                       :id => :integer,
+                                  :user_id => :integer,
+                               :partner_id => :integer,
+                                     :type => :string,
+                                   :status => :string,
+                              :priority_id => :integer,
+                               :created_at => :datetime,
+                             :is_user_only => :boolean,
+                           :comments_count => :integer,
+                              :activity_id => :integer,
+                                  :vote_id => :integer,
+                                :change_id => :integer,
+                            :other_user_id => :integer,
+                                   :tag_id => :integer,
+                                 :point_id => :integer,
+                              :revision_id => :integer,
+                               :capital_id => :integer,
+                                    :ad_id => :integer,
+                              :document_id => :integer,
+                     :document_revision_id => :integer,
+                                 :position => :integer,
+                          :followers_count => :integer,
+                               :changed_at => :datetime,
+            :priority_status_change_log_id => :integer}},
+        {:ads=> {
+                         :id => :integer,
+                :priority_id => :integer,
+                    :user_id => :integer,
+             :show_ads_count => :integer,
+            :shown_ads_count => :integer,
+                       :cost => :integer,
+              :per_user_cost => :float,
+                      :spent => :float,
+                  :yes_count => :integer,
+                   :no_count => :integer,
+                 :skip_count => :integer,
+                     :status => :string,
+                    :content => :string,
+                 :created_at => :datetime,
+                 :updated_at => :datetime,
+                :finished_at => :datetime,
+                   :position => :integer,
+                 :partner_id => :integer
+        }},
+        {:capitals=>{
+                            :id => :integer,
+                     :sender_id => :integer,
+                  :recipient_id => :integer,
+              :capitalizable_id => :integer,
+            :capitalizable_type => :string,
+                        :amount => :integer,
+                          :type => :string,
+                          :note => :string,
+                    :created_at => :datetime,
+                    :updated_at => :datetime,
+                       :is_undo => :boolean
+        }},
+        {:categories=>{
+                           :id => :integer,
+                         :name => :string,
+                   :created_at => :datetime,
+                   :updated_at => :datetime,
+                   :partner_id => :integer,
+               :icon_file_name => :string,
+            :icon_content_type => :string,
+               :icon_file_size => :integer,
+              :icon_updated_at => :datetime,
+                  :description => :text,
+                     :sub_tags => :string
+        }},
+        {:comments=>{
+                       :id => :integer,
+              :activity_id => :integer,
+                  :user_id => :integer,
+                   :status => :string,
+                  :content => :text,
+               :created_at => :datetime,
+               :updated_at => :datetime,
+              :is_endorser => :boolean,
+               :ip_address => :string,
+               :user_agent => :string,
+                 :referrer => :string,
+               :is_opposer => :boolean,
+             :content_html => :text,
+              :flags_count => :integer,
+              :category_id => :integer,
+            :category_name => :string,
+               :partner_id => :integer
+        }},
+        {:endorsements=> {
+                     :id => :integer,
+                 :status => :string,
+               :position => :integer,
+             :partner_id => :integer,
+            :priority_id => :integer,
+                :user_id => :integer,
+             :ip_address => :string,
+             :created_at => :datetime,
+             :updated_at => :datetime,
+            :referral_id => :integer,
+                  :value => :integer,
+                  :score => :integer
+        }},
+        {:following_discussions=>{
+                     :id => :integer,
+                :user_id => :integer,
+            :activity_id => :integer,
+             :created_at => :datetime,
+             :updated_at => :datetime
+        }},
+        {:followings=>{
+                       :id => :integer,
+                  :user_id => :integer,
+            :other_user_id => :integer,
+                    :value => :integer,
+               :created_at => :datetime,
+               :updated_at => :datetime
+        }},
+        {:governments=>{
+                                        :id => :integer,
+                                    :status => :string,
+                                :short_name => :string,
+                               :domain_name => :string,
+                                    :layout => :string,
+                                      :name => :string,
+                                   :tagline => :string,
+                                     :email => :string,
+                                 :is_public => :boolean,
+                                :created_at => :datetime,
+                                :updated_at => :datetime,
+                                   :db_name => :string,
+                          :official_user_id => :integer,
+                  :official_user_short_name => :string,
+                                    :target => :string,
+                                   :is_tags => :boolean,
+                               :is_facebook => :boolean,
+                            :is_legislators => :boolean,
+                                :admin_name => :string,
+                               :admin_email => :string,
+                     :google_analytics_code => :string,
+                            :quantcast_code => :string,
+                                 :tags_name => :string,
+                             :briefing_name => :string,
+                             :currency_name => :string,
+                       :currency_short_name => :string,
+                                  :homepage => :string,
+                          :priorities_count => :integer,
+                              :points_count => :integer,
+                           :documents_count => :integer,
+                               :users_count => :integer,
+                        :contributors_count => :integer,
+                            :partners_count => :integer,
+            :official_user_priorities_count => :integer,
+                        :endorsements_count => :integer,
+                                :picture_id => :integer,
+                           :color_scheme_id => :integer,
+                                   :mission => :string,
+                                    :prompt => :string,
+                             :buddy_icon_id => :integer,
+                               :fav_icon_id => :integer,
+              :is_suppress_empty_priorities => :boolean,
+                                 :tags_page => :string,
+                          :facebook_api_key => :string,
+                       :facebook_secret_key => :string,
+                             :windows_appid => :string,
+                        :windows_secret_key => :string,
+                               :yahoo_appid => :string,
+                          :yahoo_secret_key => :string,
+                                :is_twitter => :boolean,
+                               :twitter_key => :string,
+                        :twitter_secret_key => :string,
+                             :language_code => :string,
+                                  :password => :string,
+                            :logo_file_name => :string,
+                         :logo_content_type => :string,
+                            :logo_file_size => :integer,
+                           :logo_updated_at => :datetime,
+                      :buddy_icon_file_name => :string,
+                   :buddy_icon_content_type => :string,
+                      :buddy_icon_file_size => :integer,
+                     :buddy_icon_updated_at => :datetime,
+                        :fav_icon_file_name => :string,
+                     :fav_icon_content_type => :string,
+                        :fav_icon_file_size => :integer,
+                       :fav_icon_updated_at => :datetime,
+                      :google_login_enabled => :boolean,
+                     :default_tags_checkbox => :string,
+                          :message_to_users => :text,
+                               :description => :text,
+                           :message_for_ads => :text,
+                        :message_for_issues => :text,
+                       :message_for_network => :text,
+                      :message_for_finished => :text,
+                        :message_for_points => :text,
+                  :message_for_new_priority => :text,
+                          :message_for_news => :text
+        }},
+        {:messages=>{
+                      :id => :integer,
+               :sender_id => :integer,
+            :recipient_id => :integer,
+                    :type => :string,
+                  :status => :string,
+                   :title => :string,
+                 :content => :text,
+                 :sent_at => :datetime,
+                 :read_at => :datetime,
+              :created_at => :datetime,
+              :updated_at => :datetime,
+              :deleted_at => :datetime,
+            :content_html => :text
+        }},
+        {:notifications=>{
+                         :id => :integer,
+                  :sender_id => :integer,
+               :recipient_id => :integer,
+                     :status => :string,
+                       :type => :string,
+              :notifiable_id => :integer,
+            :notifiable_type => :string,
+                 :created_at => :datetime,
+                 :updated_at => :datetime,
+                    :sent_at => :datetime,
+                    :read_at => :datetime,
+               :processed_at => :datetime,
+                 :deleted_at => :datetime
+        }},
+        {:partners=>{
+                                    :id => :integer,
+                                  :name => :string,
+                            :short_name => :string,
+                            :picture_id => :integer,
+                              :is_optin => :integer,
+                            :optin_text => :string,
+                           :privacy_url => :string,
+                            :created_at => :datetime,
+                            :updated_at => :datetime,
+                             :is_active => :integer,
+                                :status => :string,
+                           :users_count => :integer,
+                               :website => :string,
+                            :deleted_at => :datetime,
+                            :ip_address => :string,
+                      :is_daily_summary => :boolean,
+                       :unsubscribe_url => :string,
+                         :subscribe_url => :string,
+                        :logo_file_name => :string,
+                     :logo_content_type => :string,
+                        :logo_file_size => :integer,
+                       :logo_updated_at => :datetime,
+                          :default_tags => :string,
+                   :custom_tag_checkbox => :string,
+                 :custom_tag_dropdown_1 => :string,
+                 :custom_tag_dropdown_2 => :string,
+                  :name_variations_data => :string,
+                   :geoblocking_enabled => :boolean,
+            :geoblocking_open_countries => :string,
+                        :default_locale => :string,
+                        :iso_country_id => :integer,
+                         :required_tags => :string,
+              :message_for_new_priority => :text
+        }},
+        { :point_qualities => {
+                    :id => :integer,
+               :user_id => :integer,
+              :point_id => :integer,
+                 :value => :boolean,
+            :created_at => :datetime,
+            :updated_at => :datetime}},
+        {:pictures=>{
+                      :id => :integer,
+                    :name => :string,
+                  :height => :integer,
+                   :width => :integer,
+            :content_type => :string,
+                    :data => :binary,
+              :created_at => :datetime,
+              :updated_at => :datetime
+        }},
+        {:points=>{
+                                  :id => :integer,
+                         :revision_id => :integer,
+                         :priority_id => :integer,
+                   :other_priority_id => :integer,
+                             :user_id => :integer,
+                               :value => :integer,
+                     :revisions_count => :integer,
+                              :status => :string,
+                                :name => :string,
+                             :content => :text,
+                        :published_at => :datetime,
+                          :created_at => :datetime,
+                          :updated_at => :datetime,
+                             :website => :string,
+                     :author_sentence => :string,
+                       :helpful_count => :integer,
+                     :unhelpful_count => :integer,
+                   :discussions_count => :integer,
+              :endorser_helpful_count => :integer,
+               :opposer_helpful_count => :integer,
+            :endorser_unhelpful_count => :integer,
+             :opposer_unhelpful_count => :integer,
+               :neutral_helpful_count => :integer,
+             :neutral_unhelpful_count => :integer,
+                               :score => :float,
+                      :endorser_score => :float,
+                       :opposer_score => :float,
+                       :neutral_score => :float,
+                        :content_html => :text,
+                          :partner_id => :integer,
+                         :flags_count => :integer,
+                          :user_agent => :string,
+                          :ip_address => :string
+        }},
+        {:priorities=>{
+                                  :id => :integer,
+                            :position => :integer,
+                             :user_id => :integer,
+                                :name => :string,
+                  :endorsements_count => :integer,
+                              :status => :string,
+                          :ip_address => :string,
+                          :deleted_at => :datetime,
+                        :published_at => :datetime,
+                          :created_at => :datetime,
+                          :updated_at => :datetime,
+                        :position_1hr => :integer,
+                       :position_24hr => :integer,
+                      :position_7days => :integer,
+                     :position_30days => :integer,
+                 :position_1hr_change => :integer,
+                :position_24hr_change => :integer,
+               :position_7days_change => :integer,
+              :position_30days_change => :integer,
+                           :change_id => :integer,
+                   :cached_issue_list => :string,
+               :up_endorsements_count => :integer,
+             :down_endorsements_count => :integer,
+                        :points_count => :integer,
+                     :up_points_count => :integer,
+                   :down_points_count => :integer,
+                :neutral_points_count => :integer,
+                   :discussions_count => :integer,
+                 :relationships_count => :integer,
+                       :changes_count => :integer,
+                     :official_status => :integer,
+                      :official_value => :integer,
+                   :status_changed_at => :datetime,
+                               :score => :integer,
+                  :up_documents_count => :integer,
+                :down_documents_count => :integer,
+             :neutral_documents_count => :integer,
+                     :documents_count => :integer,
+                           :short_url => :string,
+                    :is_controversial => :boolean,
+                      :trending_score => :integer,
+                 :controversial_score => :integer,
+                     :external_info_1 => :string,
+                     :external_info_2 => :string,
+                     :external_info_3 => :string,
+                       :external_link => :string,
+                  :external_presenter => :string,
+                         :external_id => :string,
+                       :external_name => :string,
+                          :partner_id => :integer,
+                         :flags_count => :integer,
+                         :category_id => :integer,
+                          :user_agent => :string,
+              :position_endorsed_24hr => :integer,
+             :position_endorsed_7days => :integer,
+            :position_endorsed_30days => :integer,
+             :finished_status_message => :text,
+                 :external_session_id => :integer,
+             :finished_status_subject => :string,
+                :finished_status_date => :date
+        }},
+        {:priority_charts=>{
+                        :id => :integer,
+               :priority_id => :integer,
+                 :date_year => :integer,
+                :date_month => :integer,
+                  :date_day => :integer,
+                  :position => :integer,
+                  :up_count => :integer,
+                :down_count => :integer,
+                :created_at => :datetime,
+                :updated_at => :datetime,
+              :volume_count => :integer,
+            :change_percent => :float,
+                    :change => :integer
+        }},
+        {:priority_status_change_logs=>{
+                     :id => :integer,
+            :priority_id => :integer,
+             :created_at => :datetime,
+             :updated_at => :datetime,
+                :content => :text,
+                :subject => :string,
+                   :date => :date
+        }},
+        {:profiles=>{
+                    :id => :integer,
+               :user_id => :integer,
+                   :bio => :text,
+              :bio_html => :text,
+            :created_at => :datetime,
+            :updated_at => :datetime
+        }},
+        {:rankings=>{
+                            :id => :integer,
+                   :priority_id => :integer,
+                       :version => :integer,
+                      :position => :integer,
+            :endorsements_count => :integer,
+                    :created_at => :datetime,
+                    :updated_at => :datetime,
+                    :partner_id => :integer
+        }},
+        {:relationships=> {
+                           :id => :integer,
+                  :priority_id => :integer,
+            :other_priority_id => :integer,
+                         :type => :string,
+                   :percentage => :integer,
+                   :created_at => :datetime,
+                   :updated_at => :datetime
+        }},
+        {:sentences=> {
+                                     :id => :integer,
+            :process_document_element_id => :integer,
+                                   :body => :text,
+                             :created_at => :datetime,
+                             :updated_at => :datetime
+        }},
+        {:shown_ads=>{
+                    :id => :integer,
+                 :ad_id => :integer,
+               :user_id => :integer,
+                 :value => :integer,
+            :ip_address => :string,
+            :user_agent => :string,
+              :referrer => :string,
+            :created_at => :datetime,
+            :updated_at => :datetime,
+            :seen_count => :integer
+        }},
+        {:revisions=>{
+                           :id => :integer,
+                     :point_id => :integer,
+                      :user_id => :integer,
+                        :value => :integer,
+                       :status => :string,
+                         :name => :string,
+                      :content => :text,
+                 :published_at => :datetime,
+                   :created_at => :datetime,
+                   :updated_at => :datetime,
+                   :ip_address => :string,
+                   :user_agent => :string,
+                      :website => :string,
+                 :content_diff => :text,
+            :other_priority_id => :integer,
+                 :content_html => :text
+        }},
+        {:signups=>{
+                    :id => :integer,
+            :partner_id => :integer,
+               :user_id => :integer,
+            :created_at => :datetime,
+            :updated_at => :datetime,
+            :ip_address => :string
+        }},
+        {:tag_subscriptions=>{
+            :user_id => :integer,
+             :tag_id => :integer
+        }},
+        {:taggings=>{
+                       :id => :integer,
+                   :tag_id => :integer,
+              :taggable_id => :integer,
+                :tagger_id => :integer,
+              :tagger_type => :string,
+            :taggable_type => :string,
+                  :context => :string,
+               :created_at => :datetime,
+               :updated_at => :datetime
+        }},
+        {:tags=>{
+                                   :id => :integer,
+                                 :name => :string,
+                           :created_at => :datetime,
+                           :updated_at => :datetime,
+                      :top_priority_id => :integer,
+                   :up_endorsers_count => :integer,
+                 :down_endorsers_count => :integer,
+            :controversial_priority_id => :integer,
+                   :rising_priority_id => :integer,
+                 :official_priority_id => :integer,
+                       :webpages_count => :integer,
+                     :priorities_count => :integer,
+                          :feeds_count => :integer,
+                                :title => :string,
+                          :description => :string,
+                    :discussions_count => :integer,
+                         :points_count => :integer,
+                      :documents_count => :integer,
+                               :prompt => :string,
+                                 :slug => :string,
+                           :partner_id => :integer,
+                             :tag_type => :integer
+        }},
+        {:unsubscribes=>{
+                                     :id => :integer,
+                                :user_id => :integer,
+                                  :email => :string,
+                                 :reason => :text,
+                             :created_at => :datetime,
+                             :updated_at => :datetime,
+                 :is_comments_subscribed => :boolean,
+                    :is_votes_subscribed => :boolean,
+            :is_point_changes_subscribed => :boolean,
+                 :is_messages_subscribed => :boolean,
+                :is_followers_subscribed => :boolean,
+                 :is_finished_subscribed => :boolean,
+                    :is_admin_subscribed => :boolean
+        }},
+        {:user_charts=>{
+                      :id => :integer,
+                 :user_id => :integer,
+               :date_year => :integer,
+              :date_month => :integer,
+                :date_day => :integer,
+                :position => :integer,
+                :up_count => :integer,
+              :down_count => :integer,
+            :volume_count => :integer,
+              :created_at => :datetime,
+              :updated_at => :datetime
+        }},
+        {:user_contacts=>{
+                          :id => :integer,
+                     :user_id => :integer,
+               :other_user_id => :integer,
+                        :name => :string,
+                       :email => :string,
+                  :created_at => :datetime,
+                  :updated_at => :datetime,
+                :following_id => :integer,
+                :facebook_uid => :integer,
+                     :sent_at => :datetime,
+                 :accepted_at => :datetime,
+            :is_from_realname => :boolean,
+                      :status => :string
+        }},
+        {:user_rankings=>{
+                        :id => :integer,
+                   :user_id => :integer,
+                   :version => :integer,
+                  :position => :integer,
+            :capitals_count => :integer,
+                :created_at => :datetime,
+                :updated_at => :datetime
+        }},
+        {:users=>{
+                                      :id => :integer,
+                                   :login => :string,
+                                   :email => :string,
+                        :crypted_password => :string,
+                                    :salt => :string,
+                              :first_name => :string,
+                               :last_name => :string,
+                              :created_at => :datetime,
+                              :updated_at => :datetime,
+                            :activated_at => :datetime,
+                         :activation_code => :string,
+                          :remember_token => :string,
+               :remember_token_expires_at => :datetime,
+                              :picture_id => :integer,
+                                  :status => :string,
+                              :partner_id => :integer,
+                              :deleted_at => :datetime,
+                              :ip_address => :string,
+                             :loggedin_at => :datetime,
+                                     :zip => :string,
+                              :birth_date => :date,
+                           :twitter_login => :string,
+                                 :website => :string,
+                            :is_mergeable => :boolean,
+                             :referral_id => :integer,
+                           :is_subscribed => :boolean,
+                              :user_agent => :string,
+                                :referrer => :string,
+                  :is_comments_subscribed => :boolean,
+                     :is_votes_subscribed => :boolean,
+                               :is_tagger => :boolean,
+                      :endorsements_count => :integer,
+                   :up_endorsements_count => :integer,
+                 :down_endorsements_count => :integer,
+                         :up_issues_count => :integer,
+                       :down_issues_count => :integer,
+                          :comments_count => :integer,
+                                   :score => :float,
+             :is_point_changes_subscribed => :boolean,
+                  :is_messages_subscribed => :boolean,
+                          :capitals_count => :integer,
+                           :twitter_count => :integer,
+                         :followers_count => :integer,
+                        :followings_count => :integer,
+                          :ignorers_count => :integer,
+                         :ignorings_count => :integer,
+                           :position_24hr => :integer,
+                          :position_7days => :integer,
+                         :position_30days => :integer,
+                    :position_24hr_change => :integer,
+                   :position_7days_change => :integer,
+                  :position_30days_change => :integer,
+                                :position => :integer,
+                 :is_followers_subscribed => :boolean,
+                     :partner_referral_id => :integer,
+                               :ads_count => :integer,
+                           :changes_count => :integer,
+                            :google_token => :string,
+                      :top_endorsement_id => :integer,
+                  :is_finished_subscribed => :boolean,
+                          :contacts_count => :integer,
+                  :contacts_members_count => :integer,
+                  :contacts_invited_count => :integer,
+              :contacts_not_invited_count => :integer,
+                       :google_crawled_at => :datetime,
+                            :facebook_uid => :integer,
+                                    :city => :string,
+                                   :state => :string,
+                         :documents_count => :integer,
+                :document_revisions_count => :integer,
+                            :points_count => :integer,
+                       :index_24hr_change => :float,
+                      :index_7days_change => :float,
+                     :index_30days_change => :float,
+            :received_notifications_count => :integer,
+              :unread_notifications_count => :integer,
+                                :rss_code => :string,
+                   :point_revisions_count => :integer,
+                         :qualities_count => :integer,
+                      :constituents_count => :integer,
+                                 :address => :string,
+                          :warnings_count => :integer,
+                            :probation_at => :datetime,
+                            :suspended_at => :datetime,
+                         :referrals_count => :integer,
+                                :is_admin => :boolean,
+                              :twitter_id => :integer,
+                           :twitter_token => :string,
+                          :twitter_secret => :string,
+                      :twitter_crawled_at => :datetime,
+                     :is_admin_subscribed => :boolean,
+                    :buddy_icon_file_name => :string,
+                 :buddy_icon_content_type => :string,
+                    :buddy_icon_file_size => :integer,
+                   :buddy_icon_updated_at => :datetime,
+                   :is_importing_contacts => :boolean,
+                 :imported_contacts_count => :integer,
+                             :facebook_id => :integer,
+                         :reports_enabled => :boolean,
+                     :reports_discussions => :boolean,
+                       :reports_questions => :boolean,
+                       :reports_documents => :boolean,
+                        :reports_interval => :integer,
+                        :last_sent_report => :datetime,
+              :geoblocking_open_countries => :string,
+                          :identifier_url => :string,
+                               :age_group => :string,
+                               :post_code => :string,
+                               :my_gender => :string,
+                        :report_frequency => :integer
+        }} ]
+
+    delete_columns_per_table =
+        {:activities=> {
+                                  :vote_id => :integer,
+                                :change_id => :integer,
+                              :document_id => :integer,
+                     :document_revision_id => :integer},
+        :governments=>{
+                          :official_user_id => :integer,
+                  :official_user_short_name => :string,
+                  :briefing_name => :string,
+                            :is_legislators => :boolean,
+                           :documents_count => :integer,
+            :official_user_priorities_count => :integer,
+        },
+        :points=>{
+               :neutral_helpful_count => :integer,
+             :neutral_unhelpful_count => :integer,
+                       :neutral_score => :float,
+        },
+        :priorities=>{
+                           :change_id => :integer,
+                       :changes_count => :integer,
+                  :up_documents_count => :integer,
+                :down_documents_count => :integer,
+             :neutral_documents_count => :integer,
+                     :documents_count => :integer,
+        },
+        :tags=>{
+                 :official_priority_id => :integer,
+                      :documents_count => :integer,
+        },
+        :unsubscribes=>{
+                    :is_votes_subscribed => :boolean,
+        },
+
+        :users=>{
+                           :changes_count => :integer,
+                         :documents_count => :integer,
+                :document_revisions_count => :integer,
+                :constituents_count => :integer,
+                :is_votes_subscribed => :boolean,
+                :reports_questions => :boolean,
+                :reports_documents => :boolean,
+
+        } }
+
+    puts "mysqldump -u yrpri_production -h 213.229.119.227 -p yrpri_production #{used_list.map {|x| x}.join(" ")}}"
+
+    delete_columns_per_table.each do |table,columns|
+      columns.each do |column|
+        puts "ALTER TABLE #{table} DROP #{column[0].to_s};"
+      end
+    end
+
+    puts ""
+
+    used_columns_per_table.each do |entries|
+      entries.each do |table,columns|
+        columns.each do |column|
+          #puts "#{table} #{column}"
+          if delete_columns_per_table[table.to_sym] and delete_columns_per_table[table.to_sym][column[0].to_sym]
+            #puts "IN DELETE next #{column[0]}"
+            next
+          end
+
+          if change_to_name = shall_we_change(column[0].to_s)
+            puts "ALTER TABLE #{table} CHANGE COLUMN #{column[0].to_s} #{change_to_name} #{change_to_mysql_text(column[1].to_s)};"
+          end
+        end
+      end
+    end
+
+    puts ""
+
+    table_rename_list.each do |renameer|
+      puts "RENAME TABLE #{renameer[0]} TO #{renameer[1]};"
+    end
+
+    puts ""
+    puts "DROP TABLE messages;"
+    puts ""
+
+    used_list.each do |mtable|
+      #puts "#{mtable.classify}"
+    end
+
+    used_list.each do |mtable|
+      if shall_we_change(mtable)
+        puts "DELETE FROM #{shall_we_change(mtable)};"
+      else
+        puts "DELETE FROM #{mtable};"
+      end
+    end
+
+
+
+  end
+
+  desc "Seed desc"
+  task :seed_descriptions => :environment do
+    Idea.all.each do |idea|
+      text = "#{idea.points.first.content_html[0..272]}.."
+      idea.description = text
+      idea.save
+    end
+  end
+
+  desc "Parse xml map"
+  task :parse_xml_map => :environment do
+    doc = Nokogiri::HTML(File.open(Rails.root+"public/world_countries_kml.xml"))
+    all_iso_countries = Tr8n::IsoCountry.all.map {|c| c.country_english_name}
+    all_found = []
+    all_not_found = []
+    doc.xpath('//placemark').each_with_index do |x,i|
+      puts x.search("name").text
+      if country = Tr8n::IsoCountry.find_by_country_english_name(x.search("name").text)
+        puts "FOUND"
+        all_found << x.search("name").text
+        all_coords = []
+        x.search("coordinates").each do |coord|
+          all_coords << coord.text
+        end
+        puts country.map_coordinates = all_coords.to_s
+        country.save
+      else
+        puts "NOT FOUND"
+        all_not_found << x.search("name").text
+      end
+      puts x.search("coordinates").text.strip
+    end
+    puts "Found #{all_found.length}"
+    puts "-----------------------------------------------"
+    puts all_found
+    puts "Not Found #{all_not_found.length}"
+    puts "-----------------------------------------------"
+    puts all_not_found
+    puts "Missing #{(all_iso_countries-all_found).length}"
+    puts "-----------------------------------------------"
+    puts (all_iso_countries-all_found).sort
+  end
 
   desc "Update idea change logs"
   task :update_change_logs => :environment do
@@ -61,7 +1104,7 @@ namespace :fix do
         m.save
       end
     end
-    ProcessSpeechVideo.all.each do |m|
+    ProcessSpeechVideo.all.each dom|
       if m.id<281
         m.published = true
         m.in_processing = false
@@ -681,4 +1724,3 @@ namespace :fix do
       end
     end
   end
-end

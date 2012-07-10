@@ -8,8 +8,3 @@
         %td{:align => "left", :width => "130px"}
           - if defined?(attachments)
             = image_tag attachments['logo.png'].url, :alt=>tr("{instance_name}", "email", :instance_name => tr(@instance.name, "Name from database"))
-          - else
-            - if @instance.layout.include?("better_reykjavik")
-              %h1= image_tag "logos/BR_email.png", :alt=>tr("{instance_name}", "email", :instance_name => tr(@instance.name, "Name from database"))
-            - else
-              %h1= image_tag "logos/YourIdeas_large.png", :alt=>tr("{instance_name}", "email", :instance_name => tr(@instance.name, "Name from database"))

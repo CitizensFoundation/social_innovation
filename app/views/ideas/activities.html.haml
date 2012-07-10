@@ -1,10 +1,17 @@
 = render :partial => "header"
-= render :partial => "nav"
-%p.margin-top
-  - if logged_in?
-    = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
-  #activities
-    - for activity in @activities
-      = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_noself"}
-  %p
-    = will_paginate(@activities)
+.col-group
+  .col-1
+    .col-content
+      = render :partial => "nav"
+  .col-11
+    - if logged_in?
+      #new_activities
+      .col-group
+        .col-11.col-offset-1
+          .col-content
+            = render :partial => "bulletins/form", :locals => {:activity => Activity.new, :comment => Comment.new }
+    #activities
+      - for activity in @activities
+        = render :partial => "activities/show", :locals => {:activity => activity, :suffix => "_noself"}
+    %p
+      = will_paginate(@activities)

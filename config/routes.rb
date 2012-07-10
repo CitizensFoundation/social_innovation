@@ -1,9 +1,12 @@
 SocialInnovation::Application.routes.draw do
+
   mount Ckeditor::Engine => '/ckeditor'
   mount WillFilter::Engine => "/will_filter"
   mount Tr8n::Engine => "/tr8n"
 
   resources :categories
+
+  match '/groups/suggest_user' => 'groups#suggest_user'
 
   match '/ideas/flag/:id' => 'ideas#flag'
   match '/ideas/abusive/:id' => 'ideas#abusive'
@@ -12,11 +15,13 @@ SocialInnovation::Application.routes.draw do
   match '/admin/all_deleted' => 'admin#all_deleted'
   match '/users/list_suspended' => 'users#list_suspended'
 
+  resources :groups
+
   resources :sub_instances do
     member do
       get :email
       get :picture
-      post :picture_save
+      put :picture_save
     end
   end
 
@@ -73,7 +78,7 @@ SocialInnovation::Application.routes.draw do
     collection do
       get :signups
       get :picture
-      post :picture_save
+      put :picture_save
       get :legislators
       post :legislators_save
       get :delete
@@ -270,10 +275,10 @@ SocialInnovation::Application.routes.draw do
   match '/splash' => 'splash#index'
   match '/issues' => 'issues#index'
   match '/issues.:format' => 'issues#index'
-  match '/issues/:slug' => 'issues#show'
-  match '/issues/:slug.:format' => 'issues#show'
-  match '/issues/:slug/:action' => 'issues#index'
-  match '/issues/:slug/:action.:format' => 'issues#index'
+  match '/issues/:id' => 'issues#show', as: 'issue'
+  match '/issues/:id.:format' => 'issues#show'
+  match '/issues/:id/:action' => 'issues#index'
+  match '/issues/:id/:action.:format' => 'issues#index'
   match '/pictures/:short_name/:action/:id' => 'pictures#index'
   match ':controller' => '#index'
   match ':controller/:action' => '#index'

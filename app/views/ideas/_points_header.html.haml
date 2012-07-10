@@ -1,10 +1,10 @@
 - if support
   %span#endorse-title
     = #tr("Points for", "view/ideas/_nav")
-  %div.idea_add{:id => "idea_add_point_for#{idea.id.to_s}"}
+  %div.idea_add{:id => "idea_add_point_for#{idea.id.to_s}", :class => "add_point_for_button"}
     = link_to tr("Add point for", "view/ideas/_nav"), new_idea_point_path(idea, support: true),          |
-      :class => "add_point_endorse", :title => tr("I endorse this and want to explain why.", "view/ideas/_nav") |
+      :class => "add_point_for_button", :title => tr("I endorse this and want to explain why.", "view/ideas/_nav") |
 - else
-  %div.idea_add{:id => "idea_add_point_against#{idea.id.to_s}"}
+  %div.idea_add{:id => "idea_add_point_against#{idea.id.to_s}", :class => "add_point_against_button"}
     = link_to tr("Add point against", "view/ideas/_nav"), new_idea_point_path(idea),                       |
-      :class => "idea_add_link2 add_point_oppose", :title => tr("I oppose this and want to explain why.", "view/ideas/_button") |
+      :class => "add_point_against_button", :title => tr("I oppose this and want to explain why.", "view/ideas/_button") |

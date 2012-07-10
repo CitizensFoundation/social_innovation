@@ -8,7 +8,7 @@
   = tr("This is your {warning_number} warning. You violated the <a href='/about/rules'>site rules</a> with <a href='{content_url}'>this {content_type}</a>.", "view/notifications/_notificationwarning", |
     :warning_number => tr('second','notifications'),                                                                                                                                                     |
     :content_url => idea_url(notification.notifiable.id),                                                                                                                                            |
-    :content_type => tr("prioritiy",'notifications'))                                                                                                                                                    |
+    :content_type => tr("idea",'notifications'))                                                                                                                                                    |
 - elsif notification.notifiable.class == Point
   = tr("This is your {warning_number} warning. You violated the <a href='/about/rules'>site rules</a> with <a href='{content_url}'>this {content_type}</a>.", "view/notifications/_notificationwarning", |
     :warning_number => tr('second','notifications'),                                                                                                                                                     |

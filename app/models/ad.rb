@@ -16,7 +16,7 @@ class Ad < ActiveRecord::Base
   has_many :shown_ads, :dependent => :destroy
   has_many :activities
 
-  acts_as_list :scope => 'status = \'active\''
+  acts_as_list :scope => 'ads.status = \'active\''
 
   def validate
     if self.calculate_per_user_cost < 0.01

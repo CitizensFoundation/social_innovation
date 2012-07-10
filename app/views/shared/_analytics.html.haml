@@ -1,21 +1,24 @@
-- if current_instance.has_google_analytics?
+- if SubInstance.current and SubInstance.current.google_analytics_code
   :javascript
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '#{SubInstance.current.google_analytics_code}']);
+    _gaq.push(['_setDomainName', '#{current_instance.domain_name}']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+- elsif current_instance and current_instance.google_analytics_code
   :javascript
-    var pageTracker = _gat._getTracker("#{current_instance.google_analytics_code}");
-    pageTracker._setDomainName(".#{current_instance.base_url}");
-    <haml:silent> if current_sub_instance 
-    </haml:silent><haml:block>pageTracker._setVar('#{current_sub_instance.short_name}');
-    </haml:block>pageTracker._trackPageview();
-    <haml:silent> if session[:goal] 
-    </haml:silent><haml:block>pageTracker._trackPageview("/goal/#{session[:goal]}");
-    <haml:silent> session[:goal] = nil 
-    </haml:silent></haml:block>- if current_instance.attribute_present?("quantcast_code")
-  :javascript
-    _qoptions={
-    qacct:"#{current_instance.quantcast_code}"
-    };
-  %script{:src => "http://edge.quantserve.com/quant.js", :type => "text/javascript"}
-  %noscript
-    %img{:alt => "Quantcast", :border => "0", :height => "1", :src => "http://pixel.quantserve.com/pixel/#{current_instance.quantcast_code}.gif", :style => "display: none;", :width => "1"}/
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '#{current_instance.google_analytics_code}']);
+    _gaq.push(['_setDomainName', '#{current_instance.domain_name}']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();

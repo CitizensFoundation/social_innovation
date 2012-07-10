@@ -38,4 +38,16 @@ module HomeHelper
   def country_in_eu_or_eea?(country_code)
     EU_AND_EEA_COUNTRIES.include?(country_code.downcase)
   end
+
+  def get_placemark_map_style(country)
+    current_sub_instance = SubInstance.current
+    SubInstance.current = SubInstance.find_by_iso_country_id(country.id)
+    if sub_instance = SubInstance.find_by_iso_country_id(country.id) and Idea.where("sub_instance_id = ?", sub_instance.id).count>0
+      ret = "#HasIdeasStyle"
+    else
+      ret = "#NoIdeaStyle"
+    end
+    SubInstance.current = SubInstance.current
+    ret
+  end
 end
